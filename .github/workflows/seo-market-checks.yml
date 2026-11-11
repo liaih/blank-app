@@ -1,0 +1,37 @@
+name: SEO market opportunity checks
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/market-opportunity.js'
+      - 'docs/monitor.html'
+      - 'docs/tests/market-opportunity.test.cjs'
+      - '.github/workflows/seo-market-checks.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate standalone browser script syntax
+        run: node --check docs/market-opportunity.js
+      - name: Verify market CSV safety and SEO prioritization
+        run: node docs/tests/market-opportunity.test.cjs
+      - name: Ensure required public dashboard elements exist
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'id="market-rows"' docs/monitor.html
+          grep -q 'id="market-file"' docs/monitor.html
+          grep -q 'market-opportunity.js' docs/monitor.html
+          grep -q 'AI 搜尋能見度' docs/monitor.html
+          grep -q 'SEO 搜尋商機分析' docs/monitor.html
