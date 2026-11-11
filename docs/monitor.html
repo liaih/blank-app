@@ -59,6 +59,16 @@ tbody tr:last-child td{border-bottom:0}
 .error{display:none;background:#fff0ed;color:#a53826;border:1px solid #ffd2c9;border-radius:11px;padding:14px;margin:15px 0}
 @media(max-width:860px){.metrics{grid-template-columns:repeat(2,1fr)}.cols{grid-template-columns:1fr}.cols>.panel{margin:7px 0}.tabs{gap:4px}.tab{font-size:13px;padding:11px 6px}}
 @media(max-width:530px){.shell{padding:21px 12px 45px}.header{display:block}.chip{display:inline-block;margin-top:10px}.tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.tab{min-height:48px}.metric{padding:14px}.metric .number{font-size:26px}.panel{padding:16px}.statusline{align-items:flex-start;flex-wrap:wrap}}
+.market-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0}
+.market-filters label{font-size:12px;color:#526883;font-weight:700;display:flex;flex-direction:column;gap:7px}
+.market-filters select,.market-filters input{max-width:100%;min-width:0;padding:10px 11px;border:1px solid #d6e1ed;border-radius:9px;font:inherit;color:#203a5a;background:#fff}
+.market-filters input[type=file]{font-size:12px}
+.market-action{border:1px solid #17426e;border-radius:9px;background:#17426e;padding:9px 14px;color:#fff;font:inherit;font-size:13px;font-weight:650;cursor:pointer}
+.market-action.secondary{background:#fff;color:#17426e}
+.market-action:focus-visible,.market-filters :focus-visible{outline:3px solid #87b8f5}
+@media(max-width:800px){.market-filters{grid-template-columns:1fr 1fr}}
+@media(max-width:500px){.market-filters{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -163,7 +173,87 @@ tbody tr:last-child td{border-bottom:0}
  <section id="view-opps" role="tabpanel" aria-labelledby="tab-opps" hidden>
   <h2>搜尋字詞／頁面機會</h2>
   <p class="muted">從真實 Google 搜尋字詞找出內容優化候選，不靠虛構的搜尋量或排名。</p>
-  <section class="panel"><h3>有曝光但點擊率偏低的 10 組搜尋字詞</h3>
+  <section class="panel" aria-label="SEO 搜尋商機決策矩陣">
+    <div class="flexhead"><div>
+      <h3>SEO 搜尋商機分析｜市場需求 × 搜尋意圖 × 晨陽排名</h3>
+      <p class="muted">「晨陽曝光高」不等於「台灣搜尋量高」。以下先用真實 GSC 排名找優化方向，市場月搜尋量待外部來源補足。</p>
+    </div><span class="label wait">市場量尚未自動接通</span></div>
+    <div class="metrics">
+      <div class="metric"><div class="name">追蹤屋主搜尋詞</div><div class="number" id="market-tracked">—</div><div class="sub">一般搜尋、地區及裝修需求</div></div>
+      <div class="metric"><div class="name">GSC 近30天有曝光</div><div class="number" id="market-gsc">—</div><div class="sub">只有已觀察到的字詞，不等於全市場</div></div>
+      <div class="metric"><div class="name">已有外部市場搜尋量</div><div class="number" id="market-external">尚無資料</div><div class="sub">需要 Google Ads 關鍵字規劃資料</div></div>
+      <div class="metric"><div class="name">目前可先檢查的 SEO 機會</div><div class="number" id="market-urgent">—</div><div class="sub">依曝光、排名和點擊率規則篩選</div></div>
+    </div>
+    <div class="message" style="margin-top:18px">
+      <strong>目前的判斷規則：</strong>有至少 30 次官網曝光且平均排名在第 10 名之後，優先檢查內容排名；已接近前十且點擊率低時檢查標題摘要。屋主搜尋意圖與服務地區是分類線索，不是經驗證的成交率。沒有市場量、沒有成交來源時，<strong>不會產生虛構的商機分數或預估營收</strong>。
+    </div>
+    <div class="flexhead" style="margin-top:19px">
+      <div><h3>32 組屋主搜尋需求與優化方向</h3><p class="small" id="market-source-state">尚未取得全市場搜尋量</p></div>
+    </div>
+    <div class="market-filters">
+      <label>關鍵字類型
+        <select id="market-category">
+          <option value="all">全部類型</option>
+          <option value="一般需求">一般搜尋</option>
+          <option value="地區搜尋">地區搜尋</option>
+          <option value="預算與屋況">預算／屋況</option>
+        </select>
+      </label>
+      <label>屋主決策階段（依文字規則分類）
+        <select id="market-intent">
+          <option value="all">全部階段</option>
+          <option value="比較／決策">比較／決策</option>
+          <option value="具體裝修需求">具體裝修需求</option>
+          <option value="廣泛探索">廣泛探索</option>
+        </select>
+      </label>
+      <label>排序依據
+        <select id="market-sort">
+          <option value="priority">先看可驗證優化方向</option>
+          <option value="gsc">晨陽曝光量（非市場量）</option>
+          <option value="market">市場月搜尋量（需先匯入）</option>
+        </select>
+      </label>
+    </div>
+    <div class="tablebox"><table>
+      <thead><tr>
+        <th>搜尋關鍵字</th><th>意圖</th><th>地區詞</th>
+        <th class="num">市場每月搜尋量</th><th class="num">晨陽30天曝光</th>
+        <th class="num">平均排名</th><th>目前處理方向</th><th>下一步</th>
+      </tr></thead><tbody id="market-rows"></tbody>
+    </table></div>
+    <p id="market-footnote" class="detail">市場搜尋量尚未接入，未取得不代表等於 0。</p>
+    <hr class="sep">
+    <h3>匯入 Google Ads 市場搜尋量（免費網站，不呼叫付費 API）</h3>
+    <p class="muted">如果你已經取得 Google Ads「關鍵字規劃工具」的 CSV，可以在這裡臨時疊加市場量。檔案只在你的瀏覽器內解析，不會上傳 GitHub 或公開供其他人讀取。</p>
+    <div class="market-filters">
+      <label>Google Ads 報表的搜尋地區
+        <select id="market-geo">
+          <option value="">請選實際資料範圍</option>
+          <option value="台灣">台灣</option>
+          <option value="桃園">桃園</option>
+          <option value="新竹／竹北">新竹／竹北</option>
+          <option value="台中">台中</option>
+          <option value="台南">台南</option>
+          <option value="高雄">高雄</option>
+        </select>
+      </label>
+      <label>匯出月份（不是單月搜尋量）
+        <input id="market-period" type="month" min="2020-01" max="2030-12" aria-label="Google Ads 報表的匯出月份">
+      </label>
+      <label>Google Ads CSV 檔案
+        <input id="market-file" type="file" accept=".csv,text/csv" aria-label="僅在本機瀏覽器讀取 Google Ads CSV">
+      </label>
+    </div>
+    <div class="flexhead" style="margin-top:11px">
+      <button type="button" class="market-action" id="market-template">取得空白 CSV 範本</button>
+      <button type="button" class="market-action secondary" id="market-clear">清除本次匯入資料</button>
+    </div>
+    <p role="status" class="small" id="market-upload-status">未匯入任何市場搜尋量；原有 GSC 資料不受影響。</p>
+    <p class="detail">需要欄位：「關鍵字」及「平均每月搜尋量」（也接受英文 Keyword、Avg. monthly searches）。Google Ads 可能顯示區間值，不會被當成確切搜尋次數。廣告競爭程度不等於自然搜尋的 SEO 難度。</p>
+    <p class="detail">Google Trends 呈現相對搜尋熱度（0～100），不是搜尋次數；在取得可比的來源與期間前，趨勢數據仍標示待驗證。<a href="https://trends.google.com/trends/explore?geo=TW" target="_blank" rel="noopener noreferrer">查詢 Google Trends</a></p>
+  </section>
+    <section class="panel"><h3>有曝光但點擊率偏低的 10 組搜尋字詞</h3>
    <p class="small" id="opps-method"></p>
    <div class="tablebox"><table><thead><tr><th>實際搜尋字詞</th><th class="num">點擊</th><th class="num">曝光</th><th class="num">點擊率</th><th class="num">平均排名</th></tr></thead><tbody id="opps-body"></tbody></table></div>
    <p class="detail">候選字詞需要對照搜尋結果摘要與落地頁內容，不能僅憑低點擊率判斷文章有問題。</p>
@@ -207,6 +297,7 @@ tbody tr:last-child td{border-bottom:0}
   <p>公開唯讀展示｜非即時數據｜不是完整的私人 Streamlit 管理端。不得以未量測的 AI 搜尋資料推論品牌完全沒有曝光。</p>
  </footer>
 </div>
+<script src="./market-opportunity.js"></script>
 <script>
 (function(){
 "use strict";
@@ -340,7 +431,9 @@ function render(d){
  }
  renderPeriod();
  renderRankings();
+ if(window.MarketOpportunity)window.MarketOpportunity.render(d);
 }
+if(window.MarketOpportunity)window.MarketOpportunity.init();
 show(decodeURIComponent(location.hash.replace("#",""))||"ai",false);
 fetch("./data.json",{cache:"no-store"})
 .then(response=>{if(!response.ok)throw Error("讀取資料失敗");return response.json()})
