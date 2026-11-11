@@ -94,7 +94,818 @@
         "position": 9.4
       }
     ],
-    "opportunity_method": "最近30天，曝光至少30次、平均排名第4至20名、點擊率不超過3%；候選線索不是原因證明。"
+    "opportunity_method": "最近30天，曝光至少30次、平均排名第4至20名、點擊率不超過3%；候選線索不是原因證明。",
+    "keyword_rankings": {
+      "source": "Google Search Console／全站 query 維度",
+      "start_day": "2026-10-09",
+      "end_day": "2026-11-07",
+      "total_tracked": 32,
+      "with_impressions_30d": 5,
+      "unit": "近30天 GSC 按搜尋曝光加權的平均排名（數字越小越前）",
+      "caveat": "不是即時 Google 搜尋結果。無可用曝光資料不代表沒有排名；1-2次曝光的排名代表性低。",
+      "rows": [
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "室內設計",
+          "category": "一般需求",
+          "current_30d": {
+            "position": 25.37,
+            "clicks": 4,
+            "impressions": 49,
+            "days_with_impressions": 13
+          },
+          "previous_30d": {
+            "position": 33.38,
+            "clicks": 6,
+            "impressions": 64,
+            "days_with_impressions": 22
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": 8.01,
+          "status": "有搜尋曝光"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "裝潢公司",
+          "category": "一般需求",
+          "current_30d": {
+            "position": 1,
+            "clicks": 1,
+            "impressions": 1,
+            "days_with_impressions": 1
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "有搜尋曝光"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "住宅裝修",
+          "category": "一般需求",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "室內裝潢",
+          "category": "一般需求",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "室內設計公司",
+          "category": "一般需求",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": 2,
+            "clicks": 0,
+            "impressions": 1,
+            "days_with_impressions": 1
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "室內設計師",
+          "category": "一般需求",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "室內設計推薦",
+          "category": "一般需求",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "居家設計",
+          "category": "一般需求",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": 58,
+            "clicks": 0,
+            "impressions": 1,
+            "days_with_impressions": 1
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "裝修公司",
+          "category": "一般需求",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "裝潢推薦",
+          "category": "一般需求",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "裝潢設計",
+          "category": "一般需求",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "室內設計費用",
+          "category": "預算與屋況",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "小坪數室內設計",
+          "category": "預算與屋況",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "小宅室內設計",
+          "category": "預算與屋況",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "新成屋裝潢",
+          "category": "預算與屋況",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "老屋翻新",
+          "category": "預算與屋況",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "老屋翻新推薦",
+          "category": "預算與屋況",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "裝潢費用",
+          "category": "預算與屋況",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "林口室內設計",
+          "category": "地區搜尋",
+          "current_30d": {
+            "position": 51,
+            "clicks": 0,
+            "impressions": 1,
+            "days_with_impressions": 1
+          },
+          "previous_30d": {
+            "position": 6,
+            "clicks": 0,
+            "impressions": 2,
+            "days_with_impressions": 1
+          },
+          "latest_7d": {
+            "position": 51,
+            "clicks": 0,
+            "impressions": 1,
+            "days_with_impressions": 1
+          },
+          "position_improvement_30d": -45,
+          "status": "有搜尋曝光"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "桃園室內設計",
+          "category": "地區搜尋",
+          "current_30d": {
+            "position": 61,
+            "clicks": 0,
+            "impressions": 1,
+            "days_with_impressions": 1
+          },
+          "previous_30d": {
+            "position": 18.83,
+            "clicks": 0,
+            "impressions": 6,
+            "days_with_impressions": 4
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": -42.17,
+          "status": "有搜尋曝光"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "高雄室內設計",
+          "category": "地區搜尋",
+          "current_30d": {
+            "position": 1,
+            "clicks": 0,
+            "impressions": 1,
+            "days_with_impressions": 1
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "有搜尋曝光"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "中壢室內設計",
+          "category": "地區搜尋",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "台中室內設計",
+          "category": "地區搜尋",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "台中室內設計推薦",
+          "category": "地區搜尋",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "台南室內設計",
+          "category": "地區搜尋",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": 101,
+            "clicks": 0,
+            "impressions": 1,
+            "days_with_impressions": 1
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "新竹室內設計",
+          "category": "地區搜尋",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "新竹室內設計推薦",
+          "category": "地區搜尋",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "林口A7室內設計",
+          "category": "地區搜尋",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "桃園室內設計推薦",
+          "category": "地區搜尋",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "桃園裝潢公司",
+          "category": "地區搜尋",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "竹北室內設計",
+          "category": "地區搜尋",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        },
+        {
+          "site_id": "chen-yang-site",
+          "keyword": "高雄室內設計推薦",
+          "category": "地區搜尋",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "previous_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "latest_7d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0
+          },
+          "position_improvement_30d": null,
+          "status": "無可用曝光資料"
+        }
+      ]
+    }
   },
   "ai": {
     "actual_search_automated": false,
