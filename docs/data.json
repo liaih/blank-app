@@ -1,0 +1,54 @@
+{
+  "brand": "晨陽共好機構",
+  "report_title": "搜尋能見度與 AI SEO",
+  "public_snapshot": true,
+  "snapshot_date": "2026-11-11",
+  "gsc_last_day": "2026-11-07",
+  "gsc_property": "https://chen-yang.com.tw/",
+  "seo": {
+    "period30": {
+      "from": "2026-10-09",
+      "to": "2026-11-07",
+      "clicks": 1420,
+      "impressions": 51282,
+      "ctr": 0.0277,
+      "days_with_data": 30
+    },
+    "period90": {
+      "from": "2026-08-10",
+      "to": "2026-11-07",
+      "clicks": 4887,
+      "impressions": 181339,
+      "ctr": 0.0269,
+      "days_with_data": 90
+    }
+  },
+  "ai": {
+    "actual_search_automated": false,
+    "verified_search_mentions": null,
+    "gemini_recall_samples": 1,
+    "gemini_recall_mentions": 0,
+    "is_no_web": true,
+    "official_google_ai_report_imported": false,
+    "chatgpt_answer_collection": false,
+    "perplexity_answer_collection": false
+  },
+  "robot_checks": [
+    {
+      "bot": "Googlebot",
+      "result": "未遭 robots.txt 阻擋"
+    },
+    {
+      "bot": "OAI-SearchBot",
+      "result": "未遭 robots.txt 阻擋"
+    },
+    {
+      "bot": "PerplexityBot",
+      "result": "未遭 robots.txt 阻擋"
+    }
+  ],
+  "visibility": "公開展示｜僅經彙總之資料快照",
+  "updates": "此公開展示頁尚未與私有 GitHub 自動同步；不是即時報表。",
+  "provenance": "Google Search Console 正式擷取歷史；Gemini API 文字模型實際取樣；robots.txt 稽核。",
+  "confidentiality": "未發布私人 SQLite、API 金鑰、AI 原始回答文字、管理功能。"
+}
