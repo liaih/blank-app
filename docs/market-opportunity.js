@@ -157,7 +157,7 @@ function draw(){
  const body=dom("market-rows");body.replaceChildren();
  if(!list.length){
   const tr=document.createElement("tr"),td=document.createElement("td");
-  td.colSpan=8;td.textContent="目前篩選條件下沒有資料";tr.append(td);body.append(tr);
+  td.colSpan=9;td.textContent="目前篩選條件下沒有資料";tr.append(td);body.append(tr);
  }
  for(const item of list){
   const current=item.row.current_30d||{};
@@ -166,13 +166,13 @@ function draw(){
    item.market?item.market.label:"待取得",
    hasData(current.impressions)?num(current.impressions):"未取得",
    hasData(current.position)?Number(current.position).toFixed(1)+" 名":"未取得",
-   item.conclusion.label,item.conclusion.action
+   "尚未串接名單／成交",item.conclusion.label,item.conclusion.action
   ];
   const tr=document.createElement("tr");
   fields.forEach((value,i)=>{
    const td=document.createElement("td");td.textContent=value;
    if(i===3||i===4||i===5)td.className="num";
-   if(i===6){const span=document.createElement("span");span.className="label"+(item.conclusion.order>=4?" wait":"");span.textContent=value;td.replaceChildren(span);}
+   if(i===7){const span=document.createElement("span");span.className="label"+(item.conclusion.order>=4?" wait":"");span.textContent=value;td.replaceChildren(span);}
    tr.append(td);
   });body.append(tr);
  }
