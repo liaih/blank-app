@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10213c">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>晨陽｜搜尋能見度與人工智慧搜尋分析</title>
+<meta name="description" content="晨陽共好機構搜尋成效與人工智慧搜尋能見度彙總報表。">
+<style>
+:root{--bg:#f5f7fb;--paper:#fff;--ink:#192943;--muted:#64748b;--line:#e3e9f1;--blue:#2d61c2;--green:#14755b;--amber:#936019}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.65 system-ui,-apple-system,"Noto Sans TC","Microsoft JhengHei",sans-serif}
+.wrap{max-width:1160px;margin:0 auto;padding:36px 24px 65px}
+.top{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:25px}
+.eyebrow{color:var(--blue);font-weight:800;letter-spacing:1.1px;font-size:12px}
+h1{font-size:clamp(29px,4vw,43px);line-height:1.2;letter-spacing:-.03em;margin:9px 0}
+h2{font-size:21px;margin:0 0 8px;letter-spacing:-.025em}
+p{margin:5px 0}.muted{color:var(--muted)}.small{color:var(--muted);font-size:12px}
+.stamp{padding:7px 13px;border-radius:100px;background:#eaf7ef;color:#126548;font-size:12px;font-weight:700;white-space:nowrap}
+.notice{background:#edf3ff;border:1px solid #d6e1f7;border-left:3px solid var(--blue);padding:15px 18px;border-radius:11px;color:#344e76;margin:20px 0 28px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 14px}
+.choice{display:flex;padding:4px;background:#e7ecf6;border-radius:11px;gap:3px}
+button{border:0;border-radius:8px;background:transparent;color:#455775;padding:8px 14px;cursor:pointer;font:inherit;font-weight:700}
+button[aria-pressed=true]{background:#14294a;color:white}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.tile,.panel{border:1px solid var(--line);background:var(--paper);border-radius:15px;box-shadow:0 7px 25px rgba(14,36,64,.035)}
+.tile{padding:23px;min-height:153px}
+.kname{font-size:13px;color:var(--muted);font-weight:650}
+.kvalue{font-size:clamp(32px,4vw,43px);font-weight:800;line-height:1.15;margin:14px 0 6px;letter-spacing:-1px;font-variant-numeric:tabular-nums}
+.panel{padding:22px;margin-top:16px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid2 .panel{margin-top:16px}
+.legend{color:var(--muted);font-size:12px}
+.value{font-size:25px;font-weight:800;margin:6px 0}
+.status{display:inline-block;font-size:12px;font-weight:700;padding:3px 9px;border-radius:100px;background:#eef1f6;color:#546273}
+.status.ok{background:#e5f5ef;color:var(--green)}.status.wait{background:#fff4de;color:var(--amber)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding:11px 0;font-size:13px}
+.row:first-child{border-top:0}
+.scope{margin-top:9px;color:var(--muted);font-size:13px}
+.warnings{background:#fff9eb;border:1px solid #f2e0b8;padding:12px 15px;border-radius:9px;color:#865c1b;font-size:13px;margin-top:12px}
+.empty{display:none;padding:13px 16px;color:#ad302d;background:#fff2f2;border:1px solid #ffd0d0;border-radius:9px;margin-bottom:14px}
+footer{border-top:1px solid var(--line);margin-top:27px;padding-top:19px;font-size:12px;color:var(--muted)}
+svg{width:100%;height:175px;display:block;overflow:visible}
+.chartspace{margin:8px 0 0}
+@media(max-width:770px){.grid3{grid-template-columns:repeat(2,1fr)}.grid3 .tile:last-child{grid-column:span 2}.grid2{grid-template-columns:1fr}.top{display:block}.stamp{display:inline-block;margin-top:12px}}
+@media(max-width:490px){.wrap{padding:20px 13px 49px}.tile,.panel{padding:17px}.kvalue{font-size:29px}.grid3{gap:8px}.notice{padding:13px 14px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="top">
+    <div>
+      <div class="eyebrow">晨陽共好機構｜行銷數據分析</div>
+      <h1>搜尋能見度與<br>人工智慧搜尋分析</h1>
+      <p class="muted">Google 自然搜尋成效、人工智慧品牌提及與官網可讀性</p>
+    </div>
+    <div class="stamp" id="stamp">正在載入資料</div>
+  </header>
+  <div class="notice">
+    <strong>請先了解數據範圍：</strong>本頁的 Google 成效是全站搜尋彙總；人工智慧的品牌提及是另一種量測，不能混為一談。公開展示的是歷史快照，不是即時監控，也不是全部功能都已經完成。
+  </div>
+  <div class="empty" id="error" role="alert"></div>
+  <section aria-label="Google 搜尋成效">
+    <div class="bar">
+      <div><h2>一、Google 全站搜尋成效</h2><p class="small">搜尋資料截止：<span id="lastday">—</span></p></div>
+      <div class="choice" role="group" aria-label="選擇統計期間">
+        <button type="button" data-days="30" aria-pressed="true">最近 30 天</button>
+        <button type="button" data-days="90" aria-pressed="false">最近 90 天</button>
+      </div>
+    </div>
+    <div class="grid3">
+      <div class="tile"><div class="kname">自然搜尋點擊次數</div><div class="kvalue" id="clicks">—</div><p class="small">透過 Google 搜尋結果點進官網</p></div>
+      <div class="tile"><div class="kname">搜尋曝光次數</div><div class="kvalue" id="impressions">—</div><p class="small">官網出現在 Google 搜尋結果的次數</p></div>
+      <div class="tile"><div class="kname">點擊率</div><div class="kvalue" id="ctr">—</div><p class="small">點擊次數除以曝光次數</p></div>
+    </div>
+    <div class="panel">
+      <h2>這些數據代表什麼？</h2>
+      <p id="interpret" class="muted">正在載入說明。</p>
+      <div class="chartspace">
+        <svg viewBox="0 0 680 175" aria-label="點擊與曝光概念示意圖" role="img">
+          <rect x="3" y="20" width="674" height="130" rx="10" fill="#f7f9fd"></rect>
+          <text x="24" y="48" fill="#536580" font-size="13">Google 搜尋曝光</text>
+          <rect x="24" y="61" width="620" height="19" rx="6" fill="#dbe7ff"></rect>
+          <rect x="24" y="61" width="620" height="19" rx="6" fill="#4d7ed8"></rect>
+          <text x="24" y="110" fill="#536580" font-size="13">實際點擊網站</text>
+          <rect x="24" y="123" width="620" height="18" rx="6" fill="#e2e9f2"></rect>
+          <rect id="clickbar" x="24" y="123" width="0" height="18" rx="6" fill="#169477"></rect>
+        </svg>
+      </div>
+      <p class="small">上圖顯示點擊率比例，並非逐日變化圖。30 天與 90 天互相重疊，不能直接把差異解讀成成長率；成交與詢問名單也不等於網站點擊。</p>
+    </div>
+  </section>
+  <div class="grid2">
+    <section class="panel" aria-label="人工智慧品牌能見度">
+      <h2>二、人工智慧品牌能見度</h2>
+      <p class="muted">實際取得的 Gemini 不連網文字模型回答。</p>
+      <div class="value"><span id="mentions">—</span>／<span id="samples">—</span> <span class="small">筆樣本提及晨陽</span></div>
+      <div class="warnings">樣本量不足，不能推論 Google、ChatGPT 或 Perplexity 整體不推薦晨陽；此處不是即時人工智慧搜尋排名。</div>
+      <div class="row"><span>Gemini 文字模型品牌認知</span><span class="status ok">已取得樣本</span></div>
+      <div class="row"><span>Google 人工智慧搜尋曝光</span><span class="status wait">官方報表待匯入</span></div>
+      <div class="row"><span>ChatGPT 搜尋回答與引用</span><span class="status">自動監測未接通</span></div>
+      <div class="row"><span>Perplexity 搜尋回答與引用</span><span class="status">自動監測未接通</span></div>
+    </section>
+    <section class="panel" aria-label="搜尋爬蟲可讀性">
+      <h2>三、官網搜尋可讀性</h2>
+      <p class="muted">查看網站設定是否阻擋主要搜尋服務讀取公開頁面。</p>
+      <div id="crawler"></div>
+      <p class="scope">這只是網站規則的檢查結果，不保證實際爬取、收錄或被人工智慧回答引用。</p>
+    </section>
+  </div>
+  <section class="panel">
+    <h2>四、後續應完善的監測</h2>
+    <div class="row"><span>Google 搜尋字詞與頁面成效比較</span><span class="status wait">待加入主管版</span></div>
+    <div class="row"><span>人工智慧真實回答與競爭品牌比較</span><span class="status wait">待取得可信樣本</span></div>
+    <div class="row"><span>搜尋流量與客戶詢問成效串接</span><span class="status">尚未接通</span></div>
+    <p class="warnings">本頁目前是公開展示用的「彙總資料快照」。原本的私人監控系統仍獨立運作，尚未設定自動同步到這個公開頁面。</p>
+  </section>
+  <footer>
+    <p>資料來源：Google 搜尋成效官方資料、Gemini 文字模型測試，以及官網搜尋規則稽核。<span id="updated"></span></p>
+    <p>此頁可以公開存取。沒有公開原始資料庫、API 金鑰、完整人工智慧回答或管理功能。</p>
+  </footer>
+</main>
+<script>
+(function(){
+  "use strict";
+  const el=id=>document.getElementById(id);
+  const txt=(id,v)=>{el(id).textContent=String(v)};
+  const num=v=>Number(v).toLocaleString("zh-TW");
+  const local=v=>String(v||"—").replace(/-/g,"/");
+  let snapshot=null,days=30;
+  function draw(){
+    if(!snapshot)return;
+    const item=snapshot.seo["period"+days];
+    txt("clicks",num(item.clicks));txt("impressions",num(item.impressions));
+    txt("ctr",(item.ctr*100).toFixed(2)+"%");
+    txt("interpret","在 "+local(item.from)+" 至 "+local(item.to)+" 期間，晨陽官網在 Google 搜尋結果中曝光 "+num(item.impressions)+" 次，帶來 "+num(item.clicks)+" 次自然搜尋點擊，點擊率約 "+(item.ctr*100).toFixed(2)+"%。這不能直接推論詢問或成交人數。");
+    el("clickbar").setAttribute("width",String(Math.max(0,Math.min(620,620*item.ctr))));
+  }
+  document.querySelectorAll("[data-days]").forEach(button=>button.addEventListener("click",()=>{
+    days=Number(button.dataset.days);
+    document.querySelectorAll("[data-days]").forEach(x=>x.setAttribute("aria-pressed",String(x===button)));
+    draw();
+  }));
+  fetch("./data.json",{cache:"no-store"})
+    .then(r=>{if(!r.ok)throw Error("取得資料失敗");return r.json()})
+    .then(data=>{
+      snapshot=data;
+      txt("stamp","資料快照："+local(data.snapshot_date));
+      txt("lastday",local(data.gsc_last_day));
+      txt("mentions",data.ai.gemini_recall_mentions);
+      txt("samples",data.ai.gemini_recall_samples);
+      txt("updated"," 本次彙整時間："+local(data.snapshot_date)+"。");
+      const wrap=el("crawler");
+      wrap.replaceChildren();
+      const dictionary={"Googlebot":"Google 搜尋爬蟲","OAI-SearchBot":"ChatGPT 搜尋爬蟲","PerplexityBot":"Perplexity 搜尋爬蟲"};
+      for(const item of data.robot_checks){
+        const row=document.createElement("div");row.className="row";
+        const name=document.createElement("span");name.textContent=dictionary[item.bot]||"搜尋爬蟲";
+        const result=document.createElement("span");result.className="status ok";result.textContent="未被網站規則阻擋";
+        row.append(name,result);wrap.append(row);
+      }
+      draw();
+    })
+    .catch(()=>{
+      el("error").style.display="block";
+      txt("error","目前讀不到公開資料快照。請檢查網站發布設定與資料檔案。");
+      txt("stamp","資料尚未載入");
+    });
+})();
+</script>
+</body>
+</html>
