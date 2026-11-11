@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="theme-color" content="#122747">
+<title>晨陽｜SEO 與 AI SEO 監測中心</title>
+<style>
+:root{--bg:#f4f7fb;--ink:#162b46;--muted:#64758c;--navy:#122747;--blue:#2768cb;--green:#14806d;--amber:#b07621;--line:#dfe7f0;--paper:#fff}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.65 system-ui,-apple-system,"Noto Sans TC","Microsoft JhengHei",sans-serif}
+.shell{max-width:1230px;margin:0 auto;padding:32px 24px 65px}
+.header{display:flex;align-items:flex-start;justify-content:space-between;gap:22px}
+.eyebrow{font-weight:750;color:#386cb7;font-size:12px;letter-spacing:.08em}
+h1{font-size:clamp(27px,3vw,40px);line-height:1.3;letter-spacing:-.035em;margin:7px 0}
+h2{font-size:22px;letter-spacing:-.02em;margin:0 0 6px}
+h3{font-size:17px;margin:0 0 8px}
+p{margin:4px 0 10px}.muted{color:var(--muted)}.small{font-size:12px;color:var(--muted)}
+.chip{border:1px solid #cae7db;background:#eaf8f2;color:#157356;border-radius:99px;padding:7px 14px;font-size:12px;font-weight:700;white-space:nowrap}
+.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:26px 0 19px;background:#e9eef6;padding:8px;border-radius:16px;border:1px solid #e0e7f2}
+.tab{border:1px solid transparent;border-radius:12px;background:transparent;color:#48617e;font:inherit;font-size:15px;font-weight:750;padding:14px 10px;cursor:pointer;text-align:center;min-height:58px}
+.tab[aria-selected=true]{background:var(--navy);color:#fff;box-shadow:0 7px 14px rgba(18,39,71,.16)}
+.tab:focus-visible{outline:3px solid #80b3fa;outline-offset:2px}
+.banner{margin:0 0 17px;border:1px solid #d6e4f6;border-left:4px solid #3c78d9;border-radius:12px;padding:15px 19px;background:#edf4fe;font-size:13px;color:#35516e}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px;margin:14px 0;box-shadow:0 8px 25px rgba(20,44,75,.035)}
+.panel.soft{background:#f9fbff}
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.metric{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 17px}
+.metric .name{color:#607287;font-size:13px;font-weight:700}
+.metric .number{font-weight:780;font-size:clamp(24px,2.5vw,35px);line-height:1.35;margin-top:12px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.metric .sub{font-size:12px;color:var(--muted);margin-top:7px}
+.flexhead{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:13px}
+.switch{display:flex;gap:5px;background:#e9eef6;border-radius:10px;padding:4px}
+.switch button{border:0;background:transparent;color:#475f7f;font:inherit;font-size:13px;font-weight:700;padding:8px 14px;border-radius:8px;cursor:pointer}
+.switch button[aria-pressed=true]{background:#122747;color:white}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cols>.panel{margin:14px 0}
+.label{display:inline-block;border:1px solid #e4eaf2;background:#f2f5f9;color:#60728a;border-radius:100px;padding:3px 9px;font-size:12px;font-weight:700}
+.label.yes{color:#176b54;background:#e8f6ef;border-color:#d3ede0}
+.label.wait{color:#916122;background:#fff4df;border-color:#f5e6c5}
+.message{font-size:13px;padding:13px 15px;border:1px solid #eedcac;background:#fff8e8;color:#74511d;border-radius:11px;margin:12px 0}
+.statusline{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:12px 0;border-top:1px solid var(--line);font-size:13px}
+.statusline:first-child{border-top:0}
+.tablebox{overflow:auto;width:100%;border:1px solid var(--line);border-radius:12px;margin-top:14px}
+table{border-collapse:collapse;width:100%;min-width:660px;font-size:13px}
+th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#f5f8fc;color:#546b84;font-size:12px}
+tbody tr:last-child td{border-bottom:0}
+.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.clean{border:0;background:none;color:var(--blue);padding:0;font:inherit;text-decoration:underline;cursor:pointer}
+.question-table td:first-child{font-weight:700;min-width:145px}
+.detail{font-size:12px;color:var(--muted);margin:10px 0 0}
+.sep{border:0;border-top:1px solid var(--line);margin:18px 0}
+.progress{height:12px;background:#e8eef6;border-radius:30px;overflow:hidden;margin:13px 0}
+.progress .fill{height:100%;background:#3475d1;border-radius:30px;width:0}
+.foot{border-top:1px solid var(--line);padding-top:17px;margin-top:24px;font-size:12px;color:var(--muted)}
+.error{display:none;background:#fff0ed;color:#a53826;border:1px solid #ffd2c9;border-radius:11px;padding:14px;margin:15px 0}
+@media(max-width:860px){.metrics{grid-template-columns:repeat(2,1fr)}.cols{grid-template-columns:1fr}.cols>.panel{margin:7px 0}.tabs{gap:4px}.tab{font-size:13px;padding:11px 6px}}
+@media(max-width:530px){.shell{padding:21px 12px 45px}.header{display:block}.chip{display:inline-block;margin-top:10px}.tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.tab{min-height:48px}.metric{padding:14px}.metric .number{font-size:26px}.panel{padding:16px}.statusline{align-items:flex-start;flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<div class="shell">
+ <header class="header">
+  <div><div class="eyebrow">晨陽共好機構｜行銷監測系統</div><h1>SEO × AI SEO 監測中心</h1>
+   <p class="muted">沿用原本的四大模組，查看真實搜尋績效、人工智慧品牌能見度與資料品質。</p></div>
+  <span class="chip" id="date-chip">正在讀取資料</span>
+ </header>
+ <nav class="tabs" role="tablist" aria-label="主要分析模組">
+  <button id="tab-ai" class="tab" role="tab" type="button" data-tab="ai" aria-selected="true" aria-controls="view-ai">AI 搜尋能見度</button>
+  <button id="tab-seo" class="tab" role="tab" type="button" data-tab="seo" aria-selected="false" aria-controls="view-seo" tabindex="-1">Google 全站 SEO</button>
+  <button id="tab-opps" class="tab" role="tab" type="button" data-tab="opps" aria-selected="false" aria-controls="view-opps" tabindex="-1">搜尋字詞／頁面機會</button>
+  <button id="tab-quality" class="tab" role="tab" type="button" data-tab="quality" aria-selected="false" aria-controls="view-quality" tabindex="-1">資料品質</button>
+ </nav>
+ <div id="error" class="error" role="alert"></div>
+ <div class="banner"><strong>資料使用範圍：</strong>這是免費公開網站的<strong>唯讀彙總快照</strong>。原始資料庫、金鑰、完整 AI 回答及匯入管理功能仍留在私人系統。未取得的 AI 平台資料不會顯示成 0 次推薦。</div>
+
+ <section id="view-ai" role="tabpanel" aria-labelledby="tab-ai">
+  <div class="flexhead"><div><h2>AI 搜尋能見度</h2><p class="muted">人工智慧有沒有提到晨陽？引用哪些官網來源？</p></div><span class="label wait">現階段：量測樣本有限</span></div>
+  <div class="metrics">
+   <div class="metric"><div class="name">Gemini 真實回答樣本</div><div class="number" id="ai-samples">—</div><div class="sub">不連網文字模型，不等於搜尋結果</div></div>
+   <div class="metric"><div class="name">樣本提及晨陽</div><div class="number" id="ai-mentions">—</div><div class="sub">有回答樣本，但不代表整體提及率</div></div>
+   <div class="metric"><div class="name">Google AI 搜尋曝光</div><div class="number">待匯入</div><div class="sub">需官方生成式 AI 成效報表</div></div>
+   <div class="metric"><div class="name">實際搜尋引用率</div><div class="number">未量測</div><div class="sub">ChatGPT／Gemini／Perplexity 尚未取得可比樣本</div></div>
+  </div>
+  <div class="cols">
+   <div class="panel"><h3>AI 平台測試進度</h3>
+    <div class="statusline"><span>Gemini 文字模型品牌認知</span><span class="label yes">已取得真實樣本</span></div>
+    <div class="statusline"><span>Gemini 即時網路搜尋</span><span class="label wait">尚未接通</span></div>
+    <div class="statusline"><span>Google AI 摘要與 AI Mode</span><span class="label wait">官方報表待匯入</span></div>
+    <div class="statusline"><span>ChatGPT 搜尋回答</span><span class="label">尚無可核對樣本</span></div>
+    <div class="statusline"><span>Perplexity 搜尋回答</span><span class="label">尚無可核對樣本</span></div>
+    <p class="detail">平台回答、官方 API 文字模型與 Google 搜尋官方曝光，三者的統計口徑不同，不能混算。</p>
+   </div>
+   <div class="panel"><h3>首次 Gemini 真實測試</h3>
+    <div class="statusline"><span>實測模型</span><strong>Gemini 3.8 Flash</strong></div>
+    <div class="statusline"><span>情境</span><strong>桃園 20 坪首購小宅</strong></div>
+    <div class="statusline"><span>是否提及晨陽</span><span class="label" id="gemini-mentioned">—</span></div>
+    <div class="statusline"><span>是否啟用網路搜尋</span><strong>沒有</strong></div>
+    <p class="message">目前只有 1 筆實測，不能推論品牌在 Gemini、ChatGPT 或 Perplexity 整體不被推薦。公開版不顯示完整 AI 回答原文。</p>
+   </div>
+  </div>
+  <section class="panel"><div class="flexhead"><h3>既有的 10 組 AI 搜尋測試問題</h3><span class="label">設定題庫 ≠ 已執行樣本</span></div>
+   <p class="muted">為了測試 AI 是否主動推薦晨陽，題目不預設品牌名稱。</p>
+   <div class="tablebox"><table class="question-table"><thead><tr><th>屋主情境</th><th>實際提問內容</th><th>資料狀態</th></tr></thead><tbody id="prompts-body"></tbody></table></div>
+  </section>
+  <section class="panel"><h3>搜尋爬蟲可讀性</h3><div id="robots-list"></div>
+   <p class="detail">robots.txt 沒有擋住爬蟲，不代表網站已經被平台收錄或在 AI 回答中引用。</p>
+  </section>
+ </section>
+
+ <section id="view-seo" role="tabpanel" aria-labelledby="tab-seo" hidden>
+  <div class="flexhead"><div><h2>Google 全站 SEO</h2><p class="muted">使用 Search Console 無指定字詞篩選的全站官方數據。</p></div>
+   <div class="switch" role="group" aria-label="統計期間"><button data-days="30" aria-pressed="true">30 天</button><button data-days="90" aria-pressed="false">90 天</button></div>
+  </div>
+  <div class="metrics">
+   <div class="metric"><div class="name">自然搜尋點擊</div><div class="number" id="seo-clicks">—</div><div class="sub">搜尋結果點進官網</div></div>
+   <div class="metric"><div class="name">搜尋曝光</div><div class="number" id="seo-impressions">—</div><div class="sub">搜尋結果顯示官網的次數</div></div>
+   <div class="metric"><div class="name">點擊率</div><div class="number" id="seo-ctr">—</div><div class="sub">點擊次數 ÷ 搜尋曝光</div></div>
+   <div class="metric"><div class="name">期間完整天數</div><div class="number" id="seo-days">—</div><div class="sub">有官方全站總計的日期</div></div>
+  </div>
+  <div class="panel"><h3>本期搜尋成效摘要</h3><p id="seo-context">正在讀取資料。</p>
+   <div class="progress"><div class="fill" id="seo-progress"></div></div>
+   <p class="detail">上方色帶是點擊占曝光的比例，不是逐日折線圖；30 天與 90 天彼此重疊，不能直接當成前後成長率。</p>
+  </div>
+  <div class="panel"><h3>主管應如何解讀</h3>
+   <div class="statusline"><span>有曝光、但點擊偏低</span><strong>先對照實際搜尋字詞、頁面標題與搜尋意圖</strong></div>
+   <div class="statusline"><span>排名好卻沒有客戶</span><strong>需再串接表單、LINE、來電與成交紀錄</strong></div>
+   <div class="statusline"><span>想看各分公司成效</span><strong>應以地區搜尋意圖與頁面資料交叉檢查</strong></div>
+   <p class="message">此頁顯示網站搜尋數據，不代表自然搜尋帶來的真實表單、預約或成交數。</p>
+  </div>
+ </section>
+
+ <section id="view-opps" role="tabpanel" aria-labelledby="tab-opps" hidden>
+  <h2>搜尋字詞／頁面機會</h2>
+  <p class="muted">從真實 Google 搜尋字詞找出內容優化候選，不靠虛構的搜尋量或排名。</p>
+  <section class="panel"><h3>有曝光但點擊率偏低的 10 組搜尋字詞</h3>
+   <p class="small" id="opps-method"></p>
+   <div class="tablebox"><table><thead><tr><th>實際搜尋字詞</th><th class="num">點擊</th><th class="num">曝光</th><th class="num">點擊率</th><th class="num">平均排名</th></tr></thead><tbody id="opps-body"></tbody></table></div>
+   <p class="detail">候選字詞需要對照搜尋結果摘要與落地頁內容，不能僅憑低點擊率判斷文章有問題。</p>
+  </section>
+  <div class="cols">
+   <section class="panel"><h3>熱門頁面與內容優化</h3>
+    <p class="message">私人系統已儲存真實頁面分組資料；目前尚未完成安全的公開頁面彙總匯出，因此此處不會編造「熱門頁面排行」。</p>
+    <p class="small">後續依頁面曝光、點擊、標題與內容對應的搜尋意圖進行優先排序。</p>
+   </section>
+   <section class="panel"><h3>各地區需求</h3>
+    <p class="muted">可按實際搜尋字詞中的「桃園、竹北、林口 A7、台中、台南、高雄」區分內容需求。</p>
+    <p class="small">搜尋詞出現地名，不等於搜尋者的實際所在位置。公開快照尚無可驗證的地區量化彙總，因此暫不顯示排名或比例。</p>
+   </section>
+  </div>
+ </section>
+
+ <section id="view-quality" role="tabpanel" aria-labelledby="tab-quality" hidden>
+  <h2>資料品質與監控狀態</h2>
+  <p class="muted">主管在看數字前，先確認資料是不是完整、是不是有來源。</p>
+  <div class="metrics">
+   <div class="metric"><div class="name">已回補 GSC 日期</div><div class="number" id="q-days">—</div><div class="sub">真實全站總計</div></div>
+   <div class="metric"><div class="name">有總計數據的天數</div><div class="number" id="q-filled">—</div><div class="sub">不能把未回傳資料當作零</div></div>
+   <div class="metric"><div class="name">已檢查網站頁面</div><div class="number" id="q-pages">—</div><div class="sub">基本可讀性檢查</div></div>
+   <div class="metric"><div class="name">發現的基本技術問題</div><div class="number" id="q-issues">—</div><div class="sub">僅限已設定的稽核項目</div></div>
+  </div>
+  <div class="panel"><h3>已儲存的 Google 搜尋資料類型</h3>
+   <div class="tablebox"><table><thead><tr><th>資料類型</th><th class="num">歷史資料列</th><th>用途</th></tr></thead><tbody id="quality-body"></tbody></table></div>
+   <p class="detail">不同資料粒度（字詞／頁面／裝置／國家）的資料列不能加總成全站流量；全站總計必須獨立計算。</p>
+  </div>
+  <div class="panel"><h3>更新和權限限制</h3>
+   <div class="statusline"><span>私人系統的 GSC 自動抓取</span><span class="label yes">已建立每日排程</span></div>
+   <div class="statusline"><span>Gemini 文字回答定期抽樣</span><span class="label yes">已建立週期排程</span></div>
+   <div class="statusline"><span>網站基本檢查與爬蟲規則</span><span class="label yes">已建立每週排程</span></div>
+   <div class="statusline"><span>這個公開網站與私人資料同步</span><span class="label wait">尚未自動同步</span></div>
+   <p class="message">公開資料是截至快照日期的彙總結果。原始 SQLite、完整模型回答、匯入功能、API 金鑰與管理權限未公開。此網站任何人都能瀏覽，不能用於儲存公司機密資料。</p>
+  </div>
+ </section>
+
+ <footer class="foot">
+  <p>資料來源：Google Search Console 真實抓取紀錄、Gemini API 文字模型測試、網站 robots.txt 與基本頁面稽核。<span id="source-date"></span></p>
+  <p>公開唯讀展示｜非即時數據｜不是完整的私人 Streamlit 管理端。不得以未量測的 AI 搜尋資料推論品牌完全沒有曝光。</p>
+ </footer>
+</div>
+<script>
+(function(){
+"use strict";
+const el=id=>document.getElementById(id);
+const put=(id,value)=>{el(id).textContent=String(value)};
+const count=n=>Number(n).toLocaleString("zh-TW");
+const percent=n=>(Number(n)*100).toFixed(2)+"%";
+const local=s=>String(s||"").replace(/-/g,"/");
+let data=null,period=30;
+const pageNames=["ai","seo","opps","quality"];
+function show(tab,updateHash){
+ if(!pageNames.includes(tab))tab="ai";
+ for(const key of pageNames){
+   const chosen=key===tab;
+   el("view-"+key).hidden=!chosen;
+   const button=el("tab-"+key);
+   button.setAttribute("aria-selected",String(chosen));
+   button.tabIndex=chosen?0:-1;
+ }
+ if(updateHash)history.replaceState(null,"","#"+tab);
+}
+for(const btn of document.querySelectorAll("[data-tab]")){
+ btn.addEventListener("click",()=>show(btn.dataset.tab,true));
+ btn.addEventListener("keydown",e=>{
+   if(!["ArrowRight","ArrowLeft"].includes(e.key))return;
+   e.preventDefault();
+   let idx=pageNames.indexOf(btn.dataset.tab);
+   idx=(idx+(e.key==="ArrowRight"?1:pageNames.length-1))%pageNames.length;
+   show(pageNames[idx],true);
+   el("tab-"+pageNames[idx]).focus();
+ });
+}
+function tableRow(tbody,values,numericIndices=[]){
+ const tr=document.createElement("tr");
+ values.forEach((value,i)=>{
+   const td=document.createElement("td");
+   td.textContent=String(value);
+   if(numericIndices.includes(i))td.className="num";
+   tr.append(td);
+ });
+ tbody.append(tr);
+}
+function renderPeriod(){
+ if(!data)return;
+ const row=data.seo["period"+period];
+ put("seo-clicks",count(row.clicks));
+ put("seo-impressions",count(row.impressions));
+ put("seo-ctr",percent(row.ctr));
+ put("seo-days",count(row.days_with_data)+" 天");
+ put("seo-context",local(row.from)+" 至 "+local(row.to)+"：Google 全站搜尋曝光 "+count(row.impressions)+" 次，帶來自然搜尋點擊 "+count(row.clicks)+" 次，點擊率為 "+percent(row.ctr)+"。這不是客戶詢問數，更不是 AI 搜尋曝光。");
+ el("seo-progress").style.width=Math.min(100,Number(row.ctr)*100)+"%";
+}
+for(const btn of document.querySelectorAll("[data-days]")){
+ btn.addEventListener("click",()=>{
+   period=Number(btn.dataset.days);
+   for(const x of document.querySelectorAll("[data-days]"))x.setAttribute("aria-pressed",String(x===btn));
+   renderPeriod();
+ });
+}
+function render(d){
+ data=d;
+ put("date-chip","資料快照："+local(d.snapshot_date));
+ put("source-date","｜搜尋資料截止："+local(d.gsc_last_day));
+ put("ai-samples",count(d.ai.gemini_recall_samples)+" 筆");
+ put("ai-mentions",count(d.ai.gemini_recall_mentions)+" 次");
+ put("gemini-mentioned",d.ai.gemini_recall_mentions>0?"有提及":"該次未提及");
+ const prompts=el("prompts-body");prompts.replaceChildren();
+ d.ai_prompt_bank.forEach((r,i)=>tableRow(prompts,[r[0],r[1],i===0?"已實測 1 次（不連網）":"尚未取得回答"]));
+ const robots=el("robots-list");robots.replaceChildren();
+ const names={"Googlebot":"Google 搜尋","OAI-SearchBot":"ChatGPT 搜尋","PerplexityBot":"Perplexity 搜尋"};
+ for(const entry of d.robot_checks){
+   const row=document.createElement("div");row.className="statusline";
+   const name=document.createElement("span");name.textContent=names[entry.bot]||"搜尋服務";
+   const label=document.createElement("span");label.className="label yes";
+   label.textContent="網站規則未阻擋";
+   row.append(name,label);robots.append(row);
+ }
+ put("opps-method",d.seo.opportunity_method);
+ const tbody=el("opps-body");tbody.replaceChildren();
+ d.seo.keyword_opportunities.forEach(r=>tableRow(tbody,[r.keyword,count(r.clicks),count(r.impressions),percent(r.ctr),Number(r.position).toFixed(1)], [1,2,3,4]));
+ put("q-days",count(d.quality.property_days_checked));
+ put("q-filled",count(d.quality.property_days_with_totals));
+ put("q-pages",count(d.quality.audited_pages));
+ put("q-issues",count(d.quality.issues_detected));
+ const q=el("quality-body");q.replaceChildren();
+ for(const [name,key,why] of [
+  ["搜尋字詞","search_queries","找熱門字詞與內容機會"],
+  ["搜尋頁面","pages","了解內容頁面能見度"],
+  ["裝置類型","devices","確認使用情境"],
+  ["搜尋國家","countries","判斷搜尋市場分布"]]){
+   tableRow(q,[name,count(d.quality.dimension_rows[key]),why],[1]);
+ }
+ renderPeriod();
+}
+show(decodeURIComponent(location.hash.replace("#",""))||"ai",false);
+fetch("./data.json",{cache:"no-store"})
+.then(response=>{if(!response.ok)throw Error("讀取資料失敗");return response.json()})
+.then(render)
+.catch(()=>{
+ const error=el("error");error.style.display="block";
+ error.textContent="目前無法讀取真實數據快照，請檢查網站的 data.json 是否成功發布。";
+ put("date-chip","數據讀取失敗");
+});
+})();
+</script>
+</body>
+</html>
