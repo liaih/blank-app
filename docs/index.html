@@ -45,6 +45,19 @@ svg{width:100%;height:175px;display:block;overflow:visible}
 .chartspace{margin:8px 0 0}
 @media(max-width:770px){.grid3{grid-template-columns:repeat(2,1fr)}.grid3 .tile:last-child{grid-column:span 2}.grid2{grid-template-columns:1fr}.top{display:block}.stamp{display:inline-block;margin-top:12px}}
 @media(max-width:490px){.wrap{padding:20px 13px 49px}.tile,.panel{padding:17px}.kvalue{font-size:29px}.grid3{gap:8px}.notice{padding:13px 14px}}
+.mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:7px;background:#e9eef7;border:1px solid #dae3f0;border-radius:15px;margin:24px 0 18px}
+.mode-tabs button{padding:15px 17px;font-size:17px;border:1px solid transparent;text-align:center;border-radius:10px;background:transparent;color:#4d5d76}
+.mode-tabs button[aria-selected="true"]{background:#14294a;color:#fff;box-shadow:0 4px 12px rgba(20,41,74,.18)}
+.mode-tabs button:focus-visible{outline:3px solid #6ba1ee;outline-offset:2px}
+.mode-section[hidden]{display:none!important}
+.mode-intro{margin:8px 0 17px;border-left:3px solid #2d61c2;padding:8px 15px;color:#485b79}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:700px}
+th,td{padding:12px 11px;border-bottom:1px solid #e3e9f1;text-align:left;vertical-align:top}
+th{background:#f6f8fc;color:#51637c;font-weight:700}
+td:first-child{min-width:145px;font-weight:650}
+@media(max-width:490px){.mode-tabs button{font-size:14px;padding:12px 7px}}
+
 </style>
 </head>
 <body>
@@ -57,10 +70,16 @@ svg{width:100%;height:175px;display:block;overflow:visible}
     </div>
     <div class="stamp" id="stamp">正在載入資料</div>
   </header>
+  <nav class="mode-tabs" role="tablist" aria-label="選擇獨立監測系統">
+    <button type="button" id="tab-ai" role="tab" aria-controls="panel-ai" aria-selected="true" tabindex="0" data-view="ai">AI SEO｜人工智慧搜尋</button>
+    <button type="button" id="tab-seo" role="tab" aria-controls="panel-seo" aria-selected="false" tabindex="-1" data-view="seo">SEO｜Google 自然搜尋</button>
+  </nav>
   <div class="notice">
     <strong>請先了解數據範圍：</strong>本頁的 Google 成效是全站搜尋彙總；人工智慧的品牌提及是另一種量測，不能混為一談。公開展示的是歷史快照，不是即時監控，也不是全部功能都已經完成。
   </div>
   <div class="empty" id="error" role="alert"></div>
+  <section class="mode-section" id="panel-seo" role="tabpanel" aria-labelledby="tab-seo" hidden>
+  <div class="mode-intro"><strong>SEO｜Google 自然搜尋</strong>：全站自然搜尋的點擊、曝光與點擊率。這裡不包含 AI 平台的品牌推薦數據。</div>
   <section aria-label="Google 搜尋成效">
     <div class="bar">
       <div><h2>一、Google 全站搜尋成效</h2><p class="small">搜尋資料截止：<span id="lastday">—</span></p></div>
@@ -91,7 +110,10 @@ svg{width:100%;height:175px;display:block;overflow:visible}
       <p class="small">上圖顯示點擊率比例，並非逐日變化圖。30 天與 90 天互相重疊，不能直接把差異解讀成成長率；成交與詢問名單也不等於網站點擊。</p>
     </div>
   </section>
-  <div class="grid2">
+  </section>
+  <section class="mode-section" id="panel-ai" role="tabpanel" aria-labelledby="tab-ai">
+    <div class="mode-intro"><strong>AI SEO｜人工智慧搜尋能見度</strong>：區分 Gemini 模型品牌認知、ChatGPT／Perplexity 真實回答證據，以及搜尋爬蟲技術檢查。</div>
+    <div class="grid2">
     <section class="panel" aria-label="人工智慧品牌能見度">
       <h2>二、人工智慧品牌能見度</h2>
       <p class="muted">實際取得的 Gemini 不連網文字模型回答。</p>
@@ -116,7 +138,30 @@ svg{width:100%;height:175px;display:block;overflow:visible}
     <div class="row"><span>搜尋流量與客戶詢問成效串接</span><span class="status">尚未接通</span></div>
     <p class="warnings">本頁目前是公開展示用的「彙總資料快照」。原本的私人監控系統仍獨立運作，尚未設定自動同步到這個公開頁面。</p>
   </section>
-  <footer>
+  <section class="panel" aria-label="人工智慧搜尋情境題庫">
+    <h2>五、AI 搜尋監測問題（共 10 題）</h2>
+    <p class="muted">這是已設定的測試題庫，不代表 10 題都已經執行。問題刻意不先提及晨陽，才能觀察模型是否自行提到品牌。</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>測試情境</th><th>實際向 AI 提出的問題</th><th>執行情況</th></tr></thead>
+        <tbody>
+          <tr><td>桃園／首購小宅</td><td>桃園20坪新成屋，請推薦適合小宅規劃的室內設計公司，並列出比較依據與來源。</td><td><span class="status ok">Gemini 不連網：已測 1 次</span></td></tr>
+          <tr><td>桃園／老屋翻新</td><td>桃園30年老屋翻新，如何選擇有工程管理與售後服務的室內設計公司？請列出公司與來源。</td><td><span class="status">尚無樣本</span></td></tr>
+          <tr><td>竹北／工程師家庭</td><td>竹北工程師家庭要裝修新成屋，推薦哪些室內設計公司？比較施工溝通和預算透明度。</td><td><span class="status">尚無樣本</span></td></tr>
+          <tr><td>林口 A7／新屋</td><td>林口A7新成屋交屋後想裝潢，應該比較哪些在地設計公司？附可驗證網站來源。</td><td><span class="status">尚無樣本</span></td></tr>
+          <tr><td>台中／新成屋</td><td>台中25坪新成屋裝潢，推薦值得比較的室內設計公司與其擅長的風格。</td><td><span class="status">尚無樣本</span></td></tr>
+          <tr><td>台南／老屋翻新</td><td>台南舊屋翻新，有哪些室內設計公司具住宅翻修作品？請給可查證的案例來源。</td><td><span class="status">尚無樣本</span></td></tr>
+          <tr><td>高雄／首購裝修</td><td>高雄首購族規劃室內裝潢，怎麼挑選設計公司？有哪幾家公司值得比較？</td><td><span class="status">尚無樣本</span></td></tr>
+          <tr><td>全台／小宅預算</td><td>台灣20坪小宅室內裝潢預算80萬，有哪些設計公司和工程管理問題需要比較？</td><td><span class="status">尚無樣本</span></td></tr>
+          <tr><td>全台／施工保障</td><td>台灣找室內設計公司，如何驗證施工品質、保固和客戶溝通？有哪些可靠的資訊來源？</td><td><span class="status">尚無樣本</span></td></tr>
+          <tr><td>全台／裝修費用</td><td>2026年台灣住宅老屋翻新每坪預算如何評估？請引用施工實例或業者公開資料。</td><td><span class="status">尚無樣本</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small">所有情境題與執行狀態為 2026/11/11 的公開快照；真實回答內容與來源證據保留在私人監測資料庫。</p>
+  </section>
+  </section>
+    <footer>
     <p>資料來源：Google 搜尋成效官方資料、Gemini 文字模型測試，以及官網搜尋規則稽核。<span id="updated"></span></p>
     <p>此頁可以公開存取。沒有公開原始資料庫、API 金鑰、完整人工智慧回答或管理功能。</p>
   </footer>
@@ -137,6 +182,28 @@ svg{width:100%;height:175px;display:block;overflow:visible}
     txt("interpret","在 "+local(item.from)+" 至 "+local(item.to)+" 期間，晨陽官網在 Google 搜尋結果中曝光 "+num(item.impressions)+" 次，帶來 "+num(item.clicks)+" 次自然搜尋點擊，點擊率約 "+(item.ctr*100).toFixed(2)+"%。這不能直接推論詢問或成交人數。");
     el("clickbar").setAttribute("width",String(Math.max(0,Math.min(620,620*item.ctr))));
   }
+  function openModule(name){
+    const ai=name==="ai";
+    el("panel-ai").hidden=!ai;
+    el("panel-seo").hidden=ai;
+    for(const b of document.querySelectorAll("[data-view]")){
+      const selected=b.dataset.view===name;
+      b.setAttribute("aria-selected",String(selected));
+      b.tabIndex=selected?0:-1;
+    }
+  }
+  document.querySelectorAll("[data-view]").forEach(b=>{
+    b.addEventListener("click",()=>openModule(b.dataset.view));
+    b.addEventListener("keydown",e=>{
+      if(e.key==="ArrowRight"||e.key==="ArrowLeft"){
+        e.preventDefault();
+        const other=b.dataset.view==="ai"?"seo":"ai";
+        openModule(other);
+        el("tab-"+other).focus();
+      }
+    });
+  });
+  openModule(location.hash==="#seo"?"seo":"ai");
   document.querySelectorAll("[data-days]").forEach(button=>button.addEventListener("click",()=>{
     days=Number(button.dataset.days);
     document.querySelectorAll("[data-days]").forEach(x=>x.setAttribute("aria-pressed",String(x===button)));
