@@ -21,7 +21,80 @@
       "impressions": 181339,
       "ctr": 0.0269,
       "days_with_data": 90
-    }
+    },
+    "keyword_opportunities": [
+      {
+        "keyword": "允將大聚",
+        "clicks": 31,
+        "impressions": 1235,
+        "ctr": 0.0251,
+        "position": 9.6
+      },
+      {
+        "keyword": "丹佛花都",
+        "clicks": 6,
+        "impressions": 1089,
+        "ctr": 0.0055,
+        "position": 9
+      },
+      {
+        "keyword": "幸福時光",
+        "clicks": 5,
+        "impressions": 474,
+        "ctr": 0.0105,
+        "position": 8
+      },
+      {
+        "keyword": "鴻廣繪青",
+        "clicks": 2,
+        "impressions": 420,
+        "ctr": 0.0048,
+        "position": 9.5
+      },
+      {
+        "keyword": "福美富琚",
+        "clicks": 2,
+        "impressions": 327,
+        "ctr": 0.0061,
+        "position": 8.7
+      },
+      {
+        "keyword": "立軒天諾",
+        "clicks": 0,
+        "impressions": 255,
+        "ctr": 0,
+        "position": 9.1
+      },
+      {
+        "keyword": "昭揚大河院",
+        "clicks": 6,
+        "impressions": 235,
+        "ctr": 0.0255,
+        "position": 9.9
+      },
+      {
+        "keyword": "厚陞晴",
+        "clicks": 2,
+        "impressions": 232,
+        "ctr": 0.0086,
+        "position": 9.7
+      },
+      {
+        "keyword": "崇利華漾",
+        "clicks": 2,
+        "impressions": 196,
+        "ctr": 0.0102,
+        "position": 9.4
+      },
+      {
+        "keyword": "春園首綻",
+        "clicks": 0,
+        "impressions": 181,
+        "ctr": 0,
+        "position": 9.4
+      }
+    ],
+    "opportunity_method": "最近30天，曝光至少30次、平均排名第4至20名、點擊率不超過3%；候選線索不是原因證明。"
   },
   "ai": {
     "actual_search_automated": false,
@@ -31,7 +104,10 @@
     "is_no_web": true,
     "official_google_ai_report_imported": false,
     "chatgpt_answer_collection": false,
-    "perplexity_answer_collection": false
+    "perplexity_answer_collection": false,
+    "sample_time": "2026-11-11T17:12:22+08:00",
+    "sample_prompt": "桃園20坪新成屋，請推薦適合小宅規劃的室內設計公司，並列出比較依據與來源。",
+    "sample_model": "Gemini 3.8 Flash（不連網純文字模型）"
   },
   "robot_checks": [
     {
@@ -50,5 +126,61 @@
   "visibility": "公開展示｜僅經彙總之資料快照",
   "updates": "此公開展示頁尚未與私有 GitHub 自動同步；不是即時報表。",
   "provenance": "Google Search Console 正式擷取歷史；Gemini API 文字模型實際取樣；robots.txt 稽核。",
-  "confidentiality": "未發布私人 SQLite、API 金鑰、AI 原始回答文字、管理功能。"
+  "confidentiality": "未發布私人 SQLite、API 金鑰、AI 原始回答文字、管理功能。",
+  "ai_prompt_bank": [
+    [
+      "桃園／首購小宅",
+      "桃園20坪新成屋，請推薦適合小宅規劃的室內設計公司，並列出比較依據與來源。"
+    ],
+    [
+      "桃園／老屋翻新",
+      "桃園30年老屋翻新，如何選擇有工程管理與售後服務的室內設計公司？請列出公司與來源。"
+    ],
+    [
+      "竹北／工程師家庭",
+      "竹北工程師家庭要裝修新成屋，推薦哪些室內設計公司？比較施工溝通和預算透明度。"
+    ],
+    [
+      "林口 A7／新屋",
+      "林口A7新成屋交屋後想裝潢，應該比較哪些在地設計公司？附可驗證網站來源。"
+    ],
+    [
+      "台中／新成屋",
+      "台中25坪新成屋裝潢，推薦值得比較的室內設計公司與其擅長的風格。"
+    ],
+    [
+      "台南／老屋翻新",
+      "台南舊屋翻新，有哪些室內設計公司具住宅翻修作品？請給可查證的案例來源。"
+    ],
+    [
+      "高雄／首購裝修",
+      "高雄首購族規劃室內裝潢，怎麼挑選設計公司？有哪幾家公司值得比較？"
+    ],
+    [
+      "全台／預算",
+      "台灣20坪小宅室內裝潢預算80萬，有哪些設計公司和工程管理問題需要比較？"
+    ],
+    [
+      "全台／工程品質",
+      "台灣找室內設計公司，如何驗證施工品質、保固和客戶溝通？有哪些可靠的資訊來源？"
+    ],
+    [
+      "全台／裝修費用",
+      "2026年台灣住宅老屋翻新每坪預算如何評估？請引用施工實例或業者公開資料。"
+    ]
+  ],
+  "quality": {
+    "property_days_checked": 120,
+    "property_days_with_totals": 120,
+    "dimension_rows": {
+      "search_queries": 34224,
+      "pages": 33284,
+      "devices": 359,
+      "countries": 2196
+    },
+    "audited_pages": 9,
+    "issues_detected": 0,
+    "scope": "只檢查已設定的技術項目，不代表完整技術 SEO 稽核",
+    "source": "私人 GSC 抓取與網站稽核的彙總結果"
+  }
 }
