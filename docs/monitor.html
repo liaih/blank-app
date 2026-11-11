@@ -70,7 +70,7 @@ tbody tr:last-child td{border-bottom:0}
  </header>
  <nav class="tabs" role="tablist" aria-label="主要分析模組">
   <button id="tab-ai" class="tab" role="tab" type="button" data-tab="ai" aria-selected="true" aria-controls="view-ai">AI 搜尋能見度</button>
-  <button id="tab-seo" class="tab" role="tab" type="button" data-tab="seo" aria-selected="false" aria-controls="view-seo" tabindex="-1">Google 全站 SEO</button>
+  <button id="tab-seo" class="tab" role="tab" type="button" data-tab="seo" aria-selected="false" aria-controls="view-seo" tabindex="-1">SEO 搜尋優化監測</button>
   <button id="tab-opps" class="tab" role="tab" type="button" data-tab="opps" aria-selected="false" aria-controls="view-opps" tabindex="-1">搜尋字詞／頁面機會</button>
   <button id="tab-quality" class="tab" role="tab" type="button" data-tab="quality" aria-selected="false" aria-controls="view-quality" tabindex="-1">資料品質</button>
  </nav>
@@ -112,7 +112,7 @@ tbody tr:last-child td{border-bottom:0}
  </section>
 
  <section id="view-seo" role="tabpanel" aria-labelledby="tab-seo" hidden>
-  <div class="flexhead"><div><h2>Google 全站 SEO</h2><p class="muted">使用 Search Console 無指定字詞篩選的全站官方數據。</p></div>
+  <div class="flexhead"><div><h2>SEO｜Google 搜尋優化監測</h2><p class="muted">追蹤一般屋主搜尋「室內設計」「室內設計推薦」「桃園室內設計」時，晨陽實際的 Google 平均排名；並保留全站自然搜尋成效。</p></div>
    <div class="switch" role="group" aria-label="統計期間"><button data-days="30" aria-pressed="true">30 天</button><button data-days="90" aria-pressed="false">90 天</button></div>
   </div>
   <div class="metrics">
@@ -121,7 +121,34 @@ tbody tr:last-child td{border-bottom:0}
    <div class="metric"><div class="name">點擊率</div><div class="number" id="seo-ctr">—</div><div class="sub">點擊次數 ÷ 搜尋曝光</div></div>
    <div class="metric"><div class="name">期間完整天數</div><div class="number" id="seo-days">—</div><div class="sub">有官方全站總計的日期</div></div>
   </div>
-  <div class="panel"><h3>本期搜尋成效摘要</h3><p id="seo-context">正在讀取資料。</p>
+  <section class="panel" aria-label="常見室內設計搜尋字詞排名">
+    <div class="flexhead">
+      <div><h3>一般人搜尋「室內設計」，晨陽排第幾？</h3><p class="small">資料來源：Google Search Console。以下是按曝光加權的歷史平均排名，不是即時搜尋結果位置。</p></div>
+      <span class="label yes" id="rank-sync">已連接真實關鍵字歷史</span>
+    </div>
+    <div class="metrics">
+      <div class="metric"><div class="name">「室內設計」30天平均排名</div><div class="number" id="main-rank">—</div><div class="sub">數字越小，排名越靠前</div></div>
+      <div class="metric"><div class="name">與前30天相比</div><div class="number" id="main-rank-change">—</div><div class="sub">正值代表平均排名改善</div></div>
+      <div class="metric"><div class="name">追蹤關鍵字</div><div class="number" id="ranks-total">—</div><div class="sub">一般搜尋、裝修需求及地區</div></div>
+      <div class="metric"><div class="name">近30天有曝光的字詞</div><div class="number" id="ranks-observed">—</div><div class="sub">未出現不代表完全沒有排名</div></div>
+    </div>
+    <div class="flexhead" style="margin-top:19px">
+      <div><h3>SEO 常見搜尋字詞排名表</h3><p class="small" id="rank-daterange">統計日期載入中</p></div>
+      <div class="switch" role="group" aria-label="關鍵字分類">
+        <button type="button" data-rank-group="all" aria-pressed="true">全部</button>
+        <button type="button" data-rank-group="一般需求" aria-pressed="false">一般搜尋</button>
+        <button type="button" data-rank-group="地區搜尋" aria-pressed="false">地區</button>
+        <button type="button" data-rank-group="預算與屋況" aria-pressed="false">裝修需求</button>
+      </div>
+    </div>
+    <div class="tablebox"><table>
+      <thead><tr><th>搜尋關鍵字</th><th>分類</th><th class="num">30天平均排名</th><th class="num">前30天</th><th class="num">排名變化</th><th class="num">曝光</th><th class="num">點擊</th></tr></thead>
+      <tbody id="ranks-body"></tbody>
+    </table></div>
+    <p class="detail">當某個詞只有 1–2 次曝光時，顯示的平均排名代表性不足。沒有資料用「未取得」標示，絕不當作排名第 0 名或沒被 Google 收錄。</p>
+    <p class="detail">Google 搜尋結果還會依地區、裝置、使用者及時間不同而變化；不能把這張 GSC 平均排名表當成特定時刻的即時排名截圖。</p>
+  </section>
+    <div class="panel"><h3>本期搜尋成效摘要</h3><p id="seo-context">正在讀取資料。</p>
    <div class="progress"><div class="fill" id="seo-progress"></div></div>
    <p class="detail">上方色帶是點擊占曝光的比例，不是逐日折線圖；30 天與 90 天彼此重疊，不能直接當成前後成長率。</p>
   </div>
@@ -222,6 +249,45 @@ function tableRow(tbody,values,numericIndices=[]){
  });
  tbody.append(tr);
 }
+let rankCategory="all";
+function formatRank(value){
+  return value===null||value===undefined?"未取得":Number(value).toFixed(1);
+}
+function renderRankings(){
+  if(!data||!data.seo.keyword_rankings)return;
+  const report=data.seo.keyword_rankings;
+  const original=report.rows.find(row=>row.keyword==="室內設計");
+  put("main-rank",original&&original.current_30d.position!==null?Number(original.current_30d.position).toFixed(2):"未取得");
+  const change=original&&original.position_improvement_30d;
+  put("main-rank-change",change===null||change===undefined?"無前期資料":(change>0?"+":"")+Number(change).toFixed(2)+" 名");
+  put("ranks-total",count(report.total_tracked)+" 組");
+  put("ranks-observed",count(report.with_impressions_30d)+" 組");
+  put("rank-daterange",local(report.start_day)+" 至 "+local(report.end_day)+"；歷史平均排名並非 Google 即時查詢的名次。");
+  const tbody=el("ranks-body");
+  tbody.replaceChildren();
+  const selected=report.rows.filter(row=>rankCategory==="all"||row.category===rankCategory);
+  for(const row of selected){
+    const current=row.current_30d;
+    const prior=row.previous_30d;
+    const delta=row.position_improvement_30d;
+    const change=delta===null?"—":(delta>0?"改善 ":"退步 ")+Math.abs(delta).toFixed(1)+" 名";
+    const low=current.impressions!==null && current.impressions<=2;
+    const label=low?"（樣本極少）":"";
+    tableRow(tbody,[
+      row.keyword,row.category,formatRank(current.position)+label,
+      formatRank(prior.position),change,
+      current.impressions===null?"—":count(current.impressions),
+      current.clicks===null?"—":count(current.clicks)
+    ],[2,3,4,5,6]);
+  }
+}
+for(const button of document.querySelectorAll("[data-rank-group]")){
+ button.addEventListener("click",()=>{
+   rankCategory=button.dataset.rankGroup;
+   for(const x of document.querySelectorAll("[data-rank-group]"))x.setAttribute("aria-pressed",String(x===button));
+   renderRankings();
+ });
+}
 function renderPeriod(){
  if(!data)return;
  const row=data.seo["period"+period];
@@ -273,6 +339,7 @@ function render(d){
    tableRow(q,[name,count(d.quality.dimension_rows[key]),why],[1]);
  }
  renderPeriod();
+ renderRankings();
 }
 show(decodeURIComponent(location.hash.replace("#",""))||"ai",false);
 fetch("./data.json",{cache:"no-store"})
