@@ -280,10 +280,9 @@ RENDER_ONLY_MARKER = re.compile(r"(?:3d|3-d|透視圖|渲染圖)",re.I)
 
 
 def floorplan_images(article_root,base):
-    """Collect exact index+URL for floorplan images in article DOM order.
-
-    Inputs include original filename and original ALT, not the SEO-generated ALT.
-    Renderings titled '3D 示意' are not automatically treated as actual plans.
+    """Protect floorplans by explicit filename/ALT OR nearest first image under
+    a plan-section heading. Protect original DOM position and exact URL.
+    Generic image filenames such as 'L-28F-01.jpg' and '258-01.jpg' need this.
     """
     result=[]
     for index,img in enumerate(article_root.find_all("img")):
@@ -291,11 +290,23 @@ def floorplan_images(article_root,base):
         url=allowed(original,base,"image") or urljoin(base,original)
         name=urlsplit(url).path.rsplit("/",1)[-1]
         alt=img.get("alt","") or ""
-        is_plan=bool(FLOORPLAN_MARKER.search(name+" "+alt))
+        explicit=bool(FLOORPLAN_MARKER.search(name+" "+alt))
         if RENDER_ONLY_MARKER.search(name) and not FLOORPLAN_MARKER.search(alt):
-            is_plan=False
-        if is_plan:
-            result.append({"index":index,"url":url,"source_alt":alt[:150]})
+            explicit=False
+        # A generic filename under an explicit floorplan header may be the
+        # first plan asset. Subsequent 3D images after the same header are NOT
+        # presumed to be plans without independent proof.
+        immediately_prior=img.find_previous(["img","h2","h3","h4"])
+        heading_plan=(
+            immediately_prior is not None
+            and immediately_prior.name in ("h2","h3","h4")
+            and bool(FLOORPLAN_MARKER.search(immediately_prior.get_text(" ",strip=True)))
+            and not RENDER_ONLY_MARKER.search(immediately_prior.get_text(" ",strip=True))
+            and not RENDER_ONLY_MARKER.search(name)
+        )
+        if explicit or heading_plan:
+            result.append({"index":index,"url":url,"source_alt":alt[:150],
+                           "evidence":"原圖檔名／ALT" if explicit else "格局圖段落後第一張原圖"})
     return result
 
 
