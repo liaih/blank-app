@@ -890,12 +890,12 @@ function renderSeoImprovementPlan(){
  const previewLabel=document.createElement("summary");previewLabel.textContent="預覽整篇文章排版";
  preview.appendChild(previewLabel);
  const frame=document.createElement("iframe");frame.title="文章排版預覽："+plan.title;
- frame.setAttribute("sandbox","");frame.style.width="100%";frame.style.height="650px";
+ frame.setAttribute("sandbox","");frame.style.width="100%";frame.style.maxWidth="100%";frame.style.height="min(64vh,460px)";
  frame.style.marginTop="12px";frame.style.border="1px solid #dfe7f0";
  frame.style.borderRadius="10px";frame.loading="lazy";
  frame.srcdoc='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">'+
   '<meta name="viewport" content="width=device-width,initial-scale=1">'+
-  '<style>*,*::before,*::after{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{font-size:16px;line-height:1.8}img,video,iframe,figure,svg{max-width:100%!important}img{display:block;width:auto!important;height:auto!important;max-height:370px!important;object-fit:contain;margin:12px auto}iframe{width:100%!important;aspect-ratio:16/9;height:auto!important}p,h2,h3{overflow-wrap:anywhere}table{display:block;max-width:100%;overflow:auto}</style></head>'+
+  '<style>*,*::before,*::after{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{font-size:16px;line-height:1.8}img,video,iframe,figure,svg{max-width:100%!important}img{display:block;width:auto!important;height:auto!important;max-height:300px!important;object-fit:contain;margin:12px auto}@media(max-width:600px){img{max-height:220px!important}}iframe{width:100%!important;aspect-ratio:16/9;height:auto!important}p,h2,h3{overflow-wrap:anywhere}table{display:block;max-width:100%;overflow:auto}</style></head>'+
   '<body style="padding:12px;margin:0;font-family:system-ui,sans-serif;">'+content+'</body></html>';
  preview.appendChild(frame);target.appendChild(preview);
  const raw=document.createElement("details");raw.style.marginTop="12px";
