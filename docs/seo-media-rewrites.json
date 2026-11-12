@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-12T20:06:32+08:00",
+  "generated_at": "2026-11-12T20:08:07+08:00",
   "no_media_files_copied": true,
   "not_published_to_cms": true,
   "note": "依官網原文擷取媒體網址並與新版文字整合。ALT 取原有描述或由相鄰段落推定；未確認畫面內容的 ALT 會標記待核對。JS 延遲載入的圖片或影片可能漏抓，不能宣稱所有媒體完整。",
@@ -34,7 +34,7 @@
         {
           "type": "image",
           "url": "https://chen-yang.com.tw/upload/images/1(120).jpg",
-          "alt": "允將大聚 L 戶｜平面格局示意圖（圖3）",
+          "alt": "允將大聚 L 戶｜3D 空間設計示意圖（圖3）",
           "context": "【3D 案場示意圖】｜【案場平面示意圖】｜允將大聚格局規劃 L 戶 | 2 房 2 廳",
           "order": 3,
           "original_alt": "林口A7重劃區「允將大聚」秒入住簡約的療癒空間｜林口室內設計裝修｜晨陽設計 - 晨陽室內設計",
@@ -44,7 +44,7 @@
         {
           "type": "image",
           "url": "https://chen-yang.com.tw/upload/images/2(92).jpg",
-          "alt": "允將大聚 L 戶｜平面格局示意圖（圖4）",
+          "alt": "允將大聚 L 戶｜3D 空間設計示意圖（圖4）",
           "context": "【3D 案場示意圖】｜【案場平面示意圖】｜允將大聚格局規劃 L 戶 | 2 房 2 廳",
           "order": 4,
           "original_alt": "林口A7重劃區「允將大聚」秒入住簡約的療癒空間｜林口室內設計裝修｜晨陽設計 - 晨陽室內設計",
@@ -54,7 +54,7 @@
         {
           "type": "image",
           "url": "https://chen-yang.com.tw/upload/images/3(91).jpg",
-          "alt": "允將大聚 L 戶｜平面格局示意圖（圖5）",
+          "alt": "允將大聚 L 戶｜3D 空間設計示意圖（圖5）",
           "context": "【3D 案場示意圖】｜【案場平面示意圖】｜允將大聚格局規劃 L 戶 | 2 房 2 廳",
           "order": 5,
           "original_alt": "林口A7重劃區「允將大聚」秒入住簡約的療癒空間｜林口室內設計裝修｜晨陽設計 - 晨陽室內設計",
@@ -64,7 +64,7 @@
         {
           "type": "image",
           "url": "https://chen-yang.com.tw/upload/images/5(68).jpg",
-          "alt": "允將大聚 L 戶｜平面格局示意圖（圖6）",
+          "alt": "允將大聚 L 戶｜3D 空間設計示意圖（圖6）",
           "context": "【3D 案場示意圖】｜【案場平面示意圖】｜允將大聚格局規劃 L 戶 | 2 房 2 廳",
           "order": 6,
           "original_alt": "林口A7重劃區「允將大聚」秒入住簡約的療癒空間｜林口室內設計裝修｜晨陽設計 - 晨陽室內設計",
@@ -74,7 +74,7 @@
         {
           "type": "image",
           "url": "https://chen-yang.com.tw/upload/images/6(69).jpg",
-          "alt": "允將大聚 L 戶｜平面格局示意圖（圖7）",
+          "alt": "允將大聚 L 戶｜3D 空間設計示意圖（圖7）",
           "context": "【3D 案場示意圖】｜【案場平面示意圖】｜允將大聚格局規劃 L 戶 | 2 房 2 廳",
           "order": 7,
           "original_alt": "林口A7重劃區「允將大聚」秒入住簡約的療癒空間｜林口室內設計裝修｜晨陽設計 - 晨陽室內設計",
@@ -94,7 +94,7 @@
         {
           "type": "image",
           "url": "https://chen-yang.com.tw/upload/images/LINE_ALBUM_20250922 允將大聚 A-5F_現代輕奢_250922_1.jpg",
-          "alt": "允將大聚 A 戶｜平面格局示意圖（圖9）",
+          "alt": "允將大聚 A 戶｜現代輕奢空間設計示意圖（圖9）",
           "context": "【平面示意圖】｜允將大聚 格局規劃 A 戶｜【3D 案場示意圖】",
           "order": 9,
           "original_alt": "林口A7重劃區「允將大聚」秒入住簡約的療癒空間｜林口室內設計裝修｜晨陽設計 - 晨陽室內設計",
@@ -104,7 +104,7 @@
         {
           "type": "image",
           "url": "https://chen-yang.com.tw/upload/images/LINE_ALBUM_20250922 允將大聚 A-5F_現代輕奢_250922_3.jpg",
-          "alt": "允將大聚 A 戶｜平面格局示意圖（圖10）",
+          "alt": "允將大聚 A 戶｜現代輕奢空間設計示意圖（圖10）",
           "context": "【平面示意圖】｜允將大聚 格局規劃 A 戶｜【3D 案場示意圖】",
           "order": 10,
           "original_alt": "林口A7重劃區「允將大聚」秒入住簡約的療癒空間｜林口室內設計裝修｜晨陽設計 - 晨陽室內設計",
@@ -112,7 +112,7 @@
           "alt_review_required": true
         }
       ],
-      "html_with_media": "<h2>允將大聚 L 戶與 A 戶裝潢規劃｜從入住動線開始</h2><BR>\n在林口 A7 重劃區的新成屋裝潢裡，格局之外，更需要思考回家後的生活如何順暢運作。晨陽設計針對「允將大聚」提出不同戶型的空間提案：L 戶以日式無印風回應日常收納與寵物共居需求；A 戶則運用現代輕奢語彙，整理客廳、臥室的材質層次與衣物收納。兩者的重點不是套用固定風格，而是依屋主生活習慣選擇合適配置。<BR><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/建築圖(13).jpg\" alt=\"允將大聚｜建案建築外觀示意圖（圖1）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">允將大聚｜建案建築外觀示意圖（圖1）</figcaption></figure><BR>\n<h2>L 戶｜玄關收納與毛孩動線</h2><BR>\nL 戶為兩房兩廳規劃。玄關使用落地櫃，集中擺放鞋子、安全帽與外出用品，搭配鏡面和洞洞板，把視覺延伸與隨手收納整合在同一區域。客廳以木質基調搭配仿大理石紋路美耐板，收納櫃下方保留寵物行走空間，也安排掃地機器人的停靠位置；玻璃展示空間則用來收放屋主收藏。這些尺寸與開口在正式施工前仍須依現場放樣確認。<BR><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/允將大聚 L-28F-01.jpg\" alt=\"允將大聚 L 戶｜平面格局示意圖（圖2）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">允將大聚 L 戶｜平面格局示意圖（圖2）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/1(120).jpg\" alt=\"允將大聚 L 戶｜平面格局示意圖（圖3）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">允將大聚 L 戶｜平面格局示意圖（圖3）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/2(92).jpg\" alt=\"允將大聚 L 戶｜平面格局示意圖（圖4）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">允將大聚 L 戶｜平面格局示意圖（圖4）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/3(91).jpg\" alt=\"允將大聚 L 戶｜平面格局示意圖（圖5）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">允將大聚 L 戶｜平面格局示意圖（圖5）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/5(68).jpg\" alt=\"允將大聚 L 戶｜平面格局示意圖（圖6）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">允將大聚 L 戶｜平面格局示意圖（圖6）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/6(69).jpg\" alt=\"允將大聚 L 戶｜平面格局示意圖（圖7）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">允將大聚 L 戶｜平面格局示意圖（圖7）</figcaption></figure><BR>\n<h2>A 戶｜現代輕奢不等於犧牲實用</h2><BR>\nA 戶的客廳以米白、灰與木紋作為配色基礎，透過石材質感、簡潔線條和家具比例營造沉穩氛圍。臥室延續淺木質感與白色整面衣櫃，使用無把手櫃門減少視覺切割。規劃重點是收納量、床邊使用動線與採光面之間的平衡，而不是把裝飾元素疊滿空間。<BR><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/平77-01.jpg\" alt=\"允將大聚 A 戶｜戶型平面格局示意圖（圖8）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">允將大聚 A 戶｜戶型平面格局示意圖（圖8）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/LINE_ALBUM_20250922 允將大聚 A-5F_現代輕奢_250922_1.jpg\" alt=\"允將大聚 A 戶｜平面格局示意圖（圖9）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">允將大聚 A 戶｜平面格局示意圖（圖9）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/LINE_ALBUM_20250922 允將大聚 A-5F_現代輕奢_250922_3.jpg\" alt=\"允將大聚 A 戶｜平面格局示意圖（圖10）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">允將大聚 A 戶｜平面格局示意圖（圖10）</figcaption></figure><BR>\n<h2>A7 新成屋裝潢先確認什麼？</h2><BR>\n首先確認平面圖與實際丈量是否一致，特別是櫃體深度、門片開啟、插座和掃地機器人位置；其次依入住人數、收納物品、是否養寵物安排空間。預算部分應以實際需求、材料規格與工程範圍估算，不宜直接套用其他戶型的每坪報價。<BR><BR>\n<h2>常見問題 FAQ</h2><BR>\nQ：允將大聚 L 戶適合有寵物的家庭嗎？<BR>本提案在客廳櫃體下方預留毛孩通行位置，並整合清潔設備停靠空間；實際是否合用仍需依寵物體型及生活習慣調整。<BR>Q：L 戶與 A 戶的設計可以直接互換嗎？<BR>不建議直接照搬。兩種戶型的平面條件及生活需求可能不同，應先確認丈量、動線、家具尺寸與預算。<BR>Q：文章圖片都是完工照片嗎？<BR>本頁含平面及 3D 空間示意，應以每張圖片旁的標示辨識；不能將規劃示意當作實際完工成果。<BR><BR>\n<strong>晨陽設計｜進一步了解</strong><BR>若你正在規劃允將大聚或 A7 新成屋裝潢，可帶著平面圖與日常收納需求與晨陽設計討論，先釐清格局限制、預算項目與施工順序。<BR>",
+      "html_with_media": "<h2>允將大聚 L 戶與 A 戶裝潢規劃｜從入住動線開始</h2><BR>\n在林口 A7 重劃區的新成屋裝潢裡，格局之外，更需要思考回家後的生活如何順暢運作。晨陽設計針對「允將大聚」提出不同戶型的空間提案：L 戶以日式無印風回應日常收納與寵物共居需求；A 戶則運用現代輕奢語彙，整理客廳、臥室的材質層次與衣物收納。兩者的重點不是套用固定風格，而是依屋主生活習慣選擇合適配置。<BR><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/建築圖(13).jpg\" alt=\"允將大聚｜建案建築外觀示意圖（圖1）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">允將大聚｜建案建築外觀示意圖（圖1）</figcaption></figure><BR>\n<h2>L 戶｜玄關收納與毛孩動線</h2><BR>\nL 戶為兩房兩廳規劃。玄關使用落地櫃，集中擺放鞋子、安全帽與外出用品，搭配鏡面和洞洞板，把視覺延伸與隨手收納整合在同一區域。客廳以木質基調搭配仿大理石紋路美耐板，收納櫃下方保留寵物行走空間，也安排掃地機器人的停靠位置；玻璃展示空間則用來收放屋主收藏。這些尺寸與開口在正式施工前仍須依現場放樣確認。<BR><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/允將大聚 L-28F-01.jpg\" alt=\"允將大聚 L 戶｜平面格局示意圖（圖2）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">允將大聚 L 戶｜平面格局示意圖（圖2）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/1(120).jpg\" alt=\"允將大聚 L 戶｜3D 空間設計示意圖（圖3）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">允將大聚 L 戶｜3D 空間設計示意圖（圖3）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/2(92).jpg\" alt=\"允將大聚 L 戶｜3D 空間設計示意圖（圖4）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">允將大聚 L 戶｜3D 空間設計示意圖（圖4）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/3(91).jpg\" alt=\"允將大聚 L 戶｜3D 空間設計示意圖（圖5）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">允將大聚 L 戶｜3D 空間設計示意圖（圖5）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/5(68).jpg\" alt=\"允將大聚 L 戶｜3D 空間設計示意圖（圖6）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">允將大聚 L 戶｜3D 空間設計示意圖（圖6）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/6(69).jpg\" alt=\"允將大聚 L 戶｜3D 空間設計示意圖（圖7）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">允將大聚 L 戶｜3D 空間設計示意圖（圖7）</figcaption></figure><BR>\n<h2>A 戶｜現代輕奢不等於犧牲實用</h2><BR>\nA 戶的客廳以米白、灰與木紋作為配色基礎，透過石材質感、簡潔線條和家具比例營造沉穩氛圍。臥室延續淺木質感與白色整面衣櫃，使用無把手櫃門減少視覺切割。規劃重點是收納量、床邊使用動線與採光面之間的平衡，而不是把裝飾元素疊滿空間。<BR><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/平77-01.jpg\" alt=\"允將大聚 A 戶｜戶型平面格局示意圖（圖8）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">允將大聚 A 戶｜戶型平面格局示意圖（圖8）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/LINE_ALBUM_20250922 允將大聚 A-5F_現代輕奢_250922_1.jpg\" alt=\"允將大聚 A 戶｜現代輕奢空間設計示意圖（圖9）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">允將大聚 A 戶｜現代輕奢空間設計示意圖（圖9）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/LINE_ALBUM_20250922 允將大聚 A-5F_現代輕奢_250922_3.jpg\" alt=\"允將大聚 A 戶｜現代輕奢空間設計示意圖（圖10）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">允將大聚 A 戶｜現代輕奢空間設計示意圖（圖10）</figcaption></figure><BR>\n<h2>A7 新成屋裝潢先確認什麼？</h2><BR>\n首先確認平面圖與實際丈量是否一致，特別是櫃體深度、門片開啟、插座和掃地機器人位置；其次依入住人數、收納物品、是否養寵物安排空間。預算部分應以實際需求、材料規格與工程範圍估算，不宜直接套用其他戶型的每坪報價。<BR><BR>\n<h2>常見問題 FAQ</h2><BR>\nQ：允將大聚 L 戶適合有寵物的家庭嗎？<BR>本提案在客廳櫃體下方預留毛孩通行位置，並整合清潔設備停靠空間；實際是否合用仍需依寵物體型及生活習慣調整。<BR>Q：L 戶與 A 戶的設計可以直接互換嗎？<BR>不建議直接照搬。兩種戶型的平面條件及生活需求可能不同，應先確認丈量、動線、家具尺寸與預算。<BR>Q：文章圖片都是完工照片嗎？<BR>本頁含平面及 3D 空間示意，應以每張圖片旁的標示辨識；不能將規劃示意當作實際完工成果。<BR><BR>\n<strong>晨陽設計｜進一步了解</strong><BR>若你正在規劃允將大聚或 A7 新成屋裝潢，可帶著平面圖與日常收納需求與晨陽設計討論，先釐清格局限制、預算項目與施工順序。<BR>",
       "alt_count": 10,
       "alt_review_count": 10,
       "media_integrated": true,
@@ -145,7 +145,7 @@
           "order": 2,
           "original_alt": "林口丹佛花都建案平面配置圖，晨陽設計規劃二房一廳室內格局與家具動線安排",
           "alt_provenance": "原頁具體 Alt（沿用）",
-          "alt_review_required": true
+          "alt_review_required": false
         },
         {
           "type": "image",
@@ -165,7 +165,7 @@
           "order": 4,
           "original_alt": "晨陽設計打造的北歐木質風空間裝修-客廳沙發背牆側邊圓弧展示層板高櫃與掃地機器人專用壁龕",
           "alt_provenance": "原頁具體 Alt（沿用）",
-          "alt_review_required": true
+          "alt_review_required": false
         },
         {
           "type": "image",
@@ -175,7 +175,7 @@
           "order": 5,
           "original_alt": "晨陽設計打造的北歐木質風空間裝修-客廳薄荷綠圓弧造型電視主牆佐淺木紋懸空機櫃與展示架",
           "alt_provenance": "原頁具體 Alt（沿用）",
-          "alt_review_required": true
+          "alt_review_required": false
         },
         {
           "type": "image",
@@ -185,7 +185,7 @@
           "order": 6,
           "original_alt": "晨陽設計打造的北歐木質風空間裝修-開放式公領域客餐廳全景搭配薄荷綠電視牆與收納高櫃",
           "alt_provenance": "原頁具體 Alt（沿用）",
-          "alt_review_required": true
+          "alt_review_required": false
         },
         {
           "type": "image",
@@ -195,7 +195,7 @@
           "order": 7,
           "original_alt": "晨陽設計打造的北歐木質風空間裝修-主臥室雙人床頭圓角木質背板佐間接暖光洗牆與風琴調光捲簾",
           "alt_provenance": "原頁具體 Alt（沿用）",
-          "alt_review_required": true
+          "alt_review_required": false
         },
         {
           "type": "image",
@@ -205,12 +205,12 @@
           "order": 8,
           "original_alt": "晨陽設計打造的北歐木質風空間裝修-獨立多功能書房雙人工作檯桌配置人體工學椅與窗邊休憩臥榻",
           "alt_provenance": "原頁具體 Alt（沿用）",
-          "alt_review_required": true
+          "alt_review_required": false
         }
       ],
       "html_with_media": "<h2>丹佛花都 D11 戶｜讓兩房生活更有餘裕</h2><BR>\n小坪數新成屋最需要的不是把每個角落塞滿，而是把有限坪數留給真正會使用的生活動線。晨陽設計針對桃園龜山 A7 重劃區「丹佛花都」D11 戶提出兩房平面規劃：從玄關收納、客餐廳共享，到次臥兼工作區，讓進門、料理、休息與工作都能找到清楚的位置。本文展示的是格局設計提案，非施工完成紀錄。<BR><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/丹佛花都 建築圖.jpg\" alt=\"丹佛花都｜建案建築外觀示意圖（圖1）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">丹佛花都｜建案建築外觀示意圖（圖1）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/chen-yang-linkou-denver-flora-interior-floor-plan-01.jpg\" alt=\"林口丹佛花都建案平面配置圖，晨陽設計規劃二房一廳室內格局與家具動線安排\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">林口丹佛花都建案平面配置圖，晨陽設計規劃二房一廳室內格局與家具動線安排</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/平面配置圖 (2).jpg\" alt=\"丹佛花都 D11 戶｜戶型平面格局示意圖（圖3）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">丹佛花都 D11 戶｜戶型平面格局示意圖（圖3）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/chen-yang-interior-design-scandinavian-wood-curved-display-cabinet-robot-niche-.png\" alt=\"晨陽設計打造的北歐木質風空間裝修-客廳沙發背牆側邊圓弧展示層板高櫃與掃地機器人專用壁龕\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">晨陽設計打造的北歐木質風空間裝修-客廳沙發背牆側邊圓弧展示層板高櫃與掃地機器人專用壁龕</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/chen-yang-interior-design-scandinavian-wood-mint-green-tv-wall-floating-cabinet-.png\" alt=\"晨陽設計打造的北歐木質風空間裝修-客廳薄荷綠圓弧造型電視主牆佐淺木紋懸空機櫃與展示架\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">晨陽設計打造的北歐木質風空間裝修-客廳薄荷綠圓弧造型電視主牆佐淺木紋懸空機櫃與展示架</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/chen-yang-interior-design-scandinavian-wood-open-plan-living-dining-mint-green-tv-wall-.png\" alt=\"晨陽設計打造的北歐木質風空間裝修-開放式公領域客餐廳全景搭配薄荷綠電視牆與收納高櫃\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">晨陽設計打造的北歐木質風空間裝修-開放式公領域客餐廳全景搭配薄荷綠電視牆與收納高櫃</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/chen-yang-interior-design-scandinavian-wood-master-bedroom-headboard-window-blinds-.png\" alt=\"晨陽設計打造的北歐木質風空間裝修-主臥室雙人床頭圓角木質背板佐間接暖光洗牆與風琴調光捲簾\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">晨陽設計打造的北歐木質風空間裝修-主臥室雙人床頭圓角木質背板佐間接暖光洗牆與風琴調光捲簾</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/chen-yang-interior-design-scandinavian-wood-study-room-double-desk-window-bench-.png\" alt=\"晨陽設計打造的北歐木質風空間裝修-獨立多功能書房雙人工作檯桌配置人體工學椅與窗邊休憩臥榻\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">晨陽設計打造的北歐木質風空間裝修-獨立多功能書房雙人工作檯桌配置人體工學椅與窗邊休憩臥榻</figcaption></figure><BR>\n<h2>玄關與客餐廳｜把機能集中，避免走道浪費</h2><BR>\n進門處先整合置物與收納，讓外出用品不會散落於公領域。客、餐廳採較開放的使用方式，一字型廚房與餐桌相鄰，減少備餐與上菜的往返距離；客廳保留主要活動動線，避免過大的家具擠壓空間。規劃時應確認餐桌拉椅後的通道、冰箱與櫥櫃開啟方向，以及電源位置。<BR><BR>\n<h2>主臥與多功能次臥｜依生活階段彈性調整</h2><BR>\n主臥以床位、衣櫃與採光的配置為優先；次臥規劃長型雙人書桌與收納櫃，可作為居家辦公、閱讀或未來調整使用的彈性空間。如果預計加入單人床，仍須根據實際尺寸重新檢查桌深、床邊走道及門片開啟空間。<BR><BR>\n<h2>丹佛花都兩房裝潢應優先確認的四件事</h2><BR>\n一、家具尺寸與實際牆長；二、衣櫃及櫥櫃開啟後的通道；三、廚房、浴室的既有管線與設備位置；四、書房是否需要轉為臥室。這些會直接影響訂製櫃體數量、工程範圍及預算，適合在進一步報價前先釐清。<BR><BR>\n<h2>常見問題 FAQ</h2><BR>\nQ：D11 戶次臥能放床嗎？<BR>原規劃以工作區為主，若需放床，必須依實際丈量及床型重新確認空間，不能只靠示意圖判斷。<BR>Q：衛浴是否有對外窗？<BR>請以建商正式圖說及現場條件核實，本文不以戶型位置推定設備或窗戶配置。<BR>Q：丹佛花都目前是否已完工？<BR>建案交屋及施工進度應以建商最新公告為準，本文主要說明晨陽的室內規劃方案。<BR><BR>\n<strong>晨陽設計｜進一步了解</strong><BR>準備規劃丹佛花都 D11 戶，可先整理建商平面圖、家具清單與可動用預算，讓室內設計討論更有效率。<BR>",
       "alt_count": 8,
-      "alt_review_count": 8,
+      "alt_review_count": 2,
       "media_integrated": true,
       "review_required": true,
       "status": "原頁媒體已提取，仍須比對是否完整",
@@ -226,21 +226,21 @@
         {
           "type": "image",
           "url": "https://chen-yang.com.tw/upload/images/晨陽設計在A7林口重劃區鴻廣繪青建案的室內設計規劃 建築圖.jpg",
-          "alt": "A7林口重劃區，晨陽室內設計為鴻廣绘青C3戶格局規劃的空間",
+          "alt": "鴻廣絵青｜建案建築外觀示意圖（圖1）",
           "context": "生活機能與特色 學區：樂善國小 商圈：三井Outlet、全聯、雙環球購物中心 公共建設：華亞科技園區、郵政智慧園區、文德公園、樂善公園、長樂公園 交通出行：國道1號、A9林口站、A7體育大學捷運站",
           "order": 1,
           "original_alt": "A7林口重劃區，晨陽室內設計為鴻廣绘青C3戶格局規劃的空間",
-          "alt_provenance": "原頁具體 Alt（沿用）",
+          "alt_provenance": "依原檔名及文章段落編寫，需以圖片畫面核對",
           "alt_review_required": true
         },
         {
           "type": "image",
           "url": "https://chen-yang.com.tw/upload/images/鴻廣繪青C3-11F  平配圖-01-01.jpg",
-          "alt": "晨陽設計在A7林口重劃區鴻廣繪青建案的室內設計規劃",
+          "alt": "鴻廣絵青 C3 戶｜戶型平面格局示意圖（圖2）",
           "context": "鴻廣絵青格局規劃 C3 戶 | 2 房 2 廳｜晨陽室內設計團隊正於A7林口重劃區域服務中，歡迎舊雨新知參考本司以下的鴻廣絵青新作。",
           "order": 2,
           "original_alt": "晨陽設計在A7林口重劃區鴻廣繪青建案的室內設計規劃",
-          "alt_provenance": "原頁具體 Alt（沿用）",
+          "alt_provenance": "依原檔名及文章段落編寫，需以圖片畫面核對",
           "alt_review_required": true
         },
         {
@@ -304,7 +304,7 @@
           "alt_review_required": true
         }
       ],
-      "html_with_media": "<h2>鴻廣絵青 C3 戶｜把兩個人的旅行帶回家</h2><BR>\n對一對喜歡旅行的新婚夫妻來說，家的設計不只是一套喜歡的風格，更是能讓生活記憶慢慢累積的地方。晨陽設計針對林口 A7「鴻廣絵青」C3 戶提出北歐風格規劃，從木質感、奶茶色藝術漆到世界地圖主題背牆，將屋主在世界各地的旅遊經驗轉化為居家空間的視覺線索。<BR><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/晨陽設計在A7林口重劃區鴻廣繪青建案的室內設計規劃 建築圖.jpg\" alt=\"A7林口重劃區，晨陽室內設計為鴻廣绘青C3戶格局規劃的空間\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">A7林口重劃區，晨陽室內設計為鴻廣绘青C3戶格局規劃的空間</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/鴻廣繪青C3-11F  平配圖-01-01.jpg\" alt=\"晨陽設計在A7林口重劃區鴻廣繪青建案的室內設計規劃\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">晨陽設計在A7林口重劃區鴻廣繪青建案的室內設計規劃</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/1g.jpg\" alt=\"鴻廣絵青 C3 戶｜室內空間設計圖片（圖3）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">鴻廣絵青 C3 戶｜室內空間設計圖片（圖3）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/5(74).jpg\" alt=\"鴻廣絵青 C3 戶｜室內空間設計圖片（圖4）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">鴻廣絵青 C3 戶｜室內空間設計圖片（圖4）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/3g.jpg\" alt=\"鴻廣絵青 C3 戶｜室內空間設計圖片（圖5）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">鴻廣絵青 C3 戶｜室內空間設計圖片（圖5）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/12g.jpg\" alt=\"鴻廣絵青 C3 戶｜室內空間設計圖片（圖6）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">鴻廣絵青 C3 戶｜室內空間設計圖片（圖6）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/27(10).jpg\" alt=\"鴻廣絵青 C3 戶｜室內空間設計圖片（圖7）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">鴻廣絵青 C3 戶｜室內空間設計圖片（圖7）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/29.jpg\" alt=\"鴻廣絵青 C3 戶｜室內空間設計圖片（圖8）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">鴻廣絵青 C3 戶｜室內空間設計圖片（圖8）</figcaption></figure><BR>\n<h2>客廳主題牆｜收藏不是雜物，而是生活故事</h2><BR>\n沙發背牆以世界地圖為設計主題，呼應夫妻共同的旅行興趣。相較於在家中放入大量與生活無關的裝飾，這樣的展示方向能讓每件收藏有自己的位置，也讓空間留下兩人共同經歷的痕跡。展示位置、燈光與收納需求仍應配合藏品尺寸及日後維護方式調整。<BR><BR>\n<h2>色彩與材質｜北歐風的柔和感從生活需求出發</h2><BR>\n空間採用自然木紋與奶茶色藝術漆，讓公共區域在視覺上維持輕盈與舒適。木色與中性色負責統整主視覺，旅行主題牆則成為辨識度較高的焦點。透過主次分配，即使未來增添旅行紀念品，也不容易讓整體空間變得零碎。<BR><BR>\n<h2>新婚宅在選設計公司前可先討論什麼？</h2><BR>\n先列出兩人的共同收藏、衣物量、清潔習慣與未來家庭生活規劃，並確認收納櫃的位置是否妨礙主要動線。若打算展示照片、畫作或地圖，應同時考慮材質耐久、清潔便利與光源位置，不只是選一面好看的造型牆。<BR><BR>\n<h2>常見問題 FAQ</h2><BR>\nQ：C3 戶適合北歐風嗎？<BR>北歐風能以木質和柔和色彩塑造日常居住感，但是否適合仍要依房型尺寸、家具配置與屋主偏好調整。<BR>Q：旅行收藏容易讓客廳雜亂嗎？<BR>可先設定展示主牆與收納區，將需要經常觀看的收藏和需要收起的物品分開。<BR>Q：本篇為實際完工案例嗎？<BR>本文依現有 C3 戶設計規劃內容整理，圖片是否為平面示意或實拍，請以原圖正式標示為準。<BR><BR>\n<strong>晨陽設計｜進一步了解</strong><BR>正在規劃鴻廣絵青或林口 A7 新婚住宅裝潢？可以先把生活習慣和收藏需求整理好，再與晨陽設計討論真正適合的空間。<BR>",
+      "html_with_media": "<h2>鴻廣絵青 C3 戶｜把兩個人的旅行帶回家</h2><BR>\n對一對喜歡旅行的新婚夫妻來說，家的設計不只是一套喜歡的風格，更是能讓生活記憶慢慢累積的地方。晨陽設計針對林口 A7「鴻廣絵青」C3 戶提出北歐風格規劃，從木質感、奶茶色藝術漆到世界地圖主題背牆，將屋主在世界各地的旅遊經驗轉化為居家空間的視覺線索。<BR><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/晨陽設計在A7林口重劃區鴻廣繪青建案的室內設計規劃 建築圖.jpg\" alt=\"鴻廣絵青｜建案建築外觀示意圖（圖1）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">鴻廣絵青｜建案建築外觀示意圖（圖1）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/鴻廣繪青C3-11F  平配圖-01-01.jpg\" alt=\"鴻廣絵青 C3 戶｜戶型平面格局示意圖（圖2）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">鴻廣絵青 C3 戶｜戶型平面格局示意圖（圖2）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/1g.jpg\" alt=\"鴻廣絵青 C3 戶｜室內空間設計圖片（圖3）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">鴻廣絵青 C3 戶｜室內空間設計圖片（圖3）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/5(74).jpg\" alt=\"鴻廣絵青 C3 戶｜室內空間設計圖片（圖4）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">鴻廣絵青 C3 戶｜室內空間設計圖片（圖4）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/3g.jpg\" alt=\"鴻廣絵青 C3 戶｜室內空間設計圖片（圖5）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">鴻廣絵青 C3 戶｜室內空間設計圖片（圖5）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/12g.jpg\" alt=\"鴻廣絵青 C3 戶｜室內空間設計圖片（圖6）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">鴻廣絵青 C3 戶｜室內空間設計圖片（圖6）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/27(10).jpg\" alt=\"鴻廣絵青 C3 戶｜室內空間設計圖片（圖7）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">鴻廣絵青 C3 戶｜室內空間設計圖片（圖7）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/29.jpg\" alt=\"鴻廣絵青 C3 戶｜室內空間設計圖片（圖8）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">鴻廣絵青 C3 戶｜室內空間設計圖片（圖8）</figcaption></figure><BR>\n<h2>客廳主題牆｜收藏不是雜物，而是生活故事</h2><BR>\n沙發背牆以世界地圖為設計主題，呼應夫妻共同的旅行興趣。相較於在家中放入大量與生活無關的裝飾，這樣的展示方向能讓每件收藏有自己的位置，也讓空間留下兩人共同經歷的痕跡。展示位置、燈光與收納需求仍應配合藏品尺寸及日後維護方式調整。<BR><BR>\n<h2>色彩與材質｜北歐風的柔和感從生活需求出發</h2><BR>\n空間採用自然木紋與奶茶色藝術漆，讓公共區域在視覺上維持輕盈與舒適。木色與中性色負責統整主視覺，旅行主題牆則成為辨識度較高的焦點。透過主次分配，即使未來增添旅行紀念品，也不容易讓整體空間變得零碎。<BR><BR>\n<h2>新婚宅在選設計公司前可先討論什麼？</h2><BR>\n先列出兩人的共同收藏、衣物量、清潔習慣與未來家庭生活規劃，並確認收納櫃的位置是否妨礙主要動線。若打算展示照片、畫作或地圖，應同時考慮材質耐久、清潔便利與光源位置，不只是選一面好看的造型牆。<BR><BR>\n<h2>常見問題 FAQ</h2><BR>\nQ：C3 戶適合北歐風嗎？<BR>北歐風能以木質和柔和色彩塑造日常居住感，但是否適合仍要依房型尺寸、家具配置與屋主偏好調整。<BR>Q：旅行收藏容易讓客廳雜亂嗎？<BR>可先設定展示主牆與收納區，將需要經常觀看的收藏和需要收起的物品分開。<BR>Q：本篇為實際完工案例嗎？<BR>本文依現有 C3 戶設計規劃內容整理，圖片是否為平面示意或實拍，請以原圖正式標示為準。<BR><BR>\n<strong>晨陽設計｜進一步了解</strong><BR>正在規劃鴻廣絵青或林口 A7 新婚住宅裝潢？可以先把生活習慣和收藏需求整理好，再與晨陽設計討論真正適合的空間。<BR>",
       "alt_count": 8,
       "alt_review_count": 8,
       "media_integrated": true,
@@ -332,7 +332,7 @@
         {
           "type": "image",
           "url": "https://chen-yang.com.tw/upload/images/258-01.jpg",
-          "alt": "福美富琚 C 戶｜平面格局示意圖（圖2）",
+          "alt": "福美富琚 C 戶｜3D 空間設計示意圖（圖2）",
           "context": "【平面模擬圖】",
           "order": 2,
           "original_alt": "新莊頭前重劃區「福美富琚」，美式現代風格構築的質感生活提案｜新北室內設計裝修｜晨陽設計 - 晨陽室內設計",
@@ -342,7 +342,7 @@
         {
           "type": "image",
           "url": "https://chen-yang.com.tw/upload/images/LINE_ALBUM_20251021 福美富琚 C-5F_現代風_251023_3.jpg",
-          "alt": "福美富琚 C 戶｜平面格局示意圖（圖3）",
+          "alt": "福美富琚 C 戶｜現代風空間設計示意圖（圖3）",
           "context": "【平面模擬圖】",
           "order": 3,
           "original_alt": "新莊頭前重劃區「福美富琚」，美式現代風格構築的質感生活提案｜新北室內設計裝修｜晨陽設計 - 晨陽室內設計",
@@ -352,7 +352,7 @@
         {
           "type": "image",
           "url": "https://chen-yang.com.tw/upload/images/LINE_ALBUM_20251021 福美富琚 C-5F_現代風_251023_2.jpg",
-          "alt": "福美富琚 C 戶｜平面格局示意圖（圖4）",
+          "alt": "福美富琚 C 戶｜現代風空間設計示意圖（圖4）",
           "context": "【平面模擬圖】",
           "order": 4,
           "original_alt": "新莊頭前重劃區「福美富琚」，美式現代風格構築的質感生活提案｜新北室內設計裝修｜晨陽設計 - 晨陽室內設計",
@@ -360,7 +360,7 @@
           "alt_review_required": true
         }
       ],
-      "html_with_media": "<h2>福美富琚 C 戶｜現代美式風可以優雅，也可以好整理</h2><BR>\n新莊頭前重劃區「福美富琚」C 戶設計提案，以白色、米色及深木色為基底，結合藝術漆牆面、美式線條與整合式收納，打造明亮且帶有沉穩層次的生活空間。晨陽設計將重點放在客廳清潔、臥室收納與床邊用電等真實使用情境，而非只追求表面的裝飾效果。<BR><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/IMG_9381(1).jpg\" alt=\"福美富琚 C 戶｜室內空間設計圖片（圖1）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">福美富琚 C 戶｜室內空間設計圖片（圖1）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/258-01.jpg\" alt=\"福美富琚 C 戶｜平面格局示意圖（圖2）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">福美富琚 C 戶｜平面格局示意圖（圖2）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/LINE_ALBUM_20251021 福美富琚 C-5F_現代風_251023_3.jpg\" alt=\"福美富琚 C 戶｜平面格局示意圖（圖3）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">福美富琚 C 戶｜平面格局示意圖（圖3）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/LINE_ALBUM_20251021 福美富琚 C-5F_現代風_251023_2.jpg\" alt=\"福美富琚 C 戶｜平面格局示意圖（圖4）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">福美富琚 C 戶｜平面格局示意圖（圖4）</figcaption></figure><BR>\n<h2>客廳｜淺灰藝術漆與無把手櫃體的協調</h2><BR>\n客廳透過淺灰色藝術漆創造電視主牆層次，深色木地板平衡淺色空間的視覺重量。白色長型電視櫃使用無把手門片，讓收納與牆面線條保持一致；天花板嵌入式燈具提供基本照明。清潔動線、櫃內設備散熱及插座位置，仍應在細部設計階段一併確認。<BR><BR>\n<h2>臥室｜衣櫃、書桌與床頭照明一起思考</h2><BR>\n臥室以白色、淺綠色及原木色建立舒適感。床頭使用美式線條板，搭配整合的開關與電源位置，讓手機充電、閱讀照明和睡前使用習慣更順手。大型頂天衣櫃配置開放層板與抽屜，兼顧吊掛、折疊與日常取物；木色書桌則提供額外的使用彈性。<BR><BR>\n<h2>準備裝修 C 戶時，哪些資訊最影響預算？</h2><BR>\n比起只問單坪價格，更應先確認櫃體長度、材質規格、藝術漆施作面積、插座與燈具配置，以及是否需要修改原有設備位置。這些項目都會影響實際工程範圍，完整報價需以丈量及需求確認為基礎。<BR><BR>\n<h2>常見問題 FAQ</h2><BR>\nQ：福美富琚 C 戶適合美式現代風嗎？<BR>本提案以淺色主調、木質與局部美式線條安排空間，實際施作仍需依居住習慣及預算調整。<BR>Q：如何增加臥室收納但不讓空間顯得擁擠？<BR>可優先整合頂天衣櫃、抽屜與開放層板，並檢查櫃門開啟與床邊走道。<BR>Q：本文圖片是已完工的照片嗎？<BR>目前原文明確標有『平面模擬圖』，其他設計圖片也應按實際來源標註；未經核對前，不能將本篇提案圖片稱為完工實景。<BR><BR>\n<strong>晨陽設計｜進一步了解</strong><BR>如果你正準備規劃福美富琚 C 戶，歡迎準備平面圖、衣物量、生活習慣及預算需求，與晨陽設計討論適合的空間方案。<BR>",
+      "html_with_media": "<h2>福美富琚 C 戶｜現代美式風可以優雅，也可以好整理</h2><BR>\n新莊頭前重劃區「福美富琚」C 戶設計提案，以白色、米色及深木色為基底，結合藝術漆牆面、美式線條與整合式收納，打造明亮且帶有沉穩層次的生活空間。晨陽設計將重點放在客廳清潔、臥室收納與床邊用電等真實使用情境，而非只追求表面的裝飾效果。<BR><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/IMG_9381(1).jpg\" alt=\"福美富琚 C 戶｜室內空間設計圖片（圖1）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">福美富琚 C 戶｜室內空間設計圖片（圖1）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/258-01.jpg\" alt=\"福美富琚 C 戶｜3D 空間設計示意圖（圖2）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">福美富琚 C 戶｜3D 空間設計示意圖（圖2）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/LINE_ALBUM_20251021 福美富琚 C-5F_現代風_251023_3.jpg\" alt=\"福美富琚 C 戶｜現代風空間設計示意圖（圖3）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">福美富琚 C 戶｜現代風空間設計示意圖（圖3）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/LINE_ALBUM_20251021 福美富琚 C-5F_現代風_251023_2.jpg\" alt=\"福美富琚 C 戶｜現代風空間設計示意圖（圖4）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">福美富琚 C 戶｜現代風空間設計示意圖（圖4）</figcaption></figure><BR>\n<h2>客廳｜淺灰藝術漆與無把手櫃體的協調</h2><BR>\n客廳透過淺灰色藝術漆創造電視主牆層次，深色木地板平衡淺色空間的視覺重量。白色長型電視櫃使用無把手門片，讓收納與牆面線條保持一致；天花板嵌入式燈具提供基本照明。清潔動線、櫃內設備散熱及插座位置，仍應在細部設計階段一併確認。<BR><BR>\n<h2>臥室｜衣櫃、書桌與床頭照明一起思考</h2><BR>\n臥室以白色、淺綠色及原木色建立舒適感。床頭使用美式線條板，搭配整合的開關與電源位置，讓手機充電、閱讀照明和睡前使用習慣更順手。大型頂天衣櫃配置開放層板與抽屜，兼顧吊掛、折疊與日常取物；木色書桌則提供額外的使用彈性。<BR><BR>\n<h2>準備裝修 C 戶時，哪些資訊最影響預算？</h2><BR>\n比起只問單坪價格，更應先確認櫃體長度、材質規格、藝術漆施作面積、插座與燈具配置，以及是否需要修改原有設備位置。這些項目都會影響實際工程範圍，完整報價需以丈量及需求確認為基礎。<BR><BR>\n<h2>常見問題 FAQ</h2><BR>\nQ：福美富琚 C 戶適合美式現代風嗎？<BR>本提案以淺色主調、木質與局部美式線條安排空間，實際施作仍需依居住習慣及預算調整。<BR>Q：如何增加臥室收納但不讓空間顯得擁擠？<BR>可優先整合頂天衣櫃、抽屜與開放層板，並檢查櫃門開啟與床邊走道。<BR>Q：本文圖片是已完工的照片嗎？<BR>目前原文明確標有『平面模擬圖』，其他設計圖片也應按實際來源標註；未經核對前，不能將本篇提案圖片稱為完工實景。<BR><BR>\n<strong>晨陽設計｜進一步了解</strong><BR>如果你正準備規劃福美富琚 C 戶，歡迎準備平面圖、衣物量、生活習慣及預算需求，與晨陽設計討論適合的空間方案。<BR>",
       "alt_count": 4,
       "alt_review_count": 4,
       "media_integrated": true,
@@ -494,7 +494,7 @@
         {
           "type": "image",
           "url": "https://chen-yang.com.tw/upload/images/LINE_ALBUM_20250908厚陞晴 B1-13F 輕享家 北歐風_250909_2.jpg",
-          "alt": "厚陞晴 B1 戶｜平面格局示意圖（圖3）",
+          "alt": "厚陞晴 B1 戶｜北歐風空間設計示意圖（圖3）",
           "context": "厚陞晴 格局規劃 B1 戶 【平面模擬圖】",
           "order": 3,
           "original_alt": "桃園中壢「厚陞晴」北歐風宅邸 | 桃園室內設計裝修 | 晨陽設計 - 晨陽室內設計",
@@ -504,7 +504,7 @@
         {
           "type": "image",
           "url": "https://chen-yang.com.tw/upload/images/LINE_ALBUM_20250908厚陞晴 B1-13F 輕享家 北歐風_250909_1.jpg",
-          "alt": "厚陞晴 B1 戶｜平面格局示意圖（圖4）",
+          "alt": "厚陞晴 B1 戶｜北歐風空間設計示意圖（圖4）",
           "context": "厚陞晴 格局規劃 B1 戶 【平面模擬圖】",
           "order": 4,
           "original_alt": "桃園中壢「厚陞晴」北歐風宅邸 | 桃園室內設計裝修 | 晨陽設計 - 晨陽室內設計",
@@ -512,7 +512,7 @@
           "alt_review_required": true
         }
       ],
-      "html_with_media": "<h2>厚陞晴 B1 戶｜用木質與留白整理中壢新成屋生活</h2><BR>\n位於桃園中壢 A20 興南站生活圈的「厚陞晴」，提供不同房型規劃。晨陽設計在 B1 戶設計提案中，運用米白、淺駝、淺木紋與柔和採光，建立清爽而不冰冷的北歐生活感。與其堆疊大量裝飾，更重視日常收納、客廳動線及臥室使用便利性。<BR><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/0010001.jpg\" alt=\"厚陞晴 B1 戶｜室內空間設計圖片（圖1）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">厚陞晴 B1 戶｜室內空間設計圖片（圖1）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/平面模擬圖]-01.jpg\" alt=\"厚陞晴 B1 戶｜戶型平面格局示意圖（圖2）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">厚陞晴 B1 戶｜戶型平面格局示意圖（圖2）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/LINE_ALBUM_20250908厚陞晴 B1-13F 輕享家 北歐風_250909_2.jpg\" alt=\"厚陞晴 B1 戶｜平面格局示意圖（圖3）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">厚陞晴 B1 戶｜平面格局示意圖（圖3）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/LINE_ALBUM_20250908厚陞晴 B1-13F 輕享家 北歐風_250909_1.jpg\" alt=\"厚陞晴 B1 戶｜平面格局示意圖（圖4）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">厚陞晴 B1 戶｜平面格局示意圖（圖4）</figcaption></figure><BR>\n<h2>客廳｜明亮不只是白色，而是收納比例與家具尺度</h2><BR>\n客廳以米白色系搭配木質電視牆及收納櫃，將常用物品集中整理，降低視覺雜亂。布質沙發和輕巧茶几保持使用彈性，大面窗景配合較輕透的窗簾材質，使自然光進入主要活動區。實際規劃時還需確認採光方向、電視距離、茶几通道與收納櫃深度。<BR><BR>\n<h2>臥室｜床頭燈、插座與衣櫃一起規劃</h2><BR>\n臥室以淺木紋、米白與柔和灰階延續整體基調。衣櫃採較簡潔的門片配置，床頭將照明、開關、電源與日常置物納入考量，避免完工後才發現充電位置或櫃門使用不順。比起追求形式上的風格標籤，實際使用上的順手程度更值得優先檢查。<BR><BR>\n<h2>施工前如何確認設計可落地？</h2><BR>\n放樣與現場核對可用來檢查電視牆長度、櫃體深度、床邊走道以及開關插座位置。對 B1 戶這類以整合收納為核心的設計而言，設計圖與現場尺寸應相互核對，避免依示意圖直接假設每個櫃體都能原尺寸施工。<BR><BR>\n<h2>常見問題 FAQ</h2><BR>\nQ：厚陞晴 B1 戶的北歐風與無印風差在哪？<BR>兩者都可使用淺木色和低彩度配色，差異在材質、家具語彙與留白比例；本提案以自然木色和機能整合作為主要方向。<BR>Q：B1 戶有多少坪？<BR>現有文章列有建案不同坪數帶，但 B1 戶確切面積應以建商正式圖面與現場資料核實。<BR>Q：什麼是放樣驗收？<BR>在施工前依現場位置確認櫃體、動線與設備配置，有助於提早發現圖面與使用需求的不一致；不能保證所有施工變更都不會發生。<BR><BR>\n<strong>晨陽設計｜進一步了解</strong><BR>若你準備裝修厚陞晴 B1 戶或其他中壢新成屋，可先確認房型圖、收納量與家具尺寸，再與晨陽設計討論適合的施工與規劃方式。<BR>",
+      "html_with_media": "<h2>厚陞晴 B1 戶｜用木質與留白整理中壢新成屋生活</h2><BR>\n位於桃園中壢 A20 興南站生活圈的「厚陞晴」，提供不同房型規劃。晨陽設計在 B1 戶設計提案中，運用米白、淺駝、淺木紋與柔和採光，建立清爽而不冰冷的北歐生活感。與其堆疊大量裝飾，更重視日常收納、客廳動線及臥室使用便利性。<BR><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/0010001.jpg\" alt=\"厚陞晴 B1 戶｜室內空間設計圖片（圖1）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">厚陞晴 B1 戶｜室內空間設計圖片（圖1）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/平面模擬圖]-01.jpg\" alt=\"厚陞晴 B1 戶｜戶型平面格局示意圖（圖2）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">厚陞晴 B1 戶｜戶型平面格局示意圖（圖2）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/LINE_ALBUM_20250908厚陞晴 B1-13F 輕享家 北歐風_250909_2.jpg\" alt=\"厚陞晴 B1 戶｜北歐風空間設計示意圖（圖3）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">厚陞晴 B1 戶｜北歐風空間設計示意圖（圖3）</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/LINE_ALBUM_20250908厚陞晴 B1-13F 輕享家 北歐風_250909_1.jpg\" alt=\"厚陞晴 B1 戶｜北歐風空間設計示意圖（圖4）\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">厚陞晴 B1 戶｜北歐風空間設計示意圖（圖4）</figcaption></figure><BR>\n<h2>客廳｜明亮不只是白色，而是收納比例與家具尺度</h2><BR>\n客廳以米白色系搭配木質電視牆及收納櫃，將常用物品集中整理，降低視覺雜亂。布質沙發和輕巧茶几保持使用彈性，大面窗景配合較輕透的窗簾材質，使自然光進入主要活動區。實際規劃時還需確認採光方向、電視距離、茶几通道與收納櫃深度。<BR><BR>\n<h2>臥室｜床頭燈、插座與衣櫃一起規劃</h2><BR>\n臥室以淺木紋、米白與柔和灰階延續整體基調。衣櫃採較簡潔的門片配置，床頭將照明、開關、電源與日常置物納入考量，避免完工後才發現充電位置或櫃門使用不順。比起追求形式上的風格標籤，實際使用上的順手程度更值得優先檢查。<BR><BR>\n<h2>施工前如何確認設計可落地？</h2><BR>\n放樣與現場核對可用來檢查電視牆長度、櫃體深度、床邊走道以及開關插座位置。對 B1 戶這類以整合收納為核心的設計而言，設計圖與現場尺寸應相互核對，避免依示意圖直接假設每個櫃體都能原尺寸施工。<BR><BR>\n<h2>常見問題 FAQ</h2><BR>\nQ：厚陞晴 B1 戶的北歐風與無印風差在哪？<BR>兩者都可使用淺木色和低彩度配色，差異在材質、家具語彙與留白比例；本提案以自然木色和機能整合作為主要方向。<BR>Q：B1 戶有多少坪？<BR>現有文章列有建案不同坪數帶，但 B1 戶確切面積應以建商正式圖面與現場資料核實。<BR>Q：什麼是放樣驗收？<BR>在施工前依現場位置確認櫃體、動線與設備配置，有助於提早發現圖面與使用需求的不一致；不能保證所有施工變更都不會發生。<BR><BR>\n<strong>晨陽設計｜進一步了解</strong><BR>若你準備裝修厚陞晴 B1 戶或其他中壢新成屋，可先確認房型圖、收納量與家具尺寸，再與晨陽設計討論適合的施工與規劃方式。<BR>",
       "alt_count": 4,
       "alt_review_count": 4,
       "media_integrated": true,
@@ -559,9 +559,9 @@
     {
       "id": "seo-oldhouse-614",
       "source_url": "https://chen-yang.com.tw/unboxing-content.php?id=614",
-      "media_count": 7,
+      "media_count": 9,
       "image_count": 7,
-      "video_count": 0,
+      "video_count": 2,
       "media": [
         {
           "type": "image",
@@ -571,7 +571,7 @@
           "order": 1,
           "original_alt": "輕工業風老屋玄關設計，晨陽設計以沿牆櫃體整合展示櫃、衣帽櫃與沖孔板鞋櫃",
           "alt_provenance": "原頁具體 Alt（沿用）",
-          "alt_review_required": true
+          "alt_review_required": false
         },
         {
           "type": "image",
@@ -581,7 +581,7 @@
           "order": 2,
           "original_alt": "25坪老屋餐廚收納設計，晨陽設計以木質沿牆櫃體結合酒櫃、餐櫃、電器櫃與展示機能",
           "alt_provenance": "原頁具體 Alt（沿用）",
-          "alt_review_required": true
+          "alt_review_required": false
         },
         {
           "type": "image",
@@ -591,7 +591,7 @@
           "order": 3,
           "original_alt": "輕工業風客廳設計，晨陽設計以畫作展示牆、黑色皮沙發、胡桃木電視櫃與酒紅窗簾營造復古感",
           "alt_provenance": "原頁具體 Alt（沿用）",
-          "alt_review_required": true
+          "alt_review_required": false
         },
         {
           "type": "image",
@@ -601,7 +601,7 @@
           "order": 4,
           "original_alt": "老屋翻新走道紅磚牆設計，晨陽設計以斑駁裸露磚牆強化輕工業風與復古空間層次",
           "alt_provenance": "原頁具體 Alt（沿用）",
-          "alt_review_required": true
+          "alt_review_required": false
         },
         {
           "type": "image",
@@ -611,7 +611,7 @@
           "order": 5,
           "original_alt": "輕工業風主臥入口設計，晨陽設計以木質穀倉門、深綠牆面與木地板營造復古臥室氛圍",
           "alt_provenance": "原頁具體 Alt（沿用）",
-          "alt_review_required": true
+          "alt_review_required": false
         },
         {
           "type": "image",
@@ -621,7 +621,7 @@
           "order": 6,
           "original_alt": "主臥深綠床頭牆跳色設計，晨陽設計搭配工業風壁燈與大地色床組提升臥室層次",
           "alt_provenance": "原頁具體 Alt（沿用）",
-          "alt_review_required": true
+          "alt_review_required": false
         },
         {
           "type": "image",
@@ -631,12 +631,26 @@
           "order": 7,
           "original_alt": "輕工業風臥室床頭細節，晨陽設計以木質邊櫃、黑色網狀壁燈與深綠背景呈現個性化住宅設計",
           "alt_provenance": "原頁具體 Alt（沿用）",
-          "alt_review_required": true
+          "alt_review_required": false
+        },
+        {
+          "type": "video",
+          "url": "https://www.youtube.com/embed/3o1DyBihED0?si=Yn1FTz4TCPFCDR82",
+          "alt": "",
+          "context": "晨陽設計影音開箱｜看更多老屋翻新與輕工業風設計細節｜Q5：復古跳色牆面怎麼做才不會太突兀？｜Q4：放樣驗收對老屋翻新有什麼作用？",
+          "order": 8
+        },
+        {
+          "type": "video",
+          "url": "https://www.youtube.com/embed/-auVqO51qr4?si=oe0LNzW71VbzYhvk",
+          "alt": "",
+          "context": "晨陽設計影音開箱｜看更多老屋翻新與輕工業風設計細節｜Q5：復古跳色牆面怎麼做才不會太突兀？｜Q4：放樣驗收對老屋翻新有什麼作用？",
+          "order": 9
         }
       ],
-      "html_with_media": "<h2>30年老屋翻新｜25坪小宅，先修好生活的基礎</h2><BR>\n本案是屋齡約30年、室內約25坪的老公寓，原有格局為兩房兩廳兩衛。屋主希望保留個人收藏、輕工業風格與愛犬生活空間；晨陽設計沒有為了視覺效果大幅拆改，而是優先考慮管線更新、漏水問題核對與既有空間收納。老屋翻新的價值，來自看不見的基礎工程與看得見的日常便利同時成立。<BR><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/chen-yang-entrance-hallway-lighting-design-.jpg\" alt=\"輕工業風老屋玄關設計，晨陽設計以沿牆櫃體整合展示櫃、衣帽櫃與沖孔板鞋櫃\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">輕工業風老屋玄關設計，晨陽設計以沿牆櫃體整合展示櫃、衣帽櫃與沖孔板鞋櫃</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/chen-yang-entrance-cabinet-design-wood-grain.jpg\" alt=\"25坪老屋餐廚收納設計，晨陽設計以木質沿牆櫃體結合酒櫃、餐櫃、電器櫃與展示機能\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">25坪老屋餐廚收納設計，晨陽設計以木質沿牆櫃體結合酒櫃、餐櫃、電器櫃與展示機能</figcaption></figure><BR>\n<h2>工程順序｜先掌握屋況，再討論裝修造型</h2><BR>\n對30年公寓而言，水電管線、窗台滲水、設備位置及既有結構條件是初期重要檢查項目。本案窗台曾有漏水情形，抓漏工程由屋主另尋廠商處理；晨陽團隊參與相關討論，協助在後續裝修時留意銜接細節。這不等於所有漏水問題均由設計公司直接施作或保證不再發生。<BR><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/chen-yang-living-room-feature-wall-art-paintings-.jpg\" alt=\"輕工業風客廳設計，晨陽設計以畫作展示牆、黑色皮沙發、胡桃木電視櫃與酒紅窗簾營造復古感\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">輕工業風客廳設計，晨陽設計以畫作展示牆、黑色皮沙發、胡桃木電視櫃與酒紅窗簾營造復古感</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/chen-yang-living-room-exposed-brick-wall-design.jpg\" alt=\"老屋翻新走道紅磚牆設計，晨陽設計以斑駁裸露磚牆強化輕工業風與復古空間層次\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">老屋翻新走道紅磚牆設計，晨陽設計以斑駁裸露磚牆強化輕工業風與復古空間層次</figcaption></figure><BR>\n<h2>25坪收納｜玄關到餐廚沿牆整合</h2><BR>\n設計團隊以沿牆櫃體串接玄關與餐廳，把鞋櫃、衣帽櫃、收藏展示、酒櫃、餐櫃和電器收納納入同一條使用邏輯。如此可減少零散家具，避免阻斷原有的室內行走空間。電器櫃使用上掀門片與抽盤設計，仍應依實際設備尺寸、散熱與使用便利性配置。<BR><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/chen-yang-bedroom-interior-sliding-barn-door-02.jpg\" alt=\"輕工業風主臥入口設計，晨陽設計以木質穀倉門、深綠牆面與木地板營造復古臥室氛圍\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">輕工業風主臥入口設計，晨陽設計以木質穀倉門、深綠牆面與木地板營造復古臥室氛圍</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/chen-yang-master-bedroom-headboard-wall-lighting-03.jpg\" alt=\"主臥深綠床頭牆跳色設計，晨陽設計搭配工業風壁燈與大地色床組提升臥室層次\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">主臥深綠床頭牆跳色設計，晨陽設計搭配工業風壁燈與大地色床組提升臥室層次</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/chen-yang-bedroom-nightstand-industrial-wall-lamp.jpg\" alt=\"輕工業風臥室床頭細節，晨陽設計以木質邊櫃、黑色網狀壁燈與深綠背景呈現個性化住宅設計\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">輕工業風臥室床頭細節，晨陽設計以木質邊櫃、黑色網狀壁燈與深綠背景呈現個性化住宅設計</figcaption></figure><BR>\n<h2>個性風格｜把收藏與寵物的日常留在空間裡</h2><BR>\n客廳讓屋主的旅遊畫作成為視覺焦點，搭配深木色、穀倉門、沖孔板與局部斑駁磚牆，建立輕工業與復古的材質語彙。主臥以深綠色床頭牆形成主題，但沒有讓深色材料占滿每個角落；客廳也安排愛犬休憩位置，讓居住者的習慣比造型更重要。<BR><BR>\n<h2>常見問題 FAQ</h2><BR>\nQ：30年老屋翻新一定要打掉重做嗎？<BR>不一定。本案保留兩房兩廳兩衛原有格局，主要著重屋況改善、管線與收納整理；是否拆改仍需依結構、法規及生活需求判斷。<BR>Q：老屋翻新預算怎麼抓？<BR>先確認漏水、管線、基礎工程、必要設備與裝修項目，再依實際現場勘查提出報價；只看單坪平均價容易低估屋況差異。<BR>Q：沿牆做整排櫃體會顯得擁擠嗎？<BR>重點是深度、動線與功能安排。本案透過集中收納讓玄關及餐廚更有秩序，但是否適合仍需依現場牆長與柱體條件判斷。<BR><BR>\n<strong>晨陽設計｜進一步了解</strong><BR>如果你正準備翻新老公寓，建議先記錄漏水、管線、用電、收納及家具使用問題，再和晨陽設計討論哪些工程該先做、哪些美感項目可後續安排。<BR>",
+      "html_with_media": "<h2>30年老屋翻新｜25坪小宅，先修好生活的基礎</h2><BR>\n本案是屋齡約30年、室內約25坪的老公寓，原有格局為兩房兩廳兩衛。屋主希望保留個人收藏、輕工業風格與愛犬生活空間；晨陽設計沒有為了視覺效果大幅拆改，而是優先考慮管線更新、漏水問題核對與既有空間收納。老屋翻新的價值，來自看不見的基礎工程與看得見的日常便利同時成立。<BR><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/chen-yang-entrance-hallway-lighting-design-.jpg\" alt=\"輕工業風老屋玄關設計，晨陽設計以沿牆櫃體整合展示櫃、衣帽櫃與沖孔板鞋櫃\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">輕工業風老屋玄關設計，晨陽設計以沿牆櫃體整合展示櫃、衣帽櫃與沖孔板鞋櫃</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/chen-yang-entrance-cabinet-design-wood-grain.jpg\" alt=\"25坪老屋餐廚收納設計，晨陽設計以木質沿牆櫃體結合酒櫃、餐櫃、電器櫃與展示機能\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">25坪老屋餐廚收納設計，晨陽設計以木質沿牆櫃體結合酒櫃、餐櫃、電器櫃與展示機能</figcaption></figure><BR>\n<h2>工程順序｜先掌握屋況，再討論裝修造型</h2><BR>\n對30年公寓而言，水電管線、窗台滲水、設備位置及既有結構條件是初期重要檢查項目。本案窗台曾有漏水情形，抓漏工程由屋主另尋廠商處理；晨陽團隊參與相關討論，協助在後續裝修時留意銜接細節。這不等於所有漏水問題均由設計公司直接施作或保證不再發生。<BR><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/chen-yang-living-room-feature-wall-art-paintings-.jpg\" alt=\"輕工業風客廳設計，晨陽設計以畫作展示牆、黑色皮沙發、胡桃木電視櫃與酒紅窗簾營造復古感\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">輕工業風客廳設計，晨陽設計以畫作展示牆、黑色皮沙發、胡桃木電視櫃與酒紅窗簾營造復古感</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/chen-yang-living-room-exposed-brick-wall-design.jpg\" alt=\"老屋翻新走道紅磚牆設計，晨陽設計以斑駁裸露磚牆強化輕工業風與復古空間層次\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">老屋翻新走道紅磚牆設計，晨陽設計以斑駁裸露磚牆強化輕工業風與復古空間層次</figcaption></figure><BR>\n<h2>25坪收納｜玄關到餐廚沿牆整合</h2><BR>\n設計團隊以沿牆櫃體串接玄關與餐廳，把鞋櫃、衣帽櫃、收藏展示、酒櫃、餐櫃和電器收納納入同一條使用邏輯。如此可減少零散家具，避免阻斷原有的室內行走空間。電器櫃使用上掀門片與抽盤設計，仍應依實際設備尺寸、散熱與使用便利性配置。<BR><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/chen-yang-bedroom-interior-sliding-barn-door-02.jpg\" alt=\"輕工業風主臥入口設計，晨陽設計以木質穀倉門、深綠牆面與木地板營造復古臥室氛圍\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">輕工業風主臥入口設計，晨陽設計以木質穀倉門、深綠牆面與木地板營造復古臥室氛圍</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/chen-yang-master-bedroom-headboard-wall-lighting-03.jpg\" alt=\"主臥深綠床頭牆跳色設計，晨陽設計搭配工業風壁燈與大地色床組提升臥室層次\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">主臥深綠床頭牆跳色設計，晨陽設計搭配工業風壁燈與大地色床組提升臥室層次</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><img src=\"https://chen-yang.com.tw/upload/images/chen-yang-bedroom-nightstand-industrial-wall-lamp.jpg\" alt=\"輕工業風臥室床頭細節，晨陽設計以木質邊櫃、黑色網狀壁燈與深綠背景呈現個性化住宅設計\" loading=\"lazy\" decoding=\"async\" style=\"max-width:100%;height:auto;\"><figcaption style=\"font-size:13px;color:#555;\">輕工業風臥室床頭細節，晨陽設計以木質邊櫃、黑色網狀壁燈與深綠背景呈現個性化住宅設計</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><iframe src=\"https://www.youtube-nocookie.com/embed/3o1DyBihED0\" title=\"原文章影片\" loading=\"lazy\" allowfullscreen style=\"width:100%;aspect-ratio:16/9;border:0;\"></iframe><figcaption style=\"font-size:13px;color:#555;\">晨陽設計影音開箱｜看更多老屋翻新與輕工業風設計細節｜Q5：復古跳色牆面怎麼做才不會太突兀？｜Q4：放樣驗收對老屋翻新有什麼作用？</figcaption></figure><BR>\n<figure style=\"margin:18px auto;text-align:center;\"><iframe src=\"https://www.youtube-nocookie.com/embed/-auVqO51qr4\" title=\"原文章影片\" loading=\"lazy\" allowfullscreen style=\"width:100%;aspect-ratio:16/9;border:0;\"></iframe><figcaption style=\"font-size:13px;color:#555;\">晨陽設計影音開箱｜看更多老屋翻新與輕工業風設計細節｜Q5：復古跳色牆面怎麼做才不會太突兀？｜Q4：放樣驗收對老屋翻新有什麼作用？</figcaption></figure><BR>\n<h2>個性風格｜把收藏與寵物的日常留在空間裡</h2><BR>\n客廳讓屋主的旅遊畫作成為視覺焦點，搭配深木色、穀倉門、沖孔板與局部斑駁磚牆，建立輕工業與復古的材質語彙。主臥以深綠色床頭牆形成主題，但沒有讓深色材料占滿每個角落；客廳也安排愛犬休憩位置，讓居住者的習慣比造型更重要。<BR><BR>\n<h2>常見問題 FAQ</h2><BR>\nQ：30年老屋翻新一定要打掉重做嗎？<BR>不一定。本案保留兩房兩廳兩衛原有格局，主要著重屋況改善、管線與收納整理；是否拆改仍需依結構、法規及生活需求判斷。<BR>Q：老屋翻新預算怎麼抓？<BR>先確認漏水、管線、基礎工程、必要設備與裝修項目，再依實際現場勘查提出報價；只看單坪平均價容易低估屋況差異。<BR>Q：沿牆做整排櫃體會顯得擁擠嗎？<BR>重點是深度、動線與功能安排。本案透過集中收納讓玄關及餐廚更有秩序，但是否適合仍需依現場牆長與柱體條件判斷。<BR><BR>\n<strong>晨陽設計｜進一步了解</strong><BR>如果你正準備翻新老公寓，建議先記錄漏水、管線、用電、收納及家具使用問題，再和晨陽設計討論哪些工程該先做、哪些美感項目可後續安排。<BR>",
       "alt_count": 7,
-      "alt_review_count": 7,
+      "alt_review_count": 0,
       "media_integrated": true,
       "review_required": true,
       "status": "原頁媒體已提取，仍須比對是否完整",
