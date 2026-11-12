@@ -1,0 +1,55 @@
+{
+  "source": "嚴格區分原生 Google 搜尋 Grounding 與自建即時網頁檢索＋Gemini 分析",
+  "not_consumer_ui": true,
+  "not_chatgpt": true,
+  "not_perplexity": true,
+  "search_verified_by": "自建 RAG: 外部網頁搜尋來源與 AI 回答明確引用網址",
+  "window_start": "2026-10-14",
+  "window_end": "2026-11-12",
+  "last_responded_date": "2026-11-12",
+  "model": "gemini-3.5-flash-lite + live web retrieval (custom RAG, NOT platform search)",
+  "source_types": {
+    "native_gemini_google_grounding": {
+      "samples": 0,
+      "mentions": 0,
+      "direct_domain_citations": 0
+    },
+    "custom_live_web_rag": {
+      "samples": 1,
+      "mentions": 0,
+      "direct_domain_citations": 0
+    }
+  },
+  "sample_count": 1,
+  "brand_mentioned": 0,
+  "own_domain_direct_cited": 0,
+  "competitor_candidates": [
+    {
+      "name": "栩璞室內設計",
+      "occurrences": 1,
+      "verification": "需人工核對是否為推薦，可能只是列入比較"
+    },
+    {
+      "name": "虹橋采卉室內設計",
+      "occurrences": 1,
+      "verification": "需人工核對是否為推薦，可能只是列入比較"
+    }
+  ],
+  "prompts": [
+    {
+      "id": "kaohsiung-condo",
+      "samples": 1,
+      "mentions": 0,
+      "direct_domain_citations": 0
+    }
+  ],
+  "caveats": [
+    "自建聯網推薦採用外部網頁搜尋＋免費 Gemini 回答，不是 Gemini 官方搜尋或消費者介面推薦",
+    "原生 Gemini Google Search Grounding 與自建 RAG 已分組，樣本不應混算成單一平台推薦率",
+    "品牌候選名單由回答條列式格式擷取，尚未人工核對，不能直接當作確定推薦",
+    "Google grounding 轉址未解析時不可宣稱引用了晨陽官網",
+    "真實 ChatGPT、Perplexity 搜尋尚未自動連接"
+  ],
+  "synced_at": "2026-11-12T12:15:00+08:00",
+  "sync_method": "one-time connector update; daily auto-sync still requires PUBLIC_DASHBOARD_TOKEN"
+}
