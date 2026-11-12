@@ -2,6 +2,7 @@
 Does not download or regenerate media. Includes conservative no-media status.
 """
 import json,re
+import hashlib
 from html import escape
 from pathlib import Path
 from datetime import datetime
@@ -272,6 +273,106 @@ def merge(d,items):
     return "\n".join(parts)
 
 
+
+def source_preserving_hybrid(d,assets,document,url):
+    """Preserve CMS article contents/links/images then append focused SEO guidance.
+    Never present a newly rewritten design-only body as a safe full replacement.
+    """
+    soup=BeautifulSoup(document,"html.parser")
+    root=soup.select_one(".col-row .l-edit")
+    if root is None:
+        return "",{"original_main_content_preserved":False,
+                   "failure":"找不到原文章 .l-edit 正文區塊"}
+    old_text=" ".join(root.get_text(" ",strip=True).split())
+    if len(old_text)<380:
+        return "",{"original_main_content_preserved":False,
+                   "failure":"原文章正文過短，無法確定擷取完整"}
+    orig_imgs=[x.get("src","") for x in root.find_all("img")]
+    orig_links=[x.get("href","") for x in root.find_all("a",href=True)]
+    orig_videos=[x.get("src","") for x in root.find_all(["iframe","video"],src=True)]
+    # CMS title field is already H1; source content may contain an accidental H1.
+    for heading in root.find_all("h1"):
+        heading.name="h2"
+        heading["style"]="margin:28px 0 12px;"
+        if not heading.find("span"):
+            label=heading.get_text(" ",strip=True)
+            heading.clear()
+            s=soup.new_tag("span",style="color:#C5A47E !important;font-size:20px !important;line-height:1.9 !important;font-weight:700 !important;")
+            s.string=label
+            heading.append(s)
+        else:
+            for child in heading.find_all("span"):
+                child["style"]="color:#C5A47E !important;font-size:20px !important;line-height:1.9 !important;font-weight:700 !important;"
+    # Update existing image ALT, while retaining the original image src and position.
+    by_url={}
+    for a in assets:
+        if a["type"]=="image":
+            by_url[a["url"]]=a
+    for i,img in enumerate(root.find_all("img"),start=1):
+        raw=img.get("data-original") or img.get("data-src") or img.get("src","")
+        normalized=allowed(raw,url,"image")
+        match=by_url.get(normalized)
+        if match:
+            if not match.get("alt_provenance"):
+                match["alt"]=alt_for(d,match,section_index(d["id"],match,0,len(d["sections"])))
+                match["alt_review_required"]=match.get("alt_provenance")!="原頁具體 Alt（沿用）"
+            img["alt"]=match["alt"]
+        elif not img.get("alt","").strip():
+            # A faithful conservative ALT—not an invented visual description.
+            img["alt"]=d["title"].split("｜",1)[0].strip()+"｜原官網文章圖片"
+    source_html="".join(str(x) for x in root.contents)
+
+    # Do not duplicate the existing site-wide project description. The source
+    # retains factual building information, room plans, examples and links.
+    heading,body=d["sections"][-2]
+    supplement=(
+        '<hr />\n'
+        '<h2 style="margin:28px 0 12px;"><span style="color:#C5A47E !important;'
+        'font-size:20px !important;line-height:1.9 !important;font-weight:700 !important;">'
+        +escape("延伸閱讀｜"+heading)+'</span></h2><BR>\n'
+        +format_body(body)
+    )
+    # For original pages without any FAQ only, add the user's actual case FAQ.
+    if not re.search(r"(?:FAQ|常見問題|Q[1-5][:：]|Q[:：])",old_text,re.I):
+        faq_h,faq_b=d["sections"][-1]
+        supplement+=(
+            '<h2 style="margin:28px 0 12px;"><span style="color:#C5A47E !important;'
+            'font-size:20px !important;line-height:1.9 !important;font-weight:700 !important;">'
+            +escape(faq_h)+'</span></h2><BR>\n'+format_body(faq_b,is_faq=True)
+        )
+    candidate=source_html+"\n"+supplement
+    after=BeautifulSoup(candidate,"html.parser")
+    text_after=" ".join(after.get_text(" ",strip=True).split())
+    after_imgs=[x.get("src","") for x in after.find_all("img")]
+    after_links=[x.get("href","") for x in after.find_all("a",href=True)]
+    after_videos=[x.get("src","") for x in after.find_all(["iframe","video"],src=True)]
+    integrity={
+        "original_main_content_preserved":bool(
+            text_after.startswith(old_text)
+            and after_imgs[:len(orig_imgs)]==orig_imgs
+            and after_links[:len(orig_links)]==orig_links
+            and after_videos[:len(orig_videos)]==orig_videos
+            and bool(orig_imgs)),
+        "original_text_characters":len(old_text),
+        "merged_text_characters":len(text_after),
+        "original_image_urls_count":len(orig_imgs),
+        "preserved_image_urls_count":len(after_imgs),
+        "original_link_count":len(orig_links),
+        "preserved_link_count":len(after_links),
+        "original_video_count":len(orig_videos),
+        "preserved_video_count":len(after_videos),
+        "original_text_sha256":hashlib.sha256(old_text.encode()).hexdigest(),
+        "source_selector":".col-row .l-edit",
+        "strategy":"原官網正文完整保留＋新增 SEO 裝修查核段落",
+        "source_has_building_information":bool(re.search(
+            r"(?:生活機能|捷運|格局|坪|房|交通|建案|學區)",old_text)),
+        "still_requires_editor_review":True
+    }
+    if not integrity["original_main_content_preserved"]:
+        integrity["failure"]="正文、原圖片、原影片或外部連結完整性檢查失敗"
+        return "",integrity
+    return candidate,integrity
+
 def main():
     plan=json.loads((ROOT/"seo-improvement-plan.json").read_text(encoding="utf-8"))
     rewrites=json.loads((ROOT/"seo-rewrites.json").read_text(encoding="utf-8"))
@@ -292,25 +393,28 @@ def main():
         try:
             req=Request(url,headers={"User-Agent":"Mozilla/5.0 (compatible; ChenYangCMSMediaAudit/1.0)"})
             with urlopen(req,timeout=25) as resp:raw=resp.read(5000000)
-            assets=extract(raw.decode("utf-8",errors="replace"),url)
-            html=merge(draft,assets)
+            source_html=raw.decode("utf-8",errors="replace")
+            assets=extract(source_html,url)
+            html,audit=source_preserving_hybrid(draft,assets,source_html,url)
             error=None
         except Exception as exc:
             assets=[];html="";error=type(exc).__name__
+            audit={"original_main_content_preserved":False,"failure":error}
         output.append({"id":draft["id"],"source_url":url,
                       "article_mode":article_mode,"template":"chenyang-existing-article-v1.1",
                       "media_count":len(assets),
                       "image_count":sum(x["type"]=="image" for x in assets),
                       "video_count":sum(x["type"]=="video" for x in assets),
                       "media":assets,"html_with_media":html,
+                      "preservation_audit":audit,
                       "alt_count":sum(bool(x.get("alt")) for x in assets if x["type"]=="image"),
                       "alt_review_count":sum(bool(x.get("alt_review_required")) for x in assets if x["type"]=="image"),
-                      "media_integrated":bool(assets and html),"review_required":True,
-                      "status":"原頁媒體已提取，仍須比對是否完整" if assets else "未取到原頁媒體，禁止覆寫原文",
+                      "media_integrated":bool(assets and html and audit["original_main_content_preserved"]),"review_required":True,
+                      "status":"原建案正文、媒體、連結已完整保留；待編輯核對事實" if audit["original_main_content_preserved"] else "來源正文未完整保留，禁止覆寫原文",
                       "error_type":error})
     result={"generated_at":datetime.now(ZoneInfo("Asia/Taipei")).isoformat(timespec="seconds"),
             "no_media_files_copied":True,"not_published_to_cms":True,
-            "note":"現有 NEWS／開箱文章（非設計理念）。依原文擷取媒體並套用固定 HTML：H2 金色 #C5A47E、20px !important，正文 18px !important、段落行距 1.9，後台標題欄負責 H1；一般文章結尾使用專屬 CTA，不使用設計理念的『此為【建案名稱】一案』。ALT 有待核對項，JS 延遲媒體可能漏抓。",
+            "note":"混合保留策略：抓取現有 NEWS／開箱文章原正文（包含建案、交通、格局、坪數、照片和連結）並只新增經過 SEO 編輯的裝修延伸段落；嚴格比對原文字、圖片、影片與連結完整性，任何失敗都不提供整篇覆蓋。原內容中的時效性資訊仍須人工核對，並非現行有效性的保證。",
             "articles":output}
     (ROOT/"seo-media-rewrites.json").write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(json.dumps([{"id":x["id"],"images":x["image_count"],"videos":x["video_count"],"status":x["status"]} for x in output],ensure_ascii=False))
