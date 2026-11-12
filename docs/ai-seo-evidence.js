@@ -8,7 +8,7 @@ const MAX_ANSWER=30000;
 const BRANDS=["晨陽室內設計","晨陽設計","晨陽共好機構","謙鐿晨陽","晨陽"];
 const dom=id=>document.getElementById(id);
 const words=s=>String(s||"").normalize("NFKC").replace(/\s+/g,"").toLocaleLowerCase();
-const normalizeName=s=>String(s||"").normalize("NFKC").trim().replace(/^[\s\d\W]+|[\s\W]+$/gu,"").slice(0,60);
+const normalizeName=s=>String(s||"").normalize("NFKC").trim().replace(/^[\p{P}\p{S}\s\d]+|[\p{P}\p{S}\s]+$/gu,"").slice(0,60);
 const unique=arr=>[...new Set(arr.filter(Boolean))];
 const own=n=>BRANDS.some(b=>words(n).includes(words(b)) || (words(n).length>2&&words(b).includes(words(n))));
 const seen=(answer,term)=>words(answer).includes(words(term));
