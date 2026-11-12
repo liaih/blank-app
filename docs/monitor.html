@@ -647,6 +647,7 @@ const geoTaskStorageKey="chenyang-geo-tasks-v1";
 let seoImprovementPlan=null;
 
 let seoRewritesById=new Map();
+let seoMediaById=new Map();
 function cmsCopyButton(label,content,feedback){
  const btn=document.createElement("button");btn.type="button";btn.className="ai-action secondary";btn.textContent=label;
  btn.onclick=async()=>{
@@ -718,7 +719,59 @@ function renderSeoRewriteDeliverable(target,draft,plan){
  textarea.style.width="100%";textarea.style.minHeight="280px";textarea.style.marginTop="10px";
  textarea.style.border="1px solid #dfe7f0";textarea.style.padding="12px";textarea.style.fontSize="12px";
  textarea.setAttribute("aria-label",plan.title+" HTML 正文");full.appendChild(textarea);
- section.appendChild(full);section.appendChild(feedback);target.appendChild(section);
+
+ section.appendChild(full);
+ const mediaPane=document.createElement("section");mediaPane.className="panel soft";
+ const heading=document.createElement("h3");heading.textContent="圖文影音整合版｜原照片、影片及 ALT 已處理";mediaPane.appendChild(heading);
+ const media=seoMediaById.get(draft.id);
+ const status=document.createElement("p");status.className="detail";
+ if(media?.media_integrated){
+   status.textContent="已從原頁擷取 "+media.image_count+" 張圖片、"+media.video_count+" 段影片。已產生 "+
+     (media.alt_count||0)+" 則圖片 ALT；其中 "+(media.alt_review_count||0)+" 則依原文段落推定，仍需對照畫面。";
+   mediaPane.appendChild(status);
+   const row=document.createElement("div");row.className="ai-buttons";
+   row.appendChild(cmsCopyButton("複製整合圖文影音 HTML",media.html_with_media,feedback));
+   const altText=(media.media||[]).filter(x=>x.type==="image").map((x,i)=>
+     "圖片 "+(i+1)+"｜"+x.alt+"\n網址："+x.url).join("\n\n");
+   row.appendChild(cmsCopyButton("複製全部圖片 ALT",altText,feedback));
+   mediaPane.appendChild(row);
+   const gallery=document.createElement("details");
+   const label=document.createElement("summary");
+   label.textContent="檢查原媒體及逐張 ALT（"+media.media_count+" 項）";
+   gallery.appendChild(label);
+   const list=document.createElement("ol");
+   for(const asset of media.media||[]){
+     const item=document.createElement("li");
+     const link=document.createElement("a");link.href=asset.url;link.target="_blank";link.rel="noopener noreferrer";
+     link.textContent=(asset.type==="image"?"原圖片":"原影片")+"｜"+(asset.context||"無原文段落說明");
+     item.appendChild(link);
+     if(asset.type==="image"){
+       const alt=document.createElement("p");alt.className="detail";alt.textContent="ALT："+(asset.alt||"待核對");item.appendChild(alt);
+       if(asset.alt_review_required){
+         const quality=document.createElement("span");quality.className="label wait";quality.textContent="依上下文寫好，畫面待核對";
+         item.appendChild(quality);
+       }
+     }
+     list.appendChild(item);
+   }
+   gallery.appendChild(list);mediaPane.appendChild(gallery);
+   const fullHTML=document.createElement("details");
+   const summary=document.createElement("summary");summary.textContent="展開圖文影音整合 HTML 原始碼";
+   fullHTML.appendChild(summary);
+   const code=document.createElement("textarea");code.readOnly=true;code.value=media.html_with_media;
+   code.style.width="100%";code.style.minHeight="300px";code.style.marginTop="12px";
+   code.setAttribute("aria-label",plan.title+" 圖文影音 HTML");
+   fullHTML.appendChild(code);mediaPane.appendChild(fullHTML);
+   const note=document.createElement("p");note.className="message";
+   note.textContent="已保留抓取得到的原媒體網址，不代表已證明原頁所有延遲載入圖片／影片完整。首次上稿前請逐項對照；相同網址不需重新上傳。";
+   mediaPane.appendChild(note);
+ }else{
+   status.textContent=media?
+     "原媒體擷取未通過完整性要求："+media.status+"。暫不提供整合 HTML，避免缺圖覆蓋原文章。":
+     "正在等待原官網照片／影片清單及 ALT 同步，暫不提供整合版複製。";
+   mediaPane.appendChild(status);
+ }
+ section.appendChild(mediaPane);section.appendChild(feedback);target.appendChild(section);
 }
 
 function renderSeoImprovementPlan(){
@@ -768,6 +821,10 @@ function loadSeoImprovementPlan(){
     if(!Array.isArray(plan.items)||!Array.isArray(rewrites.articles))throw Error("invalid report");
     seoRewritesById=new Map(rewrites.articles.map(d=>[d.id,d]));
     seoImprovementPlan=plan;renderSeoImprovementPlan();
+    fetch("./seo-media-rewrites.json",{cache:"no-store"})
+     .then(resp=>{if(!resp.ok)throw Error("media report unavailable");return resp.json()})
+     .then(media=>{if(!Array.isArray(media.articles))throw Error("invalid media manifest");seoMediaById=new Map(media.articles.map(x=>[x.id,x]));renderSeoImprovementPlan();})
+     .catch(()=>{});
   })
   .catch(()=>{
     el("seo-article-actions").textContent="文章改稿或 HTML 資料尚未部署完成。請稍後重新整理，不會以建議文案冒充已產出的完整改稿。";
