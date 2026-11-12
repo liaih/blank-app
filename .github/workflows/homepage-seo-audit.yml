@@ -30,7 +30,7 @@ jobs:
           import json
           from pathlib import Path
           d=json.loads(Path("docs/seo-homepage-audit.json").read_text())
-          assert len(d["checks"])==2
+          assert len(d["checks"])==4
           assert all(x["requested_url"].startswith("https://") for x in d["checks"])
           assert any(x.get("status")==200 and x.get("title") for x in d["checks"]), "No live homepage HTML inspected; refuse to publish"
           PY
