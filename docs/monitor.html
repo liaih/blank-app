@@ -261,6 +261,18 @@ tbody tr:last-child td{border-bottom:0}
    <div id="ai-record-preview" class="ai-preview"></div>
    <p class="detail">此工具只分析你保存的回答，不會自動訪問 ChatGPT／Gemini／Perplexity，亦不會上傳原文到公開 GitHub。瀏覽器資料可能在清除網站資料後遺失，需自行匯出備份。</p>
   </section>
+  <section class="panel" aria-label="AI SEO 改善任務中心">
+    <div class="flexhead"><div><h2>AI SEO 改善任務中心</h2>
+      <p class="muted">把 AI 實測缺口轉成可追蹤的內容優化任務。建議來自固定題庫及已取得的樣本，並非 AI 排名保證。</p></div>
+      <button type="button" class="ai-action secondary" id="geo-task-export">匯出任務 JSON</button>
+    </div>
+    <p class="detail" id="geo-task-source">等待實測資料載入，產生初步改善建議。</p>
+    <div class="tablebox"><table>
+      <thead><tr><th>優化任務／問題</th><th>負責人</th><th>官網頁面</th><th>進度</th><th>修改日期</th><th>再次驗證結果</th></tr></thead>
+      <tbody id="geo-task-rows"><tr><td colspan="6">正在產生改善任務。</td></tr></tbody>
+    </table></div>
+    <p class="detail" id="geo-task-storage">任務修改暫存在目前瀏覽器，不會寫回公開 GitHub 或團隊共用資料庫；請匯出 JSON 保存。AI 推薦狀態需由回答原文驗證，不會因任務完成而自動判定成功。</p>
+  </section>
   <div class="flexhead"><div><h2>歷史測試與官方 AI 資料</h2><p class="muted">以下是舊的 Gemini 不聯網單題測試及尚待取得的 Google 官方資料；上方「三平台原回答監測」才是新的自動採樣結果。</p></div><span class="label wait">不同資料來源，不混算</span></div>
   <div class="metrics">
    <div class="metric"><div class="name">Gemini 真實回答樣本</div><div class="number" id="ai-samples">—</div><div class="sub">不連網文字模型，不等於搜尋結果</div></div>
@@ -604,6 +616,88 @@ function render(d){
  if(window.AISeoEvidence)window.AISeoEvidence.init(d);
 }
 if(window.MarketOpportunity)window.MarketOpportunity.init();
+
+const geoTaskStorageKey="chenyang-geo-tasks-v1";
+function taskInput(value,placeholder,change,type="text"){
+  const input=document.createElement("input");
+  input.type=type;input.value=value||"";input.placeholder=placeholder||"";
+  input.style.width="100%";input.style.minWidth="90px";
+  input.addEventListener("change",()=>change(input.value));
+  return input;
+}
+function renderGeoTasks(report){
+  const tbody=el("geo-task-rows");
+  tbody.replaceChildren();
+  const questions=report.intent_analysis&&Array.isArray(report.intent_analysis.questions)
+    ?report.intent_analysis.questions:[];
+  let saved={};
+  try{saved=JSON.parse(localStorage.getItem(geoTaskStorageKey)||"{}");}
+  catch(_){saved={};}
+  const tasks=[];
+  for(const question of questions){
+    const entries=Object.values(question.platforms||{});
+    const samples=entries.reduce((a,x)=>a+Number(x.samples||0),0);
+    const mentions=entries.reduce((a,x)=>a+Number(x.mentions||0),0);
+    if(samples===0)continue; // An untested question is not a documented SEO content failure.
+    if(mentions>0)continue; // First establish missing visibility in actual observed replies.
+    tasks.push({
+      id:"intent-"+question.id,
+      title:"檢視「"+question.region+"」"+(question.housing||[]).join("／")+"內容與可引用案例",
+      why:"實測："+samples+" 筆回答，晨陽提及 0 筆。須先核實服務範圍、既有頁面、實際案例與 AI 回答理由；不可直接認定內容不足。",
+      question:question.question
+    });
+  }
+  // A sample is missing if captured text failed validation; do not confuse this with SEO failure.
+  const perplexity=(report.existing_job_status||{}).Perplexity||{};
+  if(Number(perplexity["no-evidence"]||0)>0){
+    tasks.push({id:"capture-perplexity",title:"核對 Perplexity 擷取驗證失敗原因",
+      why:"既有 "+perplexity["no-evidence"]+" 筆任務無有效證據；確認供應商回傳格式與驗證規則，不新增付費擷取。",
+      question:"技術資料品質任務，非 SEO 內容失敗"});
+  }
+  if(!tasks.length){
+    const tr=document.createElement("tr"),td=document.createElement("td");
+    td.colSpan=6;td.textContent="目前沒有足夠實測證據可建立內容改善任務。";
+    tr.appendChild(td);tbody.appendChild(tr);
+  }
+  for(const task of tasks){
+    const state=saved[task.id]||{};
+    const tr=document.createElement("tr");
+    const main=document.createElement("td");main.style.minWidth="245px";
+    const strong=document.createElement("strong");strong.textContent=task.title;main.appendChild(strong);
+    const details=document.createElement("div");details.className="small";details.textContent=task.why;main.appendChild(details);
+    const source=document.createElement("details"),summary=document.createElement("summary");
+    summary.textContent="查看對應問題";source.appendChild(summary);
+    const prompt=document.createElement("p");prompt.textContent=task.question;source.appendChild(prompt);main.appendChild(source);
+    tr.appendChild(main);
+    const save=(field,value)=>{if(!saved[task.id])saved[task.id]={};saved[task.id][field]=value;
+      try{localStorage.setItem(geoTaskStorageKey,JSON.stringify(saved))}
+      catch(_){el("geo-task-storage").textContent="此瀏覽器無法儲存任務狀態；請使用匯出備份。";}
+    };
+    const owner=document.createElement("td");owner.appendChild(taskInput(state.owner,"指派負責人",v=>save("owner",v)));tr.appendChild(owner);
+    const page=document.createElement("td");page.appendChild(taskInput(state.page,"官網網址／待確認",v=>save("page",v)));tr.appendChild(page);
+    const status=document.createElement("td");
+    const select=document.createElement("select");
+    for(const value of ["待確認","待執行","處理中","已修改待驗證","已驗證"]){
+      const option=document.createElement("option");option.value=value;option.textContent=value;select.appendChild(option);
+    }
+    select.value=state.status||"待確認";select.onchange=()=>save("status",select.value);
+    status.appendChild(select);tr.appendChild(status);
+    const changed=document.createElement("td");
+    changed.appendChild(taskInput(state.date,"",v=>save("date",v),"date"));tr.appendChild(changed);
+    const outcome=document.createElement("td");
+    outcome.appendChild(taskInput(state.outcome,"測試日期、平台、樣本與結果",v=>save("outcome",v)));tr.appendChild(outcome);
+    tbody.appendChild(tr);
+  }
+  el("geo-task-source").textContent="已依公開受控樣本建立 "+tasks.length+" 項待確認任務。數據日期："+(report.generated_at||"未知")+"；僅是調查線索，沒有實測的題目不列為內容失敗。";
+  const exportBtn=el("geo-task-export");
+  exportBtn.onclick=()=>{
+    const file={exported_at:new Date().toISOString(),source:"公開 AI SEO 監控｜本機任務紀錄",tasks:tasks.map(t=>({...t,...(saved[t.id]||{})}))};
+    const blob=new Blob([JSON.stringify(file,null,2)],{type:"application/json"});
+    const url=URL.createObjectURL(blob),a=document.createElement("a");
+    a.href=url;a.download="chenyang-geo-tasks.json";a.click();URL.revokeObjectURL(url);
+  };
+}
+
 function renderNativePlatformAnswers(){
   const status=el("native-ai-status");
   fetch("./native-ai-summary.json",{cache:"no-store"})
@@ -653,6 +747,7 @@ function renderNativePlatformAnswers(){
             known?"已對照固定題庫":"需對照原始提問"],[1,2,3]);
         }
       }
+      renderGeoTasks(data);
       const intent=(data.intent_analysis&&Array.isArray(data.intent_analysis.questions))?data.intent_analysis.questions:[];
       const dimensionSelect=el("ai-intent-dimension"),categorySelect=el("ai-intent-value");
       const detailLabels={region:"地區",housing:"屋況",intents:"決策"};
