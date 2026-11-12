@@ -1,0 +1,27 @@
+name: AI SEO recommendation evidence validation
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/monitor.html"
+      - "docs/ai-seo-evidence.js"
+      - "docs/tests/ai-seo-evidence.test.cjs"
+      - ".github/workflows/ai-seo-evidence-checks.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check AI SEO JavaScript syntax
+        run: node --check docs/ai-seo-evidence.js
+      - name: Test AI SEO evidence workflow and false-claim safeguards
+        run: node docs/tests/ai-seo-evidence.test.cjs
+      - name: Retain original SEO market checks
+        run: node docs/tests/market-opportunity.test.cjs
