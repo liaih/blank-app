@@ -302,10 +302,17 @@ tbody tr:last-child td{border-bottom:0}
   <p class="muted">選擇文章，直接取得已排版的新版正文、原案例圖片、相關影片與圖片 ALT。每篇只有一個完整 HTML 複製按鈕。</p>
   <section class="panel" aria-label="晨陽官網文章改稿">
     <div class="ai-fields">
-      <label class="ai-wide">選擇要修改的文章
-        <select id="action-article"><option value="">正在讀取 8 篇改稿</option></select>
+      <label>文章狀態
+        <select id="action-view">
+          <option value="pending">待修改文章</option>
+          <option value="archive">歷史紀錄｜已完成</option>
+        </select>
+      </label>
+      <label>選擇文章
+        <select id="action-article"><option value="">正在讀取改稿</option></select>
       </label>
     </div>
+    <p class="detail" id="action-state-summary">正在讀取文章狀態。</p>
     <div id="seo-article-actions" aria-live="polite">正在載入單篇圖文影音 HTML。</div>
     <p class="detail">原媒體不需重新上傳，但仍須核對原頁的媒體是否完整、圖片 ALT 是否符合實際畫面及 CMS 能否保留 HTML 格式。SEO 改善是測試假設，非保證排名提升。</p>
   </section>
@@ -659,38 +666,96 @@ function cmsCopyButton(label,content,feedback){
  };
  return btn;
 }
+function readSeoTaskStates(){
+ try{
+  const saved=JSON.parse(localStorage.getItem(geoTaskStorageKey)||"{}");
+  return saved&&typeof saved==="object"&&!Array.isArray(saved)?saved:{};
+ }catch(_){return{};}
+}
+function isSeoTaskArchived(record){
+ return !!record&&["已完成","已驗證"].includes(record.status);
+}
+function saveSeoTaskState(id,fields){
+ const state=readSeoTaskStates();
+ state[id]={...(state[id]||{}),...fields};
+ try{localStorage.setItem(geoTaskStorageKey,JSON.stringify(state));return true;}
+ catch(_){return false;}
+}
 function renderSeoImprovementPlan(){
  if(!seoImprovementPlan)return;
- const items=seoImprovementPlan.items;
+ const items=seoImprovementPlan.items,records=readSeoTaskStates();
+ const mode=el("action-view").value;
+ const completed=items.filter(item=>isSeoTaskArchived(records[item.id]));
+ const pending=items.filter(item=>!isSeoTaskArchived(records[item.id]));
+ const statusText=el("action-state-summary");
+ statusText.textContent="待修改 "+pending.length+" 篇｜已完成 "+completed.length+
+   " 篇。完成文章不會刪除，只留在「歷史紀錄」。目前狀態保存在此瀏覽器，尚未跨裝置同步。";
  const rank=new Map((data?.seo?.keyword_opportunities||[]).map(x=>[x.keyword,x]));
- const ordered=[...items].sort((a,b)=>{
-   const aPriority=a.priority==="P1"?0:1,bPriority=b.priority==="P1"?0:1;
-   return aPriority-bPriority || Number(rank.get(b.keyword)?.impressions||0)-
-     Number(rank.get(a.keyword)?.impressions||0);
+ const ordered=[...(mode==="archive"?completed:pending)].sort((a,b)=>{
+   if(mode==="archive"){
+     const at=Date.parse(records[a.id]?.completedAt||"")||0;
+     const bt=Date.parse(records[b.id]?.completedAt||"")||0;
+     return bt-at;
+   }
+   return (a.priority==="P1"?0:1)-(b.priority==="P1"?0:1) ||
+     Number(rank.get(b.keyword)?.impressions||0)-Number(rank.get(a.keyword)?.impressions||0);
  });
  const chooser=el("action-article"),previous=chooser.value;
  chooser.replaceChildren();
  for(const item of ordered){
-   const opt=document.createElement("option");opt.value=item.id;
-   opt.textContent=item.priority+"｜"+item.title;chooser.appendChild(opt);
+   const option=document.createElement("option");option.value=item.id;
+   option.textContent=item.priority+"｜"+item.title;chooser.appendChild(option);
  }
  chooser.value=ordered.some(x=>x.id===previous)?previous:(ordered[0]?.id||"");
- const plan=items.find(x=>x.id===chooser.value);
+ const plan=ordered.find(x=>x.id===chooser.value);
  const target=el("seo-article-actions");target.replaceChildren();
- if(!plan){target.textContent="目前沒有已完成的改稿資料。";return;}
- const draft=seoRewritesById.get(plan.id);
- const media=seoMediaById.get(plan.id);
+ if(!plan){
+   target.textContent=mode==="archive"?
+    "目前沒有已完成文章。完成後會自動移到這裡，供日後查看或恢復修改。":
+    "待修改清單已清空。所有完成文章都保留在「歷史紀錄」。";
+   return;
+ }
+ const draft=seoRewritesById.get(plan.id),media=seoMediaById.get(plan.id);
  const h=document.createElement("h3");h.textContent=plan.title;target.appendChild(h);
  const meta=document.createElement("p");meta.className="small";
  meta.textContent=plan.priority+"｜"+plan.channels.join("＋")+"｜改稿版：2026/11/12";
  target.appendChild(meta);
  const link=document.createElement("a");link.href=plan.url;link.target="_blank";
  link.rel="noopener noreferrer";link.textContent="檢視晨陽官網原文章";target.appendChild(link);
- if(!draft){const notice=document.createElement("p");notice.className="message";
-   notice.textContent="改稿資料尚未同步，暫不提供不完整的 HTML。";target.appendChild(notice);return;}
+ const controlsState=document.createElement("div");controlsState.className="ai-buttons";
+ controlsState.style.marginTop="14px";
+ const action=document.createElement("button");action.type="button";action.className="ai-action secondary";
+ const messageState=document.createElement("p");messageState.className="detail";
+ messageState.setAttribute("role","status");
+ if(mode==="archive"){
+   action.textContent="恢復待修改";
+   const date=records[plan.id]?.completedAt;
+   messageState.textContent="完成紀錄："+(date?new Date(date).toLocaleString("zh-TW",{timeZone:"Asia/Taipei"}):"先前已標記完成，未記錄日期");
+   action.onclick=()=>{
+     if(!saveSeoTaskState(plan.id,{status:"待修改",completedAt:null})){
+       messageState.textContent="此瀏覽器無法儲存變更；請檢查隱私模式或儲存空間。";return;
+     }
+     renderSeoImprovementPlan();
+   };
+ }else{
+   action.textContent="標記完成並移至歷史紀錄";
+   messageState.textContent="只更新改善任務狀態，不會自動發布或修改晨陽正式官網。";
+   action.onclick=()=>{
+     if(!saveSeoTaskState(plan.id,{status:"已完成",completedAt:new Date().toISOString()})){
+       messageState.textContent="此瀏覽器無法儲存變更；未標記完成。";return;
+     }
+     renderSeoImprovementPlan();
+   };
+ }
+ controlsState.appendChild(action);target.appendChild(controlsState);target.appendChild(messageState);
+ if(!draft){
+   const notice=document.createElement("p");notice.className="message";
+   notice.textContent="改稿資料尚未同步，暫不提供不完整的 HTML。";
+   target.appendChild(notice);return;
+ }
  const title=document.createElement("p");title.style.marginTop="14px";
- const titleLabel=document.createElement("strong");titleLabel.textContent="建議 SEO 標題：";
- title.appendChild(titleLabel);title.appendChild(document.createTextNode(draft.metaTitle));
+ const label=document.createElement("strong");label.textContent="建議 SEO 標題：";
+ title.appendChild(label);title.appendChild(document.createTextNode(draft.metaTitle));
  target.appendChild(title);
  const desc=document.createElement("p");desc.className="small";
  desc.textContent="Meta Description："+draft.metaDescription;target.appendChild(desc);
@@ -698,52 +763,53 @@ function renderSeoImprovementPlan(){
  const diffSummary=document.createElement("summary");
  diffSummary.textContent="這篇改了什麼、為什麼改？";difference.appendChild(diffSummary);
  const wrapper=document.createElement("div");wrapper.className="tablebox";
- const table=document.createElement("table");const head=document.createElement("thead");
- const trHead=document.createElement("tr");
- for(const label of ["改變了什麼","為什麼","SEO 可增加的機會"]){
-   const th=document.createElement("th");th.textContent=label;trHead.appendChild(th);
+ const table=document.createElement("table"),head=document.createElement("thead");
+ const headRow=document.createElement("tr");
+ for(const name of ["改變了什麼","為什麼","SEO 可增加的機會"]){
+   const th=document.createElement("th");th.textContent=name;headRow.appendChild(th);
  }
- head.appendChild(trHead);table.appendChild(head);
+ head.appendChild(headRow);table.appendChild(head);
  const body=document.createElement("tbody");
  (draft.changes||[]).forEach(([change,why],i)=>{
-   const tr=document.createElement("tr");
-   for(const text of [change,why,(draft.seoUpside?.opportunities||[])[i]||"改善相關內容的品質與可理解性"]){
-     const td=document.createElement("td");td.textContent=text;tr.appendChild(td);
+   const row=document.createElement("tr");
+   for(const value of [change,why,(draft.seoUpside?.opportunities||[])[i]||"改善內容品質與可理解性"]){
+     const cell=document.createElement("td");cell.textContent=value;row.appendChild(cell);
    }
-   body.appendChild(tr);
+   body.appendChild(row);
  });
  table.appendChild(body);wrapper.appendChild(table);difference.appendChild(wrapper);
  target.appendChild(difference);
- const message=document.createElement("p");message.className="detail";
+ const note=document.createElement("p");note.className="detail";
  if(!media?.media_integrated){
-   message.textContent="原案例媒體整合尚未通過驗證，現在不能提供可以直接覆蓋原文的 HTML。";
-   target.appendChild(message);return;
+   note.textContent="原案例媒體尚未通過整合驗證，不提供可覆蓋原文章的 HTML。";
+   target.appendChild(note);return;
  }
  const content=media.html_with_media;
- message.textContent="本篇已整合 "+media.image_count+" 張原案例圖片、"+media.video_count+
-   " 部相關影片；圖片 ALT 均已寫入，其中 "+media.alt_review_count+
-   " 張仍需按實際畫面確認。";
- target.appendChild(message);
+ note.textContent="一般官網文章格式：金色 20px 標題、18px 正文、段落 BR；包含 "+
+   media.image_count+" 張案例圖片、"+media.video_count+" 部影片和完整圖片 ALT。"+
+   "這不是『設計理念』，因此不會加上『此為【建案名稱】一案』。";
+ target.appendChild(note);
  const feedback=document.createElement("p");feedback.className="detail";
  feedback.setAttribute("role","status");
- feedback.textContent="這一份 HTML 已包含文字、媒體與 Alt，不必分次複製。";
- const controls=document.createElement("div");controls.className="ai-buttons";
- controls.style.marginTop="12px";
+ feedback.textContent="一篇文章只要複製一次。上稿前仍須核對圖片內容和後台 HTML 呈現。";
+ const copyArea=document.createElement("div");copyArea.className="ai-buttons";copyArea.style.marginTop="12px";
  const copy=cmsCopyButton("複製這篇完整 HTML",content,feedback);
  copy.style.fontSize="15px";copy.style.padding="12px 20px";
- controls.appendChild(copy);target.appendChild(controls);target.appendChild(feedback);
+ copyArea.appendChild(copy);target.appendChild(copyArea);target.appendChild(feedback);
  const preview=document.createElement("details");preview.style.marginTop="16px";
- const prevLabel=document.createElement("summary");prevLabel.textContent="預覽整篇文章排版";
- preview.appendChild(prevLabel);
- const frame=document.createElement("iframe");
- frame.title="文章排版預覽："+plan.title;frame.setAttribute("sandbox","");
- frame.style.width="100%";frame.style.height="650px";frame.style.marginTop="12px";
- frame.style.border="1px solid #dfe7f0";frame.style.borderRadius="10px";
- frame.loading="lazy";
- frame.srcdoc='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="padding:14px 16px;margin:0;font-family:system-ui,sans-serif;">'+content+'</body></html>';
+ const previewLabel=document.createElement("summary");previewLabel.textContent="預覽整篇文章排版";
+ preview.appendChild(previewLabel);
+ const frame=document.createElement("iframe");frame.title="文章排版預覽："+plan.title;
+ frame.setAttribute("sandbox","");frame.style.width="100%";frame.style.height="650px";
+ frame.style.marginTop="12px";frame.style.border="1px solid #dfe7f0";
+ frame.style.borderRadius="10px";frame.loading="lazy";
+ frame.srcdoc='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">'+
+  '<meta name="viewport" content="width=device-width,initial-scale=1"></head>'+
+  '<body style="padding:14px 16px;margin:0;font-family:system-ui,sans-serif;">'+content+'</body></html>';
  preview.appendChild(frame);target.appendChild(preview);
  const raw=document.createElement("details");raw.style.marginTop="12px";
- const rawLabel=document.createElement("summary");rawLabel.textContent="查看這一份 HTML 原始碼";raw.appendChild(rawLabel);
+ const rawLabel=document.createElement("summary");rawLabel.textContent="查看這篇 HTML 原始碼";
+ raw.appendChild(rawLabel);
  const source=document.createElement("textarea");source.readOnly=true;source.value=content;
  source.style.width="100%";source.style.minHeight="380px";source.style.marginTop="10px";
  source.style.padding="12px";source.style.border="1px solid #dfe7f0";
@@ -752,6 +818,7 @@ function renderSeoImprovementPlan(){
 }
 function loadSeoImprovementPlan(){
  el("action-article").addEventListener("change",renderSeoImprovementPlan);
+ el("action-view").addEventListener("change",renderSeoImprovementPlan);
  Promise.all(["./seo-improvement-plan.json","./seo-rewrites.json","./seo-media-rewrites.json"]
    .map(url=>fetch(url,{cache:"no-store"})
      .then(resp=>{if(!resp.ok)throw Error("資料未完成同步："+url);return resp.json();})))
