@@ -129,9 +129,13 @@ tbody tr:last-child td{border-bottom:0}
       <tbody id="native-question-rows"><tr><td colspan="5">正在載入測試題目與回答紀錄。</td></tr></tbody>
     </table></div>
     <p class="detail">數字代表已取得的原平台回答筆數，不是這個問題被多少真實使用者搜尋。題庫若缺少對應原文，會標記待核對，不自行編造問題。</p>
+    <h3 style="margin-top:20px">AI 平台真實回答｜公開測試紀錄</h3>
+    <p class="muted">直接展開查看測試問題與回答節錄，不需要登入 GitHub。回答由第三方平台擷取；原始資料庫與識別資訊不公開。</p>
+    <div id="native-public-tests" class="ai-preview">正在載入公開測試結果。</div>
+    <p class="detail">僅展示最多 1,500 字的回答節錄及公開來源網域。沒有擷取的回答不會編造。AI 回答可能有錯誤，請核對引用來源。</p>
     <p class="detail">競品名稱屬 AI 回答文字的自動候選辨識，尚未人工判定是否屬「明確推薦」；不把這些結果當成消費者整體推薦率。各平台的地域和搜尋啟用能力可能不同。</p>
     <div class="flexhead" style="margin-top:14px">
-      <p class="detail">排程：台灣時間每日 13:05（GitHub 可能延遲）。<a href="https://github.com/liaih/Repository/actions/workflows/daily-native-ai.yml" target="_blank" rel="noopener noreferrer">檢查真實平台監測排程</a></p>
+      <p class="detail">排程：台灣時間每日 13:05（GitHub 可能延遲）。<a href="#native-public-tests">查看公開測試回答</a></p>
       <p class="detail">資料供應：<a href="https://brightdata.com/products/web-scraper/chatgpt" target="_blank" rel="noopener noreferrer">Bright Data</a>，非三大平台官方分析報表。</p>
     </div>
   </section>
@@ -149,7 +153,7 @@ tbody tr:last-child td{border-bottom:0}
     <h3 style="margin-top:18px">自動觀測到的設計公司候選名單</h3>
     <div class="tablebox"><table><thead><tr><th>公司名稱</th><th>出現次數</th><th>證據等級</th></tr></thead><tbody id="ai-daily-candidates"><tr><td colspan="3">等待真實聯網回答</td></tr></tbody></table></div>
     <p class="detail">條列式 AI 回答擷取的公司名稱只是「候選名單」，需核對回答原文後才能稱為推薦；沒有真實資料就不顯示名單。</p>
-    <p class="detail">進度可在私人 <a href="https://github.com/liaih/Repository/actions/workflows/daily-search-assisted-ai.yml" target="_blank" rel="noopener noreferrer">GitHub AI SEO 每日排程</a> 查看。公開網站只讀匿名摘要，不公布 API Key 或完整私人回答。</p>
+    <p class="detail">進度可在私人 <a href="#native-public-tests">公開 AI 測試紀錄</a> 查看。公開網站只讀匿名摘要，不公布 API Key 或完整私人回答。</p>
   </section>
   <section class="panel" aria-label="AI SEO 品牌推薦與競品分析">
    <div class="flexhead">
@@ -628,6 +632,23 @@ function renderNativePlatformAnswers(){
             known?"已對照固定題庫":"需對照原始提問"],[1,2,3]);
         }
       }
+      const tests=el("native-public-tests");tests.replaceChildren();
+      const samples=Array.isArray(data.public_test_samples)?data.public_test_samples:[];
+      if(!samples.length){tests.textContent="目前僅有公開彙總，回答原文節錄尚未同步；已取得的樣本筆數請見上方。";}
+      for(const sample of samples){
+        if(!["ChatGPT","Gemini","Perplexity"].includes(sample.platform))continue;
+        const details=document.createElement("details");details.style.marginBottom="12px";
+        const summary=document.createElement("summary");
+        summary.textContent=sample.platform+"｜"+(sample.answered_at||"日期未提供")+"｜"+(sample.mentions_brand?"有提及晨陽":"未提及晨陽");
+        details.appendChild(summary);
+        const q=document.createElement("p");q.textContent="測試提問："+(sample.prompt||"原文未公開");details.appendChild(q);
+        const pre=document.createElement("div");pre.style.whiteSpace="pre-wrap";pre.style.overflowWrap="anywhere";
+        pre.textContent=(sample.answer_excerpt||"沒有可公開的回答節錄")+(sample.excerpt_truncated?"\n（僅顯示前 1,500 字）":"");details.appendChild(pre);
+        if(Array.isArray(sample.cited_domains)&&sample.cited_domains.length){
+          const cite=document.createElement("p");cite.className="small";cite.textContent="回答引用網域："+sample.cited_domains.join("、");details.appendChild(cite);
+        }
+        tests.appendChild(details);
+      }
       put("native-total",total+" 筆");
       put("legacy-sourced-count",total?(sourced+"／"+total+" 筆"):"尚無有效回答");
       if(total){
@@ -647,6 +668,7 @@ function renderNativePlatformAnswers(){
       const errorRow=document.createElement("tr");const errorCell=document.createElement("td");
       errorCell.colSpan=5;errorCell.textContent="提問紀錄暫時無法取得，請檢查資料同步狀態。";
       errorRow.appendChild(errorCell);questionRows.appendChild(errorRow);
+      el("native-public-tests").textContent="公開 AI 測試資料暫時無法讀取。";
       put("legacy-sourced-count","資料尚未取得");
       status.textContent="尚未接通原平台回答";
       el("native-ai-hint").textContent="已建置三平台每日擷取程式，但尚未取得可供公開展示的實際回答。必須先確認 Bright Data 免費方案、關閉 PAYG 並連接安全的 API Key；在此之前沒有任何平台結果會被虛構。";
