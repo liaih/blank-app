@@ -274,6 +274,58 @@ def merge(d,items):
 
 
 
+# Floorplan safety is a hard publishing requirement, not a loose photo count.
+FLOORPLAN_MARKER = re.compile(r"(?:格局圖|戶型圖|平面圖|平面配置|平面示意|平配圖|平面模擬|格局平面|配置圖|[平]配)", re.I)
+RENDER_ONLY_MARKER = re.compile(r"(?:3d|3-d|透視圖|渲染圖)",re.I)
+
+
+def floorplan_images(article_root,base):
+    """Collect exact index+URL for floorplan images in article DOM order.
+
+    Inputs include original filename and original ALT, not the SEO-generated ALT.
+    Renderings titled '3D 示意' are not automatically treated as actual plans.
+    """
+    result=[]
+    for index,img in enumerate(article_root.find_all("img")):
+        original=(img.get("data-original") or img.get("data-src") or img.get("src") or "")
+        url=allowed(original,base,"image") or urljoin(base,original)
+        name=urlsplit(url).path.rsplit("/",1)[-1]
+        alt=img.get("alt","") or ""
+        is_plan=bool(FLOORPLAN_MARKER.search(name+" "+alt))
+        if RENDER_ONLY_MARKER.search(name) and not FLOORPLAN_MARKER.search(alt):
+            is_plan=False
+        if is_plan:
+            result.append({"index":index,"url":url,"source_alt":alt[:150]})
+    return result
+
+
+def floorplan_integrity(original_root,merged_root,base):
+    """Reject any loss or reordering of floor plans, including identical filenames."""
+    before=floorplan_images(original_root,base)
+    after=floorplan_images(merged_root,base)
+    orig=list(original_root.find_all("img"))
+    merged=list(merged_root.find_all("img"))
+    # Even if ALT changes, the original src and DOM index must match.
+    exact=all(
+        len(merged)>item["index"] and
+        (merged[item["index"]].get("src","")==orig[item["index"]].get("src","")) and
+        bool((merged[item["index"]].get("alt") or "").strip())
+        for item in before
+    )
+    expected={(p["index"],p["url"]) for p in before}
+    observed={(p["index"],p["url"]) for p in after}
+    protected=bool(exact and expected<=observed)
+    return {
+      "floorplan_count":len(before),
+      "floorplan_images":before,
+      "floorplan_urls":[p["url"] for p in before],
+      "floorplan_positions_preserved":protected,
+      "floorplan_protection_passed":protected,
+      "rule":"只要原稿含格局圖、平面圖、戶型圖，必須保留原 URL、原順序及完整 ALT；少一張即禁止上稿",
+      "detection_note":"依原圖檔名／原 ALT 辨識；沒有可辨識的格局圖不等於原站絕對不存在，仍需人工核對"
+    }
+
+
 def source_preserving_hybrid(d,assets,document,url):
     """Preserve CMS article contents/links/images then append focused SEO guidance.
     Never present a newly rewritten design-only body as a safe full replacement.
@@ -342,6 +394,7 @@ def source_preserving_hybrid(d,assets,document,url):
         )
     candidate=source_html+"\n"+supplement
     after=BeautifulSoup(candidate,"html.parser")
+    floorplan_audit=floorplan_integrity(root,after,url)
     text_after=" ".join(after.get_text(" ",strip=True).split())
     after_imgs=[x.get("src","") for x in after.find_all("img")]
     after_links=[x.get("href","") for x in after.find_all("a",href=True)]
@@ -366,10 +419,12 @@ def source_preserving_hybrid(d,assets,document,url):
         "strategy":"原官網正文完整保留＋新增 SEO 裝修查核段落",
         "source_has_building_information":bool(re.search(
             r"(?:生活機能|捷運|格局|坪|房|交通|建案|學區)",old_text)),
-        "still_requires_editor_review":True
+        "still_requires_editor_review":True,
+        **floorplan_audit,
     }
-    if not integrity["original_main_content_preserved"]:
-        integrity["failure"]="正文、原圖片、原影片或外部連結完整性檢查失敗"
+    if not integrity["original_main_content_preserved"] or not integrity["floorplan_protection_passed"]:
+        integrity["original_main_content_preserved"]=False
+        integrity["failure"]="正文、原圖片、格局圖／平面圖、原影片或連結完整性檢查失敗"
         return "",integrity
     return candidate,integrity
 
@@ -407,9 +462,11 @@ def main():
                       "video_count":sum(x["type"]=="video" for x in assets),
                       "media":assets,"html_with_media":html,
                       "preservation_audit":audit,
+                      "floorplan_count":audit.get("floorplan_count",0),
+                      "floorplan_protection_passed":audit.get("floorplan_protection_passed",False),
                       "alt_count":sum(bool(x.get("alt")) for x in assets if x["type"]=="image"),
                       "alt_review_count":sum(bool(x.get("alt_review_required")) for x in assets if x["type"]=="image"),
-                      "media_integrated":bool(assets and html and audit["original_main_content_preserved"]),"review_required":True,
+                      "media_integrated":bool(assets and html and audit["original_main_content_preserved"] and audit.get("floorplan_protection_passed")),"review_required":True,
                       "status":"原建案正文、媒體、連結已完整保留；待編輯核對事實" if audit["original_main_content_preserved"] else "來源正文未完整保留，禁止覆寫原文",
                       "error_type":error})
     result={"generated_at":datetime.now(ZoneInfo("Asia/Taipei")).isoformat(timespec="seconds"),
