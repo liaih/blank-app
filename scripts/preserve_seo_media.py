@@ -155,7 +155,7 @@ def extract(html,page):
     # Keep inline case images, not site-wide promo/decorative asset URLs.
     for tag in soup.find_all(style=True):
         if boiler(tag):continue
-        for raw in re.findall(r"url\(\s*['"]?([^)'" ]+)",tag.get("style",""),re.I):
+        for raw in re.findall(r"""url\(\s*['"]?([^)'" ]+)""",tag.get("style",""),re.I):
             u=allowed(raw,page,"image")
             if u and u not in seen and not irrelevant_media(u,"","image",context(tag)):
                 seen.add(u);found.append({"type":"image","url":u,"alt":"",
