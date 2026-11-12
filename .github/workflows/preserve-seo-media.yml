@@ -61,7 +61,16 @@ jobs:
                   a for a in soup.find_all("a") if "觀看原影片" in a.get_text()
               ])
               assert published_video_count>=video_count,(article["id"],"video missing")
-          print("Validated all recovered media with descriptive ALT and preserved image URLs")
+              assert article["article_mode"] in ("existing_news","existing_unboxing")
+              assert article["template"]=="chenyang-existing-article-v1.1"
+              assert not soup.find_all(["h1","html","head","body","script","style","figure","div"]),(article["id"],"unexpected CMS tags")
+              assert "此為【" not in article["html_with_media"] and "此為 【" not in article["html_with_media"],(article["id"],"design理念 footer leaked")
+              headings=soup.find_all("h2")
+              assert len(headings)>=4,(article["id"],"too few headings")
+              assert all(h.find("span") and "#C5A47E !important" in h.span.get("style","") and
+                  "font-size:20px !important" in h.span.get("style","") for h in headings),(article["id"],"gold H2 style")
+              assert len(soup.select('span[style*="font-size:18px !important"]'))>=len(headings),(article["id"],"body text size")
+          print("Verified original media AND precise Chen Yang NEWS/unboxing CMS typography, no design理念 footer")
           PY
       - name: Publish public media manifest and merged HTML; no CMS mutations
         run: |
