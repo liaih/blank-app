@@ -69,6 +69,22 @@ tbody tr:last-child td{border-bottom:0}
 @media(max-width:800px){.market-filters{grid-template-columns:1fr 1fr}}
 @media(max-width:500px){.market-filters{grid-template-columns:1fr}}
 
+
+.ai-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin:12px 0}
+.ai-fields label{display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:700;color:#526883}
+.ai-fields .ai-wide{grid-column:1/-1}
+.ai-fields textarea,.ai-fields input,.ai-fields select{width:100%;min-width:0;padding:9px 11px;border:1px solid #d6e1ed;border-radius:9px;font:inherit;line-height:1.6;color:#203a5a;background:#fff}
+.ai-buttons{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.ai-action,.ai-file{border:1px solid #17426e;border-radius:9px;background:#17426e;padding:10px 14px;color:#fff;font:inherit;font-size:13px;font-weight:700;cursor:pointer;display:inline-block}
+.ai-action.secondary,.ai-file{background:#fff;color:#17426e}
+.ai-file input{display:block;max-width:240px;font:inherit;font-size:12px}
+.ai-action:focus-visible,.ai-fields :focus-visible,.ai-file :focus-visible{outline:3px solid #87b8f5}
+.ai-preview{margin-top:12px}
+.ai-answer-preview{white-space:pre-wrap;overflow-wrap:anywhere;max-height:280px;overflow:auto;background:#f4f8fe;border:1px solid #dfe7f0;padding:12px;border-radius:9px;font-size:12px}
+.ai-preview .ai-action{margin:12px 0}
+@media(max-width:800px){.ai-fields{grid-template-columns:1fr 1fr}}
+@media(max-width:530px){.ai-fields{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -79,7 +95,7 @@ tbody tr:last-child td{border-bottom:0}
   <span class="chip" id="date-chip">正在讀取資料</span>
  </header>
  <nav class="tabs" role="tablist" aria-label="主要分析模組">
-  <button id="tab-ai" class="tab" role="tab" type="button" data-tab="ai" aria-selected="true" aria-controls="view-ai">AI 搜尋能見度</button>
+  <button id="tab-ai" class="tab" role="tab" type="button" data-tab="ai" aria-selected="true" aria-controls="view-ai">AI SEO｜推薦與引用</button>
   <button id="tab-seo" class="tab" role="tab" type="button" data-tab="seo" aria-selected="false" aria-controls="view-seo" tabindex="-1">SEO 搜尋優化監測</button>
   <button id="tab-opps" class="tab" role="tab" type="button" data-tab="opps" aria-selected="false" aria-controls="view-opps" tabindex="-1">搜尋字詞／頁面機會</button>
   <button id="tab-quality" class="tab" role="tab" type="button" data-tab="quality" aria-selected="false" aria-controls="view-quality" tabindex="-1">資料品質</button>
@@ -88,6 +104,88 @@ tbody tr:last-child td{border-bottom:0}
  <div class="banner"><strong>資料使用範圍：</strong>這是免費公開網站的<strong>唯讀彙總快照</strong>。原始資料庫、金鑰、完整 AI 回答及匯入管理功能仍留在私人系統。未取得的 AI 平台資料不會顯示成 0 次推薦。</div>
 
  <section id="view-ai" role="tabpanel" aria-labelledby="tab-ai">
+  <section class="panel" aria-label="AI SEO 品牌推薦與競品分析">
+   <div class="flexhead">
+    <div><h2>AI SEO｜品牌推薦、競品及引用監測</h2>
+    <p class="muted">看 ChatGPT、Gemini、Perplexity 等聯網 AI 實際回答：推薦誰、晨陽有沒有出現、引用什麼網站。</p></div>
+    <span class="label wait">真實聯網回答尚未自動接通</span>
+   </div>
+   <p class="message">這裡不會把「1 次不連網 Gemini 測試」計入聯網 AI SEO。只有附有回答原文、搜尋條件與證據連結的樣本，才列入<strong>受控搜尋分析</strong>；連結仍需要人工核對，不能當成全體消費者推薦率。</p>
+   <div class="metrics">
+    <div class="metric"><div class="name">已保存 AI 回答</div><div class="number" id="ai-evidence-total">—</div><div class="sub">手機／電腦本機的回答證據</div></div>
+    <div class="metric"><div class="name">受控聯網樣本</div><div class="number" id="ai-evidence-controlled">—</div><div class="sub">無個人化、聯網、有證據網址</div></div>
+    <div class="metric"><div class="name">晨陽被提及／被推薦</div><div class="number" id="ai-evidence-mentioned">—</div><div class="sub">提及：回答文字有出現晨陽</div><div class="number" id="ai-evidence-recommended" style="font-size:18px;margin-top:3px">—</div><div class="sub">推薦：確認列入公司推薦名單</div></div>
+    <div class="metric"><div class="name">晨陽官網被引用</div><div class="number" id="ai-evidence-cited">—</div><div class="sub">回答中出現 chen-yang.com.tw 直接網址</div></div>
+   </div>
+   <p class="detail" id="ai-evidence-scope">尚未取得可核對的聯網 AI 回答。</p>
+  </section>
+  <div class="cols">
+   <section class="panel"><h3>各 AI 平台的推薦觀測</h3>
+    <div class="tablebox"><table><thead><tr><th>平台</th><th>有效樣本</th><th>提及晨陽</th><th>推薦晨陽</th><th>引用官網</th><th>出現競品數</th></tr></thead><tbody id="ai-platform-body"></tbody></table></div>
+    <p class="detail">不同平台分開統計。樣本不足時顯示實際次數，不宣稱全市場推薦率。</p>
+   </section>
+   <section class="panel"><h3>AI 推薦哪些室內設計公司？</h3>
+    <div class="tablebox"><table><thead><tr><th>推薦品牌</th><th>出現次數</th><th>核對狀態</th></tr></thead><tbody id="ai-competitor-body"></tbody></table></div>
+    <p class="detail">僅依已保存回答中的「使用者確認推薦名單」統計；未核對原文的 AI 推薦不能當成事實。</p>
+   </section>
+  </div>
+  <section class="panel" aria-label="AI 搜尋回答證據輸入">
+   <div class="flexhead"><div><h3>新增 AI 回答證據｜手機也能使用</h3>
+    <p class="muted">不用 API、不需要另外付費。把確實取得的 AI 搜尋回答及分享網址記錄下來，系統會整理品牌與來源；不會偷偷自動登入或爬取你的訂閱帳號。</p></div></div>
+   <div class="ai-fields">
+    <label>AI 平台
+     <select id="ai-input-platform"><option>ChatGPT</option><option>Gemini</option><option>Perplexity</option><option>Google AI Mode</option><option>Microsoft Copilot</option><option>其他</option></select>
+    </label>
+    <label>回答時間
+     <input type="datetime-local" id="ai-input-time">
+    </label>
+    <label>模型（選填）
+     <input id="ai-input-model" placeholder="例如 GPT-6 搜尋，若未知可留白" maxlength="160">
+    </label>
+    <label>是否使用聯網搜尋？
+     <select id="ai-input-search"><option value="unknown">不確定</option><option value="yes">有，已啟用搜尋</option><option value="no">沒有，不連網回答</option></select>
+    </label>
+    <label>是否無個人化？
+     <select id="ai-input-clean"><option value="unknown">不確定</option><option value="clean">無個人化／乾淨環境</option><option value="personalized">個人帳號有相關記憶</option></select>
+    </label>
+    <label>選擇既有屋主題庫
+     <select id="ai-prompt-bank"><option value="">不套用（自行輸入問題）</option></select>
+    </label>
+    <label class="ai-wide">實際向 AI 問的完整問題
+     <textarea id="ai-input-prompt" rows="2" maxlength="1500" placeholder="例如：桃園 25 坪新成屋推薦哪些室內設計公司？"></textarea>
+    </label>
+    <label class="ai-wide">AI 回答原文（必要）
+     <textarea id="ai-input-answer" rows="6" maxlength="30000" placeholder="完整貼上 AI 回答，保留推薦品牌與引用網址。沒有真實回答請勿編造。"></textarea>
+    </label>
+    <label class="ai-wide">實際推薦的公司名稱（每行一間，儲存前人工確認）
+     <textarea id="ai-input-brands" rows="3" placeholder="每行一家公司。可以先按「辨識候選品牌」，再檢查是否真的被推薦。"></textarea>
+    </label>
+    <label class="ai-wide">AI 回答中的引用網址（每行一個，可用辨識功能帶入）
+     <textarea id="ai-input-citations" rows="2" placeholder="例如 https://example.com/article"></textarea>
+    </label>
+    <label class="ai-wide">AI 對話分享連結／公開回答證據（選填；無連結不納入受控樣本）
+     <input id="ai-input-proof" type="url" maxlength="1500" inputmode="url" placeholder="https://...">
+    </label>
+   </div>
+   <div class="ai-buttons">
+    <button class="ai-action secondary" type="button" id="ai-detect-brands">辨識候選品牌與引用網址</button>
+    <button class="ai-action" type="button" id="ai-save-evidence">儲存並分析這筆回答</button>
+   </div>
+   <p id="ai-evidence-status" role="status" class="small">新功能目前沒有預載虛構推薦名單；資料只會存在目前瀏覽器。輸出 JSON 可備份並移到其他裝置。</p>
+  </section>
+  <section class="panel" aria-label="AI SEO 來源紀錄與備份">
+   <div class="flexhead"><h3>AI 搜尋回答紀錄與來源</h3>
+    <div class="ai-buttons">
+      <button type="button" class="ai-action secondary" id="ai-export-evidence">匯出 JSON 備份</button>
+      <label class="ai-file">匯入以前的 JSON
+       <input type="file" id="ai-import-evidence" accept=".json,application/json">
+      </label>
+    </div>
+   </div>
+   <div class="tablebox"><table><thead><tr><th>時間</th><th>平台</th><th>屋主問題</th><th>晨陽狀態</th><th>其他推薦公司</th><th>證據</th><th>分析資格</th><th>查看</th></tr></thead><tbody id="ai-evidence-history"></tbody></table></div>
+   <div id="ai-record-preview" class="ai-preview"></div>
+   <p class="detail">此工具只分析你保存的回答，不會自動訪問 ChatGPT／Gemini／Perplexity，亦不會上傳原文到公開 GitHub。瀏覽器資料可能在清除網站資料後遺失，需自行匯出備份。</p>
+  </section>
   <div class="flexhead"><div><h2>AI 搜尋能見度</h2><p class="muted">人工智慧有沒有提到晨陽？引用哪些官網來源？</p></div><span class="label wait">現階段：量測樣本有限</span></div>
   <div class="metrics">
    <div class="metric"><div class="name">Gemini 真實回答樣本</div><div class="number" id="ai-samples">—</div><div class="sub">不連網文字模型，不等於搜尋結果</div></div>
@@ -298,6 +396,7 @@ tbody tr:last-child td{border-bottom:0}
  </footer>
 </div>
 <script src="./market-opportunity.js"></script>
+<script src="./ai-seo-evidence.js"></script>
 <script>
 (function(){
 "use strict";
@@ -432,6 +531,7 @@ function render(d){
  renderPeriod();
  renderRankings();
  if(window.MarketOpportunity)window.MarketOpportunity.render(d);
+ if(window.AISeoEvidence)window.AISeoEvidence.init(d);
 }
 if(window.MarketOpportunity)window.MarketOpportunity.init();
 show(decodeURIComponent(location.hash.replace("#",""))||"ai",false);
