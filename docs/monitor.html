@@ -19,7 +19,7 @@ h2{font-size:22px;letter-spacing:-.02em;margin:0 0 6px}
 h3{font-size:17px;margin:0 0 8px}
 p{margin:4px 0 10px}.muted{color:var(--muted)}.small{font-size:12px;color:var(--muted)}
 .chip{border:1px solid #cae7db;background:#eaf8f2;color:#157356;border-radius:99px;padding:7px 14px;font-size:12px;font-weight:700;white-space:nowrap}
-.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:26px 0 19px;background:#e9eef6;padding:8px;border-radius:16px;border:1px solid #e0e7f2}
+.tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin:26px 0 19px;background:#e9eef6;padding:8px;border-radius:16px;border:1px solid #e0e7f2}
 .tab{border:1px solid transparent;border-radius:12px;background:transparent;color:#48617e;font:inherit;font-size:15px;font-weight:750;padding:14px 10px;cursor:pointer;text-align:center;min-height:58px}
 .tab[aria-selected=true]{background:var(--navy);color:#fff;box-shadow:0 7px 14px rgba(18,39,71,.16)}
 .tab:focus-visible{outline:3px solid #80b3fa;outline-offset:2px}
@@ -92,11 +92,12 @@ tbody tr:last-child td{border-bottom:0}
 <div class="shell">
  <header class="header">
   <div><div class="eyebrow">晨陽共好機構｜行銷監測系統</div><h1>SEO × AI SEO 監測中心</h1>
-   <p class="muted">沿用原本的四大模組，查看真實搜尋績效、人工智慧品牌能見度與資料品質。</p></div>
+   <p class="muted">查看真實 SEO、AI SEO 成效及需修改的官網文章。</p></div>
   <span class="chip" id="date-chip">正在讀取資料</span>
  </header>
  <nav class="tabs" role="tablist" aria-label="主要分析模組">
   <button id="tab-ai" class="tab" role="tab" type="button" data-tab="ai" aria-selected="true" aria-controls="view-ai">AI SEO｜推薦與引用</button>
+  <button id="tab-actions" class="tab" role="tab" type="button" data-tab="actions" aria-selected="false" aria-controls="view-actions" tabindex="-1">SEO 改善中心｜文章待修</button>
   <button id="tab-seo" class="tab" role="tab" type="button" data-tab="seo" aria-selected="false" aria-controls="view-seo" tabindex="-1">SEO 搜尋優化監測</button>
   <button id="tab-opps" class="tab" role="tab" type="button" data-tab="opps" aria-selected="false" aria-controls="view-opps" tabindex="-1">搜尋字詞／頁面機會</button>
   <button id="tab-quality" class="tab" role="tab" type="button" data-tab="quality" aria-selected="false" aria-controls="view-quality" tabindex="-1">資料品質</button>
@@ -261,18 +262,6 @@ tbody tr:last-child td{border-bottom:0}
    <div id="ai-record-preview" class="ai-preview"></div>
    <p class="detail">此工具只分析你保存的回答，不會自動訪問 ChatGPT／Gemini／Perplexity，亦不會上傳原文到公開 GitHub。瀏覽器資料可能在清除網站資料後遺失，需自行匯出備份。</p>
   </section>
-  <section class="panel" aria-label="AI SEO 改善任務中心">
-    <div class="flexhead"><div><h2>AI SEO 改善任務中心</h2>
-      <p class="muted">把 AI 實測缺口轉成可追蹤的內容優化任務。建議來自固定題庫及已取得的樣本，並非 AI 排名保證。</p></div>
-      <button type="button" class="ai-action secondary" id="geo-task-export">匯出任務 JSON</button>
-    </div>
-    <p class="detail" id="geo-task-source">等待實測資料載入，產生初步改善建議。</p>
-    <div class="tablebox"><table>
-      <thead><tr><th>優化任務／問題</th><th>負責人</th><th>官網頁面</th><th>進度</th><th>修改日期</th><th>再次驗證結果</th></tr></thead>
-      <tbody id="geo-task-rows"><tr><td colspan="6">正在產生改善任務。</td></tr></tbody>
-    </table></div>
-    <p class="detail" id="geo-task-storage">任務修改暫存在目前瀏覽器，不會寫回公開 GitHub 或團隊共用資料庫；請匯出 JSON 保存。AI 推薦狀態需由回答原文驗證，不會因任務完成而自動判定成功。</p>
-  </section>
   <div class="flexhead"><div><h2>歷史測試與官方 AI 資料</h2><p class="muted">以下是舊的 Gemini 不聯網單題測試及尚待取得的 Google 官方資料；上方「三平台原回答監測」才是新的自動採樣結果。</p></div><span class="label wait">不同資料來源，不混算</span></div>
   <div class="metrics">
    <div class="metric"><div class="name">Gemini 真實回答樣本</div><div class="number" id="ai-samples">—</div><div class="sub">不連網文字模型，不等於搜尋結果</div></div>
@@ -305,6 +294,41 @@ tbody tr:last-child td{border-bottom:0}
   <section class="panel"><h3>搜尋爬蟲可讀性</h3><div id="robots-list"></div>
    <p class="detail">robots.txt 沒有擋住爬蟲，不代表網站已經被平台收錄或在 AI 回答中引用。</p>
   </section>
+ </section>
+
+
+ <section id="view-actions" role="tabpanel" aria-labelledby="tab-actions" hidden>
+  <h2>SEO × AI SEO｜官網文章改善中心</h2>
+  <p class="muted">包含 Google 自然搜尋、AI SEO 與內容品質；直接看該修哪篇文章、為什麼及怎麼改。</p>
+  <div class="metrics">
+   <div class="metric"><div class="name">已核對文章網址</div><div class="number" id="action-total">讀取中</div></div>
+   <div class="metric"><div class="name">Google SEO 候選文章</div><div class="number" id="action-seo-total">—</div></div>
+   <div class="metric"><div class="name">AI SEO 內容建議</div><div class="number" id="action-ai-total">—</div></div>
+   <div class="metric"><div class="name">優先處理 P1</div><div class="number" id="action-p1">—</div></div>
+  </div>
+  <section class="panel">
+   <h3>需要修改的文章｜附原文連結與具體修法</h3>
+   <div class="market-filters">
+    <label>優化類型<select id="action-channel"><option value="all">全部 SEO＋AI SEO</option><option value="SEO">自然搜尋 SEO</option><option value="AI SEO">AI SEO／GEO</option><option value="內容品質">內容品質</option></select></label>
+    <label>優先順序<select id="action-priority"><option value="all">全部</option><option value="P1">P1 優先</option><option value="P2">P2 接續</option></select></label>
+    <label>排序<select id="action-sort"><option value="priority">依優先順序</option><option value="impressions">搜尋字詞曝光由高到低</option></select></label>
+   </div>
+   <div id="seo-article-actions">正在讀取文章與修改建議。</div>
+   <p class="detail">注意：GSC 數字為『搜尋字詞』維度，尚未驗證該字詞實際導流的網頁；文章是人工內容對照候選，不得把字詞曝光直接稱為文章曝光。</p>
+  </section>
+  <section class="panel" aria-label="AI SEO｜監測改善任務">
+    <div class="flexhead"><div><h2>AI SEO｜監測改善任務</h2>
+      <p class="muted">把 AI 實測缺口轉成可追蹤的內容優化任務。建議來自固定題庫及已取得的樣本，並非 AI 排名保證。</p></div>
+      <button type="button" class="ai-action secondary" id="geo-task-export">匯出任務 JSON</button>
+    </div>
+    <p class="detail" id="geo-task-source">等待實測資料載入，產生初步改善建議。</p>
+    <div class="tablebox"><table>
+      <thead><tr><th>優化任務／問題</th><th>負責人</th><th>官網頁面</th><th>進度</th><th>修改日期</th><th>再次驗證結果</th></tr></thead>
+      <tbody id="geo-task-rows"><tr><td colspan="6">正在產生改善任務。</td></tr></tbody>
+    </table></div>
+    <p class="detail" id="geo-task-storage">任務修改暫存在目前瀏覽器，不會寫回公開 GitHub 或團隊共用資料庫；請匯出 JSON 保存。AI 推薦狀態需由回答原文驗證，不會因任務完成而自動判定成功。</p>
+  </section>
+
  </section>
 
  <section id="view-seo" role="tabpanel" aria-labelledby="tab-seo" hidden>
@@ -488,7 +512,7 @@ const count=n=>Number(n).toLocaleString("zh-TW");
 const percent=n=>(Number(n)*100).toFixed(2)+"%";
 const local=s=>String(s||"").replace(/-/g,"/");
 let data=null,period=30;
-const pageNames=["ai","seo","opps","quality"];
+const pageNames=["ai","actions","seo","opps","quality"];
 function show(tab,updateHash){
  if(!pageNames.includes(tab))tab="ai";
  for(const key of pageNames){
@@ -579,6 +603,7 @@ for(const btn of document.querySelectorAll("[data-days]")){
 }
 function render(d){
  data=d;
+ if(seoImprovementPlan)renderSeoImprovementPlan();
  put("date-chip","資料快照："+local(d.snapshot_date));
  put("source-date","｜搜尋資料截止："+local(d.gsc_last_day));
  put("ai-samples",count(d.ai.gemini_recall_samples)+" 筆");
@@ -618,6 +643,54 @@ function render(d){
 if(window.MarketOpportunity)window.MarketOpportunity.init();
 
 const geoTaskStorageKey="chenyang-geo-tasks-v1";
+
+let seoImprovementPlan=null;
+function renderSeoImprovementPlan(){
+ if(!seoImprovementPlan)return;
+ const arr=seoImprovementPlan.items, metrics=new Map((data?.seo?.keyword_opportunities||[]).map(x=>[x.keyword,x]));
+ put("action-total",arr.length+" 篇");put("action-seo-total",arr.filter(x=>x.channels.includes("SEO")).length+" 篇");
+ put("action-ai-total",arr.filter(x=>x.channels.includes("AI SEO")).length+" 篇");put("action-p1",arr.filter(x=>x.priority==="P1").length+" 篇");
+ const ch=el("action-channel").value,pr=el("action-priority").value,sort=el("action-sort").value;
+ const choices=arr.filter(x=>(ch==="all"||x.channels.includes(ch))&&(pr==="all"||x.priority===pr));
+ choices.sort((a,b)=>sort==="impressions"?
+  Number(metrics.get(b.keyword)?.impressions||0)-Number(metrics.get(a.keyword)?.impressions||0):
+  ((a.priority==="P1"?0:1)-(b.priority==="P1"?0:1))||
+  Number(metrics.get(b.keyword)?.impressions||0)-Number(metrics.get(a.keyword)?.impressions||0));
+ const target=el("seo-article-actions");target.replaceChildren();
+ if(!choices.length){target.textContent="這個條件下沒有建議文章。";return;}
+ for(const x of choices){
+  const box=document.createElement("section");box.className="panel soft";
+  const header=document.createElement("div");header.className="flexhead";
+  const h=document.createElement("h3");h.textContent=x.priority+"｜"+x.title;header.appendChild(h);
+  const link=document.createElement("a");link.href=x.url;link.target="_blank";link.rel="noopener noreferrer";link.className="ai-action secondary";link.textContent="開啟原文章";header.appendChild(link);box.appendChild(header);
+  const tags=document.createElement("p");tags.className="small";tags.textContent=x.channels.join("＋");box.appendChild(tags);
+  const m=metrics.get(x.keyword),numbers=document.createElement("p");numbers.className="detail";
+  numbers.textContent=m?("GSC 搜尋字詞「"+x.keyword+"」近30天："+m.impressions+" 曝光、"+m.clicks+" 點擊、CTR "+(100*Number(m.ctr)).toFixed(2)+"%、平均排名 "+Number(m.position).toFixed(1)+"（不是文章單頁指標）"):"此篇尚無對應 GSC 字詞資料，不以零曝光冒充。";
+  box.appendChild(numbers);
+  const why=document.createElement("p");why.textContent="問題與機會："+x.reason;box.appendChild(why);
+  const title=document.createElement("p");const bold=document.createElement("strong");bold.textContent="建議修改標題：";title.appendChild(bold);title.appendChild(document.createTextNode(x.proposedTitle));box.appendChild(title);
+  const details=document.createElement("details");details.open=x.priority==="P1";
+  const summary=document.createElement("summary");summary.textContent="具體修改清單（"+x.suggestions.length+" 項）";details.appendChild(summary);
+  const list=document.createElement("ol");for(const suggestion of x.suggestions){const li=document.createElement("li");li.textContent=suggestion;list.appendChild(li);}
+  details.appendChild(list);const verify=document.createElement("p");verify.className="detail";verify.textContent="修改前確認："+x.verification;details.appendChild(verify);box.appendChild(details);
+  const state=document.createElement("label");state.textContent="處理狀態：";state.className="small";
+  const select=document.createElement("select");
+  for(const st of ["待確認","待修改","處理中","已上稿待驗證","已驗證"]){const o=document.createElement("option");o.value=st;o.textContent=st;select.appendChild(o);}
+  let saved={};try{saved=JSON.parse(localStorage.getItem(geoTaskStorageKey)||"{}");}catch(_){}
+  select.value=saved[x.id]?.status||"待確認";
+  select.onchange=()=>{saved[x.id]={...(saved[x.id]||{}),status:select.value};try{localStorage.setItem(geoTaskStorageKey,JSON.stringify(saved));}catch(_){}};
+  state.appendChild(select);box.appendChild(state);target.appendChild(box);
+ }
+}
+function loadSeoImprovementPlan(){
+ ["action-channel","action-priority","action-sort"].forEach(id=>el(id).addEventListener("change",renderSeoImprovementPlan));
+ fetch("./seo-improvement-plan.json",{cache:"no-store"})
+  .then(r=>{if(!r.ok)throw Error("no article list");return r.json()})
+  .then(x=>{if(!Array.isArray(x.items))throw Error("bad list");seoImprovementPlan=x;renderSeoImprovementPlan();})
+  .catch(()=>{el("seo-article-actions").textContent="公開文章修正清單讀取失敗，請檢查 seo-improvement-plan.json 是否完成部署。";});
+}
+loadSeoImprovementPlan();
+
 function taskInput(value,placeholder,change,type="text"){
   const input=document.createElement("input");
   input.type=type;input.value=value||"";input.placeholder=placeholder||"";
