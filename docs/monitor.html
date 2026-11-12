@@ -784,10 +784,15 @@ function renderSeoImprovementPlan(){
    note.textContent="原案例媒體尚未通過整合驗證，不提供可覆蓋原文章的 HTML。";
    target.appendChild(note);return;
  }
+ const integrity=media?.preservation_audit||{};
+ if(!integrity.original_main_content_preserved){
+   note.textContent="品質阻擋：目前這份改寫稿未保留完整原建案資訊（交通、坪數、格局、生活機能、原有連結等），直接覆蓋可能傷害原本的 SEO。已暫停『完整 HTML』複製，等待原文保留版驗證；原官網未被修改。";
+   note.className="message";
+   target.appendChild(note);
+   return;
+ }
  const content=media.html_with_media;
- note.textContent="一般官網文章格式：金色 20px 標題、18px 正文、段落 BR；包含 "+
-   media.image_count+" 張案例圖片、"+media.video_count+" 部影片和完整圖片 ALT。"+
-   "這不是『設計理念』，因此不會加上『此為【建案名稱】一案』。";
+ note.textContent="經原文保留檢核的整合版 HTML：原建案內容＋設計方案補強，並保留可確認的圖片、影片及 Alt。";
  target.appendChild(note);
  const feedback=document.createElement("p");feedback.className="detail";
  feedback.setAttribute("role","status");
