@@ -665,7 +665,7 @@ function cmsCopyButton(label,content,feedback){
 }
 function renderSeoRewriteDeliverable(target,draft,plan){
  const section=document.createElement("section");section.className="panel";
- const h=document.createElement("h3");h.textContent="已改寫｜可複製晨陽官網 HTML";section.appendChild(h);
+ const h=document.createElement("h3");h.textContent="已改寫｜可複製的晨陽官網文字 HTML";section.appendChild(h);
  if(!draft){
   const no=document.createElement("p");no.className="detail";
   no.textContent="完整改寫內容正在同步，若持續未出現請重新整理。";
@@ -702,18 +702,18 @@ function renderSeoRewriteDeliverable(target,draft,plan){
  const checks=document.createElement("p");checks.className="detail";checks.textContent="修改後追蹤："+(draft.seoUpside?.metrics||[]).join("；");diff.appendChild(checks);
  section.appendChild(diff);
  const note=document.createElement("p");note.className="message";
- note.textContent="官網上稿前請先核對設計師、建案名稱、房型、圖片性質及事實。此版是重新編寫的文字 HTML，不含原圖與影片；務必備份舊文並保留所有原有媒體。";
+ note.textContent="此版是可替換／補充的文字段落，不是原文章的完整原始碼。請先備份舊文，保留既有圖片、影片、工程細節和原有來源連結，再逐段更換。房型、圖片性質與可公開資訊需先由編輯核對；不要整篇無檢查覆蓋。";
  section.appendChild(note);
  const metaTitle=document.createElement("p");metaTitle.className="detail";metaTitle.textContent="建議 SEO Title："+draft.metaTitle;section.appendChild(metaTitle);
  const metaDescription=document.createElement("p");metaDescription.className="detail";metaDescription.textContent="建議 Meta Description："+draft.metaDescription;section.appendChild(metaDescription);
  const buttons=document.createElement("div");buttons.className="ai-buttons";buttons.style.marginTop="12px";
  const feedback=document.createElement("p");feedback.className="detail";feedback.setAttribute("role","status");feedback.textContent="HTML 使用晨陽格式：段落／標題 + <BR>，不含追蹤碼或付費外掛。";
- buttons.appendChild(cmsCopyButton("複製 HTML 正文",draft.html,feedback));
+ buttons.appendChild(cmsCopyButton("複製改寫 HTML 文字段落",draft.html,feedback));
  buttons.appendChild(cmsCopyButton("複製 SEO Title",draft.metaTitle,feedback));
  buttons.appendChild(cmsCopyButton("複製 Meta Description",draft.metaDescription,feedback));
  section.appendChild(buttons);
  const full=document.createElement("details");const trigger=document.createElement("summary");
- trigger.textContent="展開可複製的完整 HTML 正文";full.appendChild(trigger);
+ trigger.textContent="展開可複製的改寫 HTML 段落";full.appendChild(trigger);
  const textarea=document.createElement("textarea");textarea.readOnly=true;textarea.value=draft.html;
  textarea.style.width="100%";textarea.style.minHeight="280px";textarea.style.marginTop="10px";
  textarea.style.border="1px solid #dfe7f0";textarea.style.padding="12px";textarea.style.fontSize="12px";
