@@ -285,6 +285,7 @@ def floorplan_images(article_root,base):
     Generic image filenames such as 'L-28F-01.jpg' and '258-01.jpg' need this.
     """
     result=[]
+    previous_image_context=""
     for index,img in enumerate(article_root.find_all("img")):
         original=(img.get("data-original") or img.get("data-src") or img.get("src") or "")
         url=allowed(original,base,"image") or urljoin(base,original)
@@ -304,9 +305,21 @@ def floorplan_images(article_root,base):
             and not RENDER_ONLY_MARKER.search(immediately_prior.get_text(" ",strip=True))
             and not RENDER_ONLY_MARKER.search(name)
         )
-        if explicit or heading_plan:
+        nearest_context=context(img).split("｜",1)[0].strip()
+        # Some Chen Yang CMS articles use a short <p>/<strong> label such as
+        # 【平面模擬圖】 rather than an H2. Protect the FIRST image in that
+        # section, but do not classify the following 3D renders as plans.
+        paragraph_plan=(
+            bool(FLOORPLAN_MARKER.search(nearest_context))
+            and not RENDER_ONLY_MARKER.search(nearest_context)
+            and not RENDER_ONLY_MARKER.search(name)
+            and nearest_context!=previous_image_context
+        )
+        if explicit or heading_plan or paragraph_plan:
             result.append({"index":index,"url":url,"source_alt":alt[:150],
-                           "evidence":"原圖檔名／ALT" if explicit else "格局圖段落後第一張原圖"})
+                           "evidence":"原圖檔名／ALT" if explicit else
+                           "格局圖段落後第一張原圖"})
+        previous_image_context=nearest_context
     return result
 
 
