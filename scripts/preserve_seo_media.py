@@ -184,98 +184,90 @@ def section_index(aid,asset,previous,n):
     else:pos=0 if asset["order"]==1 else max(previous,1)
     return max(previous,min(pos,n-2))
 
+# CMS contract: 晨陽官網一般文章 v1.1. Do not use the design理念-only
+# footer 「此為【建案名稱】一案<BR>」 in NEWS or regular SEO articles.
+# The CMS article-title field renders H1; the HTML body starts with H2.
+GOLD = "#C5A47E"
+
+
 def embed(media):
-    """A media block that remains readable on mobile and safe in CMS rich-text."""
     url=escape(media["url"],quote=True)
     if media["type"]=="image":
         alt=escape(media["alt"],quote=True)
-        inner=(f'<img src="{url}" alt="{alt}" loading="lazy" decoding="async" '
-               f'style="display:block;width:100%;max-width:900px;height:auto;margin:0 auto;border-radius:6px;">')
-        caption=media["alt"]
+        line=(f'<p style="margin:20px 0;text-align:center;">'
+              f'<img src="{url}" alt="{alt}" loading="lazy" '
+              f'style="max-width:100%;height:auto;"></p><BR>')
+        if alt and not re.search(r"(?:室內空間設計圖片|建案介紹圖片)（圖\d+）",media["alt"]):
+            line+=('<p style="margin:4px 0 18px;"><span style="font-size:15px">'
+                   '<span style="color:#666666">'+escape(media["alt"])+
+                   '</span></span></p><BR>')
+        return line
+
+    host=(urlsplit(media["url"]).hostname or "").lower()
+    if host in HOSTS:
+        inner=f'<video src="{url}" controls preload="metadata" style="width:100%;max-width:900px;height:auto;"></video>'
+    elif host in ("www.youtube.com","youtube.com","youtu.be","www.youtube-nocookie.com","player.vimeo.com"):
+        if "youtu" in host:
+            parts=urlsplit(media["url"])
+            ident=(parts.path.strip("/") if host=="youtu.be" else
+                parse_qs(parts.query).get("v",[""])[0] if parts.path=="/watch"
+                else parts.path.split("/")[-1])
+            if re.fullmatch(r"[\w-]{6,30}",ident):
+                url="https://www.youtube-nocookie.com/embed/"+escape(ident,quote=True)
+            else:
+                return f'<p><a href="{url}" target="_blank" rel="noopener noreferrer">觀看原影片</a></p><BR>'
+        label=escape((media.get("context") or "晨陽設計原案例影片")[:110],quote=True)
+        inner=(f'<iframe src="{url}" title="{label}" width="900" height="506" '
+               'loading="lazy" allowfullscreen style="width:100%;max-width:900px;'
+               'aspect-ratio:16/9;border:0;"></iframe>')
     else:
-        host=(urlsplit(media["url"]).hostname or "").lower()
-        if host in HOSTS:
-            inner=(f'<video src="{url}" controls preload="metadata" playsinline '
-                   f'style="display:block;width:100%;max-width:900px;height:auto;margin:0 auto;"></video>')
-        elif host in ("www.youtube.com","youtube.com","youtu.be",
-                      "www.youtube-nocookie.com","player.vimeo.com"):
-            if "youtu" in host:
-                parts=urlsplit(media["url"])
-                ident=(parts.path.strip("/") if host=="youtu.be" else
-                    parse_qs(parts.query).get("v",[""])[0] if parts.path=="/watch"
-                    else parts.path.split("/")[-1])
-                if re.fullmatch(r"[\w-]{6,30}",ident):
-                    url="https://www.youtube-nocookie.com/embed/"+escape(ident,quote=True)
-                else:
-                    return f'<p><a href="{url}" target="_blank" rel="noopener noreferrer">觀看原影片</a></p><BR>'
-            title=escape(media.get("context") or "晨陽設計案例影片",quote=True)[:120]
-            inner=(f'<iframe src="{url}" title="{title}" loading="lazy" allowfullscreen '
-                   f'style="display:block;width:100%;max-width:900px;aspect-ratio:16/9;'
-                   f'border:0;margin:0 auto;border-radius:6px;"></iframe>')
-        else:
-            return f'<p><a href="{url}" target="_blank" rel="noopener noreferrer">觀看原影片</a></p><BR>'
-        caption=media.get("context","")
-    caption=caption.strip()
-    caption_text=(f'<figcaption style="padding:8px 4px 0;text-align:left;color:#666;'
-                  f'font-size:13px;line-height:1.6;">{escape(caption)}</figcaption>'
-                  if caption and not re.search(r"室內空間設計圖片（圖\d+）",caption) else "")
-    return ('<figure style="max-width:900px;margin:24px auto 30px;clear:both;">'+
-            inner+caption_text+'</figure><BR>')
+        return f'<p><a href="{url}" target="_blank" rel="noopener noreferrer">觀看原影片</a></p><BR>'
+    return '<p style="margin:24px 0;text-align:center;">'+inner+'</p><BR>'
 
 
-def format_body(body,is_faq=False,lead=False):
+def format_body(body,is_faq=False):
     chunks=[x.strip() for x in body.split("<BR>") if x.strip()]
+    out=[]
     if is_faq:
-        output=[]
         for i in range(0,len(chunks),2):
-            question=escape(chunks[i])
-            answer=escape(chunks[i+1]) if i+1<len(chunks) else ""
-            output.append(
-              '<p style="margin:0 0 18px;padding:12px 16px;line-height:1.9;'
-              'font-size:16px;color:#333;background:#f8fafc;border-left:3px solid #d0ae55;">'
-              '<strong>'+question+'</strong><BR>'+answer+'</p><BR>')
-        return "\n".join(output)
-    result=[]
-    for chunk in chunks:
-        emphasis="font-weight:500;" if lead else ""
-        result.append(
-          '<p style="margin:0 0 22px;color:#333;font-size:16px;'
-          'line-height:1.95;letter-spacing:.01em;'+emphasis+'">'+escape(chunk)+'</p><BR>')
-    return "\n".join(result)
+            q=escape(chunks[i])
+            a=escape(chunks[i+1]) if i+1<len(chunks) else ""
+            out.append(
+                '<p style="margin:0 0 18px;line-height:1.9;">'
+                '<span style="font-size:18px"><strong>'+q+'</strong><BR>'+a+
+                '</span></p><BR>')
+    else:
+        for chunk in chunks:
+            out.append(
+                '<p style="margin:0 0 18px;line-height:1.9;">'
+                '<span style="font-size:18px">'+escape(chunk)+'</span></p><BR>')
+    return "\n".join(out)
 
 
 def merge(d,items):
     if not items:return ""
-    n=len(d["sections"])
-    groups=[[] for _ in range(n)]
+    count=len(d["sections"])
+    groups=[[] for _ in range(count)]
     last=0
     for item in items:
-        last=section_index(d["id"],item,last,n)
+        last=section_index(d["id"],item,last,count)
         if item["type"]=="image":
             item["original_alt"]=item.get("alt","")
             item["alt"]=alt_for(d,item,last)
             item["alt_review_required"]=item["alt_provenance"]!="原頁具體 Alt（沿用）"
         groups[last].append(item)
-    parts=['<div class="chenyang-seo-content" style="max-width:900px;'
-           'width:100%;margin:0 auto;color:#333;line-height:1.9;'
-           'font-family:inherit;overflow-wrap:anywhere;">']
-    for index,(heading,body) in enumerate(d["sections"]):
+    parts=[]
+    for idx,(heading,body) in enumerate(d["sections"]):
         parts.append(
-          '<h2 style="font-size:clamp(20px,2.4vw,25px);line-height:1.45;'
-          'font-weight:700;color:#263a50;margin:32px 0 14px;'
-          'padding:0 0 10px;border-bottom:2px solid #d6b05c;">'+
-          escape(heading)+'</h2><BR>')
-        parts.append(format_body(body,is_faq=("FAQ" in heading or "常見問題" in heading),
-                                 lead=index==0))
-        # Images and their captions stay between logical topics, not within text.
-        if groups[index]:
-            parts.extend(embed(item) for item in groups[index])
+            '<h2><span style="font-size:20px"><span style="color:'+GOLD+
+            '">'+escape(heading)+'</span></span></h2><BR>')
+        parts.append(format_body(body,is_faq=("FAQ" in heading or "常見問題" in heading)))
+        parts.extend(embed(media) for media in groups[idx])
+    # General article CTA, NOT the fixed design-philosophy case ending.
     parts.append(
-        '<p style="margin:32px 0 12px;padding:18px 20px;background:#f5f7fa;'
-        'border-left:4px solid #d6b05c;font-size:16px;line-height:1.9;">'
-        '<strong>晨陽設計｜進一步了解</strong><BR>'+
-        escape(d["cta"])+'</p><BR>')
-    parts.append('</div>')
+        '<p style="margin:22px 0 10px;line-height:1.9;">'
+        '<span style="font-size:18px"><strong>晨陽設計｜進一步了解</strong><BR>'+
+        escape(d["cta"])+'</span></p><BR>')
     return "\n".join(parts)
 
 
