@@ -764,7 +764,8 @@ function renderGeoTasks(report){
   el("geo-task-source").textContent="已依公開受控樣本建立 "+tasks.length+" 項待確認任務。數據日期："+(report.generated_at||"未知")+"；僅是調查線索，沒有實測的題目不列為內容失敗。";
   const exportBtn=el("geo-task-export");
   exportBtn.onclick=()=>{
-    const file={exported_at:new Date().toISOString(),source:"公開 AI SEO 監控｜本機任務紀錄",tasks:tasks.map(t=>({...t,...(saved[t.id]||{})}))};
+    const articles=(seoImprovementPlan?.items||[]).map(a=>({id:a.id,title:a.title,url:a.url,channels:a.channels,priority:a.priority,proposedTitle:a.proposedTitle,suggestions:a.suggestions,...(saved[a.id]||{})}));
+    const file={exported_at:new Date().toISOString(),source:"公開 SEO × AI SEO｜本機改善任務紀錄",tasks:[...articles,...tasks.map(t=>({...t,...(saved[t.id]||{})}))]};
     const blob=new Blob([JSON.stringify(file,null,2)],{type:"application/json"});
     const url=URL.createObjectURL(blob),a=document.createElement("a");
     a.href=url;a.download="chenyang-geo-tasks.json";a.click();URL.revokeObjectURL(url);
