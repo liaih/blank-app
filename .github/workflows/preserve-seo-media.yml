@@ -28,7 +28,9 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install HTML parser only (no paid AI or scrape service)
-        run: python -m pip install --quiet beautifulsoup4
+        run: python -m pip install --quiet beautifulsoup4 pytest
+      - name: Regression-test immutable floorplans and article preservation
+        run: python -m pytest -q tests/test_floorplan_protection.py
       - name: Extract same-site media assets from original CMS pages
         run: python scripts/preserve_seo_media.py
       - name: Audit existing page content containers without modifying originals
@@ -45,6 +47,12 @@ jobs:
           for row in report["articles"]:
               audit=row["preservation_audit"]
               assert audit["original_main_content_preserved"],(row["id"],audit.get("failure"))
+              assert audit["floorplan_protection_passed"],(row["id"],"floorplan removed/reordered")
+              assert row["floorplan_protection_passed"],row["id"]
+              assert audit["floorplan_count"]==row["floorplan_count"],row["id"]
+              assert len(audit["floorplan_urls"])==audit["floorplan_count"],row["id"]
+              assert len(set(audit["floorplan_urls"]))==len(audit["floorplan_urls"]),row["id"]
+
               assert audit["source_has_building_information"],(row["id"],"no project information")
               assert row["media_integrated"] and row["html_with_media"],row["id"]
               assert audit["merged_text_characters"]>audit["original_text_characters"],row["id"]
