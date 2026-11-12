@@ -30,12 +30,13 @@ jobs:
         run: python -m pip install --quiet beautifulsoup4
       - name: Extract same-site media assets from original CMS pages
         run: python scripts/preserve_seo_media.py
-      - name: Validate HTML and original source URL manifest
+      - name: Validate image URL preservation and nonempty ALT text
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
           from urllib.parse import urlsplit
+          from bs4 import BeautifulSoup
           doc=json.loads(Path("docs/seo-media-rewrites.json").read_text(encoding="utf-8"))
           assert len(doc["articles"])==8
           for article in doc["articles"]:
@@ -44,10 +45,23 @@ jobs:
               urls=[x["url"] for x in article["media"]]
               assert len(urls)==len(set(urls))
               assert all(urlsplit(url).scheme=="https" for url in urls)
-              if article["media_integrated"]:
-                  assert all(url in article["html_with_media"] or
-                         url.replace("https://www.youtube.com/watch?v=","https://www.youtube-nocookie.com/embed/") in article["html_with_media"]
-                         for url in urls if "youtube.com/watch?v=" not in url)
+              if not article["media_integrated"]:
+                  continue
+              soup=BeautifulSoup(article["html_with_media"],"html.parser")
+              images=soup.find_all("img")
+              originals=[x for x in article["media"] if x["type"]=="image"]
+              assert len(images)==len(originals),(article["id"],"image count mismatch")
+              assert all(img.get("alt","").strip() for img in images),(article["id"],"ALT missing")
+              assert all(img.get("src")==source["url"] and
+                  img.get("alt")==source["alt"] for img,source in zip(images,originals)),article["id"]
+              assert article["alt_count"]==len(images)
+              # Videos may be embedded iframes, HTML5 videos, or safe source links.
+              video_count=sum(x["type"]=="video" for x in article["media"])
+              published_video_count=len(soup.find_all(["video","iframe"]))+len([
+                  a for a in soup.find_all("a") if "觀看原影片" in a.get_text()
+              ])
+              assert published_video_count>=video_count,(article["id"],"video missing")
+          print("Validated all recovered media with descriptive ALT and preserved image URLs")
           PY
       - name: Publish public media manifest and merged HTML; no CMS mutations
         run: |
