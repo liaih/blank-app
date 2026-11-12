@@ -316,6 +316,11 @@ tbody tr:last-child td{border-bottom:0}
     <div id="seo-article-actions" aria-live="polite">正在載入單篇圖文影音 HTML。</div>
     <p class="detail">原媒體不需重新上傳，但仍須核對原頁的媒體是否完整、圖片 ALT 是否符合實際畫面及 CMS 能否保留 HTML 格式。SEO 改善是測試假設，非保證排名提升。</p>
   </section>
+  <details class="ai-manual-panel" id="action-discovery-panel">
+    <summary>本週全站 GSC 新發現｜待稽核文章 <span id="site-discovery-count">（資料同步中）</span></summary>
+    <div id="site-discovery-results">正在讀取真實 GSC 網頁層級資料。</div>
+    <p class="detail">這裡只是新發現的候選頁，不會自動產生完整 HTML；正式改稿必須先核對原文、格局圖、圖片 Alt 與實際 query × page 證據。</p>
+  </details>
   <details class="ai-manual-panel">
     <summary>進階｜AI SEO 監測改善任務（非文章改稿）</summary>
   <section class="panel" aria-label="AI SEO｜監測改善任務">
@@ -651,6 +656,7 @@ let seoImprovementPlan=null;
 let seoRewritesById=new Map();
 let seoMediaById=new Map();
 let gscUrlDiagnosis=null;
+let gscSiteDiscovery=null;
 function cmsCopyButton(label,content,feedback){
  const btn=document.createElement("button");btn.type="button";btn.className="ai-action secondary";btn.textContent=label;
  btn.onclick=async()=>{
@@ -754,6 +760,58 @@ function loadGscUrlDiagnosis(){
  .catch(()=>{gscUrlDiagnosis=null;});
 }
 loadGscUrlDiagnosis();
+
+function renderSitewideDiscovery(){
+ const panel=el("site-discovery-results");
+ if(!panel)return;
+ panel.replaceChildren();
+ if(!gscSiteDiscovery){
+   panel.textContent="首次每週全站檢核尚未完成公開同步。未取得資料不代表沒有需要改善的文章。";
+   return;
+ }
+ const newPages=(gscSiteDiscovery.pages||[]).filter(x=>!x.existing_improvement_task);
+ const summary=el("site-discovery-count");summary.textContent="（新增 "+newPages.length+" 篇候選）";
+ const blurb=document.createElement("p");blurb.className="detail";
+ blurb.textContent="GSC 截止："+(gscSiteDiscovery.last_gsc_day||"未知")+
+   "｜掃描到 "+gscSiteDiscovery.total_candidate_pages+" 篇候選，顯示前 "+
+   gscSiteDiscovery.pages.length+" 篇；資料來自已保存的 GSC page 維度，尚非 query×page 定案。"+
+   (gscSiteDiscovery.daily_page_rows_truncated?"每日網頁資料可能已達 GSC 取樣上限。":"");
+ panel.appendChild(blurb);
+ if(!newPages.length){
+   const none=document.createElement("p");none.textContent="目前未找到既有 8 篇以外、足夠曝光的新候選頁。";panel.appendChild(none);return;
+ }
+ const table=document.createElement("table"),head=document.createElement("tr");
+ for(const name of ["新候選官網文章","28 天曝光","點擊","CTR","需做的檢查"]){
+   const th=document.createElement("th");th.textContent=name;head.appendChild(th);
+ }
+ table.appendChild(head);
+ for(const page of newPages.slice(0,20)){
+   const tr=document.createElement("tr");
+   const title=document.createElement("td"),link=document.createElement("a");
+   if(/^https:\/\/(?:www\.)?chen-yang\.com\.tw\/(?:news-content|unboxing-content)\.php\?id=\d+$/.test(page.url||"")){
+     link.href=page.url;link.target="_blank";link.rel="noopener noreferrer";
+   }
+   link.textContent=page.title||page.path;
+   title.appendChild(link);tr.appendChild(title);
+   const m=page.current||{};
+   for(const txt of [m.impressions??"資料不足",m.clicks??"資料不足",m.ctr==null?"資料不足":(100*m.ctr).toFixed(2)+"%",page.status||"待稽核"]){
+     const td=document.createElement("td");td.textContent=String(txt);tr.appendChild(td);
+   }
+   table.appendChild(tr);
+ }
+ const wrap=document.createElement("div");wrap.className="tablebox";wrap.appendChild(table);panel.appendChild(wrap);
+}
+function loadSitewideDiscovery(){
+ fetch("./gsc-site-discovery.json",{cache:"no-store"})
+  .then(r=>{if(!r.ok)throw Error("not published");return r.json()})
+  .then(report=>{
+    if(!Array.isArray(report.pages)||report.not_article_quality_proof!==true||
+       report.not_query_page_confirmation!==true)throw Error("invalid");
+    gscSiteDiscovery=report;renderSitewideDiscovery();
+  })
+  .catch(()=>{gscSiteDiscovery=null;renderSitewideDiscovery();});
+}
+loadSitewideDiscovery();
 
 function renderSeoImprovementPlan(){
  if(!seoImprovementPlan)return;
@@ -870,14 +928,14 @@ function renderSeoImprovementPlan(){
    target.appendChild(note);return;
  }
  const integrity=media?.preservation_audit||{};
- if(!integrity.original_main_content_preserved){
-   note.textContent="品質阻擋：目前這份改寫稿未保留完整原建案資訊（交通、坪數、格局、生活機能、原有連結等），直接覆蓋可能傷害原本的 SEO。已暫停『完整 HTML』複製，等待原文保留版驗證；原官網未被修改。";
+ if(!integrity.original_main_content_preserved || integrity.floorplan_protection_passed!==true || media.floorplan_protection_passed!==true){
+   note.textContent="品質阻擋：原文、格局圖或媒體的完整保留檢查尚未通過。未通過的文章不能複製完整 HTML，也不會修改官網。";
    note.className="message";
    target.appendChild(note);
    return;
  }
  const content=media.html_with_media;
- note.textContent="已通過原文／媒體／連結保留檢查：新版是原建案資訊＋裝修延伸，不再以設計內容覆蓋建案搜尋需求。正式上稿前仍要核對原文中的交屋、坪數、距離與照片說明。";
+ note.textContent="已通過防錯驗收：原文、圖片、影片、連結及原格局圖順序保留。保護的格局／平面圖："+integrity.floorplan_count+" 張。仍需編輯核對房型、交屋年份、圖片畫面及 CMS 實際上稿效果。";
  target.appendChild(note);
  const feedback=document.createElement("p");feedback.className="detail";
  feedback.setAttribute("role","status");
