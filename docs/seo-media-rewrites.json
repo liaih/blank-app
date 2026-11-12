@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-12T20:33:16+08:00",
+  "generated_at": "2026-11-12T20:40:58+08:00",
   "no_media_files_copied": true,
   "not_published_to_cms": true,
   "note": "現有 NEWS／開箱文章（非設計理念）。依原文擷取媒體並套用固定 HTML：H2 金色 #C5A47E、20px !important，正文 18px !important、段落行距 1.9，後台標題欄負責 H1；一般文章結尾使用專屬 CTA，不使用設計理念的『此為【建案名稱】一案』。ALT 有待核對項，JS 延遲媒體可能漏抓。",
