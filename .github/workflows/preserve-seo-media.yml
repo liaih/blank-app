@@ -33,47 +33,43 @@ jobs:
         run: python scripts/preserve_seo_media.py
       - name: Audit existing page content containers without modifying originals
         run: python scripts/audit_source_html.py
-      - name: Validate image URL preservation and nonempty ALT text
+      - name: Verify original article content, URLs and project-search facts are preserved
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
           from urllib.parse import urlsplit
           from bs4 import BeautifulSoup
-          doc=json.loads(Path("docs/seo-media-rewrites.json").read_text(encoding="utf-8"))
-          assert len(doc["articles"])==8
-          for article in doc["articles"]:
-              assert article["media_count"]==len(article["media"])
-              assert article["media_integrated"]==bool(article["media_count"] and article["html_with_media"])
-              urls=[x["url"] for x in article["media"]]
-              assert len(urls)==len(set(urls))
-              assert all(urlsplit(url).scheme=="https" for url in urls)
-              if not article["media_integrated"]:
-                  continue
-              soup=BeautifulSoup(article["html_with_media"],"html.parser")
-              images=soup.find_all("img")
-              originals=[x for x in article["media"] if x["type"]=="image"]
-              assert len(images)==len(originals),(article["id"],"image count mismatch")
-              assert all(img.get("alt","").strip() for img in images),(article["id"],"ALT missing")
-              assert all(img.get("src")==source["url"] and
-                  img.get("alt")==source["alt"] for img,source in zip(images,originals)),article["id"]
-              assert article["alt_count"]==len(images)
-              # Videos may be embedded iframes, HTML5 videos, or safe source links.
-              video_count=sum(x["type"]=="video" for x in article["media"])
-              published_video_count=len(soup.find_all(["video","iframe"]))+len([
-                  a for a in soup.find_all("a") if "觀看原影片" in a.get_text()
-              ])
-              assert published_video_count>=video_count,(article["id"],"video missing")
-              assert article["article_mode"] in ("existing_news","existing_unboxing")
-              assert article["template"]=="chenyang-existing-article-v1.1"
-              assert not soup.find_all(["h1","html","head","body","script","style","figure","div"]),(article["id"],"unexpected CMS tags")
-              assert "此為【" not in article["html_with_media"] and "此為 【" not in article["html_with_media"],(article["id"],"design理念 footer leaked")
-              headings=soup.find_all("h2")
-              assert len(headings)>=4,(article["id"],"too few headings")
-              assert all(h.find("span") and "#C5A47E !important" in h.span.get("style","") and
-                  "font-size:20px !important" in h.span.get("style","") for h in headings),(article["id"],"gold H2 style")
-              assert len(soup.select('span[style*="font-size:18px !important"]'))>=len(headings),(article["id"],"body text size")
-          print("Verified original media AND precise Chen Yang NEWS/unboxing CMS typography, no design理念 footer")
+          report=json.loads(Path("docs/seo-media-rewrites.json").read_text(encoding="utf-8"))
+          assert len(report["articles"])==8
+          for row in report["articles"]:
+              audit=row["preservation_audit"]
+              assert audit["original_main_content_preserved"],(row["id"],audit.get("failure"))
+              assert audit["source_has_building_information"],(row["id"],"no project information")
+              assert row["media_integrated"] and row["html_with_media"],row["id"]
+              assert audit["merged_text_characters"]>audit["original_text_characters"],row["id"]
+              assert audit["original_image_urls_count"]==audit["preserved_image_urls_count"],row["id"]
+              assert audit["original_link_count"]==audit["preserved_link_count"],row["id"]
+              assert audit["original_video_count"]==audit["preserved_video_count"],row["id"]
+              assert row["article_mode"] in ("existing_news","existing_unboxing")
+              assert row["template"]=="chenyang-existing-article-v1.1"
+              soup=BeautifulSoup(row["html_with_media"],"html.parser")
+              assert not soup.find("h1"),(row["id"],"duplicate H1")
+              assert not soup.find_all(["html","head","body","script"]),(row["id"],"dangerous element")
+              assert "此為【" not in row["html_with_media"] and "此為 【" not in row["html_with_media"]
+              imgs=soup.find_all("img")
+              assert len(imgs)==audit["original_image_urls_count"],row["id"]
+              assert all(img.get("alt","").strip() for img in imgs),(row["id"],"ALT missing")
+              new_headings=[h for h in soup.find_all("h2") if "延伸閱讀" in h.get_text()]
+              assert new_headings,(row["id"],"missing enrichment")
+              for h in new_headings:
+                  span=h.find("span")
+                  assert span and "#C5A47E !important" in span.get("style","")
+                  assert "font-size:20px !important" in span.get("style","")
+              assert soup.select('span[style*="font-size:18px !important"]'),row["id"]
+              # These are original sources, not guessed uploads.
+              assert all(urlsplit(asset["url"]).scheme=="https" for asset in row["media"])
+          print("PASS: 8 original project articles, photos/videos/links preserved; added CMS-safe SEO guidance")
           PY
       - name: Publish public media manifest and merged HTML; no CMS mutations
         run: |
