@@ -17,6 +17,8 @@ from bs4 import BeautifulSoup
 
 OUTPUT=Path(__file__).resolve().parents[1]/"docs"/"seo-homepage-audit.json"
 ORIGINS=["https://chen-yang.com.tw/","https://www.chen-yang.com.tw/","https://chen-yang.com.tw/index.php","https://www.chen-yang.com.tw/index.php"]
+SERVICE_PAGES=["locations.php","change-design.php","new-house.php","renovation.php","faq.php",
+               "survey-verification.php","manager-system.php"]
 REQUEST_HEADERS={"User-Agent":"Mozilla/5.0 (compatible; ChenYangHomepageReadOnlyAudit/1.0; +https://chen-yang.com.tw/)"}
 ACCEPTED={"chen-yang.com.tw","www.chen-yang.com.tw"}
 
@@ -125,6 +127,24 @@ def main():
                "bytes":len(data["body"])}
         except (OSError,ValueError) as e:
             report[resource.split(".")[0]]={"status":"unverified","error_type":type(e).__name__}
+    report["service_pages"]=[]
+    main_links=set(report["checks"][0].get("internal_link_samples",[]))
+    for path in SERVICE_PAGES:
+        address="https://chen-yang.com.tw/"+path
+        try:
+            sub=inspect_homepage(address)
+            report["service_pages"].append({
+                "url":address,"status":sub.get("status"),"title":sub.get("title"),
+                "h1_count":sub.get("h1_count"),"h1":sub.get("headings",{}).get("h1",[]),
+                "description":sub.get("description"),
+                "canonical":sub.get("canonical"),"body_characters":sub.get("body_characters"),
+                "homepage_links_directly":address in main_links,
+                "page_sections":sub.get("headings",{}).get("h2",[])[:12]
+            })
+        except (OSError,ValueError) as e:
+            report["service_pages"].append({
+                "url":address,"status":"unverified","error_type":type(e).__name__
+            })
     report["canonical_consistency"]={
         "all_homepage_versions_redirect_to_one":len({x.get("final_url") for x in report["checks"] if x.get("status")==200})==1,
         "canonical_targets":sorted({x.get("canonical") for x in report["checks"] if x.get("canonical")}),
