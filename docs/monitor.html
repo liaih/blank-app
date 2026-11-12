@@ -149,10 +149,11 @@ tbody tr:last-child td{border-bottom:0}
       <div class="tablebox"><table><thead><tr><th>測試問題／意圖標籤</th><th>ChatGPT</th><th>Gemini</th><th>Perplexity</th><th>SEO 內容機會</th></tr></thead><tbody id="ai-intent-rows"><tr><td colspan="5">正在讀取實測意圖資料。</td></tr></tbody></table></div>
       <p class="detail">各平台欄位顯示「回答筆數／提及晨陽次數」。0 筆代表尚未測試到有效回答，不能視為 AI 不推薦。品牌提及和引用皆不是「明確推薦」；推薦需人工核對回答全文。</p>
     </section>
-    <h3 style="margin-top:20px">AI 平台真實回答｜公開測試紀錄</h3>
+    <h3 style="margin-top:20px">AI 平台真實回答｜逐筆證據及推薦判定</h3>
     <p class="muted">直接展開查看測試問題與回答節錄，不需要登入 GitHub。回答由第三方平台擷取；原始資料庫與識別資訊不公開。</p>
     <div id="native-public-tests" class="ai-preview">正在載入公開測試結果。</div>
-    <p class="detail">僅展示最多 1,500 字的回答節錄及公開來源網域。沒有擷取的回答不會編造。AI 回答可能有錯誤，請核對引用來源。</p>
+    <p class="detail">公開遮罩回答節錄、匿名證據編號、候選推薦判定及引用網域。自動辨識只是疑似推薦，未經人工核對不得算入「明確推薦」指標。</p>
+    <p class="detail" id="native-perplexity-progress">Perplexity 既有任務：正在讀取。</p>
     <p class="detail">競品名稱屬 AI 回答文字的自動候選辨識，尚未人工判定是否屬「明確推薦」；不把這些結果當成消費者整體推薦率。各平台的地域和搜尋啟用能力可能不同。</p>
     <div class="flexhead" style="margin-top:14px">
       <p class="detail">排程：台灣時間每日 13:05（GitHub 可能延遲）。<a href="#native-public-tests">查看公開測試回答</a></p>
@@ -715,16 +716,20 @@ function renderNativePlatformAnswers(){
         if(!["ChatGPT","Gemini","Perplexity"].includes(sample.platform))continue;
         const details=document.createElement("details");details.style.marginBottom="12px";
         const summary=document.createElement("summary");
-        summary.textContent=sample.platform+"｜"+(sample.answered_at||"日期未提供")+"｜"+(sample.mentions_brand?"有提及晨陽":"未提及晨陽");
+        summary.textContent=sample.platform+"｜"+(sample.answered_at||"日期未提供")+"｜"+(sample.recommendation_status||(sample.mentions_brand?"有提及晨陽，待核對":"未提及晨陽"));
         details.appendChild(summary);
+        const idLine=document.createElement("p");idLine.className="small";idLine.textContent="匿名證據編號："+(sample.evidence_id||"舊資料待同步")+"｜明確推薦人工驗證："+(sample.explicit_recommendation_verified===true?"已核對":"尚未核對");details.appendChild(idLine);
         const q=document.createElement("p");q.textContent="測試提問："+(sample.prompt||"原文未公開");details.appendChild(q);
         const pre=document.createElement("div");pre.style.whiteSpace="pre-wrap";pre.style.overflowWrap="anywhere";
         pre.textContent=(sample.answer_excerpt||"沒有可公開的回答節錄")+(sample.excerpt_truncated?"\n（僅顯示前 1,500 字）":"");details.appendChild(pre);
+        if(sample.evidence_excerpt){const evidence=document.createElement("p");evidence.className="small";evidence.textContent="提及文字線索："+sample.evidence_excerpt;details.appendChild(evidence);}
         if(Array.isArray(sample.cited_domains)&&sample.cited_domains.length){
           const cite=document.createElement("p");cite.className="small";cite.textContent="回答引用網域："+sample.cited_domains.join("、");details.appendChild(cite);
         }
         tests.appendChild(details);
       }
+      const perplexity=(data.existing_job_status||{}).Perplexity||{};
+      el("native-perplexity-progress").textContent="Perplexity 既有任務：處理中 "+(perplexity.pending||0)+" 筆、已保存 "+(perplexity.stored||0)+" 筆、失敗 "+(perplexity.failed||0)+" 筆、無有效證據 "+(perplexity["no-evidence"]||0)+" 筆。僅查詢舊 Snapshot，不新增採樣。";
       put("native-total",total+" 筆");
       put("legacy-sourced-count",total?(sourced+"／"+total+" 筆"):"尚無有效回答");
       if(total){
@@ -746,6 +751,7 @@ function renderNativePlatformAnswers(){
       errorRow.appendChild(errorCell);questionRows.appendChild(errorRow);
       el("ai-intent-rows").textContent="分類資料讀取失敗，請檢查同步。";
       el("native-public-tests").textContent="公開 AI 測試資料暫時無法讀取。";
+      el("native-perplexity-progress").textContent="既有任務狀態暫時無法讀取，不能判定完成或失敗。";
       put("legacy-sourced-count","資料尚未取得");
       status.textContent="尚未接通原平台回答";
       el("native-ai-hint").textContent="已建置三平台每日擷取程式，但尚未取得可供公開展示的實際回答。必須先確認 Bright Data 免費方案、關閉 PAYG 並連接安全的 API Key；在此之前沒有任何平台結果會被虛構。";
