@@ -38,11 +38,50 @@ def boiler(node):
     return False
 
 def context(tag):
-    for prev in tag.find_all_previous(["h2","h3","h4","strong","p"],limit=10):
+    # Prefer nearest actual section heading; paragraph text is only fallback.
+    for prev in tag.find_all_previous(["h2","h3","h4"],limit=12):
         if boiler(prev):continue
         txt=" ".join(prev.get_text(" ",strip=True).split())
-        if 3<=len(txt)<=110:return txt[:110]
+        if 3<=len(txt)<=90:return txt[:90]
+    for prev in tag.find_all_previous(["p","strong"],limit=5):
+        if boiler(prev):continue
+        txt=" ".join(prev.get_text(" ",strip=True).split())
+        if 5<=len(txt)<=95:return txt[:95]
     return ""
+
+def alt_for(draft,asset,section):
+    """Ground ALT in original alt/nearby headings; never hallucinate room contents."""
+    if asset["type"]!="image":return ""
+    title=draft["title"].split("｜",1)[0].strip()
+    original=" ".join(asset.get("alt","").split())
+    context_text=" ".join(asset.get("context","").split())
+    # Original alt is usable if it describes something beyond a generic brand/logo.
+    if len(original)>=14 and not re.fullmatch(r"(?:Image|圖片|晨陽設計|CHEN YANG)[\\s\\d]*",original,re.I):
+        asset["alt_provenance"]="官網原有 Alt（已整理）"
+        return original[:125]
+    room=""
+    for pattern,label in [
+        (r"(?:平面|格局配置|配置圖)","平面格局示意圖"),
+        (r"(?:3D|模擬|透視)","3D 空間設計示意圖"),
+        (r"(?:主臥|臥室|床頭)","臥室空間"),
+        (r"(?:客廳|電視牆|沙發)","客廳空間"),
+        (r"(?:玄關|鞋櫃)","玄關空間"),
+        (r"(?:廚房|餐廳|餐廚)","餐廚空間"),
+        (r"(?:衛浴|浴室)","衛浴空間"),
+    ]:
+        if re.search(pattern,context_text,re.I):room=label;break
+    if not room:
+        room="室內規劃圖片" if "老屋" not in title else "老屋翻新案例圖片"
+    unit=""
+    if draft["id"]=="seo-yunjiang-331":unit=" L 戶" if section<=1 else " A 戶"
+    elif "A6" in draft["title"]:unit=" A6 戶"
+    elif "D11" in draft["title"]:unit=" D11 戶"
+    elif "C3" in draft["title"]:unit=" C3 戶"
+    elif "B1" in draft["title"]:unit=" B1 戶"
+    elif "A1" in draft["title"]:unit=" A1 戶"
+    elif "C 戶" in draft["title"]:unit=" C 戶"
+    asset["alt_provenance"]="依原文章相鄰段落推定，畫面仍待核對" if context_text else "依建案與順序描述，畫面仍待核對"
+    return f"{title}{unit}｜{room}（原文第 {asset['order']} 張）"[:125]
 
 def extract(html,page):
     soup=BeautifulSoup(html,"html.parser")
@@ -108,7 +147,12 @@ def merge(d,items):
     if not items:return ""
     n=len(d["sections"]);groups=[[] for _ in range(n)];last=0
     for item in items:
-        last=section_index(d["id"],item,last,n);groups[last].append(item)
+        last=section_index(d["id"],item,last,n)
+        if item["type"]=="image":
+            item["original_alt"]=item.get("alt","")
+            item["alt"]=alt_for(d,item,last)
+            item["alt_review_required"]=item["alt_provenance"]!="官網原有 Alt（已整理）"
+        groups[last].append(item)
     parts=[]
     for idx,(h,body) in enumerate(d["sections"]):
         parts.append("<h2>"+escape(h)+"</h2><BR>")
@@ -137,12 +181,14 @@ def main():
                       "image_count":sum(x["type"]=="image" for x in assets),
                       "video_count":sum(x["type"]=="video" for x in assets),
                       "media":assets,"html_with_media":html,
+                      "alt_count":sum(bool(x.get("alt")) for x in assets if x["type"]=="image"),
+                      "alt_review_count":sum(bool(x.get("alt_review_required")) for x in assets if x["type"]=="image"),
                       "media_integrated":bool(assets and html),"review_required":True,
                       "status":"原頁媒體已提取，仍須比對是否完整" if assets else "未取到原頁媒體，禁止覆寫原文",
                       "error_type":error})
     result={"generated_at":datetime.now(ZoneInfo("Asia/Taipei")).isoformat(timespec="seconds"),
             "no_media_files_copied":True,"not_published_to_cms":True,
-            "note":"依官網原文擷取媒體網址並與新版文字整合。來源若有 JS 延遲載入的圖片或影片，可能漏抓；上稿前須逐張對照原文。",
+            "note":"依官網原文擷取媒體網址並與新版文字整合。ALT 取原有描述或由相鄰段落推定；未確認畫面內容的 ALT 會標記待核對。JS 延遲載入的圖片或影片可能漏抓，不能宣稱所有媒體完整。",
             "articles":output}
     (ROOT/"seo-media-rewrites.json").write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(json.dumps([{"id":x["id"],"images":x["image_count"],"videos":x["video_count"],"status":x["status"]} for x in output],ensure_ascii=False))
