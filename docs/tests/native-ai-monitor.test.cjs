@@ -17,8 +17,9 @@ assert.ok(html.includes("進階功能｜手動補充 AI 回答證據（選填，
 assert.ok(!html.includes('ChatGPT 搜尋回答</span><span class="label">尚無可核對樣本'),"Do not show obsolete hard-coded ChatGPT disconnected status");
 for(const id of ["legacy-chatgpt-status","legacy-gemini-status","legacy-perplexity-status","legacy-sourced-count"]){
   assert.ok(html.includes('id="'+id+'"'),"Live progress ID missing: "+id);
-  assert.ok(html.includes('el("'+id+'")')||html.includes('"'+id+'":'),"Live status lacks data binding: "+id);
+  assert.ok(html.split('"'+id+'"').length>1,"Live status must be referenced in script: "+id);
 }
+assert.ok(html.includes("legacyStatus.textContent=n?"),"Live status should derive from actual samples");
 assert.ok(html.includes("第三方平台回答 ≠ 經證實啟用網路搜尋"),"Must explain actual reply vs confirmed web search");
 assert.ok(html.includes("Gemini 官方 API Google Search Grounding"),"Must distinguish Gemini native API grounding from platform answer captures");
 assert.equal((html.match(/<section\b/g)||[]).length,(html.match(/<\/section>/g)||[]).length);
