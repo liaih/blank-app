@@ -34,6 +34,18 @@ for it in plan["items"]:
             })
             cur=cur.parent
         row["root_image_count"]=len(soup.find_all("img"))
+        root=soup.select_one(".col-row")
+        def tree(node,level=0):
+            text=" ".join(node.get_text(" ",strip=True).split())
+            result={"tag":node.name,"id":node.get("id",""),"class":node.get("class",[]),
+                    "chars":len(text),"images":len(node.find_all("img")),
+                    "links":len(node.find_all("a")),"sample":text[:110]}
+            if level<4:
+                children=[ch for ch in node.find_all(recursive=False) if getattr(ch,"name",None)]
+                result["children"]=[tree(ch,level+1) for ch in children[:12]]
+            return result
+        if root:row["col_row_tree"]=tree(root)
+
     except Exception as e:row["error"]=str(e)[:200]
     result.append(row)
 output={"generated_at":datetime.now(timezone.utc).isoformat(),"articles":result}
