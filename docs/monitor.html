@@ -85,6 +85,7 @@ tbody tr:last-child td{border-bottom:0}
 @media(max-width:800px){.ai-fields{grid-template-columns:1fr 1fr}}
 @media(max-width:530px){.ai-fields{grid-template-columns:1fr}}
 
+.ai-manual-panel{margin:14px 0}.ai-manual-panel>summary{cursor:pointer;padding:13px 17px;border:1px solid var(--line);background:#fff;border-radius:12px;color:var(--muted);font-size:13px;font-weight:750}.ai-manual-panel[open]>summary{border-radius:12px 12px 0 0}.ai-manual-panel .panel{margin:0}
 </style>
 </head>
 <body>
@@ -104,6 +105,30 @@ tbody tr:last-child td{border-bottom:0}
  <div class="banner"><strong>資料使用範圍：</strong>這是免費公開網站的<strong>唯讀彙總快照</strong>。原始資料庫、金鑰、完整 AI 回答及匯入管理功能仍留在私人系統。未取得的 AI 平台資料不會顯示成 0 次推薦。</div>
 
  <section id="view-ai" role="tabpanel" aria-labelledby="tab-ai">
+  <section class="panel" aria-label="ChatGPT Gemini Perplexity 原平台回答自動監測">
+    <div class="flexhead">
+      <div><h2>ChatGPT・Gemini・Perplexity｜原平台回答監測</h2>
+        <p class="muted">每天由獨立第三方資料服務查詢三個平台的實際回答，分析晨陽被提及與被引用、其他設計公司及來源網域。</p>
+      </div>
+      <span class="label wait" id="native-ai-status">尚未取得真實平台樣本</span>
+    </div>
+    <p class="message" id="native-ai-hint">此區不使用自建 Tavily＋Gemini 回答，也不使用過去那一筆 Gemini 不連網測試。等待免費 Bright Data 帳號與正式平台樣本。沒有來源時不會假裝監測成功。</p>
+    <div class="metrics">
+      <div class="metric"><div class="name">近30天｜ChatGPT</div><div class="number" id="native-chatgpt">未取得</div><div class="sub">第三方擷取平台回答</div></div>
+      <div class="metric"><div class="name">近30天｜Gemini</div><div class="number" id="native-gemini">未取得</div><div class="sub">與官方 API 自建分析分開</div></div>
+      <div class="metric"><div class="name">近30天｜Perplexity</div><div class="number" id="native-perplexity">未取得</div><div class="sub">平台搜尋回答擷取</div></div>
+      <div class="metric"><div class="name">近30天｜總有效回答</div><div class="number" id="native-total">未取得</div><div class="sub">固定屋主提問，不是市場用戶查詢量</div></div>
+    </div>
+    <div class="tablebox"><table>
+      <thead><tr><th>平台</th><th>已擷取回答</th><th>晨陽被提及</th><th>晨陽網站被引用</th><th>附引用來源</th><th>其他候選公司</th><th>最新日期</th></tr></thead>
+      <tbody id="native-platform-rows"><tr><td colspan="7">等待原平台回答自動監測啟用。</td></tr></tbody>
+    </table></div>
+    <p class="detail">競品名稱屬 AI 回答文字的自動候選辨識，尚未人工判定是否屬「明確推薦」；不把這些結果當成消費者整體推薦率。各平台的地域和搜尋啟用能力可能不同。</p>
+    <div class="flexhead" style="margin-top:14px">
+      <p class="detail">排程：台灣時間每日 13:05（GitHub 可能延遲）。<a href="https://github.com/liaih/Repository/actions/workflows/daily-native-ai.yml" target="_blank" rel="noopener noreferrer">檢查真實平台監測排程</a></p>
+      <p class="detail">資料供應：<a href="https://brightdata.com/products/web-scraper/chatgpt" target="_blank" rel="noopener noreferrer">Bright Data</a>，非三大平台官方分析報表。</p>
+    </div>
+  </section>
   <section class="panel" aria-label="每日自動 AI 聯網競品搜尋狀態">
     <div class="flexhead"><div><h2>每日自動 AI 聯網競品觀測</h2>
     <p class="muted">自動提出屋主問題、檢索即時網頁、由免費 Gemini 整理品牌及引用來源。這是自建 AI 聯網研究，不是 ChatGPT、Gemini App 或 Perplexity 的原生搜尋。</p></div>
@@ -145,6 +170,8 @@ tbody tr:last-child td{border-bottom:0}
     <p class="detail">僅依已保存回答中的「使用者確認推薦名單」統計；未核對原文的 AI 推薦不能當成事實。</p>
    </section>
   </div>
+  <details class="ai-manual-panel">
+    <summary>進階功能｜手動補充 AI 回答證據（選填，不需每天操作）</summary>
   <section class="panel" aria-label="AI 搜尋回答證據輸入">
    <div class="flexhead"><div><h3>新增 AI 回答證據｜手機也能使用</h3>
     <p class="muted">不用 API、不需要另外付費。把確實取得的 AI 搜尋回答及分享網址記錄下來，系統會整理品牌與來源；不會偷偷自動登入或爬取你的訂閱帳號。</p></div></div>
@@ -189,6 +216,7 @@ tbody tr:last-child td{border-bottom:0}
    </div>
    <p id="ai-evidence-status" role="status" class="small">新功能目前沒有預載虛構推薦名單；資料只會存在目前瀏覽器。輸出 JSON 可備份並移到其他裝置。</p>
   </section>
+  </details>
   <section class="panel" aria-label="AI SEO 來源紀錄與備份">
    <div class="flexhead"><h3>AI 搜尋回答紀錄與來源</h3>
     <div class="ai-buttons">
@@ -550,6 +578,40 @@ function render(d){
  if(window.AISeoEvidence)window.AISeoEvidence.init(d);
 }
 if(window.MarketOpportunity)window.MarketOpportunity.init();
+function renderNativePlatformAnswers(){
+  const status=el("native-ai-status");
+  fetch("./native-ai-summary.json",{cache:"no-store"})
+    .then(response=>{if(!response.ok)throw Error("尚無原平台資料");return response.json()})
+    .then(data=>{
+      if(!data||!Array.isArray(data.platforms)||data.not_own_tavily_rag!==true)
+        throw Error("原平台來源驗證失敗");
+      const names={"ChatGPT":"native-chatgpt","Gemini":"native-gemini","Perplexity":"native-perplexity"};
+      let total=0;
+      const tbody=el("native-platform-rows");tbody.replaceChildren();
+      for(const platform of data.platforms){
+        if(!names[platform.platform])continue;
+        const n=Number(platform.samples||0);total+=n;
+        put(names[platform.platform],n+" 筆");
+        const others=(platform.competitor_candidates||[]).slice(0,4).map(x=>x.name).join("、")||"—";
+        tableRow(tbody,[platform.platform,n+" 筆",platform.mentions+" 次",
+          platform.direct_domain_citations+" 次",platform.answers_with_sources+" 筆",
+          others,platform.last_sample_date||"尚無回答"],[1,2,3,4]);
+      }
+      put("native-total",total+" 筆");
+      if(total){
+        status.textContent="已取得真實平台觀測";
+        status.className="label yes";
+        el("native-ai-hint").textContent="資料期間："+data.window_start+" 至 "+data.window_end+"。第三方擷取的固定問題回答，不等於所有消費者或官方平台的市場推薦率。";
+      }else{
+        status.textContent="已連接，但尚無有效回答";
+        el("native-ai-hint").textContent="來源尚未產出有效回答，不能把沒有樣本當成零推薦。可查看 GitHub Actions 的錯誤與供應商額度狀態。";
+      }
+    }).catch(()=>{
+      status.textContent="尚未接通原平台回答";
+      el("native-ai-hint").textContent="已建置三平台每日擷取程式，但尚未取得可供公開展示的實際回答。必須先確認 Bright Data 免費方案、關閉 PAYG 並連接安全的 API Key；在此之前沒有任何平台結果會被虛構。";
+    });
+}
+renderNativePlatformAnswers();
 function renderDailyAISummary(){
   const state=el("ai-daily-status");
   fetch("./ai-search-summary.json",{cache:"no-store"})
