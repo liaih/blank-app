@@ -107,6 +107,12 @@ def alt_for(draft,asset,section):
                  "北歐風空間設計示意圖" if "北歐風" in basename else
                  "現代風空間設計示意圖")
         unit=""
+    elif re.search(r"(平面模擬|平面示意|格局平面)",ctx.split("｜",1)[0]):
+        subject="平面格局示意圖"
+        unit=""
+    elif asset["order"]==1 and not re.search(r"(設計案例|平面|格局|空間)",ctx.split("｜",1)[0]):
+        subject="建案介紹圖片"
+        unit=""
     else:
         subject=""
         for pattern,label in [
