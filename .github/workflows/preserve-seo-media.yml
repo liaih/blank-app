@@ -7,6 +7,7 @@ on:
     paths:
       - ".github/workflows/preserve-seo-media.yml"
       - "scripts/preserve_seo_media.py"
+      - "tests/test_floorplan_protection.py"
       - "scripts/audit_source_html.py"
       - "docs/seo-rewrites.json"
       - "docs/seo-improvement-plan.json"
@@ -49,6 +50,11 @@ jobs:
               assert audit["original_main_content_preserved"],(row["id"],audit.get("failure"))
               assert audit["floorplan_protection_passed"],(row["id"],"floorplan removed/reordered")
               assert row["floorplan_protection_passed"],row["id"]
+              known_plan_articles={"seo-yunjiang-331","seo-danfo-234","seo-hongguang-253",
+                                  "seo-fumei-503","seo-lixuan-217","seo-housheng-451","ai-kaohsiung-536"}
+              if row["id"] in known_plan_articles:
+                  assert audit["floorplan_count"]>=1,(row["id"],"known floorplan not detected")
+
               assert audit["floorplan_count"]==row["floorplan_count"],row["id"]
               assert len(audit["floorplan_urls"])==audit["floorplan_count"],row["id"]
               assert len(set(audit["floorplan_urls"]))==len(audit["floorplan_urls"]),row["id"]
