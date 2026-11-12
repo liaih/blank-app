@@ -1,0 +1,53 @@
+{
+  "source": "Bright Data AI Scraper API; third-party capture of platform replies",
+  "method": "fixed unaffiliated homeowner prompts, with country TW where supported",
+  "not_first_party_analytics": true,
+  "not_real_consumer_query_volume": true,
+  "not_own_tavily_rag": true,
+  "window_start": "2026-10-14",
+  "window_end": "2026-11-12",
+  "generated_at": "2026-11-12T14:54:09+08:00",
+  "total_samples": 0,
+  "platforms": [
+    {
+      "platform": "ChatGPT",
+      "samples": 0,
+      "mentions": 0,
+      "direct_domain_citations": 0,
+      "answers_with_sources": 0,
+      "last_sample_date": null,
+      "competitor_candidates": [],
+      "cited_domains": [],
+      "tested_prompt_ids": []
+    },
+    {
+      "platform": "Gemini",
+      "samples": 0,
+      "mentions": 0,
+      "direct_domain_citations": 0,
+      "answers_with_sources": 0,
+      "last_sample_date": null,
+      "competitor_candidates": [],
+      "cited_domains": [],
+      "tested_prompt_ids": []
+    },
+    {
+      "platform": "Perplexity",
+      "samples": 0,
+      "mentions": 0,
+      "direct_domain_citations": 0,
+      "answers_with_sources": 0,
+      "last_sample_date": null,
+      "competitor_candidates": [],
+      "cited_domains": [],
+      "tested_prompt_ids": []
+    }
+  ],
+  "caveats": [
+    "回覆由第三方擷取服務觀測，非平台提供的總體推薦率與用戶提問資料",
+    "每平台只有有限固定屋主提問，不能概括全台所有消費者",
+    "不同 AI 平台的搜尋啟用與地域設定可能不同，引用須按提供的原始來源核查",
+    "公司候選只按答案文字格式抽取，尚未人工判定是否為明確推薦",
+    "本報表不含自建 Gemini+Tavily 樣本、不連網模型認知測試"
+  ]
+}
