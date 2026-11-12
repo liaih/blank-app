@@ -3,11 +3,11 @@
   "not_consumer_ui": true,
   "not_chatgpt": true,
   "not_perplexity": true,
-  "search_verified_by": "自建 RAG: 外部網頁搜尋來源與 AI 回答明確引用網址",
+  "search_verified_by": "原生 Gemini: groundingMetadata；自建 RAG: 外部網頁搜尋來源與 AI 回答明確引用網址",
   "window_start": "2026-10-14",
   "window_end": "2026-11-12",
   "last_responded_date": "2026-11-12",
-  "model": "gemini-3.5-flash-lite + live web retrieval (custom RAG, NOT platform search)",
+  "model": "gemini-2.5-flash-lite / gemini-3.8-flash / gemini-3.5-flash-lite + external retrieval (by cohort)",
   "source_types": {
     "native_gemini_google_grounding": {
       "samples": 0,
@@ -49,7 +49,5 @@
     "品牌候選名單由回答條列式格式擷取，尚未人工核對，不能直接當作確定推薦",
     "Google grounding 轉址未解析時不可宣稱引用了晨陽官網",
     "真實 ChatGPT、Perplexity 搜尋尚未自動連接"
-  ],
-  "synced_at": "2026-11-12T12:15:00+08:00",
-  "sync_method": "one-time connector update; daily auto-sync still requires PUBLIC_DASHBOARD_TOKEN"
+  ]
 }
