@@ -22,7 +22,7 @@ def test_floorplan_manifest_and_original_order_preserved():
     soup=BeautifulSoup(html_source(),"html.parser")
     root=soup.select_one(".l-edit")
     assert floorplan_images(root,URL)==[
-        {"index":0,"url":PLAN,"source_alt":"允將大聚 L 戶平面配置圖"}]
+        {"index":0,"url":PLAN,"source_alt":"允將大聚 L 戶平面配置圖","evidence":"原圖檔名／ALT"}]
     passed=floorplan_integrity(root,BeautifulSoup(str(root),"html.parser"),URL)
     assert passed["floorplan_count"]==1
     assert passed["floorplan_protection_passed"] is True
@@ -61,3 +61,18 @@ def test_only_safe_preserved_cms_html_is_exported():
     assert "生活機能" in merged
     assert merged.index(PLAN)<merged.index(PHOTO)
     assert "延伸閱讀｜居家規劃要注意什麼" in merged
+
+
+def test_generic_named_floorplan_under_heading_is_not_missed_or_overcounted():
+    plan="https://chen-yang.com.tw/uploads/258-01.jpg"
+    rendering="https://chen-yang.com.tw/uploads/LINE_ALBUM_2025_3.jpg"
+    raw=('<div class="l-edit"><h2>【平面模擬圖】</h2>'+
+        '<img src="'+plan+'" alt="福美富琚"><img src="'+rendering+'" alt="設計示意圖"></div>')
+    soup=BeautifulSoup(raw,"html.parser")
+    plans=floorplan_images(soup.select_one(".l-edit"),"https://chen-yang.com.tw/news-content.php?id=503")
+    assert len(plans)==1
+    assert plans[0]["url"]==plan
+    assert plans[0]["evidence"]=="格局圖段落後第一張原圖"
+    result=floorplan_integrity(soup.select_one(".l-edit"),soup.select_one(".l-edit"),URL)
+    assert result["floorplan_count"]==1
+    assert result["floorplan_protection_passed"] is True
