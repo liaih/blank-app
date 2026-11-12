@@ -53,5 +53,305 @@
     "不同 AI 平台的搜尋啟用與地域設定可能不同，引用須按提供的原始來源核查",
     "公司候選只按答案文字格式抽取，尚未人工判定是否為明確推薦",
     "本報表不含自建 Gemini+Tavily 樣本、不連網模型認知測試"
-  ]
+  ],
+  "intent_analysis": {
+    "method": "受控固定題庫；依問題文字進行人工預設多標籤分類",
+    "not_actual_consumer_queries": true,
+    "recommendation_not_verified": true,
+    "questions": [
+      {
+        "id": "taoyuan-small-home",
+        "question": "桃園20坪新成屋，請推薦適合小宅規劃的室內設計公司，並列出比較依據與來源。",
+        "region": "桃園",
+        "housing": [
+          "新成屋",
+          "小宅"
+        ],
+        "intents": [
+          "選公司",
+          "比較決策"
+        ],
+        "platforms": {
+          "ChatGPT": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          },
+          "Gemini": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          },
+          "Perplexity": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          }
+        }
+      },
+      {
+        "id": "taoyuan-renovation",
+        "question": "桃園30年老屋翻新，如何選擇有工程管理與售後服務的室內設計公司？請列出公司與來源。",
+        "region": "桃園",
+        "housing": [
+          "老屋翻新"
+        ],
+        "intents": [
+          "選公司",
+          "比較決策"
+        ],
+        "platforms": {
+          "ChatGPT": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          },
+          "Gemini": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          },
+          "Perplexity": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          }
+        }
+      },
+      {
+        "id": "zhubei-engineer",
+        "question": "竹北工程師家庭要裝修新成屋，推薦哪些室內設計公司？比較施工溝通和預算透明度。",
+        "region": "竹北",
+        "housing": [
+          "新成屋"
+        ],
+        "intents": [
+          "預算",
+          "選公司",
+          "比較決策"
+        ],
+        "platforms": {
+          "ChatGPT": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          },
+          "Gemini": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          },
+          "Perplexity": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          }
+        }
+      },
+      {
+        "id": "a7-new-home",
+        "question": "林口A7新成屋交屋後想裝潢，應該比較哪些在地設計公司？附可驗證網站來源。",
+        "region": "林口 A7",
+        "housing": [
+          "新成屋"
+        ],
+        "intents": [
+          "選公司",
+          "比較決策"
+        ],
+        "platforms": {
+          "ChatGPT": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          },
+          "Gemini": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          },
+          "Perplexity": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          }
+        }
+      },
+      {
+        "id": "taichung-condo",
+        "question": "台中25坪新成屋裝潢，推薦值得比較的室內設計公司與其擅長的風格。",
+        "region": "台中",
+        "housing": [
+          "新成屋",
+          "小宅"
+        ],
+        "intents": [
+          "選公司",
+          "比較決策"
+        ],
+        "platforms": {
+          "ChatGPT": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          },
+          "Gemini": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          },
+          "Perplexity": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          }
+        }
+      },
+      {
+        "id": "tainan-renovation",
+        "question": "台南舊屋翻新，有哪些室內設計公司具住宅翻修作品？請給可查證的案例來源。",
+        "region": "台南",
+        "housing": [
+          "老屋翻新"
+        ],
+        "intents": [
+          "選公司",
+          "比較決策"
+        ],
+        "platforms": {
+          "ChatGPT": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          },
+          "Gemini": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          },
+          "Perplexity": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          }
+        }
+      },
+      {
+        "id": "kaohsiung-condo",
+        "question": "高雄首購族規劃室內裝潢，怎麼挑選設計公司？有哪幾家公司值得比較？",
+        "region": "高雄",
+        "housing": [
+          "首購"
+        ],
+        "intents": [
+          "選公司",
+          "比較決策"
+        ],
+        "platforms": {
+          "ChatGPT": {
+            "samples": 1,
+            "mentions": 0,
+            "direct_citations": 0
+          },
+          "Gemini": {
+            "samples": 1,
+            "mentions": 0,
+            "direct_citations": 0
+          },
+          "Perplexity": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          }
+        }
+      },
+      {
+        "id": "small-home-budget",
+        "question": "台灣20坪小宅室內裝潢預算80萬，有哪些設計公司和工程管理問題需要比較？",
+        "region": "全台",
+        "housing": [
+          "小宅"
+        ],
+        "intents": [
+          "預算",
+          "選公司",
+          "比較決策"
+        ],
+        "platforms": {
+          "ChatGPT": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          },
+          "Gemini": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          },
+          "Perplexity": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          }
+        }
+      },
+      {
+        "id": "renovation-process",
+        "question": "台灣找室內設計公司，如何驗證施工品質、保固和客戶溝通？有哪些可靠的資訊來源？",
+        "region": "全台",
+        "housing": [
+          "裝修工程"
+        ],
+        "intents": [
+          "選公司",
+          "比較決策"
+        ],
+        "platforms": {
+          "ChatGPT": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          },
+          "Gemini": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          },
+          "Perplexity": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          }
+        }
+      },
+      {
+        "id": "renovation-cost",
+        "question": "2026年台灣住宅老屋翻新每坪預算如何評估？請引用施工實例或業者公開資料。",
+        "region": "全台",
+        "housing": [
+          "老屋翻新"
+        ],
+        "intents": [
+          "預算"
+        ],
+        "platforms": {
+          "ChatGPT": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          },
+          "Gemini": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          },
+          "Perplexity": {
+            "samples": 0,
+            "mentions": 0,
+            "direct_citations": 0
+          }
+        }
+      }
+    ]
+  }
 }
