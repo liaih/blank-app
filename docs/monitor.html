@@ -123,6 +123,12 @@ tbody tr:last-child td{border-bottom:0}
       <thead><tr><th>平台</th><th>已擷取回答</th><th>晨陽被提及</th><th>晨陽網站被引用</th><th>附引用來源</th><th>其他候選公司</th><th>最新日期</th></tr></thead>
       <tbody id="native-platform-rows"><tr><td colspan="7">等待原平台回答自動監測啟用。</td></tr></tbody>
     </table></div>
+    <div class="flexhead" style="margin-top:20px"><div><h3>大家會怎麼問 AI？｜實測提問紀錄</h3><p class="muted">顯示監控系統實際送往 AI 平台的屋主提問，以及各平台取得的回答數。這是受控測試題庫，並非消費者私人對話或全市場熱門問題排名。</p></div></div>
+    <div class="tablebox"><table>
+      <thead><tr><th>實際測試問題</th><th>ChatGPT</th><th>Gemini</th><th>Perplexity</th><th>觀測狀態</th></tr></thead>
+      <tbody id="native-question-rows"><tr><td colspan="5">正在載入測試題目與回答紀錄。</td></tr></tbody>
+    </table></div>
+    <p class="detail">數字代表已取得的原平台回答筆數，不是這個問題被多少真實使用者搜尋。題庫若缺少對應原文，會標記待核對，不自行編造問題。</p>
     <p class="detail">競品名稱屬 AI 回答文字的自動候選辨識，尚未人工判定是否屬「明確推薦」；不把這些結果當成消費者整體推薦率。各平台的地域和搜尋啟用能力可能不同。</p>
     <div class="flexhead" style="margin-top:14px">
       <p class="detail">排程：台灣時間每日 13:05（GitHub 可能延遲）。<a href="https://github.com/liaih/Repository/actions/workflows/daily-native-ai.yml" target="_blank" rel="noopener noreferrer">檢查真實平台監測排程</a></p>
@@ -598,6 +604,30 @@ function renderNativePlatformAnswers(){
           platform.direct_domain_citations+" 次",platform.answers_with_sources+" 筆",
           others,platform.last_sample_date||"尚無回答"],[1,2,3,4]);
       }
+      const promptRows=el("native-question-rows");
+      const promptById={
+        "kaohsiung-condo":"高雄首購族規劃室內裝潢，怎麼挑選設計公司？有哪幾家公司值得比較？"
+      };
+      const counted=new Map();
+      for(const platform of data.platforms){
+        for(const id of (platform.tested_prompt_ids||[])){
+          if(!counted.has(id))counted.set(id,{"ChatGPT":0,"Gemini":0,"Perplexity":0});
+          counted.get(id)[platform.platform]=Number(platform.samples||0);
+        }
+      }
+      promptRows.replaceChildren();
+      if(!counted.size){
+        const tr=document.createElement("tr");const td=document.createElement("td");
+        td.colSpan=5;td.textContent="尚無已完成的原平台測試問題。";
+        tr.appendChild(td);promptRows.appendChild(tr);
+      }else{
+        for(const [id,counts] of counted){
+          const known=Object.prototype.hasOwnProperty.call(promptById,id);
+          tableRow(promptRows,[known?promptById[id]:"題目原文待核對（"+id+"）",
+            counts.ChatGPT+" 筆",counts.Gemini+" 筆",counts.Perplexity+" 筆",
+            known?"已對照固定題庫":"需對照原始提問"],[1,2,3]);
+        }
+      }
       put("native-total",total+" 筆");
       put("legacy-sourced-count",total?(sourced+"／"+total+" 筆"):"尚無有效回答");
       if(total){
@@ -612,6 +642,11 @@ function renderNativePlatformAnswers(){
       for(const id of ["legacy-chatgpt-status","legacy-gemini-status","legacy-perplexity-status"]) {
         const label=el(id);label.textContent="平台報表讀取失敗";label.className="label wait";
       }
+      const questionRows=el("native-question-rows");
+      questionRows.replaceChildren();
+      const errorRow=document.createElement("tr");const errorCell=document.createElement("td");
+      errorCell.colSpan=5;errorCell.textContent="提問紀錄暫時無法取得，請檢查資料同步狀態。";
+      errorRow.appendChild(errorCell);questionRows.appendChild(errorRow);
       put("legacy-sourced-count","資料尚未取得");
       status.textContent="尚未接通原平台回答";
       el("native-ai-hint").textContent="已建置三平台每日擷取程式，但尚未取得可供公開展示的實際回答。必須先確認 Bright Data 免費方案、關閉 PAYG 並連接安全的 API Key；在此之前沒有任何平台結果會被虛構。";
