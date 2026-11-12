@@ -650,6 +650,7 @@ let seoImprovementPlan=null;
 
 let seoRewritesById=new Map();
 let seoMediaById=new Map();
+let gscUrlDiagnosis=null;
 function cmsCopyButton(label,content,feedback){
  const btn=document.createElement("button");btn.type="button";btn.className="ai-action secondary";btn.textContent=label;
  btn.onclick=async()=>{
@@ -681,6 +682,79 @@ function saveSeoTaskState(id,fields){
  try{localStorage.setItem(geoTaskStorageKey,JSON.stringify(state));return true;}
  catch(_){return false;}
 }
+function showGscUrlDiagnosis(target,plan){
+ const panel=document.createElement("section");panel.className="panel soft";panel.style.marginTop="16px";
+ const title=document.createElement("h3");title.textContent="實際 GSC｜這篇文章的曝光與點擊";panel.appendChild(title);
+ const report=gscUrlDiagnosis;
+ if(!report){
+  const no=document.createElement("p");no.className="detail";
+  no.textContent="正在等待每週 GSC「搜尋字詞 × 網頁 × 裝置」首次驗證與公開同步；目前不可將搜尋字詞的整站數據當成這篇文章的成效。";
+  panel.appendChild(no);target.appendChild(panel);return;
+ }
+ const page=(report.pages||[]).find(p=>p.id===plan.id);
+ if(!page){const no=document.createElement("p");no.className="detail";no.textContent="這篇文章尚未被納入已驗證 URL 清單。";panel.appendChild(no);target.appendChild(panel);return;}
+ const meta=document.createElement("p");meta.className="small";
+ meta.textContent="資料產生："+(report.generated_at||"未註明")+"｜最近 28 天 vs. 前 28 天｜Google 網頁搜尋";
+ panel.appendChild(meta);
+ const outcome=document.createElement("p");outcome.className="detail";
+ outcome.textContent="判定："+page.status+"。"+page.reason;
+ panel.appendChild(outcome);
+ const current=page.current?.page_metrics,previous=page.previous?.page_metrics;
+ if(!current){
+  const no=document.createElement("p");no.textContent="GSC 未回傳此 URL 的有效網頁數據；不代表沒有曝光，也不會當成 SEO 失敗。";
+  panel.appendChild(no);target.appendChild(panel);return;
+ }
+ const table=document.createElement("table");const header=document.createElement("tr");
+ for(const name of ["期間","曝光","點擊","CTR","平均排名"]){const th=document.createElement("th");th.textContent=name;header.appendChild(th);}
+ table.appendChild(header);
+ for(const [period,metric] of [["近 28 天",current],["前 28 天",previous]]){
+  const tr=document.createElement("tr");
+  for(const value of [period,metric?.impressions,metric?.clicks,metric?.ctr,metric?.position]){
+   const td=document.createElement("td");
+   td.textContent=value==null?"資料不足":typeof value==="number"&&value<1&&value!==0?
+     (value*100).toFixed(2)+"%":String(value);
+   tr.appendChild(td);
+  }
+  // CTR must be formatted as a percentage even when exactly 0 or above 1%.
+  tr.children[3].textContent=metric?.ctr==null?"資料不足":(metric.ctr*100).toFixed(2)+"%";
+  table.appendChild(tr);
+ }
+ const tablebox=document.createElement("div");tablebox.className="tablebox";tablebox.appendChild(table);panel.appendChild(tablebox);
+ const devs=page.current?.devices||{};
+ if(Object.keys(devs).length){
+  const p=document.createElement("p");p.className="detail";
+  p.textContent="裝置分析："+Object.entries(devs).map(([device,m])=>
+   device+" "+m.impressions+" 曝光／"+m.clicks+" 點擊／"+(100*(m.ctr||0)).toFixed(2)+"% CTR").join("；");
+  panel.appendChild(p);
+ }
+ const qs=page.current?.search_queries||[];
+ if(qs.length){
+  const details=document.createElement("details");const summary=document.createElement("summary");
+  summary.textContent="查看這篇實際出現的搜尋字詞（"+qs.length+" 組，非全部查詢）";details.appendChild(summary);
+  const ul=document.createElement("ul");
+  for(const q of qs){
+   const li=document.createElement("li");li.textContent=q.query+"｜曝光 "+q.metrics.impressions+
+     "、點擊 "+q.metrics.clicks+"、CTR "+(100*(q.metrics.ctr||0)).toFixed(2)+"%";
+   ul.appendChild(li);
+  }
+  details.appendChild(ul);panel.appendChild(details);
+ }
+ const warn=document.createElement("p");warn.className="detail";
+ warn.textContent="GSC 可能隱藏低流量或匿名查詢；排名是歷史平均值，不是即時 Google 排名。無法由此判定內容品質或保證改稿能增加點擊。";
+ panel.appendChild(warn);target.appendChild(panel);
+}
+function loadGscUrlDiagnosis(){
+ fetch("./gsc-url-opportunities.json",{cache:"no-store"})
+ .then(response=>{if(!response.ok)throw Error("unpublished");return response.json();})
+ .then(report=>{
+  if(!Array.isArray(report.pages)||report.not_article_quality_proof!==true)throw Error("invalid");
+  gscUrlDiagnosis=report;
+  if(seoImprovementPlan)renderSeoImprovementPlan();
+ })
+ .catch(()=>{gscUrlDiagnosis=null;});
+}
+loadGscUrlDiagnosis();
+
 function renderSeoImprovementPlan(){
  if(!seoImprovementPlan)return;
  const items=seoImprovementPlan.items,records=readSeoTaskStates();
@@ -722,6 +796,7 @@ function renderSeoImprovementPlan(){
  target.appendChild(meta);
  const link=document.createElement("a");link.href=plan.url;link.target="_blank";
  link.rel="noopener noreferrer";link.textContent="檢視晨陽官網原文章";target.appendChild(link);
+ showGscUrlDiagnosis(target,plan);
  const controlsState=document.createElement("div");controlsState.className="ai-buttons";
  controlsState.style.marginTop="14px";
  const action=document.createElement("button");action.type="button";action.className="ai-action secondary";
@@ -819,8 +894,9 @@ function renderSeoImprovementPlan(){
  frame.style.marginTop="12px";frame.style.border="1px solid #dfe7f0";
  frame.style.borderRadius="10px";frame.loading="lazy";
  frame.srcdoc='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">'+
-  '<meta name="viewport" content="width=device-width,initial-scale=1"></head>'+
-  '<body style="padding:14px 16px;margin:0;font-family:system-ui,sans-serif;">'+content+'</body></html>';
+  '<meta name="viewport" content="width=device-width,initial-scale=1">'+
+  '<style>*,*::before,*::after{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{font-size:16px;line-height:1.8}img,video,iframe,figure,svg{max-width:100%!important}img{display:block;width:auto!important;height:auto!important;max-height:370px!important;object-fit:contain;margin:12px auto}iframe{width:100%!important;aspect-ratio:16/9;height:auto!important}p,h2,h3{overflow-wrap:anywhere}table{display:block;max-width:100%;overflow:auto}</style></head>'+
+  '<body style="padding:12px;margin:0;font-family:system-ui,sans-serif;">'+content+'</body></html>';
  preview.appendChild(frame);target.appendChild(preview);
  const raw=document.createElement("details");raw.style.marginTop="12px";
  const rawLabel=document.createElement("summary");rawLabel.textContent="查看這篇 HTML 原始碼";
