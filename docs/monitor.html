@@ -129,6 +129,26 @@ tbody tr:last-child td{border-bottom:0}
       <tbody id="native-question-rows"><tr><td colspan="5">正在載入測試題目與回答紀錄。</td></tr></tbody>
     </table></div>
     <p class="detail">數字代表已取得的原平台回答筆數，不是這個問題被多少真實使用者搜尋。題庫若缺少對應原文，會標記待核對，不自行編造問題。</p>
+    <section class="panel" aria-label="AI 消費者提問意圖分析" style="margin-top:20px">
+      <h3>AI 消費者提問意圖分析｜地區 × 需求 × 決策</h3>
+      <p class="muted">將我們的 10 組屋主測試題目按地區、屋況、預算、選公司和比較決策分類，對照三大 AI 平台實測的晨陽提及及官網引用。這是「模擬消費者問法」的受控監測，不是消費者實際聊天資料或市場搜尋量。</p>
+      <div class="ai-fields">
+        <label>分類維度
+          <select id="ai-intent-dimension"><option value="all">全部題目</option><option value="region">依地區</option><option value="housing">依屋況／住宅類型</option><option value="intents">依決策意圖</option></select>
+        </label>
+        <label>選擇類別
+          <select id="ai-intent-value"><option value="all">全部類別</option></select>
+        </label>
+      </div>
+      <div class="metrics" style="margin-top:14px">
+        <div class="metric"><div class="name">符合分類｜題目數</div><div class="number" id="ai-intent-questions">—</div></div>
+        <div class="metric"><div class="name">真實平台回答</div><div class="number" id="ai-intent-samples">—</div></div>
+        <div class="metric"><div class="name">晨陽被提及</div><div class="number" id="ai-intent-mentions">—</div></div>
+        <div class="metric"><div class="name">晨陽官網被引用</div><div class="number" id="ai-intent-citations">—</div></div>
+      </div>
+      <div class="tablebox"><table><thead><tr><th>測試問題／意圖標籤</th><th>ChatGPT</th><th>Gemini</th><th>Perplexity</th><th>SEO 內容機會</th></tr></thead><tbody id="ai-intent-rows"><tr><td colspan="5">正在讀取實測意圖資料。</td></tr></tbody></table></div>
+      <p class="detail">各平台欄位顯示「回答筆數／提及晨陽次數」。0 筆代表尚未測試到有效回答，不能視為 AI 不推薦。品牌提及和引用皆不是「明確推薦」；推薦需人工核對回答全文。</p>
+    </section>
     <h3 style="margin-top:20px">AI 平台真實回答｜公開測試紀錄</h3>
     <p class="muted">直接展開查看測試問題與回答節錄，不需要登入 GitHub。回答由第三方平台擷取；原始資料庫與識別資訊不公開。</p>
     <div id="native-public-tests" class="ai-preview">正在載入公開測試結果。</div>
@@ -632,6 +652,62 @@ function renderNativePlatformAnswers(){
             known?"已對照固定題庫":"需對照原始提問"],[1,2,3]);
         }
       }
+      const intent=(data.intent_analysis&&Array.isArray(data.intent_analysis.questions))?data.intent_analysis.questions:[];
+      const dimensionSelect=el("ai-intent-dimension"),categorySelect=el("ai-intent-value");
+      const detailLabels={region:"地區",housing:"屋況",intents:"決策"};
+      function renderIntentFilters(){
+        const dimension=dimensionSelect.value, current=categorySelect.value;
+        const values=new Set();
+        for(const q of intent){
+          const v=q[dimension];
+          if(Array.isArray(v))v.forEach(x=>values.add(x));else if(typeof v==="string")values.add(v);
+        }
+        categorySelect.replaceChildren();
+        for(const [value,label] of [["all","全部類別"],...[...values].sort((a,b)=>a.localeCompare(b,"zh-Hant")).map(x=>[x,x])]){
+          const option=document.createElement("option");option.value=value;option.textContent=label;categorySelect.appendChild(option);
+        }
+        categorySelect.value=[...values].includes(current)?current:"all";
+        renderIntentTable();
+      }
+      function renderIntentTable(){
+        const d=dimensionSelect.value,v=categorySelect.value, tbody=el("ai-intent-rows");
+        const filtered=intent.filter(q=>v==="all"|| (Array.isArray(q[d])?q[d].includes(v):q[d]===v));
+        let samples=0,mentions=0,citations=0;
+        tbody.replaceChildren();
+        for(const q of filtered){
+          const stats=q.platforms||{}, cells=[];
+          for(const p of ["ChatGPT","Gemini","Perplexity"]){
+            const s=stats[p]||{};samples+=Number(s.samples||0);mentions+=Number(s.mentions||0);
+            citations+=Number(s.direct_citations||0);
+            cells.push((s.samples||0)+" 筆／"+(s.mentions||0)+" 提及");
+          }
+          const labels=[q.region,...(q.housing||[]),...(q.intents||[])].filter(Boolean);
+          const opportunity=!(Object.values(stats).some(x=>Number(x.samples||0)>0))?
+            "未有實測回答，待採樣":(Object.values(stats).some(x=>Number(x.mentions||0)>0)?
+            "檢查 AI 描述與引用來源":"先補強對應需求的案例、FAQ 與服務佐證");
+          tableRow(tbody,[(q.question||"")+(labels.length?"【"+labels.join("／")+"】":""),...cells,opportunity]);
+        }
+        if(!filtered.length){
+          const row=document.createElement("tr"),cell=document.createElement("td");cell.colSpan=5;
+          cell.textContent="此分類沒有對應的固定測試題目。";row.appendChild(cell);tbody.appendChild(row);
+        }
+        put("ai-intent-questions",filtered.length+" 題");
+        put("ai-intent-samples",samples+" 筆");
+        put("ai-intent-mentions",mentions+" 次");
+        put("ai-intent-citations",citations+" 次");
+      }
+      if(intent.length){
+        dimensionSelect.onchange=renderIntentFilters;
+        categorySelect.onchange=renderIntentTable;
+        renderIntentFilters();
+      }else{
+        const tbody=el("ai-intent-rows");tbody.replaceChildren();
+        const row=document.createElement("tr"),cell=document.createElement("td");cell.colSpan=5;
+        cell.textContent="分類功能已建立，等待私人資料庫下一次同步產生意圖彙總。";
+        row.appendChild(cell);tbody.appendChild(row);
+        put("ai-intent-questions","待同步");put("ai-intent-samples","待同步");
+        put("ai-intent-mentions","待同步");put("ai-intent-citations","待同步");
+      }
       const tests=el("native-public-tests");tests.replaceChildren();
       const samples=Array.isArray(data.public_test_samples)?data.public_test_samples:[];
       if(!samples.length){tests.textContent="目前僅有公開彙總，回答原文節錄尚未同步；已取得的樣本筆數請見上方。";}
@@ -668,6 +744,7 @@ function renderNativePlatformAnswers(){
       const errorRow=document.createElement("tr");const errorCell=document.createElement("td");
       errorCell.colSpan=5;errorCell.textContent="提問紀錄暫時無法取得，請檢查資料同步狀態。";
       errorRow.appendChild(errorCell);questionRows.appendChild(errorRow);
+      el("ai-intent-rows").textContent="分類資料讀取失敗，請檢查同步。";
       el("native-public-tests").textContent="公開 AI 測試資料暫時無法讀取。";
       put("legacy-sourced-count","資料尚未取得");
       status.textContent="尚未接通原平台回答";
