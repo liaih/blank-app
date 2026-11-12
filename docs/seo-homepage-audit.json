@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-12T22:31:52+08:00",
+  "generated_at": "2026-11-12T22:35:27+08:00",
   "scope": "Read-only public homepage HTTP/HTML observation; not a live rank or GSC index-coverage test",
   "checks": [
     {
@@ -369,6 +369,135 @@
     ],
     "bytes": 3112
   },
+  "service_pages": [
+    {
+      "url": "https://chen-yang.com.tw/locations.php",
+      "status": 200,
+      "title": "全台 9 大直營據點與服務網絡｜桃園、林口、青埔、新竹、竹北、台中、台南、高雄 - 晨陽共好機構",
+      "h1_count": 1,
+      "h1": [
+        "全台 9 大直營據點與服務網絡"
+      ],
+      "description": "晨陽共好機構全台設有 9 大實體直營據點，涵蓋桃園總部、行銷概念館、青埔、林口、新竹、竹北、台中、台南、高雄。在地專業工務與設計團隊進駐，提供預售屋客變、新成屋設計與老屋翻新零距離服務。",
+      "canonical": "https://chen-yang.com.tw/locations.php",
+      "body_characters": 2407,
+      "homepage_links_directly": false,
+      "page_sections": [
+        "歡迎蒞臨全台各門市，與設計團隊深度對話"
+      ]
+    },
+    {
+      "url": "https://chen-yang.com.tw/change-design.php",
+      "status": 200,
+      "title": "預售屋客變全攻略｜黃金時間軸、水電格局規劃與建材退換指南 - 晨陽共好機構",
+      "h1_count": 1,
+      "h1": [
+        "預售屋客變全攻略"
+      ],
+      "description": "買預售屋一定要客變嗎？晨陽室內設計30年團隊解析預售屋客變黃金時間點、水電動線規劃、格局優化與建材退換評估，幫您省下後續數十萬拆改費用，打造專屬高質感生活空間。",
+      "canonical": "https://chen-yang.com.tw/change-design.php",
+      "body_characters": 2090,
+      "homepage_links_directly": false,
+      "page_sections": [
+        "客變黃金時程規劃",
+        "晨陽客變 vs 傳統裝修差別",
+        "預售屋客變常見問題",
+        "客變精選完工案例",
+        "即將面臨預售屋客變截止日？"
+      ]
+    },
+    {
+      "url": "https://chen-yang.com.tw/new-house.php",
+      "status": 200,
+      "title": "新成屋空間規劃指南｜格局動線、機能收納與當代美學風格實踐 - 晨陽共好機構",
+      "h1_count": 1,
+      "h1": [
+        "新成屋空間規劃指南"
+      ],
+      "description": "新成屋裝潢怎麼規劃最實用？晨陽室內設計30年團隊打造新成屋空間規劃全指南，解析客餐廚開放動線、全室高坪效收納、現代簡約/侘寂/日式等多元風格，落實居家健康低甲醛綠建材工法。",
+      "canonical": "https://chen-yang.com.tw/new-house.php",
+      "body_characters": 1404,
+      "homepage_links_directly": false,
+      "page_sections": [
+        "量身打造專屬空間風格",
+        "新成屋實用收納黃金法則",
+        "精選新成屋設計案例",
+        "剛交屋正在尋找值得信賴的設計團隊？"
+      ]
+    },
+    {
+      "url": "https://chen-yang.com.tw/renovation.php",
+      "status": 200,
+      "title": "老屋翻新與透天別墅改造指南｜基礎工程加固、水電管線重拉與採光重生 - 晨陽共好機構",
+      "h1_count": 1,
+      "h1": [
+        "老屋翻新與透天改造指南"
+      ],
+      "description": "30年老屋如何重獲新生？晨陽室內設計老屋翻新全指南，深度解析基礎工程補強、全室水電管線抽換、抓漏防水SOP、透天垂直動線與採光格局重組，透明條列報價，落實安心好宅。",
+      "canonical": "https://chen-yang.com.tw/renovation.php",
+      "body_characters": 1591,
+      "homepage_links_directly": false,
+      "page_sections": [
+        "晨陽老屋翻修核心 5 步驟",
+        "老屋翻修預算黃金比例",
+        "精選老屋翻新案例",
+        "老房子承載著無價回憶，更值得重新綻放光彩"
+      ]
+    },
+    {
+      "url": "https://chen-yang.com.tw/faq.php",
+      "status": 200,
+      "title": "常見問答 FAQ 中心｜室內設計推薦怎麼挑、預售屋客變、裝潢預算與放樣驗收解答 - 晨陽共好機構",
+      "h1_count": 1,
+      "h1": [
+        "常見問答 FAQ 中心"
+      ],
+      "description": "室內設計公司推薦怎麼挑？晨陽室內設計官方 FAQ 中心，完整解答挑選室內設計公司的 5 大關鍵指標、北中南 9 大直營據點服務範圍、預售屋客變時機、裝修預算估算、1:1 現場放樣驗收與低甲醛綠建材工法。",
+      "canonical": "https://chen-yang.com.tw/faq.php",
+      "body_characters": 3294,
+      "homepage_links_directly": false,
+      "page_sections": [
+        "還有其他空間規劃的問題想詢問？"
+      ]
+    },
+    {
+      "url": "https://chen-yang.com.tw/survey-verification.php",
+      "status": 200,
+      "title": "1:1現場放樣驗收工程｜施工前實地體驗空間動線，杜絕做錯拆改糾紛 - 晨陽共好機構",
+      "h1_count": 1,
+      "h1": [
+        "1:1 現場放樣驗收工程"
+      ],
+      "description": "為什麼平面圖看懂了，施工後還是容易後悔？晨陽獨家 ISO 9001 施工前 1:1 現場放樣驗收工程，實地以墨線標示家具櫃體、開關插座與走道淨寬，親身體驗空間感與動線，品質與工期雙重把關。",
+      "canonical": "https://chen-yang.com.tw/survey-verification.php",
+      "body_characters": 1842,
+      "homepage_links_directly": false,
+      "page_sections": [
+        "放樣驗收 5 大核心把關項目",
+        "放樣驗收標準作業流程",
+        "工程把關延伸閱讀",
+        "拒絕裝修踩雷？讓 1:1 放樣為您把關！"
+      ]
+    },
+    {
+      "url": "https://chen-yang.com.tw/manager-system.php",
+      "status": 200,
+      "title": "專業經理人制度與國家級育才｜打破工班亂象，以專案管理落實工程品質 - 晨陽共好機構",
+      "h1_count": 1,
+      "h1": [
+        "專業經理人制度與人才培育"
+      ],
+      "description": "裝修最怕設計師與工班互踢皮球？晨陽共好機構全面導入「專業經理人制度」，專職現場監督品質與工期進度。積極參與勞動部「大人提訓練計畫」與國家級「iCAP職能導向課程」，為全台9大據點建立一致且頂級的服務標準。",
+      "canonical": "https://chen-yang.com.tw/manager-system.php",
+      "body_characters": 1577,
+      "homepage_links_directly": false,
+      "page_sections": [
+        "傳統工班 vs 晨陽專業經理人制",
+        "國家級人才培育體系",
+        "安心裝修，從選擇專業制度開始"
+      ]
+    }
+  ],
   "canonical_consistency": {
     "all_homepage_versions_redirect_to_one": false,
     "canonical_targets": [
