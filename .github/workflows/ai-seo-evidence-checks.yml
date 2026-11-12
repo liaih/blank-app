@@ -6,6 +6,7 @@ on:
       - "docs/monitor.html"
       - "docs/ai-seo-evidence.js"
       - "docs/tests/ai-seo-evidence.test.cjs"
+      - "docs/tests/native-ai-monitor.test.cjs"
       - ".github/workflows/ai-seo-evidence-checks.yml"
   workflow_dispatch:
 permissions:
@@ -23,5 +24,7 @@ jobs:
         run: node --check docs/ai-seo-evidence.js
       - name: Test AI SEO evidence workflow and false-claim safeguards
         run: node docs/tests/ai-seo-evidence.test.cjs
+      - name: Verify real ChatGPT Gemini Perplexity interface and separated evidence
+        run: node docs/tests/native-ai-monitor.test.cjs
       - name: Retain original SEO market checks
         run: node docs/tests/market-opportunity.test.cjs
