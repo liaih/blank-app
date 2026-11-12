@@ -1,6 +1,9 @@
 name: Preserve original CMS images and videos in SEO rewrites
 
 on:
+  schedule:
+    # Sunday 11:00 Taiwan; re-audit original eight CMS articles (free direct HTTP only).
+    - cron: "0 3 * * 0"
   workflow_dispatch:
   push:
     branches: [main]
