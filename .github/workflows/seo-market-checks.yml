@@ -33,5 +33,5 @@ jobs:
           grep -q 'id="market-rows"' docs/monitor.html
           grep -q 'id="market-file"' docs/monitor.html
           grep -q 'market-opportunity.js' docs/monitor.html
-          grep -q 'AI 搜尋能見度' docs/monitor.html
+          grep -q 'ChatGPT・Gemini・Perplexity｜原平台回答監測' docs/monitor.html
           grep -q 'SEO 搜尋商機分析' docs/monitor.html
