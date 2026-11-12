@@ -230,23 +230,24 @@ tbody tr:last-child td{border-bottom:0}
    <div id="ai-record-preview" class="ai-preview"></div>
    <p class="detail">此工具只分析你保存的回答，不會自動訪問 ChatGPT／Gemini／Perplexity，亦不會上傳原文到公開 GitHub。瀏覽器資料可能在清除網站資料後遺失，需自行匯出備份。</p>
   </section>
-  <div class="flexhead"><div><h2>AI 搜尋能見度</h2><p class="muted">人工智慧有沒有提到晨陽？引用哪些官網來源？</p></div><span class="label wait">現階段：量測樣本有限</span></div>
+  <div class="flexhead"><div><h2>歷史測試與官方 AI 資料</h2><p class="muted">以下是舊的 Gemini 不聯網單題測試及尚待取得的 Google 官方資料；上方「三平台原回答監測」才是新的自動採樣結果。</p></div><span class="label wait">不同資料來源，不混算</span></div>
   <div class="metrics">
    <div class="metric"><div class="name">Gemini 真實回答樣本</div><div class="number" id="ai-samples">—</div><div class="sub">不連網文字模型，不等於搜尋結果</div></div>
    <div class="metric"><div class="name">樣本提及晨陽</div><div class="number" id="ai-mentions">—</div><div class="sub">有回答樣本，但不代表整體提及率</div></div>
    <div class="metric"><div class="name">Google AI 搜尋曝光</div><div class="number">待匯入</div><div class="sub">需官方生成式 AI 成效報表</div></div>
-   <div class="metric"><div class="name">實際搜尋引用率</div><div class="number">未量測</div><div class="sub">ChatGPT／Gemini／Perplexity 尚未取得可比樣本</div></div>
+   <div class="metric"><div class="name">原平台回答中附引用的樣本</div><div class="number" id="legacy-sourced-count">讀取中</div><div class="sub">只是附有引用的回答筆數，不是全市場引用率</div></div>
   </div>
   <div class="cols">
-   <div class="panel"><h3>AI 平台測試進度</h3>
-    <div class="statusline"><span>Gemini 文字模型品牌認知</span><span class="label yes">已取得真實樣本</span></div>
-    <div class="statusline"><span>Gemini 即時網路搜尋</span><span class="label wait">尚未接通</span></div>
-    <div class="statusline"><span>Google AI 摘要與 AI Mode</span><span class="label wait">官方報表待匯入</span></div>
-    <div class="statusline"><span>ChatGPT 搜尋回答</span><span class="label">尚無可核對樣本</span></div>
-    <div class="statusline"><span>Perplexity 搜尋回答</span><span class="label">尚無可核對樣本</span></div>
-    <p class="detail">平台回答、官方 API 文字模型與 Google 搜尋官方曝光，三者的統計口徑不同，不能混算。</p>
+   <div class="panel"><h3>各資料來源目前狀態</h3>
+    <div class="statusline"><span>ChatGPT 第三方平台回答</span><span class="label" id="legacy-chatgpt-status">讀取中</span></div>
+    <div class="statusline"><span>Gemini 第三方平台回答</span><span class="label" id="legacy-gemini-status">讀取中</span></div>
+    <div class="statusline"><span>Perplexity 第三方平台回答</span><span class="label" id="legacy-perplexity-status">讀取中</span></div>
+    <div class="statusline"><span>Gemini 不聯網文字模型品牌認知（歷史）</span><span class="label yes">已有 1 筆歷史測試</span></div>
+    <div class="statusline"><span>Gemini 官方 API Google Search Grounding</span><span class="label wait">尚未成功接通</span></div>
+    <div class="statusline"><span>Google AI 摘要與 AI Mode 官方曝光</span><span class="label wait">官方報表待匯入</span></div>
+    <p class="detail">第三方平台回答 ≠ 經證實啟用網路搜尋：若平台回答沒有附來源，僅能證明取得回答，不能確認實際執行搜尋。官方 API、第三方擷取、Google 官方曝光亦不能混算。</p>
    </div>
-   <div class="panel"><h3>首次 Gemini 真實測試</h3>
+   <div class="panel"><h3>歷史紀錄｜Gemini 不聯網單題測試</h3>
     <div class="statusline"><span>實測模型</span><strong>Gemini 3.8 Flash</strong></div>
     <div class="statusline"><span>情境</span><strong>桃園 20 坪首購小宅</strong></div>
     <div class="statusline"><span>是否提及晨陽</span><span class="label" id="gemini-mentioned">—</span></div>
@@ -587,17 +588,24 @@ function renderNativePlatformAnswers(){
         throw Error("原平台來源驗證失敗");
       const names={"ChatGPT":"native-chatgpt","Gemini":"native-gemini","Perplexity":"native-perplexity"};
       let total=0;
+      let sourced=0;
+      const legacy={"ChatGPT":"legacy-chatgpt-status","Gemini":"legacy-gemini-status","Perplexity":"legacy-perplexity-status"};
       const tbody=el("native-platform-rows");tbody.replaceChildren();
       for(const platform of data.platforms){
         if(!names[platform.platform])continue;
         const n=Number(platform.samples||0);total+=n;
+        sourced+=Number(platform.answers_with_sources||0);
         put(names[platform.platform],n+" 筆");
+        const legacyStatus=el(legacy[platform.platform]);
+        legacyStatus.textContent=n?("已取得 "+n+" 筆"+(Number(platform.answers_with_sources||0)?"（部分附來源）":"（未附引用）")):"尚無有效回答";
+        legacyStatus.className=n?"label yes":"label wait";
         const others=(platform.competitor_candidates||[]).slice(0,4).map(x=>x.name).join("、")||"—";
         tableRow(tbody,[platform.platform,n+" 筆",platform.mentions+" 次",
           platform.direct_domain_citations+" 次",platform.answers_with_sources+" 筆",
           others,platform.last_sample_date||"尚無回答"],[1,2,3,4]);
       }
       put("native-total",total+" 筆");
+      put("legacy-sourced-count",total?(sourced+"／"+total+" 筆"):"尚無有效回答");
       if(total){
         status.textContent="已取得真實平台觀測";
         status.className="label yes";
@@ -607,6 +615,10 @@ function renderNativePlatformAnswers(){
         el("native-ai-hint").textContent="來源尚未產出有效回答，不能把沒有樣本當成零推薦。可查看 GitHub Actions 的錯誤與供應商額度狀態。";
       }
     }).catch(()=>{
+      for(const id of ["legacy-chatgpt-status","legacy-gemini-status","legacy-perplexity-status"]) {
+        const label=el(id);label.textContent="平台報表讀取失敗";label.className="label wait";
+      }
+      put("legacy-sourced-count","資料尚未取得");
       status.textContent="尚未接通原平台回答";
       el("native-ai-hint").textContent="已建置三平台每日擷取程式，但尚未取得可供公開展示的實際回答。必須先確認 Bright Data 免費方案、關閉 PAYG 並連接安全的 API Key；在此之前沒有任何平台結果會被虛構。";
     });
