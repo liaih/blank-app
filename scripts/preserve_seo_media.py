@@ -196,7 +196,7 @@ def embed(media):
         alt=escape(media["alt"],quote=True)
         line=(f'<p style="margin:20px 0;text-align:center;">'
               f'<img src="{url}" alt="{alt}" loading="lazy" '
-              f'style="max-width:100%;height:auto;"></p><BR>')
+              f'style="display:block;max-width:100%;height:auto;margin:0 auto;"></p><BR>')
         if alt and not re.search(r"(?:室內空間設計圖片|建案介紹圖片)（圖\d+）",media["alt"]):
             line+=('<p style="margin:4px 0 18px;"><span style="font-size:15px">'
                    '<span style="color:#666666">'+escape(media["alt"])+
@@ -234,13 +234,13 @@ def format_body(body,is_faq=False):
             a=escape(chunks[i+1]) if i+1<len(chunks) else ""
             out.append(
                 '<p style="margin:0 0 18px;line-height:1.9;">'
-                '<span style="font-size:18px"><strong>'+q+'</strong><BR>'+a+
+                '<span style="font-size:18px !important;line-height:1.9 !important;"><strong>'+q+'</strong><BR>'+a+
                 '</span></p><BR>')
     else:
         for chunk in chunks:
             out.append(
                 '<p style="margin:0 0 18px;line-height:1.9;">'
-                '<span style="font-size:18px">'+escape(chunk)+'</span></p><BR>')
+                '<span style="font-size:18px !important;line-height:1.9 !important;">'+escape(chunk)+'</span></p><BR>')
     return "\n".join(out)
 
 
@@ -259,14 +259,15 @@ def merge(d,items):
     parts=[]
     for idx,(heading,body) in enumerate(d["sections"]):
         parts.append(
-            '<h2><span style="font-size:20px"><span style="color:'+GOLD+
-            '">'+escape(heading)+'</span></span></h2><BR>')
+            '<h2 style="margin:28px 0 12px;"><span style="color:'+GOLD+
+            ' !important;font-size:20px !important;line-height:1.9 !important;'
+            'font-weight:700 !important;">'+escape(heading)+'</span></h2><BR>')
         parts.append(format_body(body,is_faq=("FAQ" in heading or "常見問題" in heading)))
         parts.extend(embed(media) for media in groups[idx])
     # General article CTA, NOT the fixed design-philosophy case ending.
     parts.append(
         '<p style="margin:22px 0 10px;line-height:1.9;">'
-        '<span style="font-size:18px"><strong>晨陽設計｜進一步了解</strong><BR>'+
+        '<span style="font-size:18px !important;line-height:1.9 !important;"><strong>晨陽設計｜進一步了解</strong><BR>'+
         escape(d["cta"])+'</span></p><BR>')
     return "\n".join(parts)
 
@@ -279,6 +280,15 @@ def main():
     for draft in rewrites["articles"]:
         url=urls[draft["id"]]
         if (urlsplit(url).hostname or "").lower() not in HOSTS:raise ValueError("unapproved source host")
+        path_name=urlsplit(url).path
+        # Scope guard: existing NEWS and unboxing articles are not design理念.
+        # Design理念/case-content requires a different formatter and footer rule.
+        if path_name.endswith("/news-content.php"):
+            article_mode="existing_news"
+        elif path_name.endswith("/unboxing-content.php"):
+            article_mode="existing_unboxing"
+        else:
+            raise ValueError("unsupported article type: "+path_name)
         try:
             req=Request(url,headers={"User-Agent":"Mozilla/5.0 (compatible; ChenYangCMSMediaAudit/1.0)"})
             with urlopen(req,timeout=25) as resp:raw=resp.read(5000000)
@@ -287,7 +297,9 @@ def main():
             error=None
         except Exception as exc:
             assets=[];html="";error=type(exc).__name__
-        output.append({"id":draft["id"],"source_url":url,"media_count":len(assets),
+        output.append({"id":draft["id"],"source_url":url,
+                      "article_mode":article_mode,"template":"chenyang-existing-article-v1.1",
+                      "media_count":len(assets),
                       "image_count":sum(x["type"]=="image" for x in assets),
                       "video_count":sum(x["type"]=="video" for x in assets),
                       "media":assets,"html_with_media":html,
@@ -298,7 +310,7 @@ def main():
                       "error_type":error})
     result={"generated_at":datetime.now(ZoneInfo("Asia/Taipei")).isoformat(timespec="seconds"),
             "no_media_files_copied":True,"not_published_to_cms":True,
-            "note":"依官網原文擷取媒體網址並與新版文字整合。ALT 取原有描述或由相鄰段落推定；未確認畫面內容的 ALT 會標記待核對。JS 延遲載入的圖片或影片可能漏抓，不能宣稱所有媒體完整。",
+            "note":"現有 NEWS／開箱文章（非設計理念）。依原文擷取媒體並套用固定 HTML：H2 金色 #C5A47E、20px !important，正文 18px !important、段落行距 1.9，後台標題欄負責 H1；一般文章結尾使用專屬 CTA，不使用設計理念的『此為【建案名稱】一案』。ALT 有待核對項，JS 延遲媒體可能漏抓。",
             "articles":output}
     (ROOT/"seo-media-rewrites.json").write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(json.dumps([{"id":x["id"],"images":x["image_count"],"videos":x["video_count"],"status":x["status"]} for x in output],ensure_ascii=False))
