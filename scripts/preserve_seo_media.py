@@ -64,10 +64,9 @@ def irrelevant_media(url,alt,kind,ctx):
         return True
     if "正在規劃新家裝潢" in ctx:
         return True
-    if kind=="video" and (
-        "cm21s8AVwjI" in url or "JofFrtBgHDE" in url or
-        re.search(r"(為甚麼客戶會選擇|為什麼客戶會選擇|選擇晨陽設計|放樣驗收)",ctx)
-    ):
+    # These two recurring embeds are corporate promos, not case footage.
+    # Preserve other real case videos rather than excluding by broad headings.
+    if kind=="video" and ("cm21s8AVwjI" in url or "JofFrtBgHDE" in url):
         return True
     return False
 
@@ -88,6 +87,7 @@ def alt_for(draft,asset,section):
     if not generic and len(original)>=16 and (
         any(term in original for term in ("玄關","客廳","臥室","主臥","書房","展示","櫃","格局","平面","設計"))
         and (not original.startswith("林口A7、A8捷運正核心"))
+        and not re.search(r"(建築圖|平面|平配|配置圖|格局圖|^平\d)",basename,re.I)
     ):
         asset["alt_provenance"]="原頁具體 Alt（沿用）"
         return original[:120]
@@ -102,11 +102,16 @@ def alt_for(draft,asset,section):
     elif re.search(r"(?:3d|模擬|透視)",basename,re.I):
         subject="3D 空間設計示意圖"
         unit=""
+    elif "line_album" in basename:
+        subject=("現代輕奢空間設計示意圖" if "現代輕奢" in basename else
+                 "北歐風空間設計示意圖" if "北歐風" in basename else
+                 "現代風空間設計示意圖")
+        unit=""
     else:
         subject=""
         for pattern,label in [
+            (r"(?:3D|模擬|透視)","3D 空間設計示意圖"),
             (r"(?:平面|格局配置|配置圖)","平面格局示意圖"),
-            (r"(?:3D|模擬|透視)","空間設計示意圖"),
             (r"(?:主臥|臥室|床頭)","臥室空間設計"),
             (r"(?:客廳|電視牆|沙發)","客廳空間設計"),
             (r"(?:玄關|鞋櫃)","玄關空間設計"),
@@ -200,7 +205,7 @@ def merge(d,items):
         if item["type"]=="image":
             item["original_alt"]=item.get("alt","")
             item["alt"]=alt_for(d,item,last)
-            item["alt_review_required"]=item["alt_provenance"]!="官網原有 Alt（已整理）"
+            item["alt_review_required"]=item["alt_provenance"]!="原頁具體 Alt（沿用）"
         groups[last].append(item)
     parts=[]
     for idx,(h,body) in enumerate(d["sections"]):
