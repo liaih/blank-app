@@ -16,7 +16,7 @@ from zoneinfo import ZoneInfo
 from bs4 import BeautifulSoup
 
 OUTPUT=Path(__file__).resolve().parents[1]/"docs"/"seo-homepage-audit.json"
-ORIGINS=["https://chen-yang.com.tw/","https://www.chen-yang.com.tw/"]
+ORIGINS=["https://chen-yang.com.tw/","https://www.chen-yang.com.tw/","https://chen-yang.com.tw/index.php","https://www.chen-yang.com.tw/index.php"]
 REQUEST_HEADERS={"User-Agent":"Mozilla/5.0 (compatible; ChenYangHomepageReadOnlyAudit/1.0; +https://chen-yang.com.tw/)"}
 ACCEPTED={"chen-yang.com.tw","www.chen-yang.com.tw"}
 
@@ -73,7 +73,20 @@ def inspect_homepage(url):
         if safe_url(href) and href not in links:links.append(href)
     result["internal_link_count_unique"]=len(links)
     result["internal_link_samples"]=links[:28]
-    result["jsonld_count"]=len(soup.find_all("script",attrs={"type":"application/ld+json"}))
+    jsonld=soup.find_all("script",attrs={"type":"application/ld+json"})
+    result["jsonld_count"]=len(jsonld)
+    types=[]
+    for script in jsonld:
+        try:
+            data=json.loads(script.get_text())
+            nodes=data if isinstance(data,list) else data.get("@graph",[]) if isinstance(data,dict) and "@graph" in data else [data]
+            for node in nodes:
+                if isinstance(node,dict):
+                    raw=node.get("@type")
+                    if isinstance(raw,str):types.append(raw)
+                    elif isinstance(raw,list):types.extend(x for x in raw if isinstance(x,str))
+        except (ValueError,TypeError):types.append("invalid_or_unreadable")
+    result["jsonld_types"]=types
     result["viewport"]=meta("viewport")
     body=soup.body.get_text(" ",strip=True) if soup.body else ""
     body=" ".join(body.split())
@@ -107,10 +120,16 @@ def main():
             data=fetch(url,1_000_000)
             report[resource.split(".")[0]]={"url":url,"status":data["status"],
                "final_url":data["final_url"],
-               "text_excerpt":data["body"][:1200] if resource=="robots.txt" else "",
+               "text_excerpt":data["body"][:4500] if resource=="robots.txt" else "",
+               "sitemap_urls":re.findall(r"<loc>(.*?)</loc>",data["body"],flags=re.I)[:40] if resource=="sitemap.xml" else [],
                "bytes":len(data["body"])}
         except (OSError,ValueError) as e:
             report[resource.split(".")[0]]={"status":"unverified","error_type":type(e).__name__}
+    report["canonical_consistency"]={
+        "all_homepage_versions_redirect_to_one":len({x.get("final_url") for x in report["checks"] if x.get("status")==200})==1,
+        "canonical_targets":sorted({x.get("canonical") for x in report["checks"] if x.get("canonical")}),
+        "warning":"URL prefixes with independent 200 responses and self-canonical tags should be consolidated after GSC preferred canonical is confirmed."
+    }
     OUTPUT.parent.mkdir(parents=True,exist_ok=True)
     OUTPUT.write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(json.dumps({"generated":report["generated_at"],
