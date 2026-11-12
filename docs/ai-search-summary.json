@@ -15,12 +15,12 @@
       "direct_domain_citations": 0
     },
     "custom_live_web_rag": {
-      "samples": 1,
+      "samples": 3,
       "mentions": 0,
       "direct_domain_citations": 0
     }
   },
-  "sample_count": 1,
+  "sample_count": 3,
   "brand_mentioned": 0,
   "own_domain_direct_cited": 0,
   "competitor_candidates": [
@@ -38,6 +38,18 @@
   "prompts": [
     {
       "id": "kaohsiung-condo",
+      "samples": 1,
+      "mentions": 0,
+      "direct_domain_citations": 0
+    },
+    {
+      "id": "renovation-process",
+      "samples": 1,
+      "mentions": 0,
+      "direct_domain_citations": 0
+    },
+    {
+      "id": "small-home-budget",
       "samples": 1,
       "mentions": 0,
       "direct_domain_citations": 0
