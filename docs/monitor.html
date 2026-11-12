@@ -298,24 +298,19 @@ tbody tr:last-child td{border-bottom:0}
 
 
  <section id="view-actions" role="tabpanel" aria-labelledby="tab-actions" hidden>
-  <h2>SEO × AI SEO｜官網文章改善中心</h2>
-  <p class="muted">不只提供優化建議：直接提供已改寫的晨陽官網 HTML 原始碼、Meta 標題／說明、改動原因和可追蹤的 SEO 機會。涵蓋自然搜尋與 AI SEO。</p>
-  <div class="metrics">
-   <div class="metric"><div class="name">已核對文章網址</div><div class="number" id="action-total">讀取中</div></div>
-   <div class="metric"><div class="name">Google SEO 候選文章</div><div class="number" id="action-seo-total">—</div></div>
-   <div class="metric"><div class="name">AI SEO 內容建議</div><div class="number" id="action-ai-total">—</div></div>
-   <div class="metric"><div class="name">優先處理 P1</div><div class="number" id="action-p1">—</div></div>
-  </div>
-  <section class="panel">
-   <h3>需要修改的文章｜直接取得新版官網 HTML、改稿差異與預期 SEO 效益</h3>
-   <div class="market-filters">
-    <label>優化類型<select id="action-channel"><option value="all">全部 SEO＋AI SEO</option><option value="SEO">自然搜尋 SEO</option><option value="AI SEO">AI SEO／GEO</option><option value="內容品質">內容品質</option></select></label>
-    <label>優先順序<select id="action-priority"><option value="all">全部</option><option value="P1">P1 優先</option><option value="P2">P2 接續</option></select></label>
-    <label>排序<select id="action-sort"><option value="priority">依優先順序</option><option value="impressions">搜尋字詞曝光由高到低</option></select></label>
-   </div>
-   <div id="seo-article-actions">正在讀取文章與修改建議。</div>
-   <p class="detail">注意：GSC 數字為『搜尋字詞』維度，尚未驗證該字詞實際導流的網頁；文章是人工內容對照候選，不得把字詞曝光直接稱為文章曝光。</p>
+  <h2>SEO 改稿中心｜一篇文章、一份完整 HTML</h2>
+  <p class="muted">選擇文章，直接取得已排版的新版正文、原案例圖片、相關影片與圖片 ALT。每篇只有一個完整 HTML 複製按鈕。</p>
+  <section class="panel" aria-label="晨陽官網文章改稿">
+    <div class="ai-fields">
+      <label class="ai-wide">選擇要修改的文章
+        <select id="action-article"><option value="">正在讀取 8 篇改稿</option></select>
+      </label>
+    </div>
+    <div id="seo-article-actions" aria-live="polite">正在載入單篇圖文影音 HTML。</div>
+    <p class="detail">原媒體不需重新上傳，但仍須核對原頁的媒體是否完整、圖片 ALT 是否符合實際畫面及 CMS 能否保留 HTML 格式。SEO 改善是測試假設，非保證排名提升。</p>
   </section>
+  <details class="ai-manual-panel">
+    <summary>進階｜AI SEO 監測改善任務（非文章改稿）</summary>
   <section class="panel" aria-label="AI SEO｜監測改善任務">
     <div class="flexhead"><div><h2>AI SEO｜監測改善任務</h2>
       <p class="muted">把 AI 實測缺口轉成可追蹤的內容優化任務。建議來自固定題庫及已取得的樣本，並非 AI 排名保證。</p></div>
@@ -328,7 +323,7 @@ tbody tr:last-child td{border-bottom:0}
     </table></div>
     <p class="detail" id="geo-task-storage">任務修改暫存在目前瀏覽器，不會寫回公開 GitHub 或團隊共用資料庫；請匯出 JSON 保存。AI 推薦狀態需由回答原文驗證，不會因任務完成而自動判定成功。</p>
   </section>
-
+  </details>
  </section>
 
  <section id="view-seo" role="tabpanel" aria-labelledby="tab-seo" hidden>
@@ -664,170 +659,112 @@ function cmsCopyButton(label,content,feedback){
  };
  return btn;
 }
-function renderSeoRewriteDeliverable(target,draft,plan){
- const section=document.createElement("section");section.className="panel";
- const h=document.createElement("h3");h.textContent="已改寫｜可複製的晨陽官網文字 HTML";section.appendChild(h);
- if(!draft){
-  const no=document.createElement("p");no.className="detail";
-  no.textContent="完整改寫內容正在同步，若持續未出現請重新整理。";
-  section.appendChild(no);target.appendChild(section);return;
- }
- const diff=document.createElement("details");diff.open=true;
- const summary=document.createElement("summary");summary.textContent="改變了什麼／為什麼改／改完可能增加哪些 SEO 機會";diff.appendChild(summary);
- const wrapper=document.createElement("div");wrapper.className="tablebox";
- const table=document.createElement("table");
- const thead=document.createElement("thead"),head=document.createElement("tr");
- for(const txt of ["改變了什麼","為什麼要改","改完可增加的 SEO 機會（非保證）"]){
-  const th=document.createElement("th");th.textContent=txt;head.appendChild(th);
- }
- thead.appendChild(head);table.appendChild(thead);
- const tbody=document.createElement("tbody");
- const changes=draft.changes||[];
- changes.forEach(([change,reason],index)=>{
-  const tr=document.createElement("tr");
-  for(const value of [change,reason]){
-   const td=document.createElement("td");td.textContent=value;tr.appendChild(td);
-  }
-  if(index===0){
-   const td=document.createElement("td");td.rowSpan=changes.length;
-   const ol=document.createElement("ol");ol.style.paddingLeft="18px";ol.style.margin="0";
-   for(const benefit of draft.seoUpside?.opportunities||[]){
-    const li=document.createElement("li");li.textContent=benefit;ol.appendChild(li);
-   }
-   td.appendChild(ol);tr.appendChild(td);
-  }
-  tbody.appendChild(tr);
- });
- table.appendChild(tbody);wrapper.appendChild(table);diff.appendChild(wrapper);
- const kw=document.createElement("p");kw.className="detail";kw.textContent="預期拓展的相關搜尋詞（非實測搜尋量）："+(draft.seoUpside?.keywords||[]).join("、");diff.appendChild(kw);
- const checks=document.createElement("p");checks.className="detail";checks.textContent="修改後追蹤："+(draft.seoUpside?.metrics||[]).join("；");diff.appendChild(checks);
- section.appendChild(diff);
- const note=document.createElement("p");note.className="message";
- note.textContent="此版是可替換／補充的文字段落，不是原文章的完整原始碼。請先備份舊文，保留既有圖片、影片、工程細節和原有來源連結，再逐段更換。房型、圖片性質與可公開資訊需先由編輯核對；不要整篇無檢查覆蓋。";
- section.appendChild(note);
- const metaTitle=document.createElement("p");metaTitle.className="detail";metaTitle.textContent="建議 SEO Title："+draft.metaTitle;section.appendChild(metaTitle);
- const metaDescription=document.createElement("p");metaDescription.className="detail";metaDescription.textContent="建議 Meta Description："+draft.metaDescription;section.appendChild(metaDescription);
- const buttons=document.createElement("div");buttons.className="ai-buttons";buttons.style.marginTop="12px";
- const feedback=document.createElement("p");feedback.className="detail";feedback.setAttribute("role","status");feedback.textContent="HTML 使用晨陽格式：段落／標題 + <BR>，不含追蹤碼或付費外掛。";
- buttons.appendChild(cmsCopyButton("複製改寫 HTML 文字段落",draft.html,feedback));
- buttons.appendChild(cmsCopyButton("複製 SEO Title",draft.metaTitle,feedback));
- buttons.appendChild(cmsCopyButton("複製 Meta Description",draft.metaDescription,feedback));
- section.appendChild(buttons);
- const full=document.createElement("details");const trigger=document.createElement("summary");
- trigger.textContent="展開可複製的改寫 HTML 段落";full.appendChild(trigger);
- const textarea=document.createElement("textarea");textarea.readOnly=true;textarea.value=draft.html;
- textarea.style.width="100%";textarea.style.minHeight="280px";textarea.style.marginTop="10px";
- textarea.style.border="1px solid #dfe7f0";textarea.style.padding="12px";textarea.style.fontSize="12px";
- textarea.setAttribute("aria-label",plan.title+" HTML 正文");full.appendChild(textarea);
-
- section.appendChild(full);
- const mediaPane=document.createElement("section");mediaPane.className="panel soft";
- const heading=document.createElement("h3");heading.textContent="圖文影音整合版｜原照片、影片及 ALT 已處理";mediaPane.appendChild(heading);
- const media=seoMediaById.get(draft.id);
- const status=document.createElement("p");status.className="detail";
- if(media?.media_integrated){
-   status.textContent="已從原頁擷取 "+media.image_count+" 張圖片、"+media.video_count+" 段影片。已產生 "+
-     (media.alt_count||0)+" 則圖片 ALT；其中 "+(media.alt_review_count||0)+" 則依原文段落推定，仍需對照畫面。";
-   mediaPane.appendChild(status);
-   const row=document.createElement("div");row.className="ai-buttons";
-   row.appendChild(cmsCopyButton("複製整合圖文影音 HTML",media.html_with_media,feedback));
-   const altText=(media.media||[]).filter(x=>x.type==="image").map((x,i)=>
-     "圖片 "+(i+1)+"｜"+x.alt+"\n網址："+x.url).join("\n\n");
-   row.appendChild(cmsCopyButton("複製全部圖片 ALT",altText,feedback));
-   mediaPane.appendChild(row);
-   const gallery=document.createElement("details");
-   const label=document.createElement("summary");
-   label.textContent="檢查原媒體及逐張 ALT（"+media.media_count+" 項）";
-   gallery.appendChild(label);
-   const list=document.createElement("ol");
-   for(const asset of media.media||[]){
-     const item=document.createElement("li");
-     const link=document.createElement("a");link.href=asset.url;link.target="_blank";link.rel="noopener noreferrer";
-     link.textContent=(asset.type==="image"?"原圖片":"原影片")+"｜"+(asset.context||"無原文段落說明");
-     item.appendChild(link);
-     if(asset.type==="image"){
-       const alt=document.createElement("p");alt.className="detail";alt.textContent="ALT："+(asset.alt||"待核對");item.appendChild(alt);
-       if(asset.alt_review_required){
-         const quality=document.createElement("span");quality.className="label wait";quality.textContent="依上下文寫好，畫面待核對";
-         item.appendChild(quality);
-       }
-     }
-     list.appendChild(item);
-   }
-   gallery.appendChild(list);mediaPane.appendChild(gallery);
-   const fullHTML=document.createElement("details");
-   const summary=document.createElement("summary");summary.textContent="展開圖文影音整合 HTML 原始碼";
-   fullHTML.appendChild(summary);
-   const code=document.createElement("textarea");code.readOnly=true;code.value=media.html_with_media;
-   code.style.width="100%";code.style.minHeight="300px";code.style.marginTop="12px";
-   code.setAttribute("aria-label",plan.title+" 圖文影音 HTML");
-   fullHTML.appendChild(code);mediaPane.appendChild(fullHTML);
-   const note=document.createElement("p");note.className="message";
-   note.textContent="已保留抓取得到的原媒體網址，不代表已證明原頁所有延遲載入圖片／影片完整。首次上稿前請逐項對照；相同網址不需重新上傳。";
-   mediaPane.appendChild(note);
- }else{
-   status.textContent=media?
-     "原媒體擷取未通過完整性要求："+media.status+"。暫不提供整合 HTML，避免缺圖覆蓋原文章。":
-     "正在等待原官網照片／影片清單及 ALT 同步，暫不提供整合版複製。";
-   mediaPane.appendChild(status);
- }
- section.appendChild(mediaPane);section.appendChild(feedback);target.appendChild(section);
-}
-
 function renderSeoImprovementPlan(){
  if(!seoImprovementPlan)return;
- const arr=seoImprovementPlan.items, metrics=new Map((data?.seo?.keyword_opportunities||[]).map(x=>[x.keyword,x]));
- put("action-total",arr.length+" 篇");put("action-seo-total",arr.filter(x=>x.channels.includes("SEO")).length+" 篇");
- put("action-ai-total",arr.filter(x=>x.channels.includes("AI SEO")).length+" 篇");put("action-p1",arr.filter(x=>x.priority==="P1").length+" 篇");
- const ch=el("action-channel").value,pr=el("action-priority").value,sort=el("action-sort").value;
- const choices=arr.filter(x=>(ch==="all"||x.channels.includes(ch))&&(pr==="all"||x.priority===pr));
- choices.sort((a,b)=>sort==="impressions"?
-  Number(metrics.get(b.keyword)?.impressions||0)-Number(metrics.get(a.keyword)?.impressions||0):
-  ((a.priority==="P1"?0:1)-(b.priority==="P1"?0:1))||
-  Number(metrics.get(b.keyword)?.impressions||0)-Number(metrics.get(a.keyword)?.impressions||0));
- const target=el("seo-article-actions");target.replaceChildren();
- if(!choices.length){target.textContent="這個條件下沒有建議文章。";return;}
- for(const x of choices){
-  const box=document.createElement("section");box.className="panel soft";
-  const header=document.createElement("div");header.className="flexhead";
-  const h=document.createElement("h3");h.textContent=x.priority+"｜"+x.title;header.appendChild(h);
-  const link=document.createElement("a");link.href=x.url;link.target="_blank";link.rel="noopener noreferrer";link.className="ai-action secondary";link.textContent="開啟原文章";header.appendChild(link);box.appendChild(header);
-  const tags=document.createElement("p");tags.className="small";tags.textContent=x.channels.join("＋");box.appendChild(tags);
-  const m=metrics.get(x.keyword),numbers=document.createElement("p");numbers.className="detail";
-  numbers.textContent=m?("GSC 搜尋字詞「"+x.keyword+"」近30天："+m.impressions+" 曝光、"+m.clicks+" 點擊、CTR "+(100*Number(m.ctr)).toFixed(2)+"%、平均排名 "+Number(m.position).toFixed(1)+"（不是文章單頁指標）"):"此篇尚無對應 GSC 字詞資料，不以零曝光冒充。";
-  box.appendChild(numbers);
-  const why=document.createElement("p");why.textContent="問題與機會："+x.reason;box.appendChild(why);
-  const title=document.createElement("p");const bold=document.createElement("strong");bold.textContent="建議修改標題：";title.appendChild(bold);title.appendChild(document.createTextNode(x.proposedTitle));box.appendChild(title);
-  const details=document.createElement("details");details.open=x.priority==="P1";
-  const summary=document.createElement("summary");summary.textContent="具體修改清單（"+x.suggestions.length+" 項）";details.appendChild(summary);
-  const list=document.createElement("ol");for(const suggestion of x.suggestions){const li=document.createElement("li");li.textContent=suggestion;list.appendChild(li);}
-  details.appendChild(list);const verify=document.createElement("p");verify.className="detail";verify.textContent="修改前確認："+x.verification;details.appendChild(verify);box.appendChild(details);
-  renderSeoRewriteDeliverable(box, seoRewritesById.get(x.id),x);
-  const state=document.createElement("label");state.textContent="處理狀態：";state.className="small";
-  const select=document.createElement("select");
-  for(const st of ["待確認","待修改","處理中","已上稿待驗證","已驗證"]){const o=document.createElement("option");o.value=st;o.textContent=st;select.appendChild(o);}
-  let saved={};try{saved=JSON.parse(localStorage.getItem(geoTaskStorageKey)||"{}");}catch(_){}
-  select.value=saved[x.id]?.status||"待確認";
-  select.onchange=()=>{saved[x.id]={...(saved[x.id]||{}),status:select.value};try{localStorage.setItem(geoTaskStorageKey,JSON.stringify(saved));}catch(_){}};
-  state.appendChild(select);box.appendChild(state);target.appendChild(box);
+ const items=seoImprovementPlan.items;
+ const rank=new Map((data?.seo?.keyword_opportunities||[]).map(x=>[x.keyword,x]));
+ const ordered=[...items].sort((a,b)=>{
+   const aPriority=a.priority==="P1"?0:1,bPriority=b.priority==="P1"?0:1;
+   return aPriority-bPriority || Number(rank.get(b.keyword)?.impressions||0)-
+     Number(rank.get(a.keyword)?.impressions||0);
+ });
+ const chooser=el("action-article"),previous=chooser.value;
+ chooser.replaceChildren();
+ for(const item of ordered){
+   const opt=document.createElement("option");opt.value=item.id;
+   opt.textContent=item.priority+"｜"+item.title;chooser.appendChild(opt);
  }
+ chooser.value=ordered.some(x=>x.id===previous)?previous:(ordered[0]?.id||"");
+ const plan=items.find(x=>x.id===chooser.value);
+ const target=el("seo-article-actions");target.replaceChildren();
+ if(!plan){target.textContent="目前沒有已完成的改稿資料。";return;}
+ const draft=seoRewritesById.get(plan.id);
+ const media=seoMediaById.get(plan.id);
+ const h=document.createElement("h3");h.textContent=plan.title;target.appendChild(h);
+ const meta=document.createElement("p");meta.className="small";
+ meta.textContent=plan.priority+"｜"+plan.channels.join("＋")+"｜改稿版：2026/11/12";
+ target.appendChild(meta);
+ const link=document.createElement("a");link.href=plan.url;link.target="_blank";
+ link.rel="noopener noreferrer";link.textContent="檢視晨陽官網原文章";target.appendChild(link);
+ if(!draft){const notice=document.createElement("p");notice.className="message";
+   notice.textContent="改稿資料尚未同步，暫不提供不完整的 HTML。";target.appendChild(notice);return;}
+ const title=document.createElement("p");title.style.marginTop="14px";
+ const titleLabel=document.createElement("strong");titleLabel.textContent="建議 SEO 標題：";
+ title.appendChild(titleLabel);title.appendChild(document.createTextNode(draft.metaTitle));
+ target.appendChild(title);
+ const desc=document.createElement("p");desc.className="small";
+ desc.textContent="Meta Description："+draft.metaDescription;target.appendChild(desc);
+ const difference=document.createElement("details");difference.style.marginTop="18px";
+ const diffSummary=document.createElement("summary");
+ diffSummary.textContent="這篇改了什麼、為什麼改？";difference.appendChild(diffSummary);
+ const wrapper=document.createElement("div");wrapper.className="tablebox";
+ const table=document.createElement("table");const head=document.createElement("thead");
+ const trHead=document.createElement("tr");
+ for(const label of ["改變了什麼","為什麼","SEO 可增加的機會"]){
+   const th=document.createElement("th");th.textContent=label;trHead.appendChild(th);
+ }
+ head.appendChild(trHead);table.appendChild(head);
+ const body=document.createElement("tbody");
+ (draft.changes||[]).forEach(([change,why],i)=>{
+   const tr=document.createElement("tr");
+   for(const text of [change,why,(draft.seoUpside?.opportunities||[])[i]||"改善相關內容的品質與可理解性"]){
+     const td=document.createElement("td");td.textContent=text;tr.appendChild(td);
+   }
+   body.appendChild(tr);
+ });
+ table.appendChild(body);wrapper.appendChild(table);difference.appendChild(wrapper);
+ target.appendChild(difference);
+ const message=document.createElement("p");message.className="detail";
+ if(!media?.media_integrated){
+   message.textContent="原案例媒體整合尚未通過驗證，現在不能提供可以直接覆蓋原文的 HTML。";
+   target.appendChild(message);return;
+ }
+ const content=media.html_with_media;
+ message.textContent="本篇已整合 "+media.image_count+" 張原案例圖片、"+media.video_count+
+   " 部相關影片；圖片 ALT 均已寫入，其中 "+media.alt_review_count+
+   " 張仍需按實際畫面確認。";
+ target.appendChild(message);
+ const feedback=document.createElement("p");feedback.className="detail";
+ feedback.setAttribute("role","status");
+ feedback.textContent="這一份 HTML 已包含文字、媒體與 Alt，不必分次複製。";
+ const controls=document.createElement("div");controls.className="ai-buttons";
+ controls.style.marginTop="12px";
+ const copy=cmsCopyButton("複製這篇完整 HTML",content,feedback);
+ copy.style.fontSize="15px";copy.style.padding="12px 20px";
+ controls.appendChild(copy);target.appendChild(controls);target.appendChild(feedback);
+ const preview=document.createElement("details");preview.style.marginTop="16px";
+ const prevLabel=document.createElement("summary");prevLabel.textContent="預覽整篇文章排版";
+ preview.appendChild(prevLabel);
+ const frame=document.createElement("iframe");
+ frame.title="文章排版預覽："+plan.title;frame.setAttribute("sandbox","");
+ frame.style.width="100%";frame.style.height="650px";frame.style.marginTop="12px";
+ frame.style.border="1px solid #dfe7f0";frame.style.borderRadius="10px";
+ frame.loading="lazy";
+ frame.srcdoc='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="padding:14px 16px;margin:0;font-family:system-ui,sans-serif;">'+content+'</body></html>';
+ preview.appendChild(frame);target.appendChild(preview);
+ const raw=document.createElement("details");raw.style.marginTop="12px";
+ const rawLabel=document.createElement("summary");rawLabel.textContent="查看這一份 HTML 原始碼";raw.appendChild(rawLabel);
+ const source=document.createElement("textarea");source.readOnly=true;source.value=content;
+ source.style.width="100%";source.style.minHeight="380px";source.style.marginTop="10px";
+ source.style.padding="12px";source.style.border="1px solid #dfe7f0";
+ source.setAttribute("aria-label",plan.title+" HTML");
+ raw.appendChild(source);target.appendChild(raw);
 }
 function loadSeoImprovementPlan(){
- ["action-channel","action-priority","action-sort"].forEach(id=>el(id).addEventListener("change",renderSeoImprovementPlan));
- Promise.all(["./seo-improvement-plan.json","./seo-rewrites.json"].map(url=>
-   fetch(url,{cache:"no-store"}).then(r=>{if(!r.ok)throw Error("report unavailable: "+url);return r.json()})
- ))
-  .then(([plan,rewrites])=>{
-    if(!Array.isArray(plan.items)||!Array.isArray(rewrites.articles))throw Error("invalid report");
-    seoRewritesById=new Map(rewrites.articles.map(d=>[d.id,d]));
-    seoImprovementPlan=plan;renderSeoImprovementPlan();
-    fetch("./seo-media-rewrites.json",{cache:"no-store"})
-     .then(resp=>{if(!resp.ok)throw Error("media report unavailable");return resp.json()})
-     .then(media=>{if(!Array.isArray(media.articles))throw Error("invalid media manifest");seoMediaById=new Map(media.articles.map(x=>[x.id,x]));renderSeoImprovementPlan();})
-     .catch(()=>{});
+ el("action-article").addEventListener("change",renderSeoImprovementPlan);
+ Promise.all(["./seo-improvement-plan.json","./seo-rewrites.json","./seo-media-rewrites.json"]
+   .map(url=>fetch(url,{cache:"no-store"})
+     .then(resp=>{if(!resp.ok)throw Error("資料未完成同步："+url);return resp.json();})))
+  .then(([plan,rewrites,media])=>{
+   if(!Array.isArray(plan.items)||!Array.isArray(rewrites.articles)||
+      !Array.isArray(media.articles))throw Error("文章資料格式錯誤");
+   seoImprovementPlan=plan;
+   seoRewritesById=new Map(rewrites.articles.map(x=>[x.id,x]));
+   seoMediaById=new Map(media.articles.map(x=>[x.id,x]));
+   renderSeoImprovementPlan();
   })
   .catch(()=>{
-    el("seo-article-actions").textContent="文章改稿或 HTML 資料尚未部署完成。請稍後重新整理，不會以建議文案冒充已產出的完整改稿。";
+   el("seo-article-actions").textContent="尚未能載入完整的單篇 HTML，請確認 GitHub Pages 同步狀態。";
   });
 }
 loadSeoImprovementPlan();
