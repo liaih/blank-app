@@ -1,0 +1,168 @@
+{
+  "generated_at": "2026-11-12T22:29:47+08:00",
+  "scope": "Read-only public homepage HTTP/HTML observation; not a live rank or GSC index-coverage test",
+  "checks": [
+    {
+      "requested_url": "https://chen-yang.com.tw/",
+      "status": 200,
+      "final_url": "https://chen-yang.com.tw/",
+      "content_type": "text/html; charset=UTF-8",
+      "x_robots_tag": "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
+      "title": "晨陽室內設計、晨陽共好機構｜全台室內裝修設計公司推薦",
+      "description": "晨陽共好機構、晨陽室內設計（1995年成立，深耕台灣逾30年），通過 ISO 9001 國際品質認證，獨家落實施工前 1:1 現場放樣驗收、五部門專業經理人制度與低甲醛綠建材空氣品質檢測。全台設有桃園總公司、桃園概念館、林口、青埔、竹北、新竹、台中、台南、高雄等 9 大直營據點，為預售屋客變、新成屋設計與老屋翻新首選室內設計推薦品牌。",
+      "robots_meta": "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
+      "googlebot_meta": null,
+      "canonical": "https://chen-yang.com.tw/",
+      "og_title": "晨陽共好機構",
+      "og_description": "晨陽共好機構、晨陽室內設計-1995年創立、ISO 9001國際認證、施工前1:1現場放樣驗收、五部門專業經理人與低甲醛綠建材工法，全台9大直營據點服務",
+      "language": "zh-Hant-TW",
+      "headings": {
+        "h1": [
+          "晨陽室內設計 | 晨陽共好機構 - 專業空間設計規劃"
+        ],
+        "h2": [
+          "最新作品",
+          "建設作品",
+          "服務項目"
+        ],
+        "h3": []
+      },
+      "h1_count": 1,
+      "image_count": 17,
+      "image_missing_alt_count": 0,
+      "image_example_alts": [
+        "Facebook",
+        "晨陽共好機構",
+        "晨陽共好機構 Logo",
+        "搜尋",
+        "搜尋",
+        "晨陽共好機構 Logo",
+        "晨陽共好機構 室內設計代表作 1",
+        "晨陽共好機構 室內設計代表作 2"
+      ],
+      "internal_link_count_unique": 27,
+      "internal_link_samples": [
+        "https://chen-yang.com.tw/index.php",
+        "https://chen-yang.com.tw/about.php",
+        "https://chen-yang.com.tw/case.php",
+        "https://chen-yang.com.tw/build.php",
+        "https://chen-yang.com.tw/service.php",
+        "https://chen-yang.com.tw/unboxing.php",
+        "https://chen-yang.com.tw/knowledge.php",
+        "https://chen-yang.com.tw/news.php",
+        "https://chen-yang.com.tw/contact.php",
+        "https://chen-yang.com.tw/#search-wrap",
+        "https://chen-yang.com.tw/case-content.php?id=18",
+        "https://chen-yang.com.tw/case-content.php?id=17",
+        "https://chen-yang.com.tw/case-content.php?id=267",
+        "https://chen-yang.com.tw/case-content.php?id=290",
+        "https://chen-yang.com.tw/case-content.php?id=16",
+        "https://chen-yang.com.tw/case-content.php?id=76",
+        "https://chen-yang.com.tw/case-content.php?id=227",
+        "https://chen-yang.com.tw/case-content.php?id=111",
+        "https://chen-yang.com.tw/build-content.php?id=27",
+        "https://chen-yang.com.tw/build-content.php?id=25",
+        "https://chen-yang.com.tw/build-content.php?id=24",
+        "https://www.chen-yang.com.tw/news-content.php?id=39",
+        "https://chen-yang.com.tw/case.php?cid=1",
+        "https://chen-yang.com.tw/case.php?cid=5",
+        "https://chen-yang.com.tw/case.php?cid=2",
+        "https://chen-yang.com.tw/#social-share",
+        "https://chen-yang.com.tw/#top"
+      ],
+      "jsonld_count": 2,
+      "viewport": "width=device-width, initial-scale=1, height=device-height, viewport-fit=cover",
+      "body_characters": 1138,
+      "body_excerpt": "CHEN YANG ARCHITECTURE & DESIGN TAIWAN • SUSTAINABLE LUXURY LIVING EST. 1995 • INTERIOR ARCHITECTURE 關於我們 ABOUT 室內設計 INTERIOR 建設作品 ARCHITECTURE 服務流程 SERVICE 晨陽開箱 UNBOXING 晨陽知識 KNOWLEDGE 晨陽動態 NEWS 聯絡我們 CONTACT CHEN YANG GROUP 晨陽共好機構 · 空間美學 關於我們 ABOUT US → 室內設計 INTERIOR DESIGN → 建設作品 ARCHITECTURE → 服務流程 SERVICE PROCESS → 晨陽開箱 UNBOXING → 晨陽知識 KNOWLEDGE → 晨陽動態 LATEST NEWS → 聯絡我們 CONTACT US → 預約專屬諮詢 EST. 1995 · 三十餘年空間美學實力見證 搜尋 依您的所在地推薦 熱門在地搜尋： SCROLL 晨陽室內設計 | 晨陽共好機構 - 專業空間設計規劃 最新作品 PROJECT more 川‧變 墨‧韻 室內設計 放樣驗收 晨陽設計 ◆ 宸譽建設 | 聯合辦公室 舞‧墨 川澤 藍韻灣岸 432Hz 建設作品 CONSTRUCTION more 宸譽好薪晴3 - 格楹 晨陽共好機構 宸譽 晨陽共好機構 宸譽 CHEN YANG ARCHITECTURE DESIGN INC. 晨陽共好機構 優質的建築、室內設計專業工作團隊! 三十多年來我們始終秉持著誠信、熱忱、專業的服務精神! 打造無數美好空間! 創造無限美麗生活! 『晨陽共好機構』自開創以來，一直堅信建築、 室內設計是一種幸福工程，而有心經營的人只有秉持『共好』的心念，才能創造出人己共利的圓融幸福事業。 確保品質作業高標準，晨陽通過ISO9001品質驗證的高規格作業方式，2007年迄今持續通過認證，確保能提供客戶更有保障的裝修服務標準。專屬的客服部門，提供我們對於作品在設計上與施工過程中的貼心服務和完工後的售後服務，讓消費者在選擇設",
+      "structural_warnings": []
+    },
+    {
+      "requested_url": "https://www.chen-yang.com.tw/",
+      "status": 200,
+      "final_url": "https://www.chen-yang.com.tw/",
+      "content_type": "text/html; charset=UTF-8",
+      "x_robots_tag": "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
+      "title": "晨陽室內設計、晨陽共好機構｜全台室內裝修設計公司推薦",
+      "description": "晨陽共好機構、晨陽室內設計（1995年成立，深耕台灣逾30年），通過 ISO 9001 國際品質認證，獨家落實施工前 1:1 現場放樣驗收、五部門專業經理人制度與低甲醛綠建材空氣品質檢測。全台設有桃園總公司、桃園概念館、林口、青埔、竹北、新竹、台中、台南、高雄等 9 大直營據點，為預售屋客變、新成屋設計與老屋翻新首選室內設計推薦品牌。",
+      "robots_meta": "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
+      "googlebot_meta": null,
+      "canonical": "https://www.chen-yang.com.tw/",
+      "og_title": "晨陽共好機構",
+      "og_description": "晨陽共好機構、晨陽室內設計-1995年創立、ISO 9001國際認證、施工前1:1現場放樣驗收、五部門專業經理人與低甲醛綠建材工法，全台9大直營據點服務",
+      "language": "zh-Hant-TW",
+      "headings": {
+        "h1": [
+          "晨陽室內設計 | 晨陽共好機構 - 專業空間設計規劃"
+        ],
+        "h2": [
+          "最新作品",
+          "建設作品",
+          "服務項目"
+        ],
+        "h3": []
+      },
+      "h1_count": 1,
+      "image_count": 17,
+      "image_missing_alt_count": 0,
+      "image_example_alts": [
+        "Facebook",
+        "晨陽共好機構",
+        "晨陽共好機構 Logo",
+        "搜尋",
+        "搜尋",
+        "晨陽共好機構 Logo",
+        "晨陽共好機構 室內設計代表作 1",
+        "晨陽共好機構 室內設計代表作 2"
+      ],
+      "internal_link_count_unique": 27,
+      "internal_link_samples": [
+        "https://www.chen-yang.com.tw/index.php",
+        "https://www.chen-yang.com.tw/about.php",
+        "https://www.chen-yang.com.tw/case.php",
+        "https://www.chen-yang.com.tw/build.php",
+        "https://www.chen-yang.com.tw/service.php",
+        "https://www.chen-yang.com.tw/unboxing.php",
+        "https://www.chen-yang.com.tw/knowledge.php",
+        "https://www.chen-yang.com.tw/news.php",
+        "https://www.chen-yang.com.tw/contact.php",
+        "https://www.chen-yang.com.tw/#search-wrap",
+        "https://www.chen-yang.com.tw/case-content.php?id=18",
+        "https://www.chen-yang.com.tw/case-content.php?id=17",
+        "https://www.chen-yang.com.tw/case-content.php?id=267",
+        "https://www.chen-yang.com.tw/case-content.php?id=290",
+        "https://www.chen-yang.com.tw/case-content.php?id=16",
+        "https://www.chen-yang.com.tw/case-content.php?id=76",
+        "https://www.chen-yang.com.tw/case-content.php?id=227",
+        "https://www.chen-yang.com.tw/case-content.php?id=111",
+        "https://www.chen-yang.com.tw/build-content.php?id=27",
+        "https://www.chen-yang.com.tw/build-content.php?id=25",
+        "https://www.chen-yang.com.tw/build-content.php?id=24",
+        "https://www.chen-yang.com.tw/news-content.php?id=39",
+        "https://www.chen-yang.com.tw/case.php?cid=1",
+        "https://www.chen-yang.com.tw/case.php?cid=5",
+        "https://www.chen-yang.com.tw/case.php?cid=2",
+        "https://www.chen-yang.com.tw/#social-share",
+        "https://www.chen-yang.com.tw/#top"
+      ],
+      "jsonld_count": 2,
+      "viewport": "width=device-width, initial-scale=1, height=device-height, viewport-fit=cover",
+      "body_characters": 1138,
+      "body_excerpt": "CHEN YANG ARCHITECTURE & DESIGN TAIWAN • SUSTAINABLE LUXURY LIVING EST. 1995 • INTERIOR ARCHITECTURE 關於我們 ABOUT 室內設計 INTERIOR 建設作品 ARCHITECTURE 服務流程 SERVICE 晨陽開箱 UNBOXING 晨陽知識 KNOWLEDGE 晨陽動態 NEWS 聯絡我們 CONTACT CHEN YANG GROUP 晨陽共好機構 · 空間美學 關於我們 ABOUT US → 室內設計 INTERIOR DESIGN → 建設作品 ARCHITECTURE → 服務流程 SERVICE PROCESS → 晨陽開箱 UNBOXING → 晨陽知識 KNOWLEDGE → 晨陽動態 LATEST NEWS → 聯絡我們 CONTACT US → 預約專屬諮詢 EST. 1995 · 三十餘年空間美學實力見證 搜尋 依您的所在地推薦 熱門在地搜尋： SCROLL 晨陽室內設計 | 晨陽共好機構 - 專業空間設計規劃 最新作品 PROJECT more 川‧變 墨‧韻 室內設計 放樣驗收 晨陽設計 ◆ 宸譽建設 | 聯合辦公室 舞‧墨 川澤 藍韻灣岸 432Hz 建設作品 CONSTRUCTION more 宸譽好薪晴3 - 格楹 晨陽共好機構 宸譽 晨陽共好機構 宸譽 CHEN YANG ARCHITECTURE DESIGN INC. 晨陽共好機構 優質的建築、室內設計專業工作團隊! 三十多年來我們始終秉持著誠信、熱忱、專業的服務精神! 打造無數美好空間! 創造無限美麗生活! 『晨陽共好機構』自開創以來，一直堅信建築、 室內設計是一種幸福工程，而有心經營的人只有秉持『共好』的心念，才能創造出人己共利的圓融幸福事業。 確保品質作業高標準，晨陽通過ISO9001品質驗證的高規格作業方式，2007年迄今持續通過認證，確保能提供客戶更有保障的裝修服務標準。專屬的客服部門，提供我們對於作品在設計上與施工過程中的貼心服務和完工後的售後服務，讓消費者在選擇設",
+      "structural_warnings": []
+    }
+  ],
+  "robots": {
+    "url": "https://chen-yang.com.tw/robots.txt",
+    "status": 200,
+    "final_url": "https://chen-yang.com.tw/robots.txt",
+    "text_excerpt": "# As a condition of accessing this website, you agree to abide by the following\n# content signals:\n\n# (a)  If a Content-Signal = yes, you may collect content for the corresponding\n#      use.\n# (b)  If a Content-Signal = no, you may not collect content for the\n#      corresponding use.\n# (c)  If the website operator does not include a Content-Signal for a\n#      corresponding use, the website operator neither grants nor restricts\n#      permission via Content-Signal with respect to the corresponding use.\n\n# The content signals and their meanings are:\n\n# search:   building a search index and providing search results (e.g., returning\n#           hyperlinks and short excerpts from your website's contents). Search does not\n#           include providing AI-generated search summaries.\n# ai-input: inputting content into one or more AI models (e.g., retrieval\n#           augmented generation, grounding, or other real-time taking of content for\n#           generative AI search answers).\n# ai-train: training or fine-tuning AI models.\n# use:      how AI systems may consume the content (immediate, reference, or full).\n\n# ANY RESTRICTIONS EXPRESSED VIA CONTENT SIGNALS ARE EXPRESS RESERVATIONS O",
+    "bytes": 4224
+  },
+  "sitemap": {
+    "url": "https://chen-yang.com.tw/sitemap.xml",
+    "status": 200,
+    "final_url": "https://chen-yang.com.tw/sitemap.xml",
+    "text_excerpt": "",
+    "bytes": 3112
+  }
+}
