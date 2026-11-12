@@ -785,7 +785,7 @@ function renderSitewideDiscovery(){
    const th=document.createElement("th");th.textContent=name;head.appendChild(th);
  }
  table.appendChild(head);
- for(const page of newPages.slice(0,20)){
+ for(const page of newPages.slice(0,40)){
    const tr=document.createElement("tr");
    const title=document.createElement("td"),link=document.createElement("a");
    if(/^https:\/\/(?:www\.)?chen-yang\.com\.tw\/(?:news-content|unboxing-content)\.php\?id=\d+$/.test(page.url||"")){
