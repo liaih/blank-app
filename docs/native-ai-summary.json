@@ -6,19 +6,21 @@
   "not_own_tavily_rag": true,
   "window_start": "2026-10-14",
   "window_end": "2026-11-12",
-  "generated_at": "2026-11-12T14:54:09+08:00",
-  "total_samples": 0,
+  "generated_at": "2026-11-12T14:57:46+08:00",
+  "total_samples": 1,
   "platforms": [
     {
       "platform": "ChatGPT",
-      "samples": 0,
+      "samples": 1,
       "mentions": 0,
       "direct_domain_citations": 0,
       "answers_with_sources": 0,
-      "last_sample_date": null,
+      "last_sample_date": "2026-11-12",
       "competitor_candidates": [],
       "cited_domains": [],
-      "tested_prompt_ids": []
+      "tested_prompt_ids": [
+        "kaohsiung-condo"
+      ]
     },
     {
       "platform": "Gemini",
