@@ -754,31 +754,41 @@ function renderSeoImprovementPlan(){
    target.appendChild(notice);return;
  }
  const title=document.createElement("p");title.style.marginTop="14px";
- const label=document.createElement("strong");label.textContent="建議 SEO 標題：";
+ const label=document.createElement("strong");label.textContent="SEO Title 備選稿（暫不更動原有建案標題）：";
  title.appendChild(label);title.appendChild(document.createTextNode(draft.metaTitle));
  target.appendChild(title);
  const desc=document.createElement("p");desc.className="small";
- desc.textContent="Meta Description："+draft.metaDescription;target.appendChild(desc);
+ desc.textContent="Meta Description 備選稿（未套用）："+draft.metaDescription;target.appendChild(desc);
  const difference=document.createElement("details");difference.style.marginTop="18px";
  const diffSummary=document.createElement("summary");
- diffSummary.textContent="這篇改了什麼、為什麼改？";difference.appendChild(diffSummary);
- const wrapper=document.createElement("div");wrapper.className="tablebox";
- const table=document.createElement("table"),head=document.createElement("thead");
- const headRow=document.createElement("tr");
- for(const name of ["改變了什麼","為什麼","SEO 可增加的機會"]){
-   const th=document.createElement("th");th.textContent=name;headRow.appendChild(th);
+ diffSummary.textContent="這次實際改變什麼／為什麼／SEO 的效益與風險";difference.appendChild(diffSummary);
+ const wrap=document.createElement("div");wrap.className="tablebox";
+ const table=document.createElement("table");const header=document.createElement("thead"),trh=document.createElement("tr");
+ for(const name of ["實際變更","為什麼這樣做","對 SEO／AI SEO 的意義"]){
+   const th=document.createElement("th");th.textContent=name;trh.appendChild(th);
  }
- head.appendChild(headRow);table.appendChild(head);
- const body=document.createElement("tbody");
- (draft.changes||[]).forEach(([change,why],i)=>{
-   const row=document.createElement("tr");
-   for(const value of [change,why,(draft.seoUpside?.opportunities||[])[i]||"改善內容品質與可理解性"]){
-     const cell=document.createElement("td");cell.textContent=value;row.appendChild(cell);
+ header.appendChild(trh);table.appendChild(header);
+ const audit=media?.preservation_audit||{};
+ const dataRows=[
+  ["原有建案介紹完整保留","搜尋建案名稱的讀者也需要地段、坪數、格局與生活機能，不能用設計文取代。","保護原本建案資訊搜尋意圖；非保證排名。"],
+  ["新增一段裝修決策解答","讓已購屋者能進一步了解空間規劃、裝修前要注意什麼。","擴大建案＋裝潢的長尾問法及 AI 可擷取資訊。"],
+  ["保留原圖片、影片與超連結","避免整篇替換造成舊資料、實景或外部來源被意外刪除。","保護原有頁面完整度及可追查來源。"],
+  ["時效性建案資料仍待查證","原文可能包含交屋年份、捷運距離、學區及房型數字；原文保留不代表已經重新核實。","上稿前先校對；錯誤或過期內容可能影響使用者信任。"]
+ ];
+ const tbody=document.createElement("tbody");
+ for(const entry of dataRows){
+   const tr=document.createElement("tr");
+   for(const val of entry){
+     const td=document.createElement("td");td.textContent=val;tr.appendChild(td);
    }
-   body.appendChild(row);
- });
- table.appendChild(body);wrapper.appendChild(table);difference.appendChild(wrapper);
- target.appendChild(difference);
+   tbody.appendChild(tr);
+ }
+ table.appendChild(tbody);wrap.appendChild(table);difference.appendChild(wrap);
+ const exact=document.createElement("p");exact.className="detail";
+ exact.textContent="保留驗證："+(audit.original_text_characters||"—")+" 字元原文、"+
+    (audit.original_image_urls_count??"—")+" 張原圖、"+
+    (audit.original_link_count??"—")+" 個原連結；資料是保留檢查結果，不表示資訊時效已查核。";
+ difference.appendChild(exact);target.appendChild(difference);
  const note=document.createElement("p");note.className="detail";
  if(!media?.media_integrated){
    note.textContent="原案例媒體尚未通過整合驗證，不提供可覆蓋原文章的 HTML。";
@@ -792,7 +802,7 @@ function renderSeoImprovementPlan(){
    return;
  }
  const content=media.html_with_media;
- note.textContent="經原文保留檢核的整合版 HTML：原建案內容＋設計方案補強，並保留可確認的圖片、影片及 Alt。";
+ note.textContent="已通過原文／媒體／連結保留檢查：新版是原建案資訊＋裝修延伸，不再以設計內容覆蓋建案搜尋需求。正式上稿前仍要核對原文中的交屋、坪數、距離與照片說明。";
  target.appendChild(note);
  const feedback=document.createElement("p");feedback.className="detail";
  feedback.setAttribute("role","status");
