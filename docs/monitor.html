@@ -104,6 +104,22 @@ tbody tr:last-child td{border-bottom:0}
  <div class="banner"><strong>資料使用範圍：</strong>這是免費公開網站的<strong>唯讀彙總快照</strong>。原始資料庫、金鑰、完整 AI 回答及匯入管理功能仍留在私人系統。未取得的 AI 平台資料不會顯示成 0 次推薦。</div>
 
  <section id="view-ai" role="tabpanel" aria-labelledby="tab-ai">
+  <section class="panel" aria-label="每日自動 AI 聯網競品搜尋狀態">
+    <div class="flexhead"><div><h2>每日自動 AI 聯網競品觀測</h2>
+    <p class="muted">自動提出屋主問題、檢索即時網頁、由免費 Gemini 整理品牌及引用來源。這是自建 AI 聯網研究，不是 ChatGPT、Gemini App 或 Perplexity 的原生搜尋。</p></div>
+    <span class="label wait" id="ai-daily-sync-label">待取得並同步真實資料</span></div>
+    <div class="metrics">
+      <div class="metric"><div class="name">近30天：自建即時搜尋有效回答</div><div class="number" id="ai-daily-rag-count">未取得</div><div class="sub">只有真正有網頁搜尋來源、回答有引用網址才計入</div></div>
+      <div class="metric"><div class="name">近30天：原生 Gemini Google Grounding</div><div class="number" id="ai-daily-native-count">未取得</div><div class="sub">與自建搜尋分開，不相加成市場推薦率</div></div>
+      <div class="metric"><div class="name">晨陽在自建搜尋中被提及</div><div class="number" id="ai-daily-own-count">未取得</div><div class="sub">樣本數不足時不推論市場比例</div></div>
+      <div class="metric"><div class="name">最新有效回答日期</div><div class="number" id="ai-daily-date" style="font-size:18px">未取得</div><div class="sub">排程時間：每天台灣中午 12:35（GitHub 可能延遲）</div></div>
+    </div>
+    <p class="detail" id="ai-daily-status">正在查詢公開的匿名彙總結果。若尚未成功採樣或未連通跨倉庫同步，這裡不會顯示假排名。</p>
+    <h3 style="margin-top:18px">自動觀測到的設計公司候選名單</h3>
+    <div class="tablebox"><table><thead><tr><th>公司名稱</th><th>出現次數</th><th>證據等級</th></tr></thead><tbody id="ai-daily-candidates"><tr><td colspan="3">等待真實聯網回答</td></tr></tbody></table></div>
+    <p class="detail">條列式 AI 回答擷取的公司名稱只是「候選名單」，需核對回答原文後才能稱為推薦；沒有真實資料就不顯示名單。</p>
+    <p class="detail">進度可在私人 <a href="https://github.com/liaih/Repository/actions/workflows/daily-search-assisted-ai.yml" target="_blank" rel="noopener noreferrer">GitHub AI SEO 每日排程</a> 查看。公開網站只讀匿名摘要，不公布 API Key 或完整私人回答。</p>
+  </section>
   <section class="panel" aria-label="AI SEO 品牌推薦與競品分析">
    <div class="flexhead">
     <div><h2>AI SEO｜品牌推薦、競品及引用監測</h2>
@@ -534,6 +550,32 @@ function render(d){
  if(window.AISeoEvidence)window.AISeoEvidence.init(d);
 }
 if(window.MarketOpportunity)window.MarketOpportunity.init();
+function renderDailyAISummary(){
+  const state=el("ai-daily-status");
+  fetch("./ai-search-summary.json",{cache:"no-store"})
+    .then(response=>{if(!response.ok)throw Error("尚未建立可公開的每日彙總");return response.json()})
+    .then(report=>{
+      const by=report.source_types||{};
+      const rag=by.custom_live_web_rag||{samples:0,mentions:0};
+      const native=by.native_gemini_google_grounding||{samples:0};
+      put("ai-daily-rag-count",String(rag.samples||0)+" 筆");
+      put("ai-daily-native-count",String(native.samples||0)+" 筆");
+      put("ai-daily-own-count",rag.samples?String(rag.mentions||0)+"／"+rag.samples:"資料不足");
+      put("ai-daily-date",report.last_responded_date||"無有效回答");
+      put("ai-daily-sync-label","已同步真實彙總");
+      state.textContent="更新期間："+local(report.window_start)+" 至 "+local(report.window_end)+"。僅為自建聯網抽樣；ChatGPT／Perplexity 仍未自動接通。";
+      const tbody=el("ai-daily-candidates");tbody.replaceChildren();
+      for(const cand of (report.competitor_candidates||[])){
+        tableRow(tbody,[cand.name,cand.occurrences+" 次",cand.verification||"需人工核對"],[1]);
+      }
+      if(!report.competitor_candidates?.length)tableRow(tbody,["沒有可驗證的競品候選","—","不代表其他 AI 沒推薦"],[]);
+    })
+    .catch(()=>{
+      put("ai-daily-sync-label","每日公開資料尚未連通");
+      state.textContent="GitHub 每日搜尋流程已建置，但尚無成功採樣並同步到公開網站的有效資料。免費搜尋來源被限流或帳號授權未完成時，不會自動產生推薦名單。";
+    });
+}
+renderDailyAISummary();
 show(decodeURIComponent(location.hash.replace("#",""))||"ai",false);
 fetch("./data.json",{cache:"no-store"})
 .then(response=>{if(!response.ok)throw Error("讀取資料失敗");return response.json()})
