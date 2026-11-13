@@ -62,6 +62,16 @@ const markup=[
 '<p class="cyexp-muted">不會自動上傳圖片或修改正式官網。草稿匯出不含圖片本體，重新開啟需重新選擇圖檔，官網圖片網址與 ALT 可由 JSON 恢復。</p>'
 ].join("");
 host.innerHTML=markup;
+const draftPanel=document.createElement("section");
+draftPanel.className="cyexp-draft-panel";
+draftPanel.style.cssText="background:#f5f9ff;border:1px solid #bed4ed;border-radius:12px;padding:16px;margin-top:14px";
+draftPanel.innerHTML=[
+ '<h4 style="margin:0 0 6px">SEO 草稿｜AI 讀圖後立即整合</h4>',
+ '<p class="cyexp-muted" id="cyexp-draft-state" role="status">選擇建案及圖片後，立即產生文章與圖片 ALT 草稿，不必先上傳官網圖片。</p>',
+ '<div class="cyexp-actions"><button type="button" id="cyexp-copy-draft" disabled>複製 SEO 草稿 HTML（不可直接上稿）</button></div>',
+ '<details class="cyexp-advanced" open><summary>草稿文章預覽與完整 HTML</summary><div id="cyexp-draft-preview"></div><textarea id="cyexp-draft-html" readonly rows="7"></textarea></details>'
+].join("");
+host.appendChild(draftPanel);
 
 // Beginner-first layout: MOVE existing controls, never clone/remove working
 // AI or export controls. All IDs and event handlers remain unchanged.
@@ -72,7 +82,7 @@ function buildBeginnerLayout(){
  heading.querySelector("p").textContent="選照片與新格局圖 → AI 自動讀圖、產生 ALT → 從官網批次取得圖片網址並複製完整 HTML。原文章與舊格局圖完整保留。";
  const progress=document.createElement("div");progress.className="cyexp-progress";
  progress.id="cyexp-progress";
- progress.innerHTML='<span>① 選圖</span><span>② AI 介紹與 ALT</span><span>③ 官網上稿</span>';
+ progress.innerHTML='<span>① 選圖</span><span>② AI 草稿預覽</span><span>③ 正式上稿驗收</span>';
  const next=document.createElement("p");next.id="cyexp-next";next.className="cyexp-next";
  next.setAttribute("role","status");next.textContent="第一步：選擇新案件圖片，務必包含新的平面配置圖。";
  const section=(n,title,description)=>{
@@ -118,7 +128,7 @@ function buildBeginnerLayout(){
  // novice's required input flow; a safe internal default suffices.
  if(!$("cyexp-unit").value)$("cyexp-unit").value="新增設計案例";
  one.append(fields,actions,aiInfo,localPanel);
- two.append(images,reviewed,reviewedHelp,intro,summaryActions,imageStatus);
+ two.append(images,reviewed,reviewedHelp,intro,summaryActions,imageStatus,draftPanel);
  const cmsTitle=cms.querySelector("summary");
  cmsTitle.textContent="貼入官網剛上傳的圖片 HTML（一批貼一次）";
  const cmsHelp=cms.querySelector("p.cyexp-muted");
@@ -376,7 +386,8 @@ function baseHtml(){
 function checks(){
  const base=pickBase(),floor=S.files.filter(x=>x.role==="格局圖");
  const urls=S.files.every(x=>validUrl(x.url));
- const unique=new Set(S.files.map(x=>x.url?.trim())).size===S.files.length;
+ const suppliedUrls=S.files.map(x=>x.url?.trim()).filter(Boolean);
+  const unique=new Set(suppliedUrls).size===suppliedUrls.length;
  const alt=S.files.every(x=>x.alt?.trim()&&x.description?.trim()&&x.verified);
  const unit=$("cyexp-unit").value.trim();
  const project=chooseTitle();
