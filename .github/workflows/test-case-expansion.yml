@@ -1,0 +1,28 @@
+name: Test same-building case images and floorplan HTML
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "docs/seo-case-expansion.js"
+      - "docs/seo-case-expansion.css"
+      - "docs/seo-known-visual-descriptions.json"
+      - "tests/test-case-expansion.cjs"
+      - ".github/workflows/test-case-expansion.yml"
+permissions:
+  contents: read
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify front-end source syntax
+        run: node --check docs/seo-case-expansion.js
+      - name: Install temporary DOM test runtime
+        run: npm install --no-save --no-audit --no-fund jsdom@26
+      - name: Verify blocked export without floorplan and complete CMS HTML with new plan
+        run: node --test tests/test-case-expansion.cjs
