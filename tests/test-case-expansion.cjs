@@ -125,3 +125,25 @@ test("batch paste URL maps by file order and resets URL verification",async()=>{
   assert.equal(d.querySelector("#cyexp-confirm-urls").checked,false);
   dom.window.close();
 });
+
+test("public ALT and section headings avoid unneeded unit names while retaining exact visual labels",async()=>{
+  const dom=await setup();const d=dom.window.document;
+  edit(dom,d.querySelector("#cyexp-unit"),"內部專用-Z2");
+  await fileSelect(dom,"living.png");
+  await fileSelect(dom,"新格局圖.png");
+  const cards=d.querySelectorAll(".cyexp-item");
+  for(let i=0;i<cards.length;i++){
+    const a=cards[i];
+    edit(dom,a.querySelector('[data-attr="description"]'),i===0?"淺木色收納櫃、白色沙發與開放客餐廳":"住宅平面配置及空間動線");
+    a.querySelector('[data-attr="role"]').value=i===1?"格局圖":"客廳";
+    a.querySelector('[data-attr="role"]').dispatchEvent(new dom.window.Event("change",{bubbles:true}));
+  }
+  // Readable drafting metadata, not mandatory public ALT or headlines.
+  const altLabels=[...d.querySelectorAll('.cyexp-item [data-attr="alt"]')];
+  assert.equal(altLabels.length,2);
+  assert.ok(altLabels.every(input=>!input.value.includes("內部專用-Z2")));
+  assert.ok(altLabels.every(input=>input.value.includes("丹佛花都")));
+  assert.ok(altLabels.every(input=>input.value.includes("晨陽設計")));
+  assert.ok(altLabels.some(input=>input.value.includes("平面配置圖")));
+  dom.window.close();
+});
