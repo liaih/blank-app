@@ -6,7 +6,7 @@ if(!host)return;
 const $=id=>host.querySelector("#"+id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 const zones=["格局圖","玄關與客廳","玄關","客廳","客餐廳","廚房與走道","多功能工作區","臥室","更衣收納","其他"];
-const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,translator:null,transformers:null,modelBusy:false,visionReady:false,verifiedBase:false};
+const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,translator:null,transformers:null,modelBusy:false,visionReady:false,verifiedBase:false,localConnected:false,localModel:""};
 const markup=[
 '<div class="cyexp-head"><h3>同建案新增案件｜AI 讀圖＋ALT＋格局圖</h3>',
 '<p class="cyexp-muted">原文章＋舊戶型全部保留。新增圖片在本機辨識；圖片須先上傳晨陽官網取得正式網址，才可輸出正式 HTML。</p></div>',
@@ -23,6 +23,14 @@ const markup=[
 '<p class="cyexp-muted">先依目前圖片順序貼入一行一個正式圖片網址；或貼入「圖片檔名 | 官網網址」來自動配對，包含新格局圖。僅接受晨陽官網 HTTPS 圖片網址。</p>',
 '<textarea id="cyexp-bulk-urls" rows="4" placeholder="https://chen-yang.com.tw/upload/images/新案-01.png&#10;https://chen-yang.com.tw/upload/images/新案-02.png"></textarea>',
 '<button type="button" id="cyexp-apply-urls">批次套用圖片網址</button></details>',
+'<details class="cyexp-advanced" id="cyexp-local-ai"><summary>連接我的本機 AI｜LM Studio 圖像辨識（推薦）</summary>',
+'<p class="cyexp-muted">僅連接此電腦的 127.0.0.1:1234，不會將圖片上傳到 GitHub。請先在 LM Studio 載入有看圖能力的模型（例如已安裝的 Qwen3-VL），啟動本機伺服器、開啟 CORS，建議啟用身分驗證並只綁定本機。Chrome 若詢問本機網路存取權限，需自行決定是否允許。</p>',
+'<div class="cyexp-fields"><label>LM Studio 圖像模型<select id="cyexp-local-model" disabled><option value="">先按測試連線</option></select></label>',
+'<label>LM Studio 本機 API Token（如已啟用身分驗證）<input id="cyexp-local-token" type="password" autocomplete="off" placeholder="僅在目前瀏覽器使用，不會儲存"></label></div>',
+'<div class="cyexp-actions"><button type="button" id="cyexp-connect">測試本機 AI 連線／讀取模型</button>',
+'<button type="button" id="cyexp-local-read" disabled>用本機 AI 重新讀取全部新圖片</button></div>',
+'<p id="cyexp-local-status" role="status" class="cyexp-muted">尚未連接。現有小模型的粗略翻譯不適合直接上稿。</p>',
+'<p class="cyexp-muted">每張圖會個別送到你電腦的本機模型；不會寫入任何雲端 API 金鑰。讀圖產物仍需人工核對，格局圖不會由 AI 自動宣告驗收通過。</p></details>',
 '<p class="cyexp-muted">本次丹佛花都 9 張原始示意圖有既有人工辨識範本；其他新圖改用 Transformers.js 官方支援的 image-to-text 讀圖模型，再以本機英文轉中文模型翻譯。首次須下載模型，通常使用 CPU 也能執行，不強制 WebGPU。圖片不送往付費 AI API；描述僅是草稿，需人工核對，格局圖需確認圖面。</p>',
 '<p id="cyexp-vision-status" class="cyexp-muted" role="status"></p>',
 '<div id="cyexp-items" class="cyexp-images"><p>請選擇新案件圖片；包含新平面配置圖／格局圖。</p></div>',
