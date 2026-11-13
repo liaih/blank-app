@@ -160,10 +160,37 @@ async function identify(file){
  const bytes=await file.arrayBuffer();const digest=await crypto.subtle.digest("SHA-256",bytes);
  return Array.from(new Uint8Array(digest)).map(x=>x.toString(16).padStart(2,"0")).join("");
 }
+function isPlanFileName(name){
+ return /(?:平面|格局|配置圖|配置_?|floor.?plan|layout.?plan)/i.test(String(name||""));
+}
+function safePlanDescription(){
+ // Do not extrapolate woodwork, furniture, finishing, room counts or scale
+ // from tiny floorplan previews. This is intentionally a conservative image
+ // TYPE description, NOT a claim the model has interpreted exact plan detail.
+ return "此圖為住宅平面配置圖，呈現室內空間分區與相對位置，供了解格局及動線安排；房間名稱、尺寸與實際配置應以原始核准圖面為準。";
+}
+function unsafeFloorplanClaim(a){
+ if(a.role!=="格局圖")return "";
+ const text=String(a.description||"")+" "+String(a.alt||"");
+ const material=/(?:木作|木皮|木紋|木質|木色|木製|木地板|材質|色調|牆面線條|裝飾|氛圍|渲染|採光|窗簾|光線|實景|完工|3D\s?建模|立體圖|示意實景)/i;
+ const furniture=/(?:沙發|茶几|電視牆|電視櫃|電視機|衣櫃|展示櫃|化妝台|床頭背板|造型櫃)/i;
+ if(material.test(text)||furniture.test(text))
+  return "這張是格局圖，描述或 ALT 卻包含材質、家具或 3D 效果等未經圖面核實的內容；請改成平面配置與動線的客觀描述。";
+ if(!/平面|格局|配置|動線/.test(text))
+  return "格局圖的描述或 ALT 缺少平面配置資訊，請先修正。";
+ return "";
+}
+function resetForFloorplan(a){
+ a.role="格局圖";
+ a.altSuffix="";
+ a.description=safePlanDescription();
+ a.alt=makeAlt(a);a.autoAlt=a.alt;
+ a.verified=false;
+ a.origin="辨識為平面配置圖：採保守且不臆測材質與家具的說明；這不是精確圖面判讀，請人工核對格局。";
+}
 function makeAlt(a){
- // 晨陽圖片 ALT：建案名稱＋可核對的地區／實際畫面＋晨陽設計；
- // 25–45字是編輯參考，不堆疊關鍵字，不把3D示意圖寫成完工照。
- // 戶型／新案件內部識別不自動放入 ALT。
+ // Public ALT: project + evidence-backed place + what the image actually is
+ // + brand. Never include the internal unit code.
  const project=chooseTitle();
  const region={
   "seo-danfo-234":"林口A7","seo-yunjiang-331":"林口A7",
@@ -172,19 +199,12 @@ function makeAlt(a){
   "ai-kaohsiung-536":"高雄仁武"
  }[pickBase()?.id]||"";
  const where=region?region+" ":"";
+ if(a.role==="格局圖")
+  return project+"｜"+where+"住宅平面配置圖與空間動線｜晨陽設計";
  const kind=$("cyexp-type").value;
  const detail=String(a.altSuffix||a.description||a.role||"室內空間")
-   .replace(/[\r\n]+/g," ")
-   .replace(/[｜|]+/g,"、")
-   .trim();
- if(a.role==="格局圖"){
-   // 不推測房數、坪數、代碼；如有多個方案，人工以圖面確實差異區分。
-   const specific=(detail==="格局圖"||detail==="平面配置圖")?
-     "住宅室內格局與空間動線規劃":detail.slice(0,25);
-   return project+"｜"+where+"平面配置圖、"+specific+"｜晨陽設計";
- }
- const visible=detail.slice(0,40);
- return project+"｜"+where+visible+"｜"+kind+"｜晨陽設計";
+  .replace(/[\r\n]+/g," ").replace(/[｜|]+/g,"、").trim();
+ return project+"｜"+where+detail.slice(0,40)+"｜"+kind+"｜晨陽設計";
 }
 function hammingHex(a,b){
  if(!/^[a-f0-9]{16}$/i.test(a||"")||!/^[a-f0-9]{16}$/i.test(b||""))return 65;
@@ -431,7 +451,8 @@ async function addFiles(files){
     description:"",alt:"",altSuffix:"",url:"",verified:false,origin:"尚未由 AI 讀圖"};
   try{a.sha256=await identify(file);}catch(_){}
   if(S.files.some(x=>x.sha256&&x.sha256===a.sha256)){URL.revokeObjectURL(a.preview);continue;}
-  if(await enrichKnown(a))matched++;
+  if(isPlanFileName(a.name)){resetForFloorplan(a);}
+  else if(await enrichKnown(a))matched++;
   S.files.push(a);
  }
  renderItems();
@@ -546,14 +567,21 @@ async function readWithLocalAI(){
    if(!a.file){fail++;localStatus("第 "+(i+1)+" 張未重新選圖，無法讀取。",true);continue;}
    localStatus("本機 AI 正在讀第 "+(i+1)+" / "+S.files.length+" 張："+a.name);
    try{
-    const found=await localVisionOne(a.file,model);
+    const found=a.role==="格局圖"||isPlanFileName(a.name)?null:await localVisionOne(a.file,model);
     const manuallyEdited=!!(a.alt&&(!a.autoAlt||a.alt!==a.autoAlt));
-    a.description=found.description;
-    // Image models can confuse plans and renders: never automatically approve a new floorplan.
-    if(a.role!=="格局圖"&&found.role!=="格局圖")a.role=found.role;
-    if(!manuallyEdited){a.alt=makeAlt(a);a.autoAlt=a.alt;}
-    a.origin="LM Studio 本機視覺模型 "+model+" 的草稿，仍須人工核對";
-    a.verified=false;done++;
+    if(a.role==="格局圖"||isPlanFileName(a.name)){
+     // Never ask a generic room caption model to imagine a 3D scene from a
+     // 2D floorplan. This intentionally uses a conservative, auditable caption.
+     resetForFloorplan(a);
+    }else{
+     a.description=found.description;
+     a.altSuffix=""; // Invalidate older reference captions after new AI read.
+     if(found.role!=="格局圖")a.role=found.role;
+     if(!manuallyEdited){a.alt=makeAlt(a);a.autoAlt=a.alt;}
+     a.origin="LM Studio 本機視覺模型 "+model+" 的草稿，仍須人工核對";
+     a.verified=false;
+    }
+    done++;
    }catch(e){fail++;a.verified=false;localStatus("第 "+(i+1)+" 張出錯："+(e?.message||"讀圖失敗"),true);}
    renderItems();
   }
@@ -615,6 +643,7 @@ async function readBrowserFallback(){
   const pipe=await initLocalModel();
   for(let i=0;i<todo.length;i++){
    const a=todo[i];if(!a.file){message("匯入舊草稿但未重新選圖片，無法讀圖："+a.name,true);continue;}
+   if(a.role==="格局圖"||isPlanFileName(a.name)){resetForFloorplan(a);renderItems();continue;}
    message("本機 AI 讀圖 "+(i+1)+"/"+todo.length+"："+a.name);
    // ImageToTextPipeline expects an image URL/blob URL, NOT chat message arrays.
    const out=await pipe(a.preview,{max_new_tokens:70});
@@ -631,10 +660,8 @@ async function readBrowserFallback(){
     message("圖片已辨識但翻譯未完成："+(translationError?.message||"未知原因")+"；英文內容可以人工編輯。",true);
    }
    a.captionEn=caption;
-   a.description=result;
-   // A caption model cannot reliably distinguish a plan from a 3D render.
-   // The floorplan status is only accepted after manual selection/verification.
-   a.alt=makeAlt(a);a.autoAlt=a.alt;a.verified=false;
+   if(a.role==="格局圖"||isPlanFileName(a.name))resetForFloorplan(a);
+   else{a.description=result;a.altSuffix="";a.alt=makeAlt(a);a.autoAlt=a.alt;a.verified=false;}
    renderItems();
   }
   message("已使用相容的 image-to-text 模型產生圖片描述；請核對中文、ALT、3D 示意圖身分及新格局圖。模型可能描述錯誤，確認後才能複製 HTML。");
