@@ -1021,8 +1021,10 @@ async function matchRemoteImagesWithLMStudio(urls,remaining,used){
     const prompt="比較接下來兩張圖片，判斷是否同一張設計畫面的相同視角，即使第二張被重新命名、縮放、壓縮或稍微裁切。兩張不同客廳即使風格、家具類似也必須回答 no。不得只憑文字。"+
      "請逐一比對家具相對位置、畫框數量與位置、門窗、櫃體輪廓及背景。若看不到圖片或不確定則回答 unsure。只回 JSON："+ 
      '{"same":"yes|no|unsure","matching_details":["兩張共有的具體視覺特徵1","兩張共有的具體視覺特徵2"],"difference":"有何差異或無"}。';
+    setCmsMatchProgress("第 "+(number+1)+"/"+total+" 張：正在比較官網圖與本機原圖細節。",number,total);
     const first=await localVisionRemoteRequest(url,prompt,data,false);
     if(!visionMatchYes(first))continue;
+    setCmsMatchProgress("第 "+(number+1)+"/"+total+" 張：正在反向確認，避免錯誤的圖片套用 ALT。",number,total);
     const second=await localVisionRemoteRequest(url,prompt,data,true);
     if(!visionMatchYes(second))continue;
     proposals.push({url,item:original,first,second});
@@ -1031,10 +1033,13 @@ async function matchRemoteImagesWithLMStudio(urls,remaining,used){
   }catch(error){
    output.failed++;
    output.reason=String(error?.message||"本機 AI 遠端讀圖失敗");
+   if(S.matchCancelled)break;
+   setCmsMatchProgress("第 "+(number+1)+"/"+total+" 張讀圖失敗："+output.reason,number,total);
    // Unsupported /v1/responses or inaccessible images are capability
    // failures; do not repeatedly run costly requests with fabricated matches.
    if(/HTTP 40[01435]|HTTP 50[013]|未確認看見遠端圖片|Failed to fetch|aborted/i.test(output.reason))break;
   }
+  setCmsMatchProgress("已處理 "+(number+1)+"/"+total+" 張官網圖片。",number+1,total);
  }
  // Only accept unambiguous one-to-one image pairs. Two positive VLM calls
  // are visually cross-checked, but still carry the model-assisted label.
