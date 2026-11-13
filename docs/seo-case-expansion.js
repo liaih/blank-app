@@ -1097,6 +1097,20 @@ async function matchRemoteImagesWithLMStudio(urls,remaining,used){
  output.suggested=proposals.length;
  return output;
 }
+function cmsImageUrlSuffix(url){
+ // CMS often gives hexadecimal filenames: show both the trailing 3 chars
+ // (which may include letters) and the last 3 decimal digits.
+ try{
+  const encoded=new URL(url).pathname.split("/").pop()||"";
+  let filename=encoded;try{filename=decodeURIComponent(encoded);}catch(_){}
+  const stem=filename.replace(/\.[a-z0-9]{2,6}$/i,"");
+  return {
+   code:stem.slice(-3).toUpperCase()||"—",
+   digits:(stem.match(/[0-9]/g)||[]).slice(-3).join("")||"—",
+   filename
+  };
+ }catch(_){return {code:"—",digits:"—",filename:""};}
+}
 function renderCmsPairingReview(){
  const panel=$("cyexp-cms-review");panel.replaceChildren();
  if(!S.cmsUrls.length)return;
@@ -1108,7 +1122,18 @@ function renderCmsPairingReview(){
   const img=document.createElement("img");img.src=url;img.alt="官網圖片 "+(index+1);
   img.loading="lazy";img.style.cssText="width:100%;height:95px;object-fit:contain";
   const label=document.createElement("p");label.className="cyexp-muted";
-  label.textContent="官網圖 "+(index+1);tile.append(img,label);gallery.appendChild(tile);
+  const suffix=cmsImageUrlSuffix(url);
+  label.textContent="官網圖 "+(index+1);
+  label.style.cssText="font-size:12px;line-height:1.5;margin:4px 0 0;overflow-wrap:anywhere";
+  const digits=document.createElement("strong");
+  digits.textContent="數字末3位："+suffix.digits;
+  digits.style.cssText="display:block;font-size:15px;color:#17416d;font-variant-numeric:tabular-nums";
+  const chars=document.createElement("span");
+  chars.textContent="檔名末3碼："+suffix.code;
+  chars.style.cssText="display:block;font-size:12px";
+  tile.title="檔名："+suffix.filename+"\n完整網址："+url;
+  img.title=tile.title;
+  tile.append(img,label,digits,chars);gallery.appendChild(tile);
  }
  panel.appendChild(gallery);
  for(const [index,item] of S.files.entries()){
@@ -1128,7 +1153,9 @@ function renderCmsPairingReview(){
   const select=document.createElement("select");select.style.cssText="display:block;width:100%;padding:8px;margin:6px 0";
   const none=document.createElement("option");none.value="";none.textContent="尚未配對";select.appendChild(none);
   for(const [j,url]of S.cmsUrls.entries()){
-   const op=document.createElement("option");op.value=url;op.textContent=(j+1)+". "+decodeURIComponent(new URL(url).pathname.split("/").pop()).slice(0,60);
+   const op=document.createElement("option");op.value=url;
+   const suffix=cmsImageUrlSuffix(url);
+   op.textContent=(j+1)+". 數字末3位 "+suffix.digits+"｜末3碼 "+suffix.code+"｜"+suffix.filename.slice(0,48);
    select.appendChild(op);
   }
   select.value=S.cmsUrls.includes(item.url)?item.url:"";
