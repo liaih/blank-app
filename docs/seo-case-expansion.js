@@ -969,17 +969,17 @@ async function localVisionRemoteRequest(remoteUrl,prompt,originalData,reverse=fa
  }else{
   contents.push({type:"input_image",image_url:remoteUrl});
  }
- const controller=new AbortController();
- const timer=setTimeout(()=>controller.abort(),120000);
+ if(S.matchCancelled)throw Error("使用者已停止配對");
+ const tracked=newCmsMatchController(75000);
  try{
   const response=await fetch(LMSTUDIO_BASE+"/v1/responses",{
    method:"POST",headers:localAuthHeaders(true),mode:"cors",
-   targetAddressSpace:"loopback",signal:controller.signal,
+   targetAddressSpace:"loopback",signal:tracked.signal,
    body:JSON.stringify({model,temperature:0,max_output_tokens:250,stream:false,input:[{role:"user",content:contents}]})
   });
   if(!response.ok)throw Error("LM Studio 遠端圖片 API HTTP "+response.status+"："+(await response.text()).slice(0,170));
   return parseRemoteVisionJson(await response.json());
- }finally{clearTimeout(timer);}
+ }finally{tracked.dispose();}
 }
 function visionMatchYes(result){
  const verdict=String(result?.same||"").toLowerCase();
@@ -990,16 +990,19 @@ async function matchRemoteImagesWithLMStudio(urls,remaining,used){
  const output={suggested:0,accepted:0,failed:0,reason:""};
  if(!remaining.size)return output;
  if(!S.files.some(x=>x.file&&x.description?.trim()))return {...output,reason:"本機原圖或 AI 描述不足，無法進行視覺自動配對"};
- if(!S.localConnected)await connectLocalAI();
+ if(!S.localConnected){
+  setCmsMatchProgress("正在連接本機 LM Studio Qwen3-VL……",0,remaining.size);
+  await connectLocalAI();
+ }
  if(!S.localConnected)return {...output,reason:"本機 LM Studio 無法連線，請檢查已載入的 Qwen3-VL"};
  const originals=S.files.filter(x=>x.file&&x.description?.trim()&&!used.has(x));
  if(!originals.length)return output;
- const status=$("cyexp-cms-match-status");
  const proposals=[];
  const originalImages=new Map();
+ const total=remaining.size;
  for(const [number,url] of [...remaining].entries()){
-  status.textContent="Qwen3-VL 正在辨識官網圖片 "+(number+1)+"/"+remaining.size+
-   "；再與本機原圖比對（官網若改名也可以辨識），不靠檔案順序。";
+  if(S.matchCancelled){output.reason="使用者已停止配對";break;}
+  setCmsMatchProgress("第 "+(number+1)+"/"+total+" 張：Qwen3-VL 正在辨識官網圖片，接著比對本機原圖。",number,total);
   const catalogue=originals.map((item,i)=>{
    return i+"："+String(item.role||"其他")+"｜"+String(item.description||"").replace(/\s+/g," ").slice(0,140);
   }).join("\n");
