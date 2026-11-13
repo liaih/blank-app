@@ -33,3 +33,13 @@ test("today's missing data is labelled missing, historical not promoted as curre
  assert.match(html,/今天/);
  assert.equal(data.not_real_consumer_query_volume,true);
 });
+
+test("published evidence refresh is read-only and preserves opened answers",()=>{
+ assert.match(html,/window\.setInterval\(\(\)=>\{/);
+ assert.match(html,/120000\)/);
+ assert.match(html,/lastNativeResultVersion/);
+ assert.match(html,/latestVersion===lastNativeResultVersion/);
+ assert.match(html,/fetch\("\.\/native-ai-summary\.json",\{cache:"no-store"\}\)/);
+ const task=html.slice(html.indexOf("window.setInterval(()=>{"),html.indexOf("function renderDailyAISummary(){"));
+ assert.doesNotMatch(task, /api\.brightdata\.com|datasets\/v3\/trigger|new XMLHttpRequest/);
+});
