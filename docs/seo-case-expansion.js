@@ -6,7 +6,7 @@ if(!host)return;
 const $=id=>host.querySelector("#"+id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 const zones=["格局圖","玄關與客廳","玄關","客廳","客餐廳","廚房與走道","多功能工作區","臥室","更衣收納","其他"];
-const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,translator:null,transformers:null,modelBusy:false,visionReady:false,verifiedBase:false,localConnected:false,localModel:"",cmsUrls:[],cmsVisionCache:new Map(),cmsCorsUnavailable:false,matchRunning:false,matchCancelled:false,matchControllers:new Set(),matchStartedAt:0,matchTimer:null,matchStage:"",matchStep:0,matchTotal:0};
+const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,translator:null,transformers:null,modelBusy:false,visionReady:false,verifiedBase:false,localConnected:false,localModel:"",cmsUrls:[],cmsVisionCache:new Map(),cmsCorsUnavailable:false,matchRunning:false,matchCancelled:false,matchControllers:new Set(),matchStartedAt:0,matchTimer:null,matchStage:"",matchStep:0,matchTotal:0,activeProjectId:"",activeView:"pending",caseStates:new Map(),fileImportBusy:false,aiStarting:false};
 const markup=[
 '<div class="cyexp-head"><h3>同建案新增案件｜AI 讀圖＋ALT＋格局圖</h3>',
 '<p class="cyexp-muted">原文章＋舊戶型全部保留。新增圖片在本機辨識；圖片須先上傳晨陽官網取得正式網址，才可輸出正式 HTML。</p></div>',
@@ -118,6 +118,13 @@ function buildBeginnerLayout(){
  const summary=document.createElement("summary");summary.textContent="其他選項｜備份草稿、手動網址、更新原文（一般不需要）";
  extra.append(summary);
  const fields=$("cyexp-base").closest(".cyexp-fields");
+ // One article selector: the top-level "選擇文章" controls this editor too.
+ $("cyexp-base").closest("label").hidden=true;
+ const currentProject=document.createElement("p");
+ currentProject.id="cyexp-current-article-info";
+ currentProject.className="cyexp-current-article";
+ currentProject.setAttribute("role","status");
+ currentProject.textContent="正在同步上方選擇的文章……";
  const internalId=$("cyexp-unit").closest("label");
  const actions=$("cyexp-files").closest(".cyexp-actions");
  const manualSummary=$("cyexp-summary");
@@ -146,7 +153,7 @@ function buildBeginnerLayout(){
  // Keep internal case ID available for audits but remove it from the
  // novice's required input flow; a safe internal default suffices.
  if(!$("cyexp-unit").value)$("cyexp-unit").value="新增設計案例";
- one.append(fields,actions,aiInfo,localPanel);
+ one.append(currentProject,fields,actions,aiInfo,localPanel);
  two.append(cms,images,reviewed,reviewedHelp,intro,summaryActions,imageStatus,draftPanel);
  const cmsTitle=cms.querySelector("summary");
  cmsTitle.textContent="匯入官網圖片 HTML｜每張原圖下方直接選圖";
@@ -174,6 +181,97 @@ buildBeginnerLayout();
 function message(text,isError){$("cyexp-vision-status").textContent=text;$("cyexp-vision-status").style.color=isError?"#b91c1c":"";}
 function pickBase(){return S.base.find(x=>x.id===$("cyexp-base").value);}
 function chooseTitle(){const p=pickBase();const d=S.drafts.find(x=>x.id===p?.id);return d?.project_name || (d?.title||p?.id||"").split("｜",1)[0];}
+// Per-project workspaces live in memory for this tab. They intentionally keep
+// File/Blob URLs and human edits separate, never copy materials to a new case.
+function takeCaseSnapshot(){
+ return {
+  files:S.files,cmsUrls:S.cmsUrls,cmsVisionCache:S.cmsVisionCache,
+  cmsCorsUnavailable:S.cmsCorsUnavailable,
+  unit:$("cyexp-unit").value,type:$("cyexp-type").value,
+  intro:$("cyexp-intro").value,newbase:$("cyexp-newbase").value,
+  cmsHtml:$("cyexp-cms-html").value,bulkUrls:$("cyexp-bulk-urls").value,
+  confirmedBase:$("cyexp-confirm-base").checked,
+  confirmedUrls:$("cyexp-confirm-urls").checked,
+  confirmedFloorplan:$("cyexp-confirm-floorplan").checked,
+  visionMessage:$("cyexp-vision-status").textContent,
+  cmsMessage:$("cyexp-cms-match-status").textContent
+ };
+}
+function assignCaseSnapshot(saved){
+ S.files=saved?.files||[];
+ S.cmsUrls=saved?.cmsUrls||[];
+ S.cmsVisionCache=saved?.cmsVisionCache||new Map();
+ S.cmsCorsUnavailable=!!saved?.cmsCorsUnavailable;
+ $("cyexp-unit").value=saved?.unit||"新增設計案例";
+ $("cyexp-type").value=saved?.type==="實景照片"?"實景照片":"3D 建模示意圖";
+ $("cyexp-intro").value=saved?.intro||"";
+ $("cyexp-newbase").value=saved?.newbase||"";
+ $("cyexp-cms-html").value=saved?.cmsHtml||"";
+ $("cyexp-bulk-urls").value=saved?.bulkUrls||"";
+ $("cyexp-confirm-base").checked=!!saved?.confirmedBase;
+ $("cyexp-confirm-urls").checked=!!saved?.confirmedUrls;
+ $("cyexp-confirm-floorplan").checked=!!saved?.confirmedFloorplan;
+ $("cyexp-vision-status").textContent=saved?.visionMessage||"此案尚未加入新圖片，請選擇此案的新格局圖與設計圖片。";
+ $("cyexp-cms-match-status").textContent=saved?.cmsMessage||"此案尚未匯入官網圖片 HTML；其他案場的網址不會帶入。";
+}
+function topSelectedArticleId(){
+ return document.getElementById("action-article")?.value||"";
+}
+function articleContextMatches(){
+ const selected=topSelectedArticleId();
+ return !!(selected&&S.activeProjectId===selected&&pickBase()?.id===selected);
+}
+function showActiveCaseIdentity(){
+ const node=$("cyexp-current-article-info");
+ const project=pickBase();
+ if(!project||!articleContextMatches()){
+  node.textContent="尚未同步目前選擇的 SEO 文章，禁止混用其他案場的原文與圖片。";
+  node.dataset.status="blocked";
+  return;
+ }
+ const draft=S.drafts.find(x=>x.id===project.id);
+ const name=draft?.project_name||draft?.title||project.id;
+ const existingImages=(project.html_with_media?.match(/<img\b/gi)||[]).length;
+ node.textContent="目前編輯："+name+"｜已載入此案原文（既有圖片 "+existingImages+
+   " 張）｜本案新增圖片 "+S.files.length+" 張。不同案場資料獨立保存。";
+ node.dataset.status="ready";
+}
+function switchToCase(nextId){
+ if(!S.base.length)return false;
+ if(S.modelBusy||S.matchRunning||S.fileImportBusy||S.aiStarting)return false;
+ if(nextId===S.activeProjectId){
+  showActiveCaseIdentity();updateStatus();return true;
+ }
+ if(S.activeProjectId)S.caseStates.set(S.activeProjectId,takeCaseSnapshot());
+ S.activeProjectId=nextId||"";
+ S.activeView=document.getElementById("action-view")?.value||"pending";
+ const project=S.base.find(x=>x.id===nextId);
+ $("cyexp-base").value=project?project.id:"";
+ assignCaseSnapshot(project?S.caseStates.get(project.id):null);
+ showActiveCaseIdentity();
+ renderItems();
+ renderCmsPairingReview();
+ if(!project){
+  message("所選文章沒有經驗證的完整原文與圖片資料，不能沿用上一個案場；請檢查文章資料同步。",true);
+ }else if(!S.caseStates.has(project.id)){
+  message("已切換到「"+(S.drafts.find(x=>x.id===project.id)?.project_name||project.id)+
+   "」。原文章與舊圖已載入；新案例圖片尚未選取，請加入此案新圖片。");
+ }
+ return !!project;
+}
+function handleMainSeoArticleSelection(event){
+ if(!S.base.length)return;
+ const nextId=String(event?.detail?.id||"");
+ if(nextId===S.activeProjectId){S.activeView=String(event?.detail?.view||S.activeView);showActiveCaseIdentity();return;}
+ if(S.modelBusy||S.matchRunning||S.fileImportBusy||S.aiStarting){
+  event.detail.revertTo=S.activeProjectId;
+  event.detail.revertView=S.activeView;
+  event.preventDefault();
+  message("正在為目前案場讀圖或配對，為避免跨案場串圖，請完成或停止後再切換文章。",true);
+  return;
+ }
+ switchToCase(nextId);
+}
 function validUrl(text){
  try{const u=new URL(text);return u.protocol==="https:"&&["chen-yang.com.tw","www.chen-yang.com.tw"].includes(u.hostname.toLowerCase())&&/\.(png|jpe?g|webp|avif)$/i.test(u.pathname);}
  catch(_){return false;}
@@ -265,6 +363,8 @@ async function imageDhash(file){
  }finally{image.close?.();}
 }
 async function enrichKnown(a){
+ // This pre-reviewed 9-image catalogue belongs ONLY to 丹佛花都.
+ if(S.activeProjectId!=="seo-danfo-234")return false;
  let known=S.known.get(a.sha256),method="完全相同的原始圖片";
  if(!known&&a.file){
   // A 64-bit difference-hash recognizes known images when users upload
@@ -523,6 +623,7 @@ function checks(){
  const pasted=$("cyexp-newbase").value.trim();
  const validatedBase=!!(base?.media_integrated&&base?.floorplan_protection_passed&&base?.preservation_audit?.original_main_content_preserved);
  const items=[];
+ if(!articleContextMatches())items.push("上方文章與目前新增案例不一致；禁止跨案場輸出");
  if(!project||!base)items.push("請選擇已有原文的建案");
  if(!unit)items.push("請填新增案件的內部識別名稱");
  if(!S.files.length)items.push("尚未選擇新案件圖片");
@@ -568,6 +669,7 @@ function mergeCaseIntoArticleBeforeClosingSections(original,caseSection){
  return original.slice(0,offset)+caseSection+original.slice(offset);
 }
 function generate({draft=false,preview=false}={}){
+ if(!articleContextMatches())throw Error("文章選擇尚未同步，禁止跨案場產出 HTML");
  const base=baseHtml();
  if(!base)return "";
  const project=chooseTitle(),kind=$("cyexp-type").value;
@@ -637,7 +739,7 @@ function updateStatus(){
   details.appendChild(ul);status.appendChild(details);
  }
  // Draft preview is always available before official URL and CMS verification.
- const canDraft=!!(pickBase()&&baseHtml()&&S.files.length);
+ const canDraft=!!(articleContextMatches()&&pickBase()&&baseHtml()&&S.files.length);
  const pendingUrls=S.files.filter(x=>!validUrl(x.url)).length;
  const pendingText=S.files.filter(x=>!x.description?.trim()||!x.alt?.trim()).length;
  $("cyexp-copy-draft").disabled=!canDraft;
@@ -679,6 +781,10 @@ async function loadKnown(){
 async function addFiles(files){
  const fresh=[...files].filter(x=>x.type.startsWith("image/")).slice(0,50);
  if(!fresh.length)return;
+ if(!articleContextMatches()){message("請先在上方選擇對應的文章，再上傳新圖片。",true);return;}
+ if(S.fileImportBusy||S.modelBusy||S.matchRunning){message("圖片正在處理，請先完成目前作業。",true);return;}
+ S.fileImportBusy=true;
+ try{
  message("正在讀取圖片、比對已判讀的視覺內容……");
  let matched=0,added=0,restored=0;
  for(const file of fresh){
@@ -709,6 +815,7 @@ async function addFiles(files){
  }
  renderItems();
  message("新增 "+added+" 張圖片；從備份草稿重新連結 "+restored+" 張原圖；參考辨識命中 "+matched+" 張。舊的描述、ALT 與圖片網址會保留，但正式上稿核對仍需完成。");
+ }finally{S.fileImportBusy=false;}
 }
 
 const LMSTUDIO_BASE="http://127.0.0.1:1234";
@@ -923,20 +1030,22 @@ async function readBrowserFallback(){
  finally{S.modelBusy=false;$("cyexp-read").disabled=false;updateStatus();}
 }
 async function readImages(){
- // A user click reconnects automatically after every page reload.
- // Never downgrade to the low-quality model without explicit choice.
- if(S.modelBusy)return;
+ // Prevent a project switch during the async LM Studio connection stage.
+ if(S.modelBusy||S.aiStarting)return;
+ if(!articleContextMatches()){localStatus("目前案場與上方選擇文章不一致，請先完成同步。",true);return;}
  if(!S.files.length){
-  localStatus("請先選擇要讀圖的照片及格局圖，再按「AI 讀圖」。",true);
-  return;
+  localStatus("請先選擇要讀圖的照片及格局圖，再按「AI 讀圖」。",true);return;
  }
- if(!S.localConnected){
-  $("cyexp-read").disabled=true;
-  try{await connectLocalAI();}
-  finally{$("cyexp-read").disabled=false;}
- }
- if(!S.localConnected)return; // Detailed error shown. No silent fallback.
- return readWithLocalAI();
+ S.aiStarting=true;
+ try{
+  if(!S.localConnected){
+   $("cyexp-read").disabled=true;
+   try{await connectLocalAI();}
+   finally{$("cyexp-read").disabled=false;}
+  }
+  if(!S.localConnected)return;
+  return await readWithLocalAI();
+ }finally{S.aiStarting=false;}
 }
 function refreshAutoAlts(){
  for(const a of S.files){
@@ -1447,7 +1556,27 @@ function exportDraft(){
 async function importDraft(file){
  let data;try{data=JSON.parse(await file.text());}catch(_){message("草稿 JSON 格式錯誤",true);return;}
  if(data?.version!==1||!Array.isArray(data.items)||data.items.length>50){message("草稿版本或圖片數量不符合規範",true);return;}
- const project=S.base.find(x=>x.id===data.project_id);if(project)$("cyexp-base").value=project.id;
+ const project=S.base.find(x=>x.id===data.project_id);
+ if(!project){
+  message("這份草稿的案場 "+String(data.project_id||"未標示")+" 並不在可編輯文章內；為防止跨案場覆蓋，未匯入任何圖片。",true);
+  return;
+ }
+ if(S.modelBusy||S.matchRunning||S.fileImportBusy||S.aiStarting){
+  message("AI 仍在處理圖片，請完成或停止後再匯入另一案草稿。",true);return;
+ }
+ if(S.activeProjectId!==project.id){
+  const main=document.getElementById("action-article");
+  if(!main||![...main.options].some(x=>x.value===project.id)){
+   message("請先在上方「選擇文章」切至「"+(S.drafts.find(x=>x.id===project.id)?.project_name||project.id)+
+    "」；如果已完成請先切換歷史紀錄。草稿沒有覆蓋目前案場。",true);
+   return;
+  }
+  main.value=project.id;
+  main.dispatchEvent(new Event("change",{bubbles:true}));
+  if(S.activeProjectId!==project.id){
+   message("文章切換尚未完成，草稿沒有套用，避免跨案場覆蓋。",true);return;
+  }
+ }
  $("cyexp-unit").value=String(data.unit||"").slice(0,90);$("cyexp-type").value=data.type==="實景照片"?"實景照片":"3D 建模示意圖";
  $("cyexp-intro").value=String(data.intro||"").slice(0,2000);
  for(const a of S.files)if(a.preview)URL.revokeObjectURL(a.preview);
@@ -1481,9 +1610,10 @@ async function start(){
   const op=document.createElement("option");op.value=item.id;
   op.textContent=(dr?.project_name||dr?.title||item.id).split("｜",1)[0];sel.appendChild(op);
  }
- const def=S.base.find(x=>x.id==="seo-danfo-234");
- if(def)sel.value=def.id;updateStatus();
- message("已載入 "+S.base.length+" 篇原文章及本次 9 張示意圖的已核對辨識範本；尚未上傳任何新圖片。");
+ const topId=topSelectedArticleId();
+ // No hard-coded default case; use exactly the selected task.
+ switchToCase(topId);
+ if(!topId)message("已載入 "+S.base.length+" 篇原文章，請從上方「選擇文章」選取要編輯的案場。");
 }
 $("cyexp-files").addEventListener("change",ev=>{addFiles(ev.target.files||[]);ev.target.value="";});
 $("cyexp-read").addEventListener("click",readImages);
@@ -1510,7 +1640,7 @@ $("cyexp-apply-urls").addEventListener("click",applyBulkUrls);
 $("cyexp-export").addEventListener("click",exportDraft);
 $("cyexp-import").addEventListener("change",ev=>{if(ev.target.files[0])importDraft(ev.target.files[0]);ev.target.value="";});
 $("cyexp-copy-draft").addEventListener("click",async()=>{
- if(!pickBase()||!baseHtml()||!S.files.length){updateStatus();return;}
+ if(!articleContextMatches()||!pickBase()||!baseHtml()||!S.files.length){updateStatus();return;}
  try{
   const html=generate({draft:true});
   if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(html);
@@ -1526,8 +1656,9 @@ $("cyexp-copy").addEventListener("click",async()=>{
  try{await navigator.clipboard.writeText(generate());message("已複製：原文＋所有原格局圖＋新增案件＋新格局圖。正式上稿前請在 CMS 預覽再次核對。");}
  catch(_){message("瀏覽器複製失敗，請在下方 HTML 原始碼欄手動複製。",true);}
 });
-for(const id of ["cyexp-base","cyexp-unit","cyexp-type","cyexp-intro","cyexp-newbase","cyexp-confirm-base","cyexp-confirm-urls","cyexp-confirm-floorplan"]){
+for(const id of ["cyexp-unit","cyexp-type","cyexp-intro","cyexp-newbase","cyexp-confirm-base","cyexp-confirm-urls","cyexp-confirm-floorplan"]){
  $(id).addEventListener("input",updateStatus);$(id).addEventListener("change",updateStatus);
 }
+document.addEventListener("chenyang:seo-article-selection",handleMainSeoArticleSelection);
 start();
 })();

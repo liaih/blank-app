@@ -841,6 +841,21 @@ function renderSeoImprovementPlan(){
    option.textContent=item.priority+"｜"+item.title;chooser.appendChild(option);
  }
  chooser.value=ordered.some(x=>x.id===previous)?previous:(ordered[0]?.id||"");
+ // Keep the embedded case editor tied to the top-level article selector.
+ // Programmatic .value changes do not trigger native change events.
+ const caseChange=new CustomEvent("chenyang:seo-article-selection",{
+  cancelable:true,detail:{id:chooser.value,view:mode,revertTo:"",revertView:""}
+ });
+ if(!document.dispatchEvent(caseChange)){
+  if(caseChange.detail.revertView&&caseChange.detail.revertView!==mode){
+   el("action-view").value=caseChange.detail.revertView;
+   chooser.value=caseChange.detail.revertTo;
+   renderSeoImprovementPlan();
+   return;
+  }
+  chooser.value=ordered.some(x=>x.id===caseChange.detail.revertTo)?
+    caseChange.detail.revertTo:previous;
+ }
  const plan=ordered.find(x=>x.id===chooser.value);
  const target=el("seo-article-actions");target.replaceChildren();
  if(!plan){
