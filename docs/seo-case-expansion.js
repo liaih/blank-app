@@ -415,24 +415,37 @@ function checks(){
  const counted=(existing.match(/<img\b/gi)||[]).length;
  return {pass:items.length===0,issues:items,originalImageCount:counted,newImageCount:S.files.length,oldFloorplanCount:base?.floorplan_count||0,newFloorplanCount:floor.length};
 }
-function generate(){
+function generate({draft=false,preview=false}={}){
  const base=baseHtml();
  if(!base)return "";
- const project=chooseTitle(),unit=$("cyexp-unit").value.trim(),kind=$("cyexp-type").value;
- let h="\n<hr>\n<section class=\"chenyang-case-addition\" data-append-version=\"1\">\n";
+ const project=chooseTitle(),kind=$("cyexp-type").value;
+ const intro=$("cyexp-intro").value.trim();
+ let h="\n<hr>\n<section class=\"chenyang-case-addition\" data-append-version=\"2\">\n";
  h+="<h2>"+esc(project+"｜室內設計新提案與空間收納規劃")+"</h2>\n";
- h+="<p>"+esc($("cyexp-intro").value.trim())+"</p>\n";
+ h+="<p>"+esc(intro||(draft?"【待補：請先依讀圖結果整理案件介紹】":""))+"</p>\n";
  const list=[...S.files].sort((a,b)=>(a.role==="格局圖"?-1:0)-(b.role==="格局圖"?-1:0));
  let zone="";
  for(const a of list){
-   if(a.role!==zone){zone=a.role;h+="<h3>"+esc(zone==="格局圖"?project+"｜平面配置與空間動線":zone+"｜空間設計重點")+"</h3>\n";}
-   const copy=a.description.trim()+"（"+(a.role==="格局圖"?"平面配置圖，請以最終核准圖說為準":kind+"，非施工完成證明")+"）";
-   h+="<p>"+esc(copy)+"</p>\n";
-   h+="<figure><img loading=\"lazy\" decoding=\"async\" src=\""+esc(a.url.trim())+"\" alt=\""+esc(a.alt.trim())+"\">";
-   h+="<figcaption>"+esc(project+"｜"+zone+"｜"+(a.role==="格局圖"?"平面配置圖":kind))+"</figcaption></figure>\n";
+  if(a.role!==zone){zone=a.role;h+="<h3>"+esc(zone==="格局圖"?project+"｜平面配置與空間動線":zone+"｜空間設計重點")+"</h3>\n";}
+  const description=String(a.description||"").trim();
+  const detail=(description||"【待補 AI 讀圖描述："+(a.name||"未命名圖片")+"】")+
+   "（"+(a.role==="格局圖"?"平面配置圖，請以最終核准圖說為準":kind+"，非施工完成證明")+"）";
+  h+="<p>"+esc(detail)+"</p>\n";
+  const official=validUrl(a.url)?a.url.trim():"";
+  const localPreview=draft&&preview&&!official&&a.preview?a.preview:"";
+  if(!draft&&!official)throw Error("正式 HTML 不得使用未取得公開網址的新圖片："+a.name);
+  h+="<figure data-image-filename=\""+esc(a.name||"")+"\">";
+  if(official||localPreview){
+    h+="<img loading=\"lazy\" decoding=\"async\" src=\""+esc(official||localPreview)+"\" alt=\""+esc(a.alt?.trim()||"待核對圖片 ALT")+"\">";
+  }else{
+    h+="<p class=\"chenyang-draft-missing-image\" data-image-url-status=\"pending\">"+
+      esc("【待補官網圖片網址："+(a.name||"未命名圖片")+"；草稿不可直接上稿】")+"</p>";
+  }
+  h+="<figcaption>"+esc(project+"｜"+zone+"｜"+(a.role==="格局圖"?"平面配置圖":kind)+(draft&&!official?"｜待補正式圖片網址":""))+"</figcaption></figure>\n";
  }
  h+="</section>\n";
- return base+"\n"+h;
+ const banner=draft?'<div class="chenyang-seo-draft-warning" data-publish-status="not-approved" style="padding:12px;border:1px solid #af6420;background:#fff4de"><strong>SEO 草稿｜未通過正式上稿驗收，不可直接發佈</strong><p>待補官網圖片網址的圖以標示呈現；AI 描述與格局圖需人工核對。</p></div>\n':"";
+ return banner+base+"\n"+h;
 }
 function updateStatus(){
  const c=checks(),status=$("cyexp-status");
