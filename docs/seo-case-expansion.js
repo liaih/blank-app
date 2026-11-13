@@ -19,7 +19,7 @@ const markup=[
 '<div class="cyexp-actions"><label class="cyexp-file">選擇新案件圖片（可一次選多張）<input id="cyexp-files" type="file" accept="image/png,image/jpeg,image/webp,image/avif" multiple></label>',
 '<button type="button" id="cyexp-read">免費備援小模型讀圖（品質有限）</button>',
 '<button type="button" id="cyexp-summary">依讀圖結果整理案件總覽</button></div>',
-'<details class="cyexp-advanced" id="cyexp-cms-import-panel"><summary>最快流程｜貼入官網編輯器圖片 HTML，自動辨識並配對全部網址</summary>',
+'<details class="cyexp-advanced" id="cyexp-cms-import-panel" open><summary>最快流程｜貼入官網編輯器圖片 HTML，自動辨識並配對全部網址</summary>',
 '<p class="cyexp-muted">在晨陽官網編輯器將這次新增的圖片「一次批次上傳」，複製該批圖片的 HTML 貼到下面；系統會自動讀取所有 img src，依檔名配對，無法辨識時只在圖片數完全相同的情況下依順序配對。**不用逐張貼網址。** 上傳與儲存仍需在公司 CMS 完成。</p>',
 '<textarea id="cyexp-cms-html" rows="5" placeholder="貼上官網編輯器圖片 HTML，例如：&lt;p&gt;&lt;img src=&quot;https://chen-yang.com.tw/upload/images/1.0.png&quot;&gt;&lt;/p&gt; ..."></textarea>',
 '<div class="cyexp-actions"><button type="button" id="cyexp-match-cms">自動讀取官網 HTML 並配對圖片</button>',
@@ -169,7 +169,12 @@ function itemBox(a,i){
  sel.value=a.role||"其他";role.appendChild(sel);right.appendChild(role);
  right.appendChild(textField("此圖的描述（來自圖像辨識，請核對）",a.description,"description",true));
  right.appendChild(textField("圖片 ALT（建案與畫面優先，不強制寫戶型）",a.alt,"alt",false));
- right.appendChild(textField("晨陽官網正式圖片網址（支援從 CMS HTML 批次擷取）",a.url,"url",false));
+ const urlBox=document.createElement("details");urlBox.className="cyexp-advanced";
+ const urlSummary=document.createElement("summary");
+ urlSummary.textContent=validUrl(a.url)?"官網圖片：已取得正式網址（點此查看／修改）":"官網圖片：尚待批次配對（點此手動修改）";
+ urlBox.appendChild(urlSummary);
+ urlBox.appendChild(textField("晨陽官網圖片網址（通常不必逐張輸入）",a.url,"url",false));
+ right.appendChild(urlBox);
  if(validUrl(a.url)){
   const link=document.createElement("a");
   link.href=a.url;link.target="_blank";link.rel="noopener noreferrer";link.className="cyexp-muted";
@@ -188,6 +193,7 @@ function itemBox(a,i){
  right.addEventListener("input",ev=>{const x=ev.target.dataset.attr;if(!x)return;
    a[x]=x==="verified"?ev.target.checked:ev.target.value;
    if(x==="role")a.verified=false;
+   if(x==="url")urlSummary.textContent=validUrl(a.url)?"官網圖片：已取得正式網址（點此查看／修改）":"官網圖片：尚待批次配對（點此手動修改）";
    updateStatus();
  });
  right.addEventListener("change",ev=>{const x=ev.target.dataset.attr;if(!x)return;
