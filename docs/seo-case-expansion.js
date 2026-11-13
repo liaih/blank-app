@@ -1092,6 +1092,10 @@ async function matchImagesFromCms(raw){
    item.urlPairVerified=false;item.verified=false;remaining.delete(url);used.add(item);visual++;
   }
  }
+ // When filenames are randomized or browser CORS blocks pixels, let the
+ // user's already-running local Qwen3-VL compare remote URLs to originals.
+ const ai=remaining.size?await matchRemoteImagesWithLMStudio(urls,remaining,used):
+  {accepted:0,suggested:0,failed:0,reason:""};
  $("cyexp-confirm-urls").checked=false;
  renderItems();renderCmsPairingReview();
  const assigned=S.files.filter(x=>urls.includes(x.url)).length;
@@ -1099,16 +1103,18 @@ async function matchImagesFromCms(raw){
  const issues=[];
  if(assigned<S.files.length)issues.push("尚有 "+(S.files.length-assigned)+" 張官網圖片未可靠配對，請在下方縮圖區選擇");
  if(unverified)issues.push("尚有 "+unverified+" 張匹配候選未核對圖片內容");
- if(remote.size===0&&exact<S.files.length)issues.push("官網未允許直接讀取圖片像素；無法自動識圖時須比對縮圖，絕不依照圖片順序猜測");
- return {total:urls.length,assigned,exact,visual,unverified,issues};
+ if(ai.accepted)issues.push("本機 Qwen3-VL 已雙向視覺確認 "+ai.accepted+" 張；這是 AI 判斷，不等於像素雜湊證明，正式上稿前仍應抽查");
+ if(ai.reason)issues.push("本機 AI 遠端比對限制："+ai.reason);
+ if(remote.size===0&&exact<S.files.length&&!ai.accepted)issues.push("瀏覽器無法直接讀取官網圖片像素；已嘗試本機 AI 遠端讀圖，無法確認時不亂配");
+ return {total:urls.length,assigned,exact,visual,ai:ai.accepted,unverified,issues};
 }
 function showCmsMatch(result){
  const box=$("cyexp-cms-match-status");
  const text=["官網圖片 "+result.total+" 張；已找到對應或候選 "+result.assigned+" / "+S.files.length+
-  "（檔名 "+result.exact+"、影像內容 "+result.visual+"、純順序推定 0）"];
+  "（檔名 "+result.exact+"、像素 "+result.visual+"、本機 AI 雙向確認 "+(result.ai||0)+"、順序推定 0）"];
  if(result.issues?.length)text.push(...result.issues);
  box.textContent=text.join("；");
- box.style.color=result.issues?.length?"#9a3412":"#157356";
+ box.style.color=result.unverified||result.assigned<S.files.length?"#9a3412":"#157356";
 }
 async function pasteCmsImages(){
  const btn=$("cyexp-paste-cms");btn.disabled=true;
