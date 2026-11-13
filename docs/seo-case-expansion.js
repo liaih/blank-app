@@ -60,7 +60,7 @@ const markup=[
 '<button type="button" id="cyexp-export">匯出案件草稿 JSON</button>',
 '<label class="cyexp-file">匯入先前草稿 JSON<input id="cyexp-import" type="file" accept=".json,application/json"></label></div>',
 '<details class="cyexp-advanced"><summary>查看新增案件 HTML 預覽與完整原始碼</summary><div id="cyexp-preview"></div><textarea id="cyexp-html" readonly rows="7"></textarea></details>',
-'<p class="cyexp-muted">不會自動上傳圖片或修改正式官網。草稿匯出不含圖片本體，重新開啟需重新選擇圖檔，官網圖片網址與 ALT 可由 JSON 恢復。</p>'
+'<p class="cyexp-muted">不會自動上傳圖片或修改正式官網。每篇文章的介紹、ALT 與官網網址會在此瀏覽器自動儲存；重新開啟需重選原始圖片並核對，且不會自動解除正式上稿驗收。跨電腦請另行匯出草稿 JSON。</p>'
 ].join("");
 host.innerHTML=markup;
 const draftPanel=document.createElement("section");
