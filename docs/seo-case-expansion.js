@@ -465,13 +465,13 @@ function mergeCaseIntoArticleBeforeClosingSections(original,caseSection){
    break;
   }
  }
- if(offset===original.length)return original+"\n"+caseSection;
+ if(offset===original.length)return original+caseSection;
  // Move the existing <hr> separator with the FAQ/extended-reading footer.
  // This keeps a divider between case pictures and original closing sections.
  const prefix=original.slice(0,offset);
  const separator=prefix.match(/\s*<hr\b[^>]*\/?>\s*$/i);
  if(separator)offset-=separator[0].length;
- return original.slice(0,offset)+"\n"+caseSection+"\n"+original.slice(offset);
+ return original.slice(0,offset)+caseSection+original.slice(offset);
 }
 function generate({draft=false,preview=false}={}){
  const base=baseHtml();
