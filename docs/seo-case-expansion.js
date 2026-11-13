@@ -17,8 +17,9 @@ const markup=[
 '</div>',
 '<label>新增案件整體介紹（可以自動產生後編輯）<textarea id="cyexp-intro" rows="3" placeholder="由已讀取的圖片描述組合，請核對。不可把 3D 示意圖稱為完工實景。"></textarea></label>',
 '<div class="cyexp-actions"><label class="cyexp-file">選擇新案件圖片（可一次選多張）<input id="cyexp-files" type="file" accept="image/png,image/jpeg,image/webp,image/avif" multiple></label>',
-'<button type="button" id="cyexp-read">免費備援小模型讀圖（品質有限）</button>',
+'<button type="button" id="cyexp-read" class="cyexp-main-action">AI 讀圖｜LM Studio Qwen3-VL（自動連線＋產生介紹與 ALT）</button>',
 '<button type="button" id="cyexp-summary">依讀圖結果整理案件總覽</button></div>',
+'<p id="cyexp-main-ai-status" role="status" class="cyexp-muted">選好圖片後，按上面的「AI 讀圖」即可連接 LM Studio 並分析圖片；不必先展開下方設定。</p>',
 '<details class="cyexp-advanced" id="cyexp-cms-import-panel" open><summary>最快流程｜貼入官網編輯器圖片 HTML，自動辨識並配對全部網址</summary>',
 '<p class="cyexp-muted">在晨陽官網編輯器將這次新增的圖片「一次批次上傳」，複製該批圖片的 HTML 貼到下面；系統會自動讀取所有 img src，依檔名配對，無法辨識時只在圖片數完全相同的情況下依順序配對。**不用逐張貼網址。** 上傳與儲存仍需在公司 CMS 完成。</p>',
 '<textarea id="cyexp-cms-html" rows="5" placeholder="貼上官網編輯器圖片 HTML，例如：&lt;p&gt;&lt;img src=&quot;https://chen-yang.com.tw/upload/images/1.0.png&quot;&gt;&lt;/p&gt; ..."></textarea>',
@@ -29,19 +30,20 @@ const markup=[
 '<p class="cyexp-muted">先依目前圖片順序貼入一行一個正式圖片網址；或貼入「圖片檔名 | 官網網址」來自動配對，包含新格局圖。僅接受晨陽官網 HTTPS 圖片網址。</p>',
 '<textarea id="cyexp-bulk-urls" rows="4" placeholder="https://chen-yang.com.tw/upload/images/新案-01.png&#10;https://chen-yang.com.tw/upload/images/新案-02.png"></textarea>',
 '<button type="button" id="cyexp-apply-urls">批次套用圖片網址</button></details>',
-'<details class="cyexp-advanced" id="cyexp-local-ai"><summary>連接我的本機 AI｜LM Studio 圖像辨識（推薦）</summary>',
+'<details class="cyexp-advanced" id="cyexp-local-ai"><summary>本機 AI 進階設定與連線排錯｜LM Studio Qwen3-VL</summary>',
 '<p class="cyexp-muted">僅連接此電腦的 127.0.0.1:1234，不會將圖片上傳到 GitHub。請先在 LM Studio 載入有看圖能力的模型（例如已安裝的 Qwen3-VL），啟動本機伺服器、開啟 CORS，建議啟用身分驗證並只綁定本機。Chrome 若詢問本機網路存取權限，需自行決定是否允許。</p>',
 '<div class="cyexp-fields"><label>LM Studio 圖像模型<select id="cyexp-local-model" disabled><option value="">先按測試連線</option></select></label>',
 '<label>LM Studio 本機 API Token（如已啟用身分驗證）<input id="cyexp-local-token" type="password" autocomplete="off" placeholder="僅在目前瀏覽器使用，不會儲存"></label></div>',
 '<div class="cyexp-actions"><button type="button" id="cyexp-connect">測試本機 AI 連線／讀取模型</button>',
 '<button type="button" id="cyexp-local-read" disabled>用本機 AI 重新讀取全部新圖片</button></div>',
-'<p id="cyexp-local-status" role="status" class="cyexp-muted">尚未連接。現有小模型的粗略翻譯不適合直接上稿。</p>',
+'<p id="cyexp-local-status" role="status" class="cyexp-muted">尚未連接。主按鈕可以自動連線；這裡只在需要更換模型或排錯時使用。</p>',
+'<button type="button" id="cyexp-fallback-read">改用較低品質的瀏覽器備援讀圖（手動選擇）</button>',
 '<div class="cyexp-advanced"><p class="cyexp-muted"><strong>連不上時請依序排查：</strong>① 在 LM Studio → Developer 按 Start Server，確認 Port 1234；② 在 Server Settings 開啟 Enable CORS，保持 Serve on Local Network 關閉；③ 點下方「直接檢查本機 API」並確認回傳模型 JSON（若要求驗證可能顯示 401）；④ 回來按「測試本機 AI 連線」，並允許 Chrome 的本機網路權限。切勿關閉瀏覽器安全保護。</p>',
 '<div class="cyexp-actions"><a id="cyexp-local-check-url" href="http://127.0.0.1:1234/v1/models" target="_blank" rel="noopener noreferrer">直接檢查本機 API（另開分頁）</a>',
 '<button type="button" id="cyexp-copy-start">複製 LM Studio 啟動指令（PowerShell）</button></div>',
 '<p class="cyexp-muted">建議 PowerShell 指令：<code>lms server start --port 1234 --bind 127.0.0.1 --cors</code>。若 LM Studio 已由圖形介面啟動，不必再開第二個 Server。啟用 CORS 時建議開啟 API 身分驗證。</p></div>',
 '<p class="cyexp-muted">每張圖會個別送到你電腦的本機模型；不會寫入任何雲端 API 金鑰。讀圖產物仍需人工核對，格局圖不會由 AI 自動宣告驗收通過。</p></details>',
-'<p class="cyexp-muted">本次丹佛花都 9 張原始示意圖有既有人工辨識範本；其他新圖改用 Transformers.js 官方支援的 image-to-text 讀圖模型，再以本機英文轉中文模型翻譯。首次須下載模型，通常使用 CPU 也能執行，不強制 WebGPU。圖片不送往付費 AI API；描述僅是草稿，需人工核對，格局圖需確認圖面。</p>',
+'<p class="cyexp-muted">AI 讀圖優先使用你已啟動的 LM Studio Qwen3-VL。免費瀏覽器小模型僅作為手動備援，不會自動取代本機 AI。所有描述與 ALT 都是待核對草稿。</p>',
 '<p id="cyexp-vision-status" class="cyexp-muted" role="status"></p>',
 '<div id="cyexp-items" class="cyexp-images"><p>請選擇新案件圖片；包含新平面配置圖／格局圖。</p></div>',
 '<div class="cyexp-actions"><button type="button" id="cyexp-approve-reviewed">我已看過本批圖片，一次核對全部描述與 ALT</button></div>',
@@ -337,6 +339,8 @@ function localAuthHeaders(json=false){
 function localStatus(txt,err=false){
  $("cyexp-local-status").textContent=txt;
  $("cyexp-local-status").style.color=err?"#b91c1c":"";
+ $("cyexp-main-ai-status").textContent=txt;
+ $("cyexp-main-ai-status").style.color=err?"#b91c1c":"";
 }
 function localError(e){
  const hints="請先在瀏覽器另開 http://127.0.0.1:1234/v1/models 確認伺服器可回應；接著在 LM Studio Developer 檢查 Server Port=1234、Server Running、Enable CORS、Serve on Local Network=關閉。若 Chrome 跳出本機網路／回送位址權限，請允許這個你信任的網站。";
@@ -364,9 +368,12 @@ async function connectLocalAI(){
   }
   S.localConnected=true;S.localModel=select.value;select.disabled=false;
   $("cyexp-local-read").disabled=false;
-  $("cyexp-read").textContent="使用已連接的本機 AI 讀圖";
-  localStatus("本機連線成功，共 "+models.length+" 個模型。選擇已載入的視覺模型後按「用本機 AI 重新讀取全部」。連線不等於讀圖測試通過。");
- }catch(e){S.localConnected=false;$("cyexp-local-model").disabled=true;$("cyexp-read").textContent="免費備援小模型讀圖（品質有限）";localStatus(localError(e),true);}
+  localStatus("本機 LM Studio 已連線："+S.localModel+"。按「AI 讀圖」就會分析這次選取的全部圖片。");
+ }catch(e){
+  S.localConnected=false;$("cyexp-local-model").disabled=true;
+  $("cyexp-local-ai").open=true;
+  localStatus(localError(e),true);
+ }
  finally{btn.disabled=false;}
 }
 function fileAsDataUrl(file){
@@ -488,8 +495,7 @@ function parseGenerated(res){
  if(Array.isArray(result))result=result.map(x=>x?.content||x?.text||"").join(" ");
  return String(result).trim().replace(/^assistant\s*:\s*/i,"").slice(0,550);
 }
-async function readImages(){
- if(S.localConnected)return readWithLocalAI();
+async function readBrowserFallback(){
  if(S.modelBusy)return;
  const todo=S.files.filter(x=>!x.description?.trim());
  if(!todo.length){
@@ -526,6 +532,22 @@ async function readImages(){
   message("已使用相容的 image-to-text 模型產生圖片描述；請核對中文、ALT、3D 示意圖身分及新格局圖。模型可能描述錯誤，確認後才能複製 HTML。");
  }catch(e){message("本機圖片辨識未完成："+(e?.message||"模型下載／執行失敗")+"。可換用桌面 Chrome／Edge 重新開啟，或將圖片交給 ChatGPT 讀圖後，把繁中描述貼回欄位；不會假裝模型已成功。",true);}
  finally{S.modelBusy=false;$("cyexp-read").disabled=false;updateStatus();}
+}
+async function readImages(){
+ // A user click reconnects automatically after every page reload.
+ // Never downgrade to the low-quality model without explicit choice.
+ if(S.modelBusy)return;
+ if(!S.files.length){
+  localStatus("請先選擇要讀圖的照片及格局圖，再按「AI 讀圖」。",true);
+  return;
+ }
+ if(!S.localConnected){
+  $("cyexp-read").disabled=true;
+  try{await connectLocalAI();}
+  finally{$("cyexp-read").disabled=false;}
+ }
+ if(!S.localConnected)return; // Detailed error shown. No silent fallback.
+ return readWithLocalAI();
 }
 function refreshAutoAlts(){
  for(const a of S.files){
@@ -750,6 +772,7 @@ async function start(){
 }
 $("cyexp-files").addEventListener("change",ev=>{addFiles(ev.target.files||[]);ev.target.value="";});
 $("cyexp-read").addEventListener("click",readImages);
+$("cyexp-fallback-read").addEventListener("click",readBrowserFallback);
 $("cyexp-connect").addEventListener("click",connectLocalAI);
 $("cyexp-copy-start").addEventListener("click",()=>{
  const command="lms server start --port 1234 --bind 127.0.0.1 --cors";
