@@ -638,10 +638,31 @@ function showCmsMatch(result){
 async function pasteCmsImages(){
  const btn=$("cyexp-paste-cms");btn.disabled=true;
  try{
-  if(!navigator.clipboard?.readText)throw Error("瀏覽器未提供剪貼簿文字讀取權限。請直接將官網 HTML 貼入上方輸入框。");
-  const text=await navigator.clipboard.readText();
-  $("cyexp-cms-html").value=text;
-  showCmsMatch(matchImagesFromCms(text));
+  if(!navigator.clipboard)throw Error("此瀏覽器不支援剪貼簿讀取；請直接 Ctrl+V 貼入上方欄位。");
+  let data="";
+  // In Chrome the WYSIWYG clipboard frequently stores the IMG nodes as
+  // text/html while readText returns only a visual summary. Prefer HTML.
+  if(typeof navigator.clipboard.read==="function"){
+   const items=await navigator.clipboard.read();
+   for(const item of items){
+    if(item.types.includes("text/html")){
+     data=await (await item.getType("text/html")).text();
+     if(data)break;
+    }
+   }
+   if(!data){
+    for(const item of items){
+     if(item.types.includes("text/plain")){
+      data=await (await item.getType("text/plain")).text();
+      if(data)break;
+     }
+    }
+   }
+  }
+  if(!data&&navigator.clipboard.readText)data=await navigator.clipboard.readText();
+  if(!data)throw Error("剪貼簿中沒有 HTML 或文字圖片網址");
+  $("cyexp-cms-html").value=data;
+  showCmsMatch(matchImagesFromCms(data));
  }catch(error){
   $("cyexp-cms-match-status").textContent="無法讀取剪貼簿："+(error?.message||"未知原因")+"。請按 Ctrl+V 貼入上方輸入框，再點「自動讀取官網 HTML」。";
  }finally{btn.disabled=false;}
