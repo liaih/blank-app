@@ -1,0 +1,32 @@
+
+/* New case append workflow; scoped to #case-expansion. */
+#case-expansion{margin:16px 0 22px;background:rgba(255,255,255,.78);border:1px solid var(--line,#d7e0e8);border-radius:16px;padding:18px;}
+#case-expansion .cyexp-head h3{margin:0 0 8px;font-size:20px;line-height:1.4}
+#case-expansion .cyexp-muted{color:var(--muted,#536376);font-size:12px;line-height:1.7;margin:6px 0 10px}
+#case-expansion .cyexp-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#case-expansion label{display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:600}
+#case-expansion input:not([type="checkbox"]):not([type="file"]),#case-expansion select,#case-expansion textarea{
+font:inherit;line-height:1.6;color:inherit;min-width:0;max-width:100%;width:100%;border:1px solid #cbd5df;border-radius:8px;padding:9px 10px;background:var(--surface,#fff);}
+#case-expansion>label:not(.cyexp-check){margin-top:10px}
+#case-expansion .cyexp-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:12px 0}
+#case-expansion button,#case-expansion .cyexp-file{border:1px solid #9aaec0;background:var(--surface,#fff);color:inherit;padding:9px 12px;border-radius:9px;font-size:13px;cursor:pointer}
+#case-expansion button:hover{border-color:#345b7a}
+#case-expansion button:disabled{opacity:.48;cursor:not-allowed}
+#case-expansion .cyexp-file{font-weight:600;display:inline-flex;gap:5px}
+#case-expansion .cyexp-file input{display:block;font-size:12px;max-width:240px}
+#case-expansion .cyexp-images{display:grid;gap:12px;margin:14px 0}
+#case-expansion .cyexp-item{display:grid;grid-template-columns:minmax(160px,29%) 1fr;gap:15px;border:1px solid #d8e0e8;border-radius:12px;padding:12px;max-width:100%;overflow:hidden}
+#case-expansion .cyexp-thumb img{width:100%;height:auto;max-height:205px;object-fit:contain;background:#eef2f5;border-radius:8px}
+#case-expansion .cyexp-item-fields{display:grid;gap:8px;min-width:0}
+#case-expansion .cyexp-field span{font-size:12px}
+#case-expansion .cyexp-check{display:flex;flex-direction:row;align-items:flex-start;gap:9px;margin:8px 0;font-size:13px;line-height:1.6;font-weight:400}
+#case-expansion .cyexp-check input{width:17px;height:17px;flex:none;margin-top:2px}
+#case-expansion .cyexp-status{border:1px solid #d1dbe6;border-radius:12px;padding:14px;background:#f8fafc;line-height:1.6;font-size:13px}
+#case-expansion .cyexp-status.blocked{border-left:3px solid #9a633b}
+#case-expansion .cyexp-status.ready{border-left:3px solid #288358}
+#case-expansion .cyexp-status p{margin:5px 0}
+#case-expansion .cyexp-status ul{margin:6px 0 0;padding-left:20px;display:block}
+#case-expansion .cyexp-advanced{border-top:1px solid #dde4eb;margin:12px 0;padding-top:9px}
+#case-expansion .cyexp-advanced summary{cursor:pointer;font-weight:600}
+#case-expansion #cyexp-html{font:12px/1.6 ui-monospace,monospace;min-height:170px}
+@media(max-width:720px){#case-expansion{padding:12px}#case-expansion .cyexp-fields{grid-template-columns:1fr}#case-expansion .cyexp-item{grid-template-columns:1fr}#case-expansion .cyexp-thumb img{max-height:230px}#case-expansion button{width:100%}}
