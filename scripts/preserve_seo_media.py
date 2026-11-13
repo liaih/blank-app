@@ -397,6 +397,19 @@ def source_preserving_hybrid(d,assets,document,url):
             # A faithful conservative ALT—not an invented visual description.
             img["alt"]=d["title"].split("｜",1)[0].strip()+"｜原官網文章圖片"
     source_html="".join(str(x) for x in root.contents)
+    # The CMS's separate article-title field renders H1. Some original NEWS
+    # bodies begin with visual <span> headings only and have no semantic H2
+    # until far down the page. Add one genuine H2 before the original body,
+    # keeping all original text, photos, plans, video and links in place.
+    first_h2=root.find("h2")
+    first_h2_text=" ".join(first_h2.get_text(" ",strip=True).split()) if first_h2 else ""
+    has_leading_h2=bool(first_h2_text and old_text.startswith(first_h2_text))
+    opening_h2_text=d["sections"][0][0]
+    opening_h2=("" if has_leading_h2 else (
+        '<h2 style="margin:28px 0 12px;"><span style="color:#C5A47E !important;'
+        'font-size:20px !important;line-height:1.9 !important;font-weight:700 !important;">'
+        +escape(opening_h2_text)+'</span></h2><BR>\\n'
+    ))
 
     # Do not duplicate the existing site-wide project description. The source
     # retains factual building information, room plans, examples and links.
@@ -416,7 +429,7 @@ def source_preserving_hybrid(d,assets,document,url):
             'font-size:20px !important;line-height:1.9 !important;font-weight:700 !important;">'
             +escape(faq_h)+'</span></h2><BR>\n'+format_body(faq_b,is_faq=True)
         )
-    candidate=source_html+"\n"+supplement
+    candidate=opening_h2+source_html+"\n"+supplement
     after=BeautifulSoup(candidate,"html.parser")
     floorplan_audit=floorplan_integrity(root,after,url)
     text_after=" ".join(after.get_text(" ",strip=True).split())
@@ -425,7 +438,7 @@ def source_preserving_hybrid(d,assets,document,url):
     after_videos=[x.get("src","") for x in after.find_all(["iframe","video"],src=True)]
     integrity={
         "original_main_content_preserved":bool(
-            text_after.startswith(old_text)
+            old_text in text_after
             and after_imgs[:len(orig_imgs)]==orig_imgs
             and after_links[:len(orig_links)]==orig_links
             and after_videos[:len(orig_videos)]==orig_videos
@@ -440,6 +453,11 @@ def source_preserving_hybrid(d,assets,document,url):
         "preserved_video_count":len(after_videos),
         "original_text_sha256":hashlib.sha256(old_text.encode()).hexdigest(),
         "source_selector":".col-row .l-edit",
+        "cms_title_is_separate_h1":True,
+        "opening_h2_added":not has_leading_h2,
+        "opening_h2_text":opening_h2_text if not has_leading_h2 else first_h2_text,
+        "semantic_heading_present":bool(after.find("h2")),
+
         "strategy":"原官網正文完整保留＋新增 SEO 裝修查核段落",
         "source_has_building_information":bool(re.search(
             r"(?:生活機能|捷運|格局|坪|房|交通|建案|學區)",old_text)),
