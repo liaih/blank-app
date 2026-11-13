@@ -131,12 +131,12 @@ test("public ALT and section headings avoid unneeded unit names while retaining 
   edit(dom,d.querySelector("#cyexp-unit"),"內部專用-Z2");
   await fileSelect(dom,"living.png");
   await fileSelect(dom,"新格局圖.png");
-  const cards=d.querySelectorAll(".cyexp-item");
-  for(let i=0;i<cards.length;i++){
-    const a=cards[i];
-    edit(dom,a.querySelector('[data-attr="description"]'),i===0?"淺木色收納櫃、白色沙發與開放客餐廳":"住宅平面配置及空間動線");
-    a.querySelector('[data-attr="role"]').value=i===1?"格局圖":"客廳";
-    a.querySelector('[data-attr="role"]').dispatchEvent(new dom.window.Event("change",{bubbles:true}));
+  for(let i=0;i<2;i++){
+    // The UI re-renders an item when its image category changes.
+    let a=d.querySelectorAll(".cyexp-item")[i];
+    edit(dom,a.querySelector('[data-attr="description"]'),i===0?"淺木色收納櫃、白色沙發與開放客餐廳":"住宅平面配置及空間動線","change");
+    a=d.querySelectorAll(".cyexp-item")[i];
+    edit(dom,a.querySelector('[data-attr="role"]'),i===1?"格局圖":"客廳","change");
   }
   // Readable drafting metadata, not mandatory public ALT or headlines.
   const altLabels=[...d.querySelectorAll('.cyexp-item [data-attr="alt"]')];
