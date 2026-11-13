@@ -451,6 +451,28 @@ function checks(){
  const counted=(existing.match(/<img\b/gi)||[]).length;
  return {pass:items.length===0,issues:items,originalImageCount:counted,newImageCount:S.files.length,oldFloorplanCount:base?.floorplan_count||0,newFloorplanCount:floor.length};
 }
+function mergeCaseIntoArticleBeforeClosingSections(original,caseSection){
+ // Preserve the original CMS HTML byte-for-byte and insert only one new block.
+ // FAQ and "extended reading" belong after the case content, not before it.
+ // Reading only heading tags avoids matching FAQ/extended-reading words in prose.
+ const headingRe=/<h([1-6])\b[^>]*>[\s\S]*?<\/h\1\s*>/gi;
+ let match,offset=original.length;
+ while((match=headingRe.exec(original))){
+  const plain=match[0].replace(/<[^>]*>/g,"")
+   .replace(/&nbsp;|&#160;|&#xA0;/gi," ").trim();
+  if(/^(?:常見問題(?:\s*FAQ)?|FAQ(?:\s|[｜：:]|$)|延伸閱讀(?:\s|[｜：:]|$))/i.test(plain)){
+   offset=match.index;
+   break;
+  }
+ }
+ if(offset===original.length)return original+"\n"+caseSection;
+ // Move the existing <hr> separator with the FAQ/extended-reading footer.
+ // This keeps a divider between case pictures and original closing sections.
+ const prefix=original.slice(0,offset);
+ const separator=prefix.match(/\s*<hr\b[^>]*\/?>\s*$/i);
+ if(separator)offset-=separator[0].length;
+ return original.slice(0,offset)+"\n"+caseSection+"\n"+original.slice(offset);
+}
 function generate({draft=false,preview=false}={}){
  const base=baseHtml();
  if(!base)return "";
@@ -481,7 +503,7 @@ function generate({draft=false,preview=false}={}){
  }
  h+="</section>\n";
  const banner=draft?'<div class="chenyang-seo-draft-warning" data-publish-status="not-approved" style="padding:12px;border:1px solid #af6420;background:#fff4de"><strong>SEO 草稿｜未通過正式上稿驗收，不可直接發佈</strong><p>待補官網圖片網址的圖以標示呈現；AI 描述與格局圖需人工核對。</p></div>\n':"";
- return banner+base+"\n"+h;
+ return banner+mergeCaseIntoArticleBeforeClosingSections(base,h);
 }
 function updateStatus(){
  const c=checks(),status=$("cyexp-status");
