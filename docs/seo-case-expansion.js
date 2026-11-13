@@ -65,7 +65,7 @@ function enrichKnown(a){
  const known=S.known.get(a.sha256);
  if(!known)return false;
  a.role=known.zone;a.description=known.description;a.altSuffix=known.alt_suffix;
- a.alt=makeAlt(a);a.origin="已提供圖片的逐張辨識草稿（雜湊比對）";a.verified=false;return true;
+ a.alt=makeAlt(a);a.autoAlt=a.alt;a.origin="已提供圖片的逐張辨識草稿（雜湊比對）";a.verified=false;return true;
 }
 function itemBox(a,i){
  const card=document.createElement("article");card.className="cyexp-item";
@@ -98,7 +98,7 @@ function itemBox(a,i){
  });
  right.addEventListener("change",ev=>{const x=ev.target.dataset.attr;if(!x)return;
    a[x]=x==="verified"?ev.target.checked:ev.target.value;
-   if(x==="role"){a.verified=false;renderItems();}else updateStatus();
+   if(x==="role"){if(a.autoAlt&&a.alt===a.autoAlt){a.alt=makeAlt(a);a.autoAlt=a.alt;}a.verified=false;renderItems();}else updateStatus();
  });
  return card;
 }
@@ -249,12 +249,20 @@ async function readImages(){
    if(!result)throw Error("模型未輸出可用描述，請人工核對");
    a.description=result;a.origin="瀏覽器本機視覺模型草稿｜尚待人工核對";
    if(a.role==="其他"&&/格局|平面圖|floor.?plan/i.test(result))a.role="格局圖";
-   a.alt=makeAlt(a);a.verified=false;
+   a.alt=makeAlt(a);a.autoAlt=a.alt;a.verified=false;
    renderItems();
   }
   message("讀圖草稿已產生；請逐張核對畫面內容、ALT 和戶型。AI 說明不是已驗證事實。");
  }catch(e){message("本機 AI 讀圖未完成："+(e?.message||"裝置或模型限制")+"。請在支援 WebGPU 的電腦重試，或將圖片交給 ChatGPT 讀圖後貼回欄位。",true);}
  finally{S.modelBusy=false;$("cyexp-read").disabled=false;updateStatus();}
+}
+function refreshAutoAlts(){
+ for(const a of S.files){
+  if(a.autoAlt&&a.alt===a.autoAlt){
+   const updated=makeAlt(a);if(updated!==a.alt){a.alt=updated;a.autoAlt=updated;a.verified=false;}
+  }
+ }
+ renderItems();
 }
 function generateSummary(){
  const descriptions=S.files.filter(x=>x.role!=="格局圖"&&x.description.trim()).map(x=>x.description.trim());
@@ -314,6 +322,8 @@ async function start(){
 }
 $("cyexp-files").addEventListener("change",ev=>{addFiles(ev.target.files||[]);ev.target.value="";});
 $("cyexp-read").addEventListener("click",readImages);
+$("cyexp-unit").addEventListener("change",refreshAutoAlts);
+$("cyexp-type").addEventListener("change",refreshAutoAlts);
 $("cyexp-summary").addEventListener("click",generateSummary);
 $("cyexp-export").addEventListener("click",exportDraft);
 $("cyexp-import").addEventListener("change",ev=>{if(ev.target.files[0])importDraft(ev.target.files[0]);ev.target.value="";});
