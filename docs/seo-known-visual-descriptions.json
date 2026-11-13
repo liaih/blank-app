@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "source": "目前使用者提供的丹佛花都9張3D建模示意圖，由圖像內容判讀；僅對原始檔案SHA256完全相符時套用，編輯仍須人工核對",
   "important": "已知影像範本不包含未提供的新增格局圖；若檔案改存或壓縮後雜湊不同，需要重新讀圖",
   "matched_images": [
@@ -8,63 +8,73 @@
       "zone": "玄關與客廳",
       "description": "客廳入口以淺木色圓弧展示層架及收納櫃銜接玄關，白色沙發與開放式廚房形成通透視野。",
       "alt_suffix": "玄關淺木色圓弧收納展示櫃與白色客廳沙發",
-      "visual_type": "3D 建模示意圖"
+      "visual_type": "3D 建模示意圖",
+      "dhash_v1": "1b13531b1bd3d373"
     },
     {
       "sha256": "fc2ad423536d6851d31f6e3c21174d01ac9e636f46158352bbf1f5116ca2532a",
       "zone": "客廳",
       "description": "客廳以白色沙發搭配淺木紋電視櫃，長向開放動線串接玄關、客廳與用餐空間。",
       "alt_suffix": "客廳白色沙發與淺木色電視牆收納櫃",
-      "visual_type": "3D 建模示意圖"
+      "visual_type": "3D 建模示意圖",
+      "dhash_v1": "96da535b7be3e1d8"
     },
     {
       "sha256": "5557e8b674161856a797612faef45e475dabfc1b99d81508da3c613208eba061",
       "zone": "客餐廳",
       "description": "電視主牆以淺木櫃體整合低櫃收納，旁側結合餐邊家電檯面與餐桌，呈現開放式客餐廳配置。",
       "alt_suffix": "開放式客餐廳木質電視櫃與餐邊家電收納",
-      "visual_type": "3D 建模示意圖"
+      "visual_type": "3D 建模示意圖",
+      "dhash_v1": "440f1b476765d636"
     },
     {
       "sha256": "dd84dfecb120178315670324586ef3575163c0705e9fe5047709f67b7ab2e4b3",
       "zone": "客餐廳",
       "description": "從客廳沙發望向餐桌與窗邊，淺色櫃體和木紋地坪延伸空間視線，讓休憩與用餐動線相互連結。",
       "alt_suffix": "白色沙發連接餐桌的長型客餐廳空間動線",
-      "visual_type": "3D 建模示意圖"
+      "visual_type": "3D 建模示意圖",
+      "dhash_v1": "af93922220343436"
     },
     {
       "sha256": "e2d5ba0b3dab87f146d60bfa8225104e7e65d11555fa211df39f8f19812958b6",
       "zone": "廚房與走道",
       "description": "從餐桌望向廚房與走道，可見白色家電收納櫃、冰箱配置與淺色牆面，呈現餐廚與客廳的連結方式。",
       "alt_suffix": "餐廚動線與白色廚房家電收納櫃",
-      "visual_type": "3D 建模示意圖"
+      "visual_type": "3D 建模示意圖",
+      "dhash_v1": "23a3915311362626"
     },
     {
       "sha256": "b54ce2daa863c95155ff940296b00fc9309f49a35df176a29ccb354ebfeec93d",
       "zone": "多功能工作區",
       "description": "狹長多功能空間以靠牆工作桌結合高櫃與開放格層架，集中安排電腦作業與垂直收納。",
       "alt_suffix": "多功能書房靠牆工作桌與高櫃開放層架",
-      "visual_type": "3D 建模示意圖"
+      "visual_type": "3D 建模示意圖",
+      "dhash_v1": "1b1b7b7a7af8f8f0"
     },
     {
       "sha256": "861c8c250293764fc3ca391b84fa81a50d119b01483149fb6f49b7d38583bef6",
       "zone": "臥室",
       "description": "臥室結合木質床頭背板、懸浮梳妝桌與圓形燈鏡，側面以大片窗簾引入自然採光。",
       "alt_suffix": "臥室木質床頭背板與圓形燈鏡化妝桌",
-      "visual_type": "3D 建模示意圖"
+      "visual_type": "3D 建模示意圖",
+      "dhash_v1": "d6d6ca2a8b2a2028"
     },
     {
       "sha256": "bed3b1d65da48583d3bd745bbc6c24198d4e99b0cf83ecaf8e3d8acf4a60f9c9",
       "zone": "臥室",
       "description": "臥室以木質床頭背板搭配雙人床，窗側配置紗簾與空調，另一側設梳妝桌，營造柔和休息氛圍。",
       "alt_suffix": "木質床頭與雙人床及窗邊採光臥室",
-      "visual_type": "3D 建模示意圖"
+      "visual_type": "3D 建模示意圖",
+      "dhash_v1": "4646744445604844"
     },
     {
       "sha256": "13c98f99d6531d1a33e85d71c6bedfdd513a9085c31fe12c8c6d9ac602def07c",
       "zone": "更衣收納",
       "description": "更衣收納區採雙層吊衣架、開放木質層架與收納櫃設計，分別安排衣物、箱包及行李箱位置。",
       "alt_suffix": "雙層吊衣架和開放層架的更衣行李收納空間",
-      "visual_type": "3D 建模示意圖"
+      "visual_type": "3D 建模示意圖",
+      "dhash_v1": "4666363636777666"
     }
-  ]
+  ],
+  "matching_note": "Exact original SHA256 preferred; perceptual dHash used only for strongly matching resized/recompressed images (<=7 bit differences and clear distance margin); every resulting caption must be verified by editor."
 }
