@@ -111,3 +111,17 @@ test("user-provided nine image hashes are all present, original bytes not stored
   assert.ok(library.matched_images.every(x=>x.description&&x.alt_suffix&&x.zone));
   assert.ok(!JSON.stringify(library).includes("data:image"));
 });
+
+test("batch paste URL maps by file order and resets URL verification",async()=>{
+  const dom=await setup();const d=dom.window.document;
+  await fileSelect(dom,"living.png");await fileSelect(dom,"新格局圖.png");
+  const bulk=d.querySelector("#cyexp-bulk-urls");
+  edit(dom,bulk,"https://chen-yang.com.tw/upload/images/new-living.png\nhttps://chen-yang.com.tw/upload/images/new-layout.png");
+  check(dom,d.querySelector("#cyexp-confirm-urls"));
+  d.querySelector("#cyexp-apply-urls").click();
+  const links=[...d.querySelectorAll(".cyexp-item [data-attr=url]")].map(x=>x.value);
+  assert.deepEqual(links,["https://chen-yang.com.tw/upload/images/new-living.png",
+                          "https://chen-yang.com.tw/upload/images/new-layout.png"]);
+  assert.equal(d.querySelector("#cyexp-confirm-urls").checked,false);
+  dom.window.close();
+});
