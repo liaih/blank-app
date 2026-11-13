@@ -346,9 +346,11 @@ function inlineCmsMatcher(item,index){
   const summary=document.createElement("summary");
   summary.textContent=official?"更換官網圖片（開啟縮圖選擇）":"開啟官網縮圖，直接選擇這張原圖的配對";
   choices.append(summary);
-  choices.addEventListener("toggle",()=>{item.pickerOpen=choices.open;});
   const grid=document.createElement("div");grid.className="cyexp-inline-candidates";
-  for(const [j,url]of S.cmsUrls.entries()){
+  const populate=()=>{
+   if(grid.dataset.built)return;
+   grid.dataset.built="1";
+   for(const [j,url]of S.cmsUrls.entries()){
    const owner=S.files.find(x=>x!==item&&x.url===url);
    const suffix=cmsImageUrlSuffix(url);
    const button=document.createElement("button");button.type="button";
@@ -365,7 +367,16 @@ function inlineCmsMatcher(item,index){
    button.append(img,name,detail);
    button.addEventListener("click",()=>selectOfficialPicture(item,index,url));
    grid.append(button);
-  }
+   }
+  };
+  // Build candidate images only when the user actually opens the chooser.
+  // 10 originals x 10 candidate pictures should not download 100 thumbnails.
+  if(choices.open)populate();
+  choices.addEventListener("toggle",()=>{
+   if(!choices.isConnected)return;
+   item.pickerOpen=choices.open;
+   if(choices.open)populate();
+  });
   choices.append(grid);panel.append(choices);
  }else{
   const empty=document.createElement("div");empty.className="cyexp-inline-empty";
