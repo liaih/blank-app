@@ -564,20 +564,31 @@ async function addFiles(files){
  const fresh=[...files].filter(x=>x.type.startsWith("image/")).slice(0,50);
  if(!fresh.length)return;
  message("正在讀取圖片、比對已判讀的視覺內容……");
- let matched=0;
+ let matched=0,added=0,restored=0;
  for(const file of fresh){
-  if(S.files.some(x=>x.sha256&&x.sha256===file._sha))continue;
   const a={name:file.name,file,preview:URL.createObjectURL(file),sha256:"",
-    role:/(?:平面|格局|配置|floor.?plan)/i.test(file.name)?"格局圖":"其他",
-    description:"",alt:"",altSuffix:"",url:"",verified:false,urlPairVerified:false,origin:"尚未由 AI 讀圖"};
+   role:/(?:平面|格局|配置|floor.?plan)/i.test(file.name)?"格局圖":"其他",
+   description:"",alt:"",altSuffix:"",url:"",verified:false,urlPairVerified:false,origin:"尚未由 AI 讀圖"};
   try{a.sha256=await identify(file);}catch(_){}
-  if(S.files.some(x=>x.sha256&&x.sha256===a.sha256)){URL.revokeObjectURL(a.preview);continue;}
+  const existing=a.sha256?S.files.find(x=>x.sha256===a.sha256):null;
+  if(existing){
+   if(!existing.file){
+    // JSON backup has original image SHA-256, not the image bytes.
+    // Reattach the exact same image while preserving edited descriptions,
+    // ALT, and official URLs. Verification does not carry over.
+    existing.file=file;existing.preview=a.preview;
+    existing.verified=false;existing.urlPairVerified=false;
+    existing.origin="已以 SHA-256 重新連結原圖；描述與 ALT 保留，需重新核對";
+    restored++;
+   }else URL.revokeObjectURL(a.preview);
+   continue;
+  }
   if(isPlanFileName(a.name)){resetForFloorplan(a);}
   else if(await enrichKnown(a))matched++;
-  S.files.push(a);
+  S.files.push(a);added++;
  }
  renderItems();
- message("已加入 "+fresh.length+" 張圖片；其中 "+matched+" 張比對到已判讀的 3D 示意圖（含可能縮放／壓縮版本，仍需核對畫面）。未識別圖片按「自動讀圖」，新格局圖需單獨加入並核對。");
+ message("新增 "+added+" 張圖片；從備份草稿重新連結 "+restored+" 張原圖；參考辨識命中 "+matched+" 張。舊的描述、ALT 與圖片網址會保留，但正式上稿核對仍需完成。");
 }
 
 const LMSTUDIO_BASE="http://127.0.0.1:1234";
