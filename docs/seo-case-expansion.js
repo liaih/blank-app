@@ -6,7 +6,7 @@ if(!host)return;
 const $=id=>host.querySelector("#"+id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 const zones=["格局圖","玄關與客廳","玄關","客廳","客餐廳","廚房與走道","多功能工作區","臥室","更衣收納","其他"];
-const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,translator:null,transformers:null,modelBusy:false,visionReady:false,verifiedBase:false,localConnected:false,localModel:"",cmsUrls:[],cmsVisionCache:new Map(),cmsCorsUnavailable:false,matchRunning:false,matchCancelled:false,matchControllers:new Set(),matchStartedAt:0,matchTimer:null,matchStage:"",matchStep:0,matchTotal:0,activeProjectId:"",caseStates:new Map(),fileImportBusy:false};
+const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,translator:null,transformers:null,modelBusy:false,visionReady:false,verifiedBase:false,localConnected:false,localModel:"",cmsUrls:[],cmsVisionCache:new Map(),cmsCorsUnavailable:false,matchRunning:false,matchCancelled:false,matchControllers:new Set(),matchStartedAt:0,matchTimer:null,matchStage:"",matchStep:0,matchTotal:0,activeProjectId:"",caseStates:new Map(),fileImportBusy:false,aiStarting:false};
 const markup=[
 '<div class="cyexp-head"><h3>同建案新增案件｜AI 讀圖＋ALT＋格局圖</h3>',
 '<p class="cyexp-muted">原文章＋舊戶型全部保留。新增圖片在本機辨識；圖片須先上傳晨陽官網取得正式網址，才可輸出正式 HTML。</p></div>',
@@ -238,7 +238,7 @@ function showActiveCaseIdentity(){
 }
 function switchToCase(nextId){
  if(!S.base.length)return false;
- if(S.modelBusy||S.matchRunning||S.fileImportBusy)return false;
+ if(S.modelBusy||S.matchRunning||S.fileImportBusy||S.aiStarting)return false;
  if(nextId===S.activeProjectId){
   showActiveCaseIdentity();updateStatus();return true;
  }
@@ -262,7 +262,7 @@ function handleMainSeoArticleSelection(event){
  if(!S.base.length)return;
  const nextId=String(event?.detail?.id||"");
  if(nextId===S.activeProjectId){showActiveCaseIdentity();return;}
- if(S.modelBusy||S.matchRunning||S.fileImportBusy){
+ if(S.modelBusy||S.matchRunning||S.fileImportBusy||S.aiStarting){
   event.detail.revertTo=S.activeProjectId;
   event.preventDefault();
   message("正在為目前案場讀圖或配對，為避免跨案場串圖，請完成或停止後再切換文章。",true);
@@ -1028,21 +1028,22 @@ async function readBrowserFallback(){
  finally{S.modelBusy=false;$("cyexp-read").disabled=false;updateStatus();}
 }
 async function readImages(){
- // A user click reconnects automatically after every page reload.
- // Never downgrade to the low-quality model without explicit choice.
- if(S.modelBusy)return;
+ // Prevent a project switch during the async LM Studio connection stage.
+ if(S.modelBusy||S.aiStarting)return;
  if(!articleContextMatches()){localStatus("目前案場與上方選擇文章不一致，請先完成同步。",true);return;}
  if(!S.files.length){
-  localStatus("請先選擇要讀圖的照片及格局圖，再按「AI 讀圖」。",true);
-  return;
+  localStatus("請先選擇要讀圖的照片及格局圖，再按「AI 讀圖」。",true);return;
  }
- if(!S.localConnected){
-  $("cyexp-read").disabled=true;
-  try{await connectLocalAI();}
-  finally{$("cyexp-read").disabled=false;}
- }
- if(!S.localConnected)return; // Detailed error shown. No silent fallback.
- return readWithLocalAI();
+ S.aiStarting=true;
+ try{
+  if(!S.localConnected){
+   $("cyexp-read").disabled=true;
+   try{await connectLocalAI();}
+   finally{$("cyexp-read").disabled=false;}
+  }
+  if(!S.localConnected)return;
+  return await readWithLocalAI();
+ }finally{S.aiStarting=false;}
 }
 function refreshAutoAlts(){
  for(const a of S.files){
@@ -1558,7 +1559,7 @@ async function importDraft(file){
   message("這份草稿的案場 "+String(data.project_id||"未標示")+" 並不在可編輯文章內；為防止跨案場覆蓋，未匯入任何圖片。",true);
   return;
  }
- if(S.modelBusy||S.matchRunning||S.fileImportBusy){
+ if(S.modelBusy||S.matchRunning||S.fileImportBusy||S.aiStarting){
   message("AI 仍在處理圖片，請完成或停止後再匯入另一案草稿。",true);return;
  }
  if(S.activeProjectId!==project.id){
