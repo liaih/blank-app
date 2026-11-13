@@ -844,9 +844,15 @@ function renderSeoImprovementPlan(){
  // Keep the embedded case editor tied to the top-level article selector.
  // Programmatic .value changes do not trigger native change events.
  const caseChange=new CustomEvent("chenyang:seo-article-selection",{
-  cancelable:true,detail:{id:chooser.value,view:mode,revertTo:""}
+  cancelable:true,detail:{id:chooser.value,view:mode,revertTo:"",revertView:""}
  });
  if(!document.dispatchEvent(caseChange)){
+  if(caseChange.detail.revertView&&caseChange.detail.revertView!==mode){
+   el("action-view").value=caseChange.detail.revertView;
+   chooser.value=caseChange.detail.revertTo;
+   renderSeoImprovementPlan();
+   return;
+  }
   chooser.value=ordered.some(x=>x.id===caseChange.detail.revertTo)?
     caseChange.detail.revertTo:previous;
  }
