@@ -366,7 +366,7 @@ function updateStatus(){
  const c=checks(),status=$("cyexp-status");
  status.className="cyexp-status "+(c.pass?"ready":"blocked");
  const headline=c.pass?"可以複製完整文章 HTML":"上稿前還有 "+c.issues.length+" 項需要完成";
- const count="保留舊圖 "+c.originalImageCount+" 張（格局圖 "+c.oldFloorplanCount+"）｜新增 "+c.newImageCount+" 張（格局圖 "+c.newFloorplanCount+"）";
+ const count="保留舊圖 "+c.originalImageCount+" 張（原格局圖 "+c.oldFloorplanCount+" 張）｜新增圖片 "+c.newImageCount+" 張｜新格局圖 "+c.newFloorplanCount+" 張";
  const imagesReady=S.files.length>0;
  const captionsReady=imagesReady&&S.files.every(x=>x.description?.trim()&&x.alt?.trim());
  const reviewedReady=captionsReady&&S.files.every(x=>x.verified);
