@@ -288,7 +288,8 @@ function itemBox(a,i){
   const pair=document.createElement("label");pair.className="cyexp-check";
   const verifiedBox=document.createElement("input");verifiedBox.type="checkbox";verifiedBox.checked=!!a.urlPairVerified;
   pair.append(verifiedBox,document.createTextNode("已比對官網圖片與左側原圖為同一張"));
-  verifiedBox.addEventListener("change",()=>{a.urlPairVerified=verifiedBox.checked;updateStatus();renderCmsPairingReview();});
+  verifiedBox.disabled=!a.preview;
+  verifiedBox.addEventListener("change",()=>{if(!a.preview){a.urlPairVerified=false;return;}a.urlPairVerified=verifiedBox.checked;updateStatus();renderCmsPairingReview();});
   right.appendChild(pair);
   const officialPreview=document.createElement("img");
   officialPreview.src=a.url;officialPreview.alt="官網圖片對照縮圖";officialPreview.loading="lazy";
@@ -922,7 +923,7 @@ async function matchImagesFromCms(raw){
  const remaining=new Set(urls),used=new Set();
  let exact=0,visual=0;
  for(const item of S.files){
-  if(!item.urlPairVerified&&item.url&&!urls.includes(item.url)){item.url="";item.urlMatch="";}
+  if(item.url&&!urls.includes(item.url)){item.url="";item.urlMatch="";item.urlPairVerified=false;item.verified=false;}
   if(item.urlPairVerified&&urls.includes(item.url)){remaining.delete(item.url);used.add(item);continue;}
   const stem=normalizedImageStem(item.name);
   const found=[...remaining].filter(url=>{
@@ -1036,6 +1037,7 @@ function applyBulkUrls(){
  const all=changes.map(x=>x[1]);
  if(new Set(all).size!==all.length){message("批次網址有重複，請先檢查。",true);return;}
  for(const [item,url]of changes){item.url=url;item.urlPairVerified=false;item.verified=false;}
+ S.cmsUrls=[...new Set(changes.map(x=>x[1]))];
  $("cyexp-confirm-urls").checked=false;
  renderItems();
  message("已套用 "+changes.length+" 個網址，但未證明圖片內容對應正確。請核對原圖和官網縮圖。");
