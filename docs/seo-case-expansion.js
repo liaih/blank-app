@@ -6,7 +6,7 @@ if(!host)return;
 const $=id=>host.querySelector("#"+id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 const zones=["格局圖","玄關與客廳","玄關","客廳","客餐廳","廚房與走道","多功能工作區","臥室","更衣收納","其他"];
-const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,translator:null,transformers:null,modelBusy:false,visionReady:false,verifiedBase:false,localConnected:false,localModel:"",cmsUrls:[],matchRunning:false,matchCancelled:false,matchControllers:new Set(),matchStartedAt:0,matchTimer:null,matchStage:"",matchStep:0,matchTotal:0};
+const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,translator:null,transformers:null,modelBusy:false,visionReady:false,verifiedBase:false,localConnected:false,localModel:"",cmsUrls:[],cmsVisionCache:new Map(),cmsCorsUnavailable:false,matchRunning:false,matchCancelled:false,matchControllers:new Set(),matchStartedAt:0,matchTimer:null,matchStage:"",matchStep:0,matchTotal:0};
 const markup=[
 '<div class="cyexp-head"><h3>同建案新增案件｜AI 讀圖＋ALT＋格局圖</h3>',
 '<p class="cyexp-muted">原文章＋舊戶型全部保留。新增圖片在本機辨識；圖片須先上傳晨陽官網取得正式網址，才可輸出正式 HTML。</p></div>',
@@ -577,8 +577,12 @@ async function addFiles(files){
     // Reattach the exact same image while preserving edited descriptions,
     // ALT, and official URLs. Verification does not carry over.
     existing.file=file;existing.preview=a.preview;
-    existing.verified=false;existing.urlPairVerified=false;
-    existing.origin="已以 SHA-256 重新連結原圖；描述與 ALT 保留，需重新核對";
+    existing.verified=false;
+    existing.urlPairVerified=!!existing.savedUrlPairVerified&&validUrl(existing.url);
+    existing.urlMatch=existing.urlPairVerified?
+     "從草稿恢復已核對配對（原圖 SHA-256 一致；仍須確認網站 URL）":(existing.urlMatch||"待核對圖片");
+    delete existing.savedUrlPairVerified;
+    existing.origin="已核對原圖 SHA-256，保留已編輯的圖片描述與 ALT";
     restored++;
    }else URL.revokeObjectURL(a.preview);
    continue;
@@ -954,6 +958,7 @@ async function runCmsMatch(raw){
     "目前已指派 "+result.assigned+"/"+S.files.length+" 張；需要時可再次按自動配對。";
   }else{
    showCmsMatch(result);
+   $("cyexp-cms-match-status").textContent+="；本次耗時 "+((Date.now()-S.matchStartedAt)/1000).toFixed(1)+" 秒";
   }
  }catch(e){
   $("cyexp-cms-match-status").textContent="圖片配對已中斷："+(e?.message||"未知錯誤")+"。未核對圖片不會輸出正式 HTML。";
@@ -999,7 +1004,7 @@ function visionMatchYes(result){
  return verdict==="yes"&&evidence.length>=2&&evidence.every(v=>String(v||"").trim().length>=4);
 }
 async function matchRemoteImagesWithLMStudio(urls,remaining,used){
- const output={suggested:0,accepted:0,failed:0,reason:""};
+ const output={suggested:0,accepted:0,failed:0,fastConfirmed:0,deepConfirmed:0,cached:0,remoteCalls:0,reason:""};
  if(!remaining.size)return output;
  if(!S.files.some(x=>x.file&&x.description?.trim()))return {...output,reason:"本機原圖或 AI 描述不足，無法進行視覺自動配對"};
  if(!S.localConnected){
@@ -1019,13 +1024,28 @@ async function matchRemoteImagesWithLMStudio(urls,remaining,used){
    return i+"："+String(item.role||"其他")+"｜"+String(item.description||"").replace(/\s+/g," ").slice(0,140);
   }).join("\n");
   try{
-   const shortlist=await localVisionRemoteRequest(url,
-    "仔細觀察這張官網室內設計圖片，從下面本機原圖的文字描述中挑選最可能是同一個攝影視角、相同家具位置與細節的 1-2 個候選。不是只判斷風格類似。完全無法判斷時回空陣列。僅回 JSON："+
-    '{"visible":true,"candidate_indices":[0,1],"observation":"畫面中可見的具體物件位置"}。索引從0開始，禁止憑候選順序猜測。\n本機圖片清單：\n'+catalogue);
+   const cacheKey=JSON.stringify([S.localModel,url,catalogue,originals.map(x=>x.sha256||x.name)]);
+   let shortlist=S.cmsVisionCache.get(cacheKey);
+   if(shortlist)output.cached++;
+   else{
+    output.remoteCalls++;
+    shortlist=await localVisionRemoteRequest(url,
+     "仔細觀察這張官網室內設計圖片，從下面本機原圖文字說明挑選同一個攝影視角、相同家具位置與空間細節的 1-2 個候選。"+
+     "不要只憑風格、材質或圖片順序猜測；只有唯一且非常清楚的候選才回 high，否則回 medium 或 low。"+
+     '只回 JSON：{"visible":true,"candidate_indices":[0],"confidence":"high|medium|low","distinctive_features":["具體共同細節1","具體共同細節2"],"observation":"實際可見的關鍵物件位置"}。'+
+     "索引從0開始，不得依照圖片順序推斷。\n本機圖片清單：\n"+catalogue);
+    if(shortlist?.visible===true&&Array.isArray(shortlist.candidate_indices)){
+     if(S.cmsVisionCache.size>=80)S.cmsVisionCache.delete(S.cmsVisionCache.keys().next().value);
+     S.cmsVisionCache.set(cacheKey,shortlist);
+    }
+   }
    if(shortlist?.visible!==true||!Array.isArray(shortlist.candidate_indices))
     throw Error("本機 AI 未確認看見遠端圖片");
    const indexList=[...new Set(shortlist.candidate_indices.map(Number))]
     .filter(i=>Number.isInteger(i)&&i>=0&&i<originals.length).slice(0,2);
+   const features=Array.isArray(shortlist.distinctive_features)?shortlist.distinctive_features:[];
+   const fastCandidate=originals[indexList[0]]?.role!=="格局圖"&&indexList.length===1&&String(shortlist.confidence||"").toLowerCase()==="high"&&
+    features.length>=2&&features.every(v=>String(v||"").trim().length>=5);
    for(const index of indexList){
     const original=originals[index];
     if(!originalImages.has(original))originalImages.set(original,await localImagePreviewData(original.file));
@@ -1034,12 +1054,17 @@ async function matchRemoteImagesWithLMStudio(urls,remaining,used){
      "請逐一比對家具相對位置、畫框數量與位置、門窗、櫃體輪廓及背景。若看不到圖片或不確定則回答 unsure。只回 JSON："+ 
      '{"same":"yes|no|unsure","matching_details":["兩張共有的具體視覺特徵1","兩張共有的具體視覺特徵2"],"difference":"有何差異或無"}。';
     setCmsMatchProgress("第 "+(number+1)+"/"+total+" 張：正在比較官網圖與本機原圖細節。",number,total);
+    output.remoteCalls++;
     const first=await localVisionRemoteRequest(url,prompt,data,false);
     if(!visionMatchYes(first))continue;
-    setCmsMatchProgress("第 "+(number+1)+"/"+total+" 張：正在反向確認，避免錯誤的圖片套用 ALT。",number,total);
-    const second=await localVisionRemoteRequest(url,prompt,data,true);
-    if(!visionMatchYes(second))continue;
-    proposals.push({url,item:original,first,second});
+    let second=null;
+    if(!fastCandidate){
+     setCmsMatchProgress("第 "+(number+1)+"/"+total+" 張：候選有歧義，正在反向深度核對。",number,total);
+     output.remoteCalls++;
+     second=await localVisionRemoteRequest(url,prompt,data,true);
+     if(!visionMatchYes(second))continue;
+    }
+    proposals.push({url,item:original,first,second,fast:fastCandidate});
     break;
    }
   }catch(error){
@@ -1062,9 +1087,12 @@ async function matchRemoteImagesWithLMStudio(urls,remaining,used){
   if(pair.item.urlPairVerified&&pair.item.url!==pair.url)continue;
   pair.item.url=pair.url;
   pair.item.urlPairVerified=true;
-  pair.item.urlMatch="Qwen3-VL 雙向視覺比對通過（非像素證明；上稿前抽查）";
+  pair.item.urlMatch=pair.fast?
+   "Qwen3-VL 高信心快速視覺比對（非像素證明；上稿前抽查）":
+   "Qwen3-VL 雙向深度視覺比對（非像素證明；上稿前抽查）";
   used.add(pair.item);remaining.delete(pair.url);
   output.accepted++;
+  if(pair.fast)output.fastConfirmed++;else output.deepConfirmed++;
  }
  output.suggested=proposals.length;
  return output;
@@ -1162,21 +1190,37 @@ async function matchImagesFromCms(raw){
  // Browser can compare the actual bytes only if the official site permits CORS.
  // Identical SHA256 is proof of identical image file bytes; similarity merely proposes a candidate.
  const remote=new Map();
- await Promise.all([...remaining].map(async url=>{
-  if(S.matchCancelled)return;
-  const tracked=newCmsMatchController(7000);
+ // Probe just one official CMS URL. Image upload files share the same host
+ // and CORS policy. Do not make all 10 requests wait 7 seconds each if the
+ // image server blocks pixel access from GitHub Pages.
+ async function downloadForFingerprint(url,ms){
+  if(S.matchCancelled)return null;
+  const tracked=newCmsMatchController(ms);
   try{
    const response=await fetch(url,{mode:"cors",cache:"force-cache",signal:tracked.signal});
    if(!response.ok)throw Error("HTTP "+response.status);
    const blob=await response.blob();
-   if(!blob.type.startsWith("image/"))return;
+   if(!blob.type.startsWith("image/"))throw Error("回傳不是圖片");
    const hash=await crypto.subtle.digest("SHA-256",await blob.arrayBuffer());
    const sha=Array.from(new Uint8Array(hash)).map(x=>x.toString(16).padStart(2,"0")).join("");
    const dh=await imageDhash(blob).catch(()=>"");
    remote.set(url,{sha,dh});
-  }catch(_){/* CORS may forbid reading pixels; never fake identity. */}
+   return true;
+  }catch(_){return false;}
   finally{tracked.dispose();}
- }));
+ }
+ if(remaining.size&&!S.cmsCorsUnavailable&&!S.matchCancelled){
+  const all=[...remaining];
+  const firstUrl=all[0];
+  const canRead=await downloadForFingerprint(firstUrl,3000);
+  if(canRead){
+   await Promise.all(all.slice(1).map(url=>downloadForFingerprint(url,5000)));
+  }else{
+   // Repeated matching within this page skips the unusable CORS path and
+   // immediately uses local vision instead.
+   S.cmsCorsUnavailable=true;
+  }
+ }
  for(const item of S.files){
   if(used.has(item)||!item.file)continue;
   const candidates=[...remaining].filter(url=>remote.has(url));
@@ -1204,7 +1248,8 @@ async function matchImagesFromCms(raw){
  const issues=[];
  if(assigned<S.files.length)issues.push("尚有 "+(S.files.length-assigned)+" 張官網圖片未可靠配對，請在下方縮圖區選擇");
  if(unverified)issues.push("尚有 "+unverified+" 張匹配候選未核對圖片內容");
- if(ai.accepted)issues.push("本機 Qwen3-VL 已雙向視覺確認 "+ai.accepted+" 張；這是 AI 判斷，不等於像素雜湊證明，正式上稿前仍應抽查");
+ if(ai.accepted)issues.push("本機 Qwen3-VL 自動配對 "+ai.accepted+" 張（快速核對 "+ai.fastConfirmed+"、深度核對 "+ai.deepConfirmed+"；非像素證明，上稿前需抽查）");
+ if(ai.remoteCalls)issues.push("本次本機 AI 呼叫 "+ai.remoteCalls+" 次；重複使用候選快取 "+ai.cached+" 次");
  if(ai.reason)issues.push("本機 AI 遠端比對限制："+ai.reason);
  if(remote.size===0&&exact<S.files.length&&!ai.accepted)issues.push("瀏覽器無法直接讀取官網圖片像素；已嘗試本機 AI 遠端讀圖，無法確認時不亂配");
  return {total:urls.length,assigned,exact,visual,ai:ai.accepted,unverified,issues};
@@ -1212,7 +1257,7 @@ async function matchImagesFromCms(raw){
 function showCmsMatch(result){
  const box=$("cyexp-cms-match-status");
  const text=["官網圖片 "+result.total+" 張；已找到對應或候選 "+result.assigned+" / "+S.files.length+
-  "（檔名 "+result.exact+"、像素 "+result.visual+"、本機 AI 雙向確認 "+(result.ai||0)+"、順序推定 0）"];
+  "（檔名 "+result.exact+"、像素 "+result.visual+"、本機 AI 確認 "+(result.ai||0)+"、順序推定 0）"];
  if(result.issues?.length)text.push(...result.issues);
  box.textContent=text.join("；");
  box.style.color=result.unverified||result.assigned<S.files.length?"#9a3412":"#157356";
@@ -1289,7 +1334,11 @@ function exportDraft(){
  const base=pickBase();
  const safe={
   version:1,project_id:base?.id||"",unit:$("cyexp-unit").value,type:$("cyexp-type").value,
-  intro:$("cyexp-intro").value,items:S.files.map(({name,sha256,role,description,alt,url,verified,origin})=>({name,sha256,role,description,alt,url,verified,origin})),
+  intro:$("cyexp-intro").value,items:S.files.map(({name,sha256,role,description,alt,url,verified,origin,urlPairVerified,urlMatch})=>({
+   name,sha256,role,description,alt,url,verified,origin,
+   urlPairVerified:!!urlPairVerified&&/^[a-f0-9]{64}$/i.test(String(sha256||""))&&validUrl(url),
+   urlMatch:String(urlMatch||"").slice(0,180)
+  })),
   note:"僅儲存文字／照片雜湊及正式圖片網址，不包含原始照片、現有 CMS HTML、任何 API 密鑰"
  };
  download("chenyang-new-case-draft-"+(base?.id||"unknown")+".json",JSON.stringify(safe,null,2));
@@ -1306,10 +1355,13 @@ async function importDraft(file){
   role:zones.includes(x.role)?x.role:"其他",
   description:String(x.description||"").slice(0,1500),
   alt:String(x.alt||"").slice(0,260),url:String(x.url||"").slice(0,1200),
-  verified:false,urlPairVerified:false,origin:"已從草稿恢復；需重新人工核對",preview:null,file:null
+  verified:false,urlPairVerified:false,
+  savedUrlPairVerified:!!x.urlPairVerified&&/^[a-f0-9]{64}$/i.test(String(x.sha256||""))&&validUrl(String(x.url||"")),
+  urlMatch:String(x.urlMatch||"").slice(0,180),
+  origin:"已從草稿載入。需重新選取相同原圖才能恢復已確認的網址配對",preview:null,file:null
  }));
  $("cyexp-confirm-base").checked=false;$("cyexp-confirm-urls").checked=false;$("cyexp-confirm-floorplan").checked=false;
- renderItems();message("草稿已讀取，但照片本體未包含於 JSON，請重新上傳核對；所有完成勾選已重設。");
+ renderItems();message("草稿已讀取。重新選取相同原圖後會透過 SHA-256 恢復已確認圖片配對；描述與 ALT 保留，正式上稿仍需核對。");
 }
 async function start(){
  const out=await Promise.allSettled([
