@@ -311,3 +311,69 @@ test("clipboard import prefers rich text/html from CMS over copied visible text,
  assert.match(d.querySelector("#cyexp-cms-match-status").textContent,/檔名配對 2/);
  dom.window.close();
 });
+
+test("REGRESSION: primary visible AI-read button is next to upload and reconnects Qwen3-VL on ONE click after page reload",async()=>{
+ const dom=await setup(),d=dom.window.document;
+ const main=d.querySelector("#cyexp-read"),upload=d.querySelector("#cyexp-files");
+ assert.ok(main&&upload);
+ assert.equal(main.closest("details"),null,"primary AI button must not be hidden in a collapsed settings panel");
+ assert.match(main.textContent,/AI 讀圖.*LM Studio Qwen3-VL/);
+ assert.ok(main.closest(".cyexp-actions").contains(upload));
+ assert.equal(d.querySelector("#cyexp-local-ai").open,false);
+ await fileSelect(dom,"bedroom.png");
+ let modelCalls=0,inferenceCalls=0;
+ dom.window.fetch=async (url,opts)=>{
+  if(String(url).endsWith("/v1/models")){
+   modelCalls++;
+   return {ok:true,json:async()=>({data:[{id:"qwen/qwen3-vl-8b"}]})};
+  }
+  if(String(url).endsWith("/v1/chat/completions")){
+   inferenceCalls++;
+   const req=JSON.parse(opts.body);
+   assert.equal(req.model,"qwen/qwen3-vl-8b");
+   assert.ok(req.messages[1].content.some(x=>x.type==="image_url"));
+   return {ok:true,json:async()=>({choices:[{message:{content:JSON.stringify({
+    space:"臥室",description:"白色與木質調的臥室空間，床邊有梳妝桌及窗簾，圖面呈現室內設計的空間安排與光線。"
+   })}}]})};
+  }
+  throw new Error("unrecognized request "+url);
+ };
+ main.click();
+ await new Promise(r=>setTimeout(r,130));
+ assert.equal(modelCalls,1,"single AI button click must reconnect LM Studio");
+ assert.equal(inferenceCalls,1,"same AI click must launch image inference");
+ const item=d.querySelector(".cyexp-item");
+ assert.match(item.querySelector('[data-attr="description"]').value,/木質調的臥室/);
+ assert.match(item.querySelector('[data-attr="alt"]').value,/丹佛花都/);
+ assert.equal(item.querySelector('[data-attr="verified"]').checked,false);
+ assert.match(d.querySelector("#cyexp-main-ai-status").textContent,/本機讀圖完成/);
+ assert.ok(d.querySelector("#cyexp-cms-import-panel"),"CMS batch URL import must remain intact");
+ assert.ok(d.querySelector("#cyexp-approve-reviewed"),"batch approval must remain intact");
+ assert.ok(d.querySelector("#cyexp-fallback-read"),"fallback must remain explicitly available");
+ dom.window.close();
+});
+test("REGRESSION: failed LM Studio connection never silently changes primary button to low-quality model",async()=>{
+ const dom=await setup(),d=dom.window.document;
+ await fileSelect(dom,"living.png");
+ let calls=0;
+ dom.window.fetch=async()=>{calls++;throw new TypeError("Failed to fetch");};
+ d.querySelector("#cyexp-read").click();
+ await new Promise(r=>setTimeout(r,40));
+ assert.equal(calls,1,"only attempt real LM Studio connection");
+ assert.match(d.querySelector("#cyexp-read").textContent,/LM Studio Qwen3-VL/);
+ assert.doesNotMatch(d.querySelector("#cyexp-read").textContent,/備援/);
+ assert.equal(d.querySelector("#cyexp-local-ai").open,true,"open diagnostics automatically after failure");
+ assert.match(d.querySelector("#cyexp-main-ai-status").textContent,/連線被阻擋/);
+ assert.equal(d.querySelector("#cyexp-copy").disabled,true);
+ dom.window.close();
+});
+test("REGRESSION: no-image AI click explains what to do and does not connect or download models",async()=>{
+ const dom=await setup(),d=dom.window.document;
+ let calls=0;
+ dom.window.fetch=async()=>{calls++;throw Error("should not be called");};
+ d.querySelector("#cyexp-read").click();
+ await new Promise(r=>setTimeout(r,25));
+ assert.equal(calls,0);
+ assert.match(d.querySelector("#cyexp-main-ai-status").textContent,/先選擇要讀圖的照片/);
+ dom.window.close();
+});
