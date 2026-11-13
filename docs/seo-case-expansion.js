@@ -621,6 +621,7 @@ function checks(){
  const pasted=$("cyexp-newbase").value.trim();
  const validatedBase=!!(base?.media_integrated&&base?.floorplan_protection_passed&&base?.preservation_audit?.original_main_content_preserved);
  const items=[];
+ if(!articleContextMatches())items.push("上方文章與目前新增案例不一致；禁止跨案場輸出");
  if(!project||!base)items.push("請選擇已有原文的建案");
  if(!unit)items.push("請填新增案件的內部識別名稱");
  if(!S.files.length)items.push("尚未選擇新案件圖片");
@@ -666,6 +667,7 @@ function mergeCaseIntoArticleBeforeClosingSections(original,caseSection){
  return original.slice(0,offset)+caseSection+original.slice(offset);
 }
 function generate({draft=false,preview=false}={}){
+ if(!articleContextMatches())throw Error("文章選擇尚未同步，禁止跨案場產出 HTML");
  const base=baseHtml();
  if(!base)return "";
  const project=chooseTitle(),kind=$("cyexp-type").value;
@@ -735,7 +737,7 @@ function updateStatus(){
   details.appendChild(ul);status.appendChild(details);
  }
  // Draft preview is always available before official URL and CMS verification.
- const canDraft=!!(pickBase()&&baseHtml()&&S.files.length);
+ const canDraft=!!(articleContextMatches()&&pickBase()&&baseHtml()&&S.files.length);
  const pendingUrls=S.files.filter(x=>!validUrl(x.url)).length;
  const pendingText=S.files.filter(x=>!x.description?.trim()||!x.alt?.trim()).length;
  $("cyexp-copy-draft").disabled=!canDraft;
@@ -1579,9 +1581,10 @@ async function start(){
   const op=document.createElement("option");op.value=item.id;
   op.textContent=(dr?.project_name||dr?.title||item.id).split("｜",1)[0];sel.appendChild(op);
  }
- const def=S.base.find(x=>x.id==="seo-danfo-234");
- if(def)sel.value=def.id;updateStatus();
- message("已載入 "+S.base.length+" 篇原文章及本次 9 張示意圖的已核對辨識範本；尚未上傳任何新圖片。");
+ const topId=topSelectedArticleId();
+ // No hard-coded default case; use exactly the selected task.
+ switchToCase(topId);
+ if(!topId)message("已載入 "+S.base.length+" 篇原文章，請從上方「選擇文章」選取要編輯的案場。");
 }
 $("cyexp-files").addEventListener("change",ev=>{addFiles(ev.target.files||[]);ev.target.value="";});
 $("cyexp-read").addEventListener("click",readImages);
@@ -1608,7 +1611,7 @@ $("cyexp-apply-urls").addEventListener("click",applyBulkUrls);
 $("cyexp-export").addEventListener("click",exportDraft);
 $("cyexp-import").addEventListener("change",ev=>{if(ev.target.files[0])importDraft(ev.target.files[0]);ev.target.value="";});
 $("cyexp-copy-draft").addEventListener("click",async()=>{
- if(!pickBase()||!baseHtml()||!S.files.length){updateStatus();return;}
+ if(!articleContextMatches()||!pickBase()||!baseHtml()||!S.files.length){updateStatus();return;}
  try{
   const html=generate({draft:true});
   if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(html);
@@ -1624,8 +1627,9 @@ $("cyexp-copy").addEventListener("click",async()=>{
  try{await navigator.clipboard.writeText(generate());message("已複製：原文＋所有原格局圖＋新增案件＋新格局圖。正式上稿前請在 CMS 預覽再次核對。");}
  catch(_){message("瀏覽器複製失敗，請在下方 HTML 原始碼欄手動複製。",true);}
 });
-for(const id of ["cyexp-base","cyexp-unit","cyexp-type","cyexp-intro","cyexp-newbase","cyexp-confirm-base","cyexp-confirm-urls","cyexp-confirm-floorplan"]){
+for(const id of ["cyexp-unit","cyexp-type","cyexp-intro","cyexp-newbase","cyexp-confirm-base","cyexp-confirm-urls","cyexp-confirm-floorplan"]){
  $(id).addEventListener("input",updateStatus);$(id).addEventListener("change",updateStatus);
 }
+document.addEventListener("chenyang:seo-article-selection",handleMainSeoArticleSelection);
 start();
 })();
