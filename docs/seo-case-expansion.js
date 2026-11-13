@@ -30,6 +30,10 @@ const markup=[
 '<div class="cyexp-actions"><button type="button" id="cyexp-connect">測試本機 AI 連線／讀取模型</button>',
 '<button type="button" id="cyexp-local-read" disabled>用本機 AI 重新讀取全部新圖片</button></div>',
 '<p id="cyexp-local-status" role="status" class="cyexp-muted">尚未連接。現有小模型的粗略翻譯不適合直接上稿。</p>',
+'<div class="cyexp-advanced"><p class="cyexp-muted"><strong>連不上時請依序排查：</strong>① 在 LM Studio → Developer 按 Start Server，確認 Port 1234；② 在 Server Settings 開啟 Enable CORS，保持 Serve on Local Network 關閉；③ 點下方「直接檢查本機 API」並確認回傳模型 JSON（若要求驗證可能顯示 401）；④ 回來按「測試本機 AI 連線」，並允許 Chrome 的本機網路權限。切勿關閉瀏覽器安全保護。</p>',
+'<div class="cyexp-actions"><a id="cyexp-local-check-url" href="http://127.0.0.1:1234/v1/models" target="_blank" rel="noopener noreferrer">直接檢查本機 API（另開分頁）</a>',
+'<button type="button" id="cyexp-copy-start">複製 LM Studio 啟動指令（PowerShell）</button></div>',
+'<p class="cyexp-muted">建議 PowerShell 指令：<code>lms server start --port 1234 --bind 127.0.0.1 --cors</code>。若 LM Studio 已由圖形介面啟動，不必再開第二個 Server。啟用 CORS 時建議開啟 API 身分驗證。</p></div>',
 '<p class="cyexp-muted">每張圖會個別送到你電腦的本機模型；不會寫入任何雲端 API 金鑰。讀圖產物仍需人工核對，格局圖不會由 AI 自動宣告驗收通過。</p></details>',
 '<p class="cyexp-muted">本次丹佛花都 9 張原始示意圖有既有人工辨識範本；其他新圖改用 Transformers.js 官方支援的 image-to-text 讀圖模型，再以本機英文轉中文模型翻譯。首次須下載模型，通常使用 CPU 也能執行，不強制 WebGPU。圖片不送往付費 AI API；描述僅是草稿，需人工核對，格局圖需確認圖面。</p>',
 '<p id="cyexp-vision-status" class="cyexp-muted" role="status"></p>',
@@ -307,8 +311,8 @@ function localStatus(txt,err=false){
  $("cyexp-local-status").style.color=err?"#b91c1c":"";
 }
 function localError(e){
- const hints="檢查 LM Studio 已啟動伺服器、啟用 CORS、僅綁定 127.0.0.1；Chrome 若詢問本機網路存取權限，需自行確認是否允許。";
- if(e?.name==="TypeError")return "網頁無法連到此電腦的 AI，可能是 Server、CORS 或瀏覽器權限問題。"+hints;
+ const hints="請先在瀏覽器另開 http://127.0.0.1:1234/v1/models 確認伺服器可回應；接著在 LM Studio Developer 檢查 Server Port=1234、Server Running、Enable CORS、Serve on Local Network=關閉。若 Chrome 跳出本機網路／回送位址權限，請允許這個你信任的網站。";
+ if(e?.name==="TypeError")return "連線被阻擋：可能是 LM Studio 沒啟動、CORS 未開、瀏覽器未授權存取本機網路，或 HTTPS→HTTP 本機連線限制。"+hints;
  return String(e?.message||"連線失敗")+"。"+hints;
 }
 async function connectLocalAI(){
@@ -318,7 +322,8 @@ async function connectLocalAI(){
  localStatus("正在連接本機 LM Studio 127.0.0.1:1234……");
  try{
   const resp=await fetch(LMSTUDIO_BASE+"/v1/models",{
-    method:"GET",headers:localAuthHeaders(),mode:"cors",cache:"no-store"
+    method:"GET",headers:localAuthHeaders(),mode:"cors",cache:"no-store",
+    targetAddressSpace:"loopback"
   });
   if(!resp.ok)throw Error("LM Studio HTTP "+resp.status+(resp.status===401?"：請輸入本機 API Token":""));
   const d=await resp.json(), models=Array.isArray(d.data)?d.data:[];
@@ -374,7 +379,8 @@ async function localVisionOne(file,model){
  const timer=setTimeout(()=>ctrl.abort(),240000);
  try{
   const resp=await fetch(LMSTUDIO_BASE+"/v1/chat/completions",{
-   method:"POST",headers:localAuthHeaders(true),mode:"cors",signal:ctrl.signal,body:JSON.stringify(req)
+   method:"POST",headers:localAuthHeaders(true),mode:"cors",signal:ctrl.signal,
+   targetAddressSpace:"loopback",body:JSON.stringify(req)
   });
   if(!resp.ok)throw Error("LM Studio 回應 HTTP "+resp.status+"："+(await resp.text()).slice(0,160));
   const json=await resp.json();
@@ -584,6 +590,14 @@ async function start(){
 $("cyexp-files").addEventListener("change",ev=>{addFiles(ev.target.files||[]);ev.target.value="";});
 $("cyexp-read").addEventListener("click",readImages);
 $("cyexp-connect").addEventListener("click",connectLocalAI);
+$("cyexp-copy-start").addEventListener("click",()=>{
+ const command="lms server start --port 1234 --bind 127.0.0.1 --cors";
+ if(navigator.clipboard?.writeText){
+  navigator.clipboard.writeText(command)
+    .then(()=>localStatus("已複製啟動指令。請在 Windows PowerShell 貼上執行，確認本機服務運作後再按測試。"))
+    .catch(()=>localStatus("瀏覽器禁止複製；請手動複製畫面中的 PowerShell 指令。",true));
+ }else{localStatus("無法自動複製；請手動複製畫面中的 PowerShell 指令。",true);}
+});
 $("cyexp-local-read").addEventListener("click",readWithLocalAI);
 $("cyexp-local-model").addEventListener("change",()=>{S.localModel=$("cyexp-local-model").value;localStatus("已選擇："+S.localModel+"；接著按「用本機 AI 重新讀取全部新圖片」。");});
 $("cyexp-unit").addEventListener("change",refreshAutoAlts);
