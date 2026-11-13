@@ -6,26 +6,48 @@
   "not_own_tavily_rag": true,
   "window_start": "2026-10-15",
   "window_end": "2026-11-13",
-  "generated_at": "2026-11-13T21:50:18+08:00",
-  "total_samples": 3,
+  "generated_at": "2026-11-13T22:21:22+08:00",
+  "total_samples": 4,
   "platforms": [
     {
       "platform": "ChatGPT",
-      "samples": 1,
+      "samples": 2,
       "existing_jobs": {
-        "pending": 1,
-        "stored": 1,
+        "pending": 0,
+        "stored": 2,
         "failed": 0,
         "no-evidence": 0
       },
       "mentions": 0,
       "direct_domain_citations": 0,
-      "answers_with_sources": 0,
-      "last_sample_date": "2026-11-12",
+      "answers_with_sources": 1,
+      "last_sample_date": "2026-11-13",
       "competitor_candidates": [],
-      "cited_domains": [],
+      "cited_domains": [
+        {
+          "domain": "wowhouse1115.com",
+          "occurrences": 1
+        },
+        {
+          "domain": "www.yingcasaonline.com",
+          "occurrences": 1
+        },
+        {
+          "domain": "www.openworld.tv",
+          "occurrences": 1
+        },
+        {
+          "domain": "www.pro360.com.tw",
+          "occurrences": 1
+        },
+        {
+          "domain": "www.yufang-design.com.tw",
+          "occurrences": 1
+        }
+      ],
       "tested_prompt_ids": [
-        "kaohsiung-condo"
+        "kaohsiung-condo",
+        "renovation-cost"
       ]
     },
     {
@@ -77,10 +99,10 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 1,
+        "pending": 0,
         "stored": 0,
         "failed": 0,
-        "no-evidence": 1
+        "no-evidence": 2
       },
       "mentions": 0,
       "direct_domain_citations": 0,
@@ -92,6 +114,27 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "ebd710e0b70b3280",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "ChatGPT",
+      "prompt_id": "renovation-cost",
+      "prompt": "2026年台灣住宅老屋翻新每坪預算如何評估？請引用施工實例或業者公開資料。",
+      "answered_at": "2026-11-13T22:21:19+08:00",
+      "answer_excerpt": "2026 年台灣住宅老屋翻新：每坪預算評估指南 2026 年在台灣進行住宅老屋翻新，建議不要只用「每坪裝潢多少錢」估算，而應該區分為 基礎工程、全室翻新、格局變更及高規格翻修 。 老屋翻新的最大成本差異，通常不是磁磚或木地板，而是水電管線、防水、漏水修繕、拆除清運，以及是否需要更動格局。 以下以新台幣（NTD）估算，並以住宅室內實際施工面積作為初步預算基準。這裡的金額是工程規劃參考，不等於固定市場報價。 一、2026 年老屋翻新每坪預算行情 綜合 2026 年公開的裝修業者資料與工程報價平台，可以先整理成以下預算級距： 翻新程度 每坪預算 主要施工內容 局部整理 3～5 萬 油漆、地板、燈具、局部修繕 中度翻新 5～8 萬 局部水電、廚衛更新、部分泥作 完整翻新 8～12 萬 拆除、水電、防水、泥作、油漆、基本裝修 中高規格翻新 12～15 萬 全室管線、廚衛更新、系統櫃、木作 重度老屋翻修 15～22 萬以上 老舊管線、排水、漏水、結構及特殊工程 我的實務預算建議： 20～25 年住宅：每坪 8～12 萬元。 25～35 年住宅：每坪 10～15 萬元。 35～40 年以上住宅：每坪 12～20 萬元以上。 這些是初步規劃區間，不是屋齡直接決定的固定價格。即使是 40 年老屋，如果管線與防水曾經更新，成本也可能低於屋況不佳的 25 年住宅。 公開資料的交叉比較 以下幾份資料值得參考： 1. 窩要成設計 ：2026 年 8 月公開文章表示，其依據 2018 年以來累計 705 件老屋翻新工程的報價與施工紀錄，整理出局部整理每坪 3～5 萬、中度翻新 5～10 萬、全室翻新 8～15 萬、重度翻新 15～20 萬以上。這是業者自有工程資料，並非全台統計。 窩要成設計 2. OPEN Design ：2026 年公開資料指出，老屋全室翻新約每坪 10～20 萬元；其中基礎工程約每坪 4～8 萬元。並列出水電、防水、鋁窗、電箱與排水管等細項。 OPEN Design 動能開啟 +1 3. PRO360 達人網 ：公開的舊屋翻新報價統計為每坪約 7～10 萬元，屋況不佳、漏水或壁癌嚴重時可達 12 萬元。這類平台行情適合當作初步比價基準，但不能直接視為完整統包工程的最終總價。 PRO360達人網 4. 御坊室內設計 ：公開收費標準為老屋翻新工程每坪約 10～15 萬元，另收總工程款 12～15% 的工程整合管理費，並明列設計費及家具家電不包含在工程費內。 御坊室內設計 這些資料看似有價格落差，其實關鍵在於： 有些業者報的是工程費，有些報的是含管理或設計服務的完整費用，有些則是平台上的初步報價行情。 比較時一定要先確認包含的工程範圍。 二、老屋翻新費用應該如何拆解？ 如果是 30 年以上的老屋，我會把預算分成以下幾大類。 工程項目 預算占比參考 主要內容 拆除及清運 8～12% 地磚、天花板、舊櫃體拆除 水電工程 15～20% 電線、給排水、配電箱 泥作及防水 15～20% 浴室、廚房、陽台、地坪 鋁窗及門片 5～10% 氣密窗、房門、玄關門 木作及系統櫃 10～18% 天花板、收納、隔間 廚房及衛浴 10～15% 廚具、衛浴設備 油漆及地板 8～12% 批土、油漆、地板鋪設 設計管理及其他 5～10% 設計、監工、工程管理 以上是規劃用的示意比例，不是任何單一業者的固定報價比例；實際占比會隨工程內容變動。 特別注意：基礎工程才是老屋翻新的核心 水電管線 重拉電線、給排水、配電箱及迴路配置。 浴室防水 拆除舊磁磚、防水層重作及閉水測試。 壁癌與漏水 確認滲",
+      "excerpt_truncated": true,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "wowhouse1115.com",
+        "www.openworld.tv",
+        "www.pro360.com.tw",
+        "www.yingcasaonline.com",
+        "www.yufang-design.com.tw"
+      ]
+    },
     {
       "evidence_id": "c06f123f33516439",
       "recommendation_status": "未提及晨陽",
@@ -147,8 +190,8 @@
   ],
   "existing_job_status": {
     "ChatGPT": {
-      "pending": 1,
-      "stored": 1,
+      "pending": 0,
+      "stored": 2,
       "failed": 0,
       "no-evidence": 0
     },
@@ -159,16 +202,16 @@
       "no-evidence": 0
     },
     "Perplexity": {
-      "pending": 1,
+      "pending": 0,
       "stored": 0,
       "failed": 0,
-      "no-evidence": 1
+      "no-evidence": 2
     }
   },
   "latest_job_status": {
     "ChatGPT": {
       "day": "2026-11-13",
-      "status": "pending",
+      "status": "stored",
       "reason": ""
     },
     "Gemini": {
@@ -178,8 +221,8 @@
     },
     "Perplexity": {
       "day": "2026-11-13",
-      "status": "pending",
-      "reason": ""
+      "status": "no-evidence",
+      "reason": "vendor_input_only_no_answer"
     }
   },
   "intent_analysis": {
@@ -464,7 +507,7 @@
         ],
         "platforms": {
           "ChatGPT": {
-            "samples": 0,
+            "samples": 1,
             "mentions": 0,
             "direct_citations": 0
           },
