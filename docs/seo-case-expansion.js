@@ -874,7 +874,7 @@ function updateStatus(){
  $("cyexp-html").value=c.pass?generate():"正式上稿驗收尚未完成；SEO 草稿可在第二步預覽及複製。";
  $("cyexp-preview").replaceChildren();
  if(c.pass){
-  const tag=document.createElement("p");tag.className="cyexp-muted";tag.textContent="新增 "+c.newImageCount+" 張圖片、其中新格局圖 "+c.newFloorplanCount+" 張；原 HTML 完整保留於最前方。";$("cyexp-preview").appendChild(tag);
+  const tag=document.createElement("p");tag.className="cyexp-muted";tag.textContent="新增 "+c.newImageCount+" 張圖片、其中新格局圖 "+c.newFloorplanCount+" 張；原文保留，新增案例排列於 FAQ 與延伸閱讀之前。";$("cyexp-preview").appendChild(tag);
   const frame=document.createElement("iframe");
   frame.setAttribute("sandbox","");frame.title="原文及新增案件完整 HTML 預覽";
   frame.style.cssText="width:100%;max-width:100%;height:480px;border:1px solid #d6dfe8;border-radius:10px;background:white";
@@ -883,6 +883,7 @@ function updateStatus(){
     generate()+'</body></html>';
   $("cyexp-preview").appendChild(frame);
  }
+ scheduleCaseAutosave();
 }
 async function loadKnown(){
  try{
@@ -1716,6 +1717,7 @@ async function start(){
  }
  S.base=(out[0].value.articles||[]).filter(x=>x.html_with_media);
  S.drafts=out[1].value.articles||[];
+ restoreCaseAutosave();
  const sel=$("cyexp-base");sel.replaceChildren();
  for(const item of S.base){
   const dr=S.drafts.find(x=>x.id===item.id);
@@ -1772,5 +1774,9 @@ for(const id of ["cyexp-unit","cyexp-type","cyexp-intro","cyexp-newbase","cyexp-
  $(id).addEventListener("input",updateStatus);$(id).addEventListener("change",updateStatus);
 }
 document.addEventListener("chenyang:seo-article-selection",handleMainSeoArticleSelection);
+window.addEventListener("pagehide",()=>{
+ if(S.autosaveTimer){clearTimeout(S.autosaveTimer);S.autosaveTimer=null;}
+ saveCaseAutosave();
+});
 start();
 })();
