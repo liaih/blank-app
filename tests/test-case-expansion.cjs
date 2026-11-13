@@ -198,6 +198,7 @@ test("user-initiated LM Studio connects only to loopback, re-reads bad caption, 
  assert.match(result.querySelector('[data-attr="alt"]').value,/丹佛花都/);
  assert.equal(result.querySelector('[data-attr="verified"]').checked,false);
  assert.ok(calls.every(x=>x.url.startsWith("http://127.0.0.1:1234/v1/")));
+ assert.equal((script.match(/targetAddressSpace:"loopback"/g)||[]).length,2,"Both model listing and image inference must declare Chrome loopback address space");
  assert.ok(calls.every(x=>x.headers?.Authorization==="Bearer temporary-only"));
  assert.doesNotMatch(script,/localStorage\.setItem\([^)]*cyexp-local-token/);
  dom.window.close();
@@ -206,4 +207,17 @@ test("local vision rejects unsupported or hallucinated non-JSON output",()=>{
  assert.match(script,/parseLocalVision\(output\)/);
  assert.match(script,/throw Error\("模型沒有提供 JSON 圖片描述/);
  assert.match(script,/a\.verified=false;done\+\+/);
+});
+
+test("HTTPS GitHub Pages connects to loopback with explicit browser address-space hint and diagnostic link", async()=>{
+ const dom=await setup();
+ const d=dom.window.document;
+ assert.match(script,/targetAddressSpace:"loopback"/);
+ assert.equal((script.match(/targetAddressSpace:"loopback"/g)||[]).length,2);
+ const link=d.querySelector("#cyexp-local-check-url");
+ assert.equal(link.href,"http://127.0.0.1:1234/v1/models");
+ assert.equal(link.target,"_blank");
+ assert.match(d.querySelector("#cyexp-local-ai").textContent,/Enable CORS/);
+ assert.match(d.querySelector("#cyexp-local-ai").textContent,/Serve on Local Network/);
+ dom.window.close();
 });
