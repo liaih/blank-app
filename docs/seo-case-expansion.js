@@ -921,6 +921,7 @@ function stopCmsMatch(){
  for(const controller of S.matchControllers)controller.abort();
 }
 async function runCmsMatch(raw){
+ if(S.modelBusy){$("cyexp-cms-match-status").textContent="本機 Qwen3-VL 正在執行前面的圖片辨識；同時啟動配對可能導致記憶體不足。請在讀圖完成後再按配對。";return;}
  if(S.matchRunning){$("cyexp-cms-match-status").textContent="圖片仍在處理中，可使用右下角的「停止配對」取消。";return;}
  if(!String(raw||"").trim()){$("cyexp-cms-match-status").textContent="請先貼入晨陽後台圖片 HTML，再按自動配對。";return;}
  S.matchRunning=true;S.matchCancelled=false;S.matchStartedAt=Date.now();
