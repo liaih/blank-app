@@ -295,6 +295,124 @@ async function addFiles(files){
  renderItems();
  message("已加入 "+fresh.length+" 張圖片；其中 "+matched+" 張比對到已判讀的 3D 示意圖（含可能縮放／壓縮版本，仍需核對畫面）。未識別圖片按「自動讀圖」，新格局圖需單獨加入並核對。");
 }
+
+const LMSTUDIO_BASE="http://127.0.0.1:1234";
+function localAuthHeaders(json=false){
+ const h={};if(json)h["Content-Type"]="application/json";
+ const t=$("cyexp-local-token").value.trim();if(t)h.Authorization="Bearer "+t;
+ return h;
+}
+function localStatus(txt,err=false){
+ $("cyexp-local-status").textContent=txt;
+ $("cyexp-local-status").style.color=err?"#b91c1c":"";
+}
+function localError(e){
+ const hints="檢查 LM Studio 已啟動伺服器、啟用 CORS、僅綁定 127.0.0.1；Chrome 若詢問本機網路存取權限，需自行確認是否允許。";
+ if(e?.name==="TypeError")return "網頁無法連到此電腦的 AI，可能是 Server、CORS 或瀏覽器權限問題。"+hints;
+ return String(e?.message||"連線失敗")+"。"+hints;
+}
+async function connectLocalAI(){
+ if(S.modelBusy)return;
+ const btn=$("cyexp-connect");btn.disabled=true;
+ S.localConnected=false;$("cyexp-local-read").disabled=true;
+ localStatus("正在連接本機 LM Studio 127.0.0.1:1234……");
+ try{
+  const resp=await fetch(LMSTUDIO_BASE+"/v1/models",{
+    method:"GET",headers:localAuthHeaders(),mode:"cors",cache:"no-store"
+  });
+  if(!resp.ok)throw Error("LM Studio HTTP "+resp.status+(resp.status===401?"：請輸入本機 API Token":""));
+  const d=await resp.json(), models=Array.isArray(d.data)?d.data:[];
+  if(!models.length)throw Error("已連接但沒有模型。請先在 LM Studio 載入可看圖的模型");
+  const select=$("cyexp-local-model");select.replaceChildren();
+  const priority=models.filter(x=>/qwen.*vl|llava|vision|pixtral|internvl/i.test(x.id||""));
+  for(const m of [...priority,...models.filter(x=>!priority.includes(x))]){
+    if(!m.id)continue;
+    const op=document.createElement("option");op.value=m.id;op.textContent=m.id;select.appendChild(op);
+  }
+  S.localConnected=true;S.localModel=select.value;select.disabled=false;
+  $("cyexp-local-read").disabled=false;
+  localStatus("本機連線成功，共 "+models.length+" 個模型。選擇已載入的視覺模型後按「用本機 AI 重新讀取全部」。連線不等於讀圖測試通過。");
+ }catch(e){S.localConnected=false;$("cyexp-local-model").disabled=true;localStatus(localError(e),true);}
+ finally{btn.disabled=false;}
+}
+function fileAsDataUrl(file){
+ if(!file||!/^image\/(png|jpeg|webp|avif)$/i.test(file.type))throw Error("僅支援 JPG、PNG、WebP、AVIF 圖片");
+ if(file.size>18*1024*1024)throw Error("圖片超過18MB，請用縮小副本進行讀圖；正式上稿仍可用原圖");
+ return new Promise((resolve,reject)=>{
+  const reader=new FileReader();
+  reader.onload=()=>resolve(reader.result);
+  reader.onerror=()=>reject(Error("讀取本機圖片失敗"));
+  reader.readAsDataURL(file);
+ });
+}
+function parseLocalVision(s){
+ if(typeof s!=="string")throw Error("模型沒有回傳文字");
+ let raw=s.replace(/^\x60{3}(?:json)?\s*/i,"").replace(/\s*\x60{3}$/,"").trim();
+ const a=raw.indexOf("{"),b=raw.lastIndexOf("}");
+ if(a<0||b<=a)throw Error("模型沒有提供 JSON 圖片描述；請改用已載入的 Qwen3-VL");
+ let d;try{d=JSON.parse(raw.slice(a,b+1));}catch(_){throw Error("模型輸出的圖片資料不是合法 JSON");}
+ if(typeof d?.description!=="string"||d.description.trim().length<12)throw Error("圖片說明不足或無法辨識");
+ const roles=["格局圖","玄關與客廳","玄關","客廳","客餐廳","廚房與走道","多功能工作區","臥室","更衣收納","其他"];
+ return {description:d.description.trim().slice(0,450),role:roles.includes(d.space)?d.space:"其他"};
+}
+async function localVisionOne(file,model){
+ const data=await fileAsDataUrl(file);
+ const prompt=[
+  "請直接觀察這張室內設計圖像，僅描述畫面確實可見的家具、空間、木作、燈光與收納，不得捏造戶別、坪數、工程完成情況、業主身分。",
+  "請使用台灣繁體中文，描述 45-100 個中文字，3D 示意圖不能說成實景。",
+  "回覆只能是一個JSON物件，不要markdown：",
+  '{"space":"客廳","description":"此空間看得到的具體家具、櫃體、配置與材質描述"}',
+  "space 限：格局圖、玄關與客廳、玄關、客廳、客餐廳、廚房與走道、多功能工作區、臥室、更衣收納、其他。",
+  "不要猜測畫面中不存在的電視或家具，也不要虛構戶型。"
+ ].join("\n");
+ const req={model,temperature:0.1,max_tokens:400,stream:false,messages:[
+  {role:"system",content:"你是台灣室內設計影像編輯，僅敘述圖片中能辨識的事實，嚴格輸出JSON。"},
+  {role:"user",content:[{type:"text",text:prompt},{type:"image_url",image_url:{url:data}}]}
+ ]};
+ const ctrl=new AbortController();
+ const timer=setTimeout(()=>ctrl.abort(),240000);
+ try{
+  const resp=await fetch(LMSTUDIO_BASE+"/v1/chat/completions",{
+   method:"POST",headers:localAuthHeaders(true),mode:"cors",signal:ctrl.signal,body:JSON.stringify(req)
+  });
+  if(!resp.ok)throw Error("LM Studio 回應 HTTP "+resp.status+"："+(await resp.text()).slice(0,160));
+  const json=await resp.json();
+  const value=json?.choices?.[0]?.message?.content;
+  const output=typeof value==="string"?value:Array.isArray(value)?value.filter(x=>x.type==="text").map(x=>x.text||"").join("\n"):"";
+  return parseLocalVision(output);
+ }finally{clearTimeout(timer);}
+}
+async function readWithLocalAI(){
+ if(S.modelBusy)return;
+ if(!S.localConnected){localStatus("請先按「測試本機 AI 連線」。",true);return;}
+ const model=$("cyexp-local-model").value;
+ if(!model){localStatus("請先選擇本機看圖模型。",true);return;}
+ if(!S.files.length){localStatus("請先選擇要讀圖的圖片。",true);return;}
+ S.modelBusy=true;$("cyexp-local-read").disabled=true;$("cyexp-read").disabled=true;
+ let done=0,fail=0;
+ try{
+  for(let i=0;i<S.files.length;i++){
+   const a=S.files[i];
+   if(!a.file){fail++;localStatus("第 "+(i+1)+" 張未重新選圖，無法讀取。",true);continue;}
+   localStatus("本機 AI 正在讀第 "+(i+1)+" / "+S.files.length+" 張："+a.name);
+   try{
+    const found=await localVisionOne(a.file,model);
+    const manuallyEdited=!!(a.alt&&(!a.autoAlt||a.alt!==a.autoAlt));
+    a.description=found.description;
+    // Image models can confuse plans and renders: never automatically approve a new floorplan.
+    if(a.role!=="格局圖"&&found.role!=="格局圖")a.role=found.role;
+    if(!manuallyEdited){a.alt=makeAlt(a);a.autoAlt=a.alt;}
+    a.origin="LM Studio 本機視覺模型 "+model+" 的草稿，仍須人工核對";
+    a.verified=false;done++;
+   }catch(e){fail++;a.verified=false;localStatus("第 "+(i+1)+" 張出錯："+(e?.message||"讀圖失敗"),true);}
+   renderItems();
+  }
+  localStatus("本機讀圖完成："+done+" 張有新描述，"+fail+" 張失敗。請逐張核對，含新增格局圖及 ALT；系統不會自動上稿。",fail>0);
+ }finally{
+  S.modelBusy=false;$("cyexp-local-read").disabled=!S.localConnected;
+  $("cyexp-read").disabled=false;updateStatus();
+ }
+}
 async function initLocalModel(){
  if(S.pipeline)return S.pipeline;
  message("正在下載本機圖片描述模型 Xenova/vit-gpt2-image-captioning（image-to-text）。首次下載需要網路與瀏覽器快取空間，不依賴 WebGPU。");
@@ -463,6 +581,9 @@ async function start(){
 }
 $("cyexp-files").addEventListener("change",ev=>{addFiles(ev.target.files||[]);ev.target.value="";});
 $("cyexp-read").addEventListener("click",readImages);
+$("cyexp-connect").addEventListener("click",connectLocalAI);
+$("cyexp-local-read").addEventListener("click",readWithLocalAI);
+$("cyexp-local-model").addEventListener("change",()=>{S.localModel=$("cyexp-local-model").value;localStatus("已選擇："+S.localModel+"；接著按「用本機 AI 重新讀取全部新圖片」。");});
 $("cyexp-unit").addEventListener("change",refreshAutoAlts);
 $("cyexp-type").addEventListener("change",refreshAutoAlts);
 $("cyexp-summary").addEventListener("click",generateSummary);
