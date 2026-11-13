@@ -284,36 +284,66 @@ function itemBox(a,i){
   right.appendChild(link);
  }
  const state=document.createElement("p");state.className="cyexp-muted";
- state.textContent=a.origin||"尚未讀圖：請點「自動讀圖」，或自行描述畫面。";right.appendChild(state);
+ state.textContent=a.origin||"尚未讀圖：請點「AI 讀圖」，或自行描述畫面。";right.appendChild(state);
+ if(a.role==="格局圖"){
+  const explanation=document.createElement("p");explanation.className="cyexp-plan-note";
+  explanation.textContent="平面配置圖｜僅描述空間配置及動線，不推測木作、材質、沙發、電視牆或完工效果。";
+  right.appendChild(explanation);
+  const violation=unsafeFloorplanClaim(a);
+  if(violation){const warning=document.createElement("p");warning.className="cyexp-plan-warning";warning.textContent=violation;right.appendChild(warning);}
+ }
  const btns=document.createElement("div");btns.className="cyexp-actions";
  const confirm=document.createElement("label");confirm.className="cyexp-check";
  const box=document.createElement("input");box.type="checkbox";box.dataset.attr="verified";box.checked=!!a.verified;
+ box.disabled=!!unsafeFloorplanClaim(a);
  confirm.appendChild(box);confirm.appendChild(document.createTextNode("我已核對這張圖的空間、描述與 ALT"));btns.appendChild(confirm);
  const remove=document.createElement("button");remove.type="button";remove.textContent="移除圖片";
  remove.addEventListener("click",()=>{if(a.preview)URL.revokeObjectURL(a.preview);S.files=S.files.filter(x=>x!==a);renderItems();});btns.appendChild(remove);
  right.appendChild(btns);card.appendChild(right);
- right.addEventListener("input",ev=>{const x=ev.target.dataset.attr;if(!x)return;
-   a[x]=x==="verified"?ev.target.checked:ev.target.value;
-   if(x==="role")a.verified=false;
-   if(x==="url")urlSummary.textContent=validUrl(a.url)?"官網圖片：已取得正式網址（點此查看／修改）":"官網圖片：尚待批次配對（點此手動修改）";
-   updateStatus();
+ right.addEventListener("input",ev=>{
+  const x=ev.target.dataset.attr;if(!x||x==="role"||x==="verified")return;
+  a[x]=ev.target.value;
+  if(x==="description"||x==="alt"){
+   // "Reviewed" refers to the exact text that was checked. Editing a
+   // single character invalidates it IMMEDIATELY, not only after blur.
+   a.verified=false;box.checked=false;
+  }
+  if(x==="url")urlSummary.textContent=validUrl(a.url)?
+   "官網圖片：已取得正式網址（點此查看／修改）":"官網圖片：尚待批次配對（點此手動修改）";
+  updateStatus();
  });
- right.addEventListener("change",ev=>{const x=ev.target.dataset.attr;if(!x)return;
-   const wasAuto=!!(a.autoAlt&&a.alt===a.autoAlt);
-   a[x]=x==="verified"?ev.target.checked:ev.target.value;
-   if(x==="alt"){a.autoAlt="";a.verified=false;updateStatus();return;}
-   if(x==="role"||x==="description"){
-     if(!a.alt?.trim()||wasAuto){a.alt=makeAlt(a);a.autoAlt=a.alt;}
-     a.verified=false;renderItems();return;
+ right.addEventListener("change",ev=>{
+  const x=ev.target.dataset.attr;if(!x)return;
+  if(x==="verified"){
+   if(unsafeFloorplanClaim(a)){a.verified=false;box.checked=false;renderItems();return;}
+   a.verified=ev.target.checked;updateStatus();return;
+  }
+  const wasAuto=!!(a.autoAlt&&a.alt===a.autoAlt);
+  if(x==="role"){
+   const oldRole=a.role;
+   a.role=ev.target.value;
+   if(a.role==="格局圖"||isPlanFileName(a.name)){resetForFloorplan(a);}
+   else{
+    if(oldRole==="格局圖"){a.description="";a.altSuffix="";a.alt="";a.autoAlt="";a.origin="已改分類，請重新 AI 讀圖，不得沿用格局圖描述";}
+    else if(!a.alt?.trim()||wasAuto){a.alt=makeAlt(a);a.autoAlt=a.alt;}
+    a.verified=false;
    }
-   updateStatus();
+   renderItems();return;
+  }
+  a[x]=ev.target.value;
+  if(x==="description"){
+   if(!a.alt?.trim()||wasAuto){a.altSuffix="";a.alt=makeAlt(a);a.autoAlt=a.alt;}
+   a.verified=false;renderItems();return;
+  }
+  if(x==="alt"){a.autoAlt="";a.verified=false;renderItems();return;}
+  updateStatus();
  });
  return card;
 }
 function approveReviewedBatch(){
  if(!S.files.length){message("尚未加入圖片，無法批次核對。",true);return;}
- const incomplete=S.files.filter(x=>!x.description?.trim()||!x.alt?.trim()||!zones.includes(x.role));
- if(incomplete.length){message("還有 "+incomplete.length+" 張圖片缺少描述或 ALT，不能直接整批確認。請先使用本機 Qwen3-VL 讀圖或修正。",true);return;}
+ const incomplete=S.files.filter(x=>!x.description?.trim()||!x.alt?.trim()||!zones.includes(x.role)||unsafeFloorplanClaim(x));
+ if(incomplete.length){message("還有 "+incomplete.length+" 張圖片缺少說明、ALT，或格局圖仍有不實材質／家具敘述。請先修改，不能整批核對。",true);return;}
  for(const a of S.files)a.verified=true;
  renderItems();
  message("已核對本批 "+S.files.length+" 張圖片的描述與 ALT。下一步仍需核對正式圖片網址、包含新格局圖，以及保留原文章。");
@@ -321,7 +351,11 @@ function approveReviewedBatch(){
 function renderItems(){
  const box=$("cyexp-items");box.replaceChildren();
  if(!S.files.length){const p=document.createElement("p");p.textContent="尚未加入新案件圖片。新增格局圖為必填項目。";box.appendChild(p);}
- for(const [i,a]of S.files.entries())box.appendChild(itemBox(a,i));
+ for(const [i,a]of S.files.entries()){
+  if(isPlanFileName(a.name)&&a.role!=="格局圖")resetForFloorplan(a);
+  if(unsafeFloorplanClaim(a))a.verified=false;
+  box.appendChild(itemBox(a,i));
+ }
  updateStatus();
 }
 function download(name,content){
@@ -352,6 +386,8 @@ function checks(){
  if(!urls)items.push("新圖片尚未全部取得有效的晨陽官網 HTTPS 圖片網址");
  if(!unique)items.push("新圖片網址重複，請修正");
  if(!alt)items.push("圖片描述、ALT 或逐張人工核對尚未完成");
+ const badPlans=S.files.filter(a=>unsafeFloorplanClaim(a));
+ if(badPlans.length)items.push("有 "+badPlans.length+" 張格局圖含有木作、家具或材質等未核實敘述，禁止匯出");
  if(!pasted&&!validatedBase)items.push("原文章媒體保留驗收不合格");
  if(!baseHtml())items.push("缺少完整原文章 HTML");
  if(!$("cyexp-intro").value.trim())items.push("尚未產生或確認新增案件的整體介紹");
@@ -389,7 +425,7 @@ function updateStatus(){
  const count="保留舊圖 "+c.originalImageCount+" 張（原格局圖 "+c.oldFloorplanCount+" 張）｜新增圖片 "+c.newImageCount+" 張｜新格局圖 "+c.newFloorplanCount+" 張";
  const imagesReady=S.files.length>0;
  const captionsReady=imagesReady&&S.files.every(x=>x.description?.trim()&&x.alt?.trim());
- const reviewedReady=captionsReady&&S.files.every(x=>x.verified);
+ const reviewedReady=captionsReady&&S.files.every(x=>x.verified&&!unsafeFloorplanClaim(x));
  const urlReady=imagesReady&&S.files.every(x=>validUrl(x.url));
  const stage=!imagesReady?1:(!reviewedReady?2:3);
  const prog=$("cyexp-progress")?.querySelectorAll("span")||[];
