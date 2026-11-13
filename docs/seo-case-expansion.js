@@ -779,6 +779,10 @@ async function loadKnown(){
 async function addFiles(files){
  const fresh=[...files].filter(x=>x.type.startsWith("image/")).slice(0,50);
  if(!fresh.length)return;
+ if(!articleContextMatches()){message("請先在上方選擇對應的文章，再上傳新圖片。",true);return;}
+ if(S.fileImportBusy||S.modelBusy||S.matchRunning){message("圖片正在處理，請先完成目前作業。",true);return;}
+ S.fileImportBusy=true;
+ try{
  message("正在讀取圖片、比對已判讀的視覺內容……");
  let matched=0,added=0,restored=0;
  for(const file of fresh){
@@ -809,6 +813,7 @@ async function addFiles(files){
  }
  renderItems();
  message("新增 "+added+" 張圖片；從備份草稿重新連結 "+restored+" 張原圖；參考辨識命中 "+matched+" 張。舊的描述、ALT 與圖片網址會保留，但正式上稿核對仍需完成。");
+ }finally{S.fileImportBusy=false;}
 }
 
 const LMSTUDIO_BASE="http://127.0.0.1:1234";
@@ -1026,6 +1031,7 @@ async function readImages(){
  // A user click reconnects automatically after every page reload.
  // Never downgrade to the low-quality model without explicit choice.
  if(S.modelBusy)return;
+ if(!articleContextMatches()){localStatus("目前案場與上方選擇文章不一致，請先完成同步。",true);return;}
  if(!S.files.length){
   localStatus("請先選擇要讀圖的照片及格局圖，再按「AI 讀圖」。",true);
   return;
