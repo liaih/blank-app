@@ -6,7 +6,7 @@ if(!host)return;
 const $=id=>host.querySelector("#"+id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 const zones=["格局圖","玄關與客廳","玄關","客廳","客餐廳","廚房與走道","多功能工作區","臥室","更衣收納","其他"];
-const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,translator:null,transformers:null,modelBusy:false,visionReady:false,verifiedBase:false,localConnected:false,localModel:"",cmsUrls:[],cmsVisionCache:new Map(),cmsCorsUnavailable:false,matchRunning:false,matchCancelled:false,matchControllers:new Set(),matchStartedAt:0,matchTimer:null,matchStage:"",matchStep:0,matchTotal:0,activeProjectId:"",caseStates:new Map(),fileImportBusy:false,aiStarting:false};
+const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,translator:null,transformers:null,modelBusy:false,visionReady:false,verifiedBase:false,localConnected:false,localModel:"",cmsUrls:[],cmsVisionCache:new Map(),cmsCorsUnavailable:false,matchRunning:false,matchCancelled:false,matchControllers:new Set(),matchStartedAt:0,matchTimer:null,matchStage:"",matchStep:0,matchTotal:0,activeProjectId:"",activeView:"pending",caseStates:new Map(),fileImportBusy:false,aiStarting:false};
 const markup=[
 '<div class="cyexp-head"><h3>同建案新增案件｜AI 讀圖＋ALT＋格局圖</h3>',
 '<p class="cyexp-muted">原文章＋舊戶型全部保留。新增圖片在本機辨識；圖片須先上傳晨陽官網取得正式網址，才可輸出正式 HTML。</p></div>',
@@ -244,6 +244,7 @@ function switchToCase(nextId){
  }
  if(S.activeProjectId)S.caseStates.set(S.activeProjectId,takeCaseSnapshot());
  S.activeProjectId=nextId||"";
+ S.activeView=document.getElementById("action-view")?.value||"pending";
  const project=S.base.find(x=>x.id===nextId);
  $("cyexp-base").value=project?project.id:"";
  assignCaseSnapshot(project?S.caseStates.get(project.id):null);
@@ -261,9 +262,10 @@ function switchToCase(nextId){
 function handleMainSeoArticleSelection(event){
  if(!S.base.length)return;
  const nextId=String(event?.detail?.id||"");
- if(nextId===S.activeProjectId){showActiveCaseIdentity();return;}
+ if(nextId===S.activeProjectId){S.activeView=String(event?.detail?.view||S.activeView);showActiveCaseIdentity();return;}
  if(S.modelBusy||S.matchRunning||S.fileImportBusy||S.aiStarting){
   event.detail.revertTo=S.activeProjectId;
+  event.detail.revertView=S.activeView;
   event.preventDefault();
   message("正在為目前案場讀圖或配對，為避免跨案場串圖，請完成或停止後再切換文章。",true);
   return;
