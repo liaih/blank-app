@@ -44,6 +44,8 @@ const markup=[
 '<p class="cyexp-muted">本次丹佛花都 9 張原始示意圖有既有人工辨識範本；其他新圖改用 Transformers.js 官方支援的 image-to-text 讀圖模型，再以本機英文轉中文模型翻譯。首次須下載模型，通常使用 CPU 也能執行，不強制 WebGPU。圖片不送往付費 AI API；描述僅是草稿，需人工核對，格局圖需確認圖面。</p>',
 '<p id="cyexp-vision-status" class="cyexp-muted" role="status"></p>',
 '<div id="cyexp-items" class="cyexp-images"><p>請選擇新案件圖片；包含新平面配置圖／格局圖。</p></div>',
+'<div class="cyexp-actions"><button type="button" id="cyexp-approve-reviewed">我已看過本批圖片，一次核對全部描述與 ALT</button></div>',
+'<p class="cyexp-muted">此按鈕只代替逐張重複勾選；不會替你確認圖片是否已上傳官網，也不會跳過新增格局圖及原文保護檢查。</p>',
 '<details class="cyexp-advanced"><summary>進階｜原文不同步時貼上官網最新正文 HTML</summary>',
 '<p class="cyexp-muted">既有原文預設取自通過保留驗收的改稿資料。若官網最近有人修改過，請貼入「最新後台正文 HTML」，避免用舊內容覆蓋新內容。貼入自訂原文時須自行核對原有圖片與格局圖。</p>',
 '<textarea id="cyexp-newbase" rows="5" placeholder="可選：貼入最新原官網 CMS 正文 HTML；不要貼整頁 html/head/body"></textarea></details>',
@@ -199,6 +201,14 @@ function itemBox(a,i){
    updateStatus();
  });
  return card;
+}
+function approveReviewedBatch(){
+ if(!S.files.length){message("尚未加入圖片，無法批次核對。",true);return;}
+ const incomplete=S.files.filter(x=>!x.description?.trim()||!x.alt?.trim()||!zones.includes(x.role));
+ if(incomplete.length){message("還有 "+incomplete.length+" 張圖片缺少描述或 ALT，不能直接整批確認。請先使用本機 Qwen3-VL 讀圖或修正。",true);return;}
+ for(const a of S.files)a.verified=true;
+ renderItems();
+ message("已核對本批 "+S.files.length+" 張圖片的描述與 ALT。下一步仍需核對正式圖片網址、包含新格局圖，以及保留原文章。");
 }
 function renderItems(){
  const box=$("cyexp-items");box.replaceChildren();
@@ -426,7 +436,8 @@ async function readWithLocalAI(){
    }catch(e){fail++;a.verified=false;localStatus("第 "+(i+1)+" 張出錯："+(e?.message||"讀圖失敗"),true);}
    renderItems();
   }
-  localStatus("本機讀圖完成："+done+" 張有新描述，"+fail+" 張失敗。請逐張核對，含新增格局圖及 ALT；系統不會自動上稿。",fail>0);
+  if(done>0&&!$("cyexp-intro").value.trim())generateSummary();
+  localStatus("本機讀圖完成："+done+" 張有新描述，"+fail+" 張失敗。已在缺少總覽時自動產生初稿；請核對並可按「一次核對全部描述與 ALT」。新增格局圖與圖片網址仍須驗收。",fail>0);
  }finally{
   S.modelBusy=false;$("cyexp-local-read").disabled=!S.localConnected;
   $("cyexp-read").disabled=false;updateStatus();
@@ -728,6 +739,7 @@ $("cyexp-type").addEventListener("change",refreshAutoAlts);
 $("cyexp-summary").addEventListener("click",generateSummary);
 $("cyexp-match-cms").addEventListener("click",()=>showCmsMatch(matchImagesFromCms($("cyexp-cms-html").value)));
 $("cyexp-paste-cms").addEventListener("click",pasteCmsImages);
+$("cyexp-approve-reviewed").addEventListener("click",approveReviewedBatch);
 $("cyexp-apply-urls").addEventListener("click",applyBulkUrls);
 $("cyexp-export").addEventListener("click",exportDraft);
 $("cyexp-import").addEventListener("change",ev=>{if(ev.target.files[0])importDraft(ev.target.files[0]);ev.target.value="";});
