@@ -932,7 +932,7 @@ async function matchRemoteImagesWithLMStudio(urls,remaining,used){
     '{"visible":true,"candidate_indices":[0,1],"observation":"畫面中可見的具體物件位置"}。索引從0開始，禁止憑候選順序猜測。\n本機圖片清單：\n'+catalogue);
    if(shortlist?.visible!==true||!Array.isArray(shortlist.candidate_indices))
     throw Error("本機 AI 未確認看見遠端圖片");
-   const indexList=[...new Set(shortlist.candidate_indices)]
+   const indexList=[...new Set(shortlist.candidate_indices.map(Number))]
     .filter(i=>Number.isInteger(i)&&i>=0&&i<originals.length).slice(0,2);
    for(const index of indexList){
     const original=originals[index];
@@ -1025,7 +1025,7 @@ function renderCmsPairingReview(){
     status.textContent="此網址已配給其他原圖，不能重複使用";
     select.value=S.cmsUrls.includes(item.url)?item.url:"";return;
    }
-   item.url=url;item.urlPairVerified=false;item.verified=false;
+   item.url=url;item.urlPairVerified=false;
    item.urlMatch="人工選擇，尚待核對";
    $("cyexp-confirm-urls").checked=false;
    if(url){pic.src=url;pic.hidden=false;}else pic.hidden=true;
@@ -1049,7 +1049,7 @@ async function matchImagesFromCms(raw){
  const remaining=new Set(urls),used=new Set();
  let exact=0,visual=0;
  for(const item of S.files){
-  if(item.url&&!urls.includes(item.url)){item.url="";item.urlMatch="";item.urlPairVerified=false;item.verified=false;}
+  if(item.url&&!urls.includes(item.url)){item.url="";item.urlMatch="";item.urlPairVerified=false;}
   if(item.urlPairVerified&&urls.includes(item.url)){remaining.delete(item.url);used.add(item);continue;}
   const stem=normalizedImageStem(item.name);
   const found=[...remaining].filter(url=>{
@@ -1058,7 +1058,7 @@ async function matchImagesFromCms(raw){
   });
   if(found.length!==1)continue;
   item.url=found[0];item.urlPairVerified=false;
-  item.urlMatch="唯一檔名相符，仍須核對圖片";item.verified=false;
+  item.urlMatch="唯一檔名相符，仍須核對圖片";
   remaining.delete(found[0]);used.add(item);exact++;
  }
  // Browser can compare the actual bytes only if the official site permits CORS.
@@ -1082,14 +1082,14 @@ async function matchImagesFromCms(raw){
   const identical=candidates.filter(url=>item.sha256&&remote.get(url).sha===item.sha256);
   if(identical.length===1){
    const url=identical[0];item.url=url;item.urlMatch="SHA-256 完全相同圖片";
-   item.urlPairVerified=true;item.verified=false;remaining.delete(url);used.add(item);visual++;continue;
+   item.urlPairVerified=true;remaining.delete(url);used.add(item);visual++;continue;
   }
   let dh="";try{dh=await imageDhash(item.file);}catch(_){}
   if(!dh)continue;
   const ranked=candidates.filter(url=>remote.get(url).dh).map(url=>({url,dist:hammingHex(dh,remote.get(url).dh)})).sort((a,b)=>a.dist-b.dist);
   if(ranked[0]?.dist<=2&&(!ranked[1]||ranked[1].dist-ranked[0].dist>=8)){
    const url=ranked[0].url;item.url=url;item.urlMatch="像素相似候選，請核對";
-   item.urlPairVerified=false;item.verified=false;remaining.delete(url);used.add(item);visual++;
+   item.urlPairVerified=false;remaining.delete(url);used.add(item);visual++;
   }
  }
  // When filenames are randomized or browser CORS blocks pixels, let the
