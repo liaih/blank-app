@@ -84,11 +84,56 @@ function makeAlt(a){
  const visible=detail.slice(0,40);
  return project+"｜"+where+visible+"｜"+kind+"｜晨陽設計";
 }
-function enrichKnown(a){
- const known=S.known.get(a.sha256);
+function hammingHex(a,b){
+ if(!/^[a-f0-9]{16}$/i.test(a||"")||!/^[a-f0-9]{16}$/i.test(b||""))return 65;
+ let distance=0;
+ for(let k=0;k<16;k++){
+  let v=parseInt(a[k],16)^parseInt(b[k],16);
+  while(v){distance+=v&1;v>>=1;}
+ }
+ return distance;
+}
+async function imageDhash(file){
+ if(typeof createImageBitmap!=="function")return "";
+ const image=await createImageBitmap(file);
+ try{
+  const canvas=document.createElement("canvas");canvas.width=9;canvas.height=8;
+  const ctx=canvas.getContext("2d",{willReadFrequently:true});
+  if(!ctx)return "";
+  ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality="high";
+  ctx.drawImage(image,0,0,9,8);
+  const px=ctx.getImageData(0,0,9,8).data;
+  const grey=(x,y)=>{
+   const k=4*(y*9+x);
+   return px[k]*0.299+px[k+1]*0.587+px[k+2]*0.114;
+  };
+  let bits="";
+  for(let y=0;y<8;y++)for(let x=0;x<8;x++)bits+=grey(x,y)>grey(x+1,y)?"1":"0";
+  let output="";for(let i=0;i<64;i+=4)output+=parseInt(bits.slice(i,i+4),2).toString(16);
+  return output;
+ }finally{image.close?.();}
+}
+async function enrichKnown(a){
+ let known=S.known.get(a.sha256),method="完全相同的原始圖片";
+ if(!known&&a.file){
+  // A 64-bit difference-hash recognizes known images when users upload
+  // resized/compressed copies. Reject near ties and weak matches; do NOT
+  // infer the meaning of unrelated images from hash proximity.
+  let hash="";
+  try{hash=await imageDhash(a.file);}catch(_){}
+  if(hash){
+   const ranked=[...S.known.values()].filter(x=>x.dhash_v1)
+       .map(x=>({item:x,diff:hammingHex(hash,x.dhash_v1)}))
+       .sort((x,y)=>x.diff-y.diff);
+   if(ranked[0]?.diff<=7&&(!ranked[1]||ranked[1].diff-ranked[0].diff>=6)){
+    known=ranked[0].item;method="圖片像素相似度比對（可能有誤，請核對）";
+   }
+  }
+ }
  if(!known)return false;
  a.role=known.zone;a.description=known.description;a.altSuffix=known.alt_suffix;
- a.alt=makeAlt(a);a.autoAlt=a.alt;a.origin="已提供圖片的逐張辨識草稿（雜湊比對）";a.verified=false;return true;
+ a.alt=makeAlt(a);a.autoAlt=a.alt;a.origin="已判讀的丹佛花都參考圖："+method+"；描述仍需人工核對";
+ a.verified=false;return true;
 }
 function itemBox(a,i){
  const card=document.createElement("article");card.className="cyexp-item";
@@ -236,11 +281,11 @@ async function addFiles(files){
     description:"",alt:"",altSuffix:"",url:"",verified:false,origin:"尚未由 AI 讀圖"};
   try{a.sha256=await identify(file);}catch(_){}
   if(S.files.some(x=>x.sha256&&x.sha256===a.sha256)){URL.revokeObjectURL(a.preview);continue;}
-  if(enrichKnown(a))matched++;
+  if(await enrichKnown(a))matched++;
   S.files.push(a);
  }
  renderItems();
- message("已加入 "+fresh.length+" 張圖片；其中 "+matched+" 張與本次已逐張辨識的 3D 示意圖完全相符。未知圖片請按「自動讀圖」。新格局圖仍需單獨加入並核對。");
+ message("已加入 "+fresh.length+" 張圖片；其中 "+matched+" 張比對到已判讀的 3D 示意圖（含可能縮放／壓縮版本，仍需核對畫面）。未識別圖片按「自動讀圖」，新格局圖需單獨加入並核對。");
 }
 async function initLocalModel(){
  if(S.pipeline)return S.pipeline;
