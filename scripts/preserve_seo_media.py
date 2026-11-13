@@ -408,7 +408,7 @@ def source_preserving_hybrid(d,assets,document,url):
     opening_h2=("" if has_leading_h2 else (
         '<h2 style="margin:28px 0 12px;"><span style="color:#C5A47E !important;'
         'font-size:20px !important;line-height:1.9 !important;font-weight:700 !important;">'
-        +escape(opening_h2_text)+'</span></h2><BR>\\n'
+        +escape(opening_h2_text)+'</span></h2><BR>\n'
     ))
 
     # Do not duplicate the existing site-wide project description. The source
@@ -433,12 +433,18 @@ def source_preserving_hybrid(d,assets,document,url):
     after=BeautifulSoup(candidate,"html.parser")
     floorplan_audit=floorplan_integrity(root,after,url)
     text_after=" ".join(after.get_text(" ",strip=True).split())
+    # Reparse the original body with appended additions, separately from the
+    # new heading. Old CMS markup can be malformed; inserting a top-level H2
+    # may cause BeautifulSoup to reparent that markup. Compare the full
+    # untouched original text with the same parsing path as before the H2.
+    untouched_view=BeautifulSoup(source_html+"\\n"+supplement,"html.parser")
+    text_original_sequence=" ".join(untouched_view.get_text(" ",strip=True).split())
     after_imgs=[x.get("src","") for x in after.find_all("img")]
     after_links=[x.get("href","") for x in after.find_all("a",href=True)]
     after_videos=[x.get("src","") for x in after.find_all(["iframe","video"],src=True)]
     integrity={
         "original_main_content_preserved":bool(
-            old_text in text_after
+            text_original_sequence.startswith(old_text)
             and after_imgs[:len(orig_imgs)]==orig_imgs
             and after_links[:len(orig_links)]==orig_links
             and after_videos[:len(orig_videos)]==orig_videos
@@ -457,6 +463,7 @@ def source_preserving_hybrid(d,assets,document,url):
         "opening_h2_added":not has_leading_h2,
         "opening_h2_text":opening_h2_text if not has_leading_h2 else first_h2_text,
         "semantic_heading_present":bool(after.find("h2")),
+        "original_body_sequence_verified":text_original_sequence.startswith(old_text),
 
         "strategy":"原官網正文完整保留＋新增 SEO 裝修查核段落",
         "source_has_building_information":bool(re.search(
