@@ -209,7 +209,7 @@ function safeSavedCase(snapshot){
    autoAlt:String(x.autoAlt||"").slice(0,350),
    url:validUrl(x.url)?x.url:"",
    urlMatch:String(x.urlMatch||"").slice(0,180),
-   pairVerified:!!(x.urlPairVerified||x.savedUrlPairVerified),
+   pairVerified:!!(x.urlPairVerified||x.savedUrlPairVerified||x.pairVerified),
    origin:String(x.origin||"").slice(0,180)
   })),
   cmsUrls:[...new Set((src.cmsUrls||[]).filter(validUrl))].slice(0,60),
