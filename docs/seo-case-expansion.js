@@ -1039,6 +1039,16 @@ function stopCmsMatch(){
  setCmsMatchProgress("已收到停止指令，正在中止請求並保留已完成結果。");
  for(const controller of S.matchControllers)controller.abort();
 }
+function focusFirstUnmatchedCmsImage(){
+ if(!S.cmsUrls.length)return;
+ const index=S.files.findIndex(item=>!item.urlPairVerified||!validUrl(item.url));
+ if(index<0)return;
+ const item=S.files[index];item.pickerOpen=true;
+ const card=document.getElementById("cyexp-image-card-"+index);
+ if(card)card.replaceWith(itemBox(item,index));
+ const target=document.getElementById("cyexp-image-card-"+index);
+ target?.scrollIntoView({behavior:"smooth",block:"center"});
+}
 async function runCmsMatch(raw){
  if(S.modelBusy){$("cyexp-cms-match-status").textContent="本機 Qwen3-VL 正在執行前面的圖片辨識；同時啟動配對可能導致記憶體不足。請在讀圖完成後再按配對。";return;}
  if(S.matchRunning){$("cyexp-cms-match-status").textContent="圖片仍在處理中，可使用右下角的「停止配對」取消。";return;}
@@ -1063,6 +1073,7 @@ async function runCmsMatch(raw){
   }else{
    showCmsMatch(result);
    $("cyexp-cms-match-status").textContent+="；本次耗時 "+((Date.now()-S.matchStartedAt)/1000).toFixed(1)+" 秒";
+   focusFirstUnmatchedCmsImage();
   }
  }catch(e){
   $("cyexp-cms-match-status").textContent="圖片配對已中斷："+(e?.message||"未知錯誤")+"。未核對圖片不會輸出正式 HTML。";
