@@ -365,12 +365,40 @@ function generate(){
 function updateStatus(){
  const c=checks(),status=$("cyexp-status");
  status.className="cyexp-status "+(c.pass?"ready":"blocked");
- const headline=c.pass?"可上稿｜內容防錯驗收完成":"不可複製正式 HTML｜尚有 "+c.issues.length+" 項待完成";
- const count="舊圖 "+c.originalImageCount+" 張（原格局圖 "+c.oldFloorplanCount+" 張）＋新圖 "+c.newImageCount+" 張（新格局圖 "+c.newFloorplanCount+" 張）";
+ const headline=c.pass?"可以複製完整文章 HTML":"上稿前還有 "+c.issues.length+" 項需要完成";
+ const count="保留舊圖 "+c.originalImageCount+" 張（格局圖 "+c.oldFloorplanCount+"）｜新增 "+c.newImageCount+" 張（格局圖 "+c.newFloorplanCount+"）";
+ const imagesReady=S.files.length>0;
+ const captionsReady=imagesReady&&S.files.every(x=>x.description?.trim()&&x.alt?.trim());
+ const reviewedReady=captionsReady&&S.files.every(x=>x.verified);
+ const urlReady=imagesReady&&S.files.every(x=>validUrl(x.url));
+ const stage=!imagesReady?1:(!reviewedReady?2:3);
+ const prog=$("cyexp-progress")?.querySelectorAll("span")||[];
+ for(let i=0;i<prog.length;i++){
+  const n=i+1;
+  prog[i].dataset.state=n<stage?"done":n===stage?"active":"waiting";
+  if(n===stage)prog[i].setAttribute("aria-current","step");
+  else prog[i].removeAttribute("aria-current");
+ }
+ const tip=$("cyexp-next");
+ if(tip){
+  tip.textContent=!imagesReady?"現在：選擇建案與圖片，必須包含新格局圖。":
+   !captionsReady?"現在：按「AI 讀圖」，Qwen3-VL 會自動產生圖片介紹與 ALT。":
+   !reviewedReady?"現在：檢查 AI 的描述與 ALT，按「一次核對全部」。":
+   c.newFloorplanCount===0?"現在：補上這次新案件的格局圖，不能用舊圖冒充。":
+   !urlReady?"現在：在官網後台一次上傳新圖片，將圖片 HTML 複製到第三步，按「自動配對」。":
+   c.pass?"完成：已保留舊圖與新格局圖，可以複製 HTML。":
+   "現在：完成第三步的原文、圖片網址與格局圖核對，就能複製 HTML。";
+ }
  status.replaceChildren();
  const b=document.createElement("strong");b.textContent=headline;status.appendChild(b);
  const p=document.createElement("p");p.textContent=count;status.appendChild(p);
- if(c.issues.length){const ul=document.createElement("ul");for(const i of c.issues){const li=document.createElement("li");li.textContent=i;ul.appendChild(li);}status.appendChild(ul);}
+ if(c.issues.length){
+  const details=document.createElement("details");details.className="cyexp-issues";
+  const summary=document.createElement("summary");summary.textContent="查看尚未完成的 "+c.issues.length+" 個檢查項目";details.appendChild(summary);
+  const ul=document.createElement("ul");
+  for(const issue of c.issues){const li=document.createElement("li");li.textContent=issue;ul.appendChild(li);}
+  details.appendChild(ul);status.appendChild(details);
+ }
  $("cyexp-copy").disabled=!c.pass;
  $("cyexp-html").value=c.pass?generate():"驗收尚未完成，禁止輸出正式上稿 HTML。";
  $("cyexp-preview").replaceChildren();
