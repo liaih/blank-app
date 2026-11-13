@@ -287,7 +287,8 @@ test("one human batch approval replaces repeated checkboxes but cannot bypass fl
  }
  d.querySelector("#cyexp-approve-reviewed").click();
  rows=d.querySelectorAll(".cyexp-item");
- assert.ok([...rows].every(x=>x.querySelector('[data-attr="verified"]').checked));
+ assert.equal(rows[0].querySelector('[data-attr="verified"]').checked,true,"renders may be batch-approved after human review");
+ assert.equal(rows[1].querySelector('[data-attr="verified"]').checked,false,"floorplan needs separate image-by-image approval");
  assert.equal(d.querySelector("#cyexp-copy").disabled,true,"No export unless new floorplan, CMS URLs, original article and other checks pass");
  assert.match(d.querySelector("#cyexp-status").textContent,/新圖片尚未全部取得有效/);
  dom.window.close();
@@ -502,5 +503,20 @@ test("FLOORPLAN: editing an approved plan description instantly revokes approval
  field.dispatchEvent(new dom.window.Event("input",{bubbles:true}));
  assert.equal(item.querySelector('[data-attr="verified"]').checked,false);
  assert.equal(d.querySelector("#cyexp-copy").disabled,true);
+ dom.window.close();
+});
+
+test("FLOORPLAN: a safe floorplan remains unverified after batch approval until manual per-plan checkbox is ticked",async()=>{
+ const dom=await setup(),d=dom.window.document;
+ await fileSelect(dom,"1.平面配置_套版 (1).png");
+ const item=d.querySelector(".cyexp-item");
+ assert.equal(item.querySelector('[data-attr="verified"]').checked,false);
+ d.querySelector("#cyexp-approve-reviewed").click();
+ assert.equal(d.querySelector(".cyexp-item [data-attr=verified]").checked,false);
+ assert.match(d.querySelector("#cyexp-vision-status").textContent,/格局圖仍須逐張核對/);
+ const checkbox=d.querySelector(".cyexp-item [data-attr=verified]");
+ checkbox.checked=true;
+ checkbox.dispatchEvent(new dom.window.Event("change",{bubbles:true}));
+ assert.equal(checkbox.checked,true);
  dom.window.close();
 });
