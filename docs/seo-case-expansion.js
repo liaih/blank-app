@@ -6,7 +6,7 @@ if(!host)return;
 const $=id=>host.querySelector("#"+id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 const zones=["格局圖","玄關與客廳","玄關","客廳","客餐廳","廚房與走道","多功能工作區","臥室","更衣收納","其他"];
-const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,translator:null,transformers:null,modelBusy:false,visionReady:false,verifiedBase:false,localConnected:false,localModel:""};
+const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,translator:null,transformers:null,modelBusy:false,visionReady:false,verifiedBase:false,localConnected:false,localModel:"",cmsUrls:[]};
 const markup=[
 '<div class="cyexp-head"><h3>同建案新增案件｜AI 讀圖＋ALT＋格局圖</h3>',
 '<p class="cyexp-muted">原文章＋舊戶型全部保留。新增圖片在本機辨識；圖片須先上傳晨陽官網取得正式網址，才可輸出正式 HTML。</p></div>',
@@ -21,13 +21,14 @@ const markup=[
 '<button type="button" id="cyexp-summary">依讀圖結果整理案件總覽</button></div>',
 '<p id="cyexp-main-ai-status" role="status" class="cyexp-muted">選好圖片後，按上面的「AI 讀圖」即可連接 LM Studio 並分析圖片；不必先展開下方設定。</p>',
 '<details class="cyexp-advanced" id="cyexp-cms-import-panel" open><summary>最快流程｜貼入官網編輯器圖片 HTML，自動辨識並配對全部網址</summary>',
-'<p class="cyexp-muted">在晨陽官網編輯器將這次新增的圖片「一次批次上傳」，複製該批圖片的 HTML 貼到下面；系統會自動讀取所有 img src，依檔名配對，無法辨識時只在圖片數完全相同的情況下依順序配對。**不用逐張貼網址。** 上傳與儲存仍需在公司 CMS 完成。</p>',
+'<p class="cyexp-muted">在晨陽官網編輯器將這次新增的圖片「一次批次上傳」，複製該批圖片的 HTML 貼到下面；系統會自動讀取所有 img src，優先以檔名與可驗證的圖像內容比對；即使張數相同，也不能直接依順序宣稱配對成功。官網重新命名時，請核對下方圖片縮圖。</p>',
 '<textarea id="cyexp-cms-html" rows="5" placeholder="貼上官網編輯器圖片 HTML，例如：&lt;p&gt;&lt;img src=&quot;https://chen-yang.com.tw/upload/images/1.0.png&quot;&gt;&lt;/p&gt; ..."></textarea>',
 '<div class="cyexp-actions"><button type="button" id="cyexp-match-cms">自動讀取官網 HTML 並配對圖片</button>',
 '<button type="button" id="cyexp-paste-cms">直接讀取剪貼簿的 HTML／文字</button></div>',
-'<p id="cyexp-cms-match-status" role="status" class="cyexp-muted">尚未讀取官網已上傳的圖片。AI 說明及 ALT 可以先產生，正式可上稿 HTML 須有實際圖片網址。</p></details>',
+'<p id="cyexp-cms-match-status" role="status" class="cyexp-muted">尚未讀取官網圖片；不會將順序推定視為成功配對。</p>',
+'<div id="cyexp-cms-review" aria-label="官網圖片與本機原圖對照區"></div></details>',
 '<details class="cyexp-advanced"><summary>快速上稿｜批次貼入所有圖片網址（免逐張輸入）</summary>',
-'<p class="cyexp-muted">先依目前圖片順序貼入一行一個正式圖片網址；或貼入「圖片檔名 | 官網網址」來自動配對，包含新格局圖。僅接受晨陽官網 HTTPS 圖片網址。</p>',
+'<p class="cyexp-muted">建議使用「圖片檔名 | 官網網址」。若只貼網址仍需驗證圖片內容，不能只憑順序確認。僅接受晨陽官網 HTTPS 圖片網址。</p>',
 '<textarea id="cyexp-bulk-urls" rows="4" placeholder="https://chen-yang.com.tw/upload/images/新案-01.png&#10;https://chen-yang.com.tw/upload/images/新案-02.png"></textarea>',
 '<button type="button" id="cyexp-apply-urls">批次套用圖片網址</button></details>',
 '<details class="cyexp-advanced" id="cyexp-local-ai"><summary>本機 AI 進階設定與連線排錯｜LM Studio Qwen3-VL</summary>',
@@ -283,6 +284,17 @@ function itemBox(a,i){
   "平面配置圖描述（保守說明，非 AI 精讀圖面）":
   "AI 讀圖描述（請依畫面核對）",a.description,"description",true));
  right.appendChild(textField("圖片 ALT（建案與畫面優先，不強制寫戶型）",a.alt,"alt",false));
+ if(validUrl(a.url)){
+  const pair=document.createElement("label");pair.className="cyexp-check";
+  const verifiedBox=document.createElement("input");verifiedBox.type="checkbox";verifiedBox.checked=!!a.urlPairVerified;
+  pair.append(verifiedBox,document.createTextNode("已比對官網圖片與左側原圖為同一張"));
+  verifiedBox.addEventListener("change",()=>{a.urlPairVerified=verifiedBox.checked;updateStatus();renderCmsPairingReview();});
+  right.appendChild(pair);
+  const officialPreview=document.createElement("img");
+  officialPreview.src=a.url;officialPreview.alt="官網圖片對照縮圖";officialPreview.loading="lazy";
+  officialPreview.style.cssText="display:block;max-width:260px;max-height:145px;object-fit:contain;margin:5px 0 12px";
+  right.appendChild(officialPreview);
+ }
  const urlBox=document.createElement("details");urlBox.className="cyexp-advanced";
  const urlSummary=document.createElement("summary");
  urlSummary.textContent=validUrl(a.url)?"官網圖片：已取得正式網址（點此查看／修改）":"官網圖片：尚待批次配對（點此手動修改）";
@@ -320,8 +332,11 @@ function itemBox(a,i){
    // single character invalidates it IMMEDIATELY, not only after blur.
    a.verified=false;box.checked=false;
   }
-  if(x==="url")urlSummary.textContent=validUrl(a.url)?
-   "官網圖片：已取得正式網址（點此查看／修改）":"官網圖片：尚待批次配對（點此手動修改）";
+  if(x==="url"){
+   a.urlPairVerified=false;
+   $("cyexp-confirm-urls").checked=false;
+   urlSummary.textContent=validUrl(a.url)?"官網圖片：已取得正式網址（點此查看／修改）":"官網圖片：尚待批次配對（點此手動修改）";
+  }
   updateStatus();
  });
  right.addEventListener("change",ev=>{
@@ -348,7 +363,7 @@ function itemBox(a,i){
    a.verified=false;renderItems();return;
   }
   if(x==="alt"){a.autoAlt="";a.verified=false;renderItems();return;}
-  updateStatus();
+  if(x==="url")renderItems();else updateStatus();
  });
  return card;
 }
@@ -389,6 +404,7 @@ function checks(){
  const suppliedUrls=S.files.map(x=>x.url?.trim()).filter(Boolean);
   const unique=new Set(suppliedUrls).size===suppliedUrls.length;
  const alt=S.files.every(x=>x.alt?.trim()&&x.description?.trim()&&x.verified);
+ const pairVerified=S.files.every(x=>x.urlPairVerified===true);
  const unit=$("cyexp-unit").value.trim();
  const project=chooseTitle();
  const pasted=$("cyexp-newbase").value.trim();
@@ -401,6 +417,7 @@ function checks(){
 
  if(!urls)items.push("新圖片尚未全部取得有效的晨陽官網 HTTPS 圖片網址");
  if(!unique)items.push("新圖片網址重複，請修正");
+ if(S.files.length&&urls&&!pairVerified)items.push("尚有 "+S.files.filter(x=>!x.urlPairVerified).length+" 張未核對官網圖片與原圖的對應，正式上稿暫停");
  if(!alt)items.push("圖片描述、ALT 或逐張人工核對尚未完成");
  const badPlans=S.files.filter(a=>unsafeFloorplanClaim(a));
  if(badPlans.length)items.push("有 "+badPlans.length+" 張格局圖含有木作、家具或材質等未核實敘述，禁止匯出");
@@ -533,7 +550,7 @@ async function addFiles(files){
   if(S.files.some(x=>x.sha256&&x.sha256===file._sha))continue;
   const a={name:file.name,file,preview:URL.createObjectURL(file),sha256:"",
     role:/(?:平面|格局|配置|floor.?plan)/i.test(file.name)?"格局圖":"其他",
-    description:"",alt:"",altSuffix:"",url:"",verified:false,origin:"尚未由 AI 讀圖"};
+    description:"",alt:"",altSuffix:"",url:"",verified:false,urlPairVerified:false,origin:"尚未由 AI 讀圖"};
   try{a.sha256=await identify(file);}catch(_){}
   if(S.files.some(x=>x.sha256&&x.sha256===a.sha256)){URL.revokeObjectURL(a.preview);continue;}
   if(isPlanFileName(a.name)){resetForFloorplan(a);}
@@ -931,10 +948,11 @@ function applyBulkUrls(){
  }
  const all=changes.map(x=>x[1]);
  if(new Set(all).size!==all.length){message("批次網址有重複，請先檢查。",true);return;}
- for(const [item,url]of changes){item.url=url;item.verified=false;}
+ for(const [item,url]of changes){item.url=url;item.urlPairVerified=false;item.verified=false;}
  $("cyexp-confirm-urls").checked=false;
  renderItems();
- message("已為 "+changes.length+" 張圖套用網址。請逐張開啟網址確認圖片可載入，再勾選最後的網址驗收項目。");
+ message("已套用 "+changes.length+" 個網址，但未證明圖片內容對應正確。請核對原圖和官網縮圖。");
+ renderCmsPairingReview();
 }
 function generateSummary(){
  const descriptions=S.files.filter(x=>x.role!=="格局圖"&&x.description.trim()).map(x=>x.description.trim());
@@ -966,7 +984,7 @@ async function importDraft(file){
   role:zones.includes(x.role)?x.role:"其他",
   description:String(x.description||"").slice(0,1500),
   alt:String(x.alt||"").slice(0,260),url:String(x.url||"").slice(0,1200),
-  verified:false,origin:"已從草稿恢復；需重新人工核對",preview:null,file:null
+  verified:false,urlPairVerified:false,origin:"已從草稿恢復；需重新人工核對",preview:null,file:null
  }));
  $("cyexp-confirm-base").checked=false;$("cyexp-confirm-urls").checked=false;$("cyexp-confirm-floorplan").checked=false;
  renderItems();message("草稿已讀取，但照片本體未包含於 JSON，請重新上傳核對；所有完成勾選已重設。");
