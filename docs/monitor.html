@@ -79,6 +79,15 @@ tbody tr:last-child td{border-bottom:0}
 .ai-action.secondary,.ai-file{background:#fff;color:#17426e}
 .ai-file input{display:block;max-width:240px;font:inherit;font-size:12px}
 .ai-action:focus-visible,.ai-fields :focus-visible,.ai-file :focus-visible{outline:3px solid #87b8f5}
+
+/* Show actual captured AI responses BEFORE charts, with first two opened. */
+.native-answer-first{margin:14px 0 20px;padding:15px 17px;background:#f6faff;border:1px solid #dce8f7;border-radius:12px}
+.native-answer-first h3{font-size:17px;margin:0 0 6px}
+.native-answer-notice{background:#fff8e7;color:#76511d;padding:9px 11px;border:1px solid #efdcad;border-radius:9px;font-size:13px;line-height:1.65;margin:0 0 12px}
+.native-answer-first #native-public-tests details{background:#fff;border:1px solid #dce5ef;border-radius:10px;padding:10px 13px;max-width:100%}
+.native-answer-first #native-public-tests details>summary{cursor:pointer;font-size:14px;font-weight:700;color:#214e7b}
+.native-answer-first #native-public-tests details>div{font-size:13px;line-height:1.75;background:#f5f8fc;border-radius:7px;padding:11px;margin:8px 0}
+@media(max-width:720px){.native-answer-first{padding:12px}}
 .ai-preview{margin-top:12px}
 .ai-answer-preview{white-space:pre-wrap;overflow-wrap:anywhere;max-height:280px;overflow:auto;background:#f4f8fe;border:1px solid #dfe7f0;padding:12px;border-radius:9px;font-size:12px}
 .ai-preview .ai-action{margin:12px 0}
@@ -115,6 +124,13 @@ tbody tr:last-child td{border-bottom:0}
       <span class="label wait" id="native-ai-status">尚未取得真實平台樣本</span>
     </div>
     <p class="message" id="native-ai-hint">正在核對原平台的有效樣本數、採樣日期、題目覆蓋率與缺少的平台；自建 RAG 和不連網 Gemini 不列入此區。</p>
+    <section class="native-answer-first" aria-label="實際 AI 平台回答優先顯示">
+      <p id="native-ai-today" class="native-answer-notice" role="status">正在確認今天是否真的取得 AI 回答。</p>
+    <h3 style="margin-top:20px">AI 平台真實回答｜逐筆證據及推薦判定</h3>
+    <p class="muted">直接展開查看測試問題與回答節錄，不需要登入 GitHub。回答由第三方平台擷取；原始資料庫與識別資訊不公開。</p>
+    <div id="native-public-tests" class="ai-preview">正在載入公開測試結果。</div>
+    <p class="detail">公開遮罩回答節錄、匿名證據編號、候選推薦判定及引用網域。自動辨識只是疑似推薦，未經人工核對不得算入「明確推薦」指標。</p>
+    </section>
     <div class="metrics">
       <div class="metric"><div class="name">近30天｜ChatGPT</div><div class="number" id="native-chatgpt">未取得</div><div class="sub">第三方擷取平台回答</div></div>
       <div class="metric"><div class="name">近30天｜Gemini</div><div class="number" id="native-gemini">未取得</div><div class="sub">與官方 API 自建分析分開</div></div>
@@ -151,14 +167,10 @@ tbody tr:last-child td{border-bottom:0}
       <div class="tablebox"><table><thead><tr><th>測試問題／意圖標籤</th><th>ChatGPT</th><th>Gemini</th><th>Perplexity</th><th>SEO 內容機會</th></tr></thead><tbody id="ai-intent-rows"><tr><td colspan="5">正在讀取實測意圖資料。</td></tr></tbody></table></div>
       <p class="detail">各平台欄位顯示「回答筆數／提及晨陽次數」。0 筆代表尚未測試到有效回答，不能視為 AI 不推薦。品牌提及和引用皆不是「明確推薦」；推薦需人工核對回答全文。</p>
     </section>
-    <h3 style="margin-top:20px">AI 平台真實回答｜逐筆證據及推薦判定</h3>
-    <p class="muted">直接展開查看測試問題與回答節錄，不需要登入 GitHub。回答由第三方平台擷取；原始資料庫與識別資訊不公開。</p>
-    <div id="native-public-tests" class="ai-preview">正在載入公開測試結果。</div>
-    <p class="detail">公開遮罩回答節錄、匿名證據編號、候選推薦判定及引用網域。自動辨識只是疑似推薦，未經人工核對不得算入「明確推薦」指標。</p>
     <p class="detail" id="native-perplexity-progress">Perplexity 既有任務：正在讀取。</p>
     <p class="detail">競品名稱屬 AI 回答文字的自動候選辨識，尚未人工判定是否屬「明確推薦」；不把這些結果當成消費者整體推薦率。各平台的地域和搜尋啟用能力可能不同。</p>
     <div class="flexhead" style="margin-top:14px">
-      <p class="detail">排程：台灣時間每日 13:05（GitHub 可能延遲）。<a href="#native-public-tests">查看公開測試回答</a></p>
+      <p class="detail">排程：台灣時間每日 13:05 與 19:37 安全補跑（GitHub 可能延遲）。<a href="#native-public-tests">查看公開測試回答</a></p>
       <p class="detail">資料供應：<a href="https://brightdata.com/products/web-scraper/chatgpt" target="_blank" rel="noopener noreferrer">Bright Data</a>，非三大平台官方分析報表。</p>
     </div>
   </section>
@@ -1204,10 +1216,16 @@ function renderNativePlatformAnswers(){
       }
       const tests=el("native-public-tests");tests.replaceChildren();
       const samples=Array.isArray(data.public_test_samples)?data.public_test_samples:[];
+      const taiwanToday=new Date(Date.now()+8*3600000).toISOString().slice(0,10);
+      const currentCount=samples.filter(s=>String(s.answered_at||"").startsWith(taiwanToday)).length;
+      el("native-ai-today").textContent=currentCount?
+        "今天 "+taiwanToday+" 取得 "+currentCount+" 筆真實平台回答；下方直接展開最近兩筆。":
+        "今天 "+taiwanToday+" 尚無新 AI 平台回答。以下是過去 "+samples.length+" 筆真實測試紀錄，不可冒充今日監測。";
+
       if(!samples.length){tests.textContent="目前僅有公開彙總，回答原文節錄尚未同步；已取得的樣本筆數請見上方。";}
       for(const sample of samples){
         if(!["ChatGPT","Gemini","Perplexity"].includes(sample.platform))continue;
-        const details=document.createElement("details");details.style.marginBottom="12px";
+        const details=document.createElement("details");details.open=tests.childElementCount<2;details.style.marginBottom="12px";
         const summary=document.createElement("summary");
         summary.textContent=sample.platform+"｜"+(sample.answered_at||"日期未提供")+"｜"+(sample.recommendation_status||(sample.mentions_brand?"有提及晨陽，待核對":"未提及晨陽"));
         details.appendChild(summary);
