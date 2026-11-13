@@ -275,7 +275,7 @@ test("one human batch approval replaces repeated checkboxes but cannot bypass fl
  const dom=await setup(),d=dom.window.document;
  await fileSelect(dom,"living.png");await fileSelect(dom,"新格局圖.png");
  d.querySelector("#cyexp-approve-reviewed").click();
- assert.match(d.querySelector("#cyexp-vision-status").textContent,/缺少描述或 ALT/);
+ assert.match(d.querySelector("#cyexp-vision-status").textContent,/缺少說明、ALT/);
  let rows=d.querySelectorAll(".cyexp-item");
  for(let i=0;i<rows.length;i++){
   let row=d.querySelectorAll(".cyexp-item")[i];
