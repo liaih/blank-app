@@ -140,3 +140,15 @@ font:inherit;line-height:1.6;color:inherit;min-width:0;max-width:100%;width:100%
  #case-expansion button.cyexp-inline-candidate{width:auto}
  #case-expansion .cyexp-inline-empty button{width:auto}
 }
+
+/* One active article, one case workspace. No independent duplicate chooser. */
+#case-expansion .cyexp-current-article{
+ border:1px solid #cbd9e8;border-left:3px solid #31567c;
+ background:#f4f7fb;border-radius:9px;padding:10px 13px;
+ margin:8px 0 14px;font-size:13px;line-height:1.8;
+ color:#173754;font-weight:600;
+}
+#case-expansion .cyexp-current-article[data-status="blocked"]{
+ border-color:#d9beb4;border-left-color:#9a633b;
+ background:#fff8f3;color:#744731;
+}
