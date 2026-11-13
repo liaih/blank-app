@@ -74,7 +74,7 @@ def irrelevant_media(url,alt,kind,ctx):
 def alt_for(draft,asset,section):
     """Describe known image type/subject with real case context; never invent details."""
     if asset["type"]!="image":return ""
-    title=draft["title"].split("｜",1)[0].strip()
+    title=(draft.get("project_name") or draft["title"].split("｜",1)[0]).strip()
     original=" ".join(asset.get("alt","").split())
     ctx=" ".join(asset.get("context","").split())
     basename=urlsplit(asset["url"]).path.rsplit("/",1)[-1].lower()
@@ -400,7 +400,7 @@ def source_preserving_hybrid(d,assets,document,url):
             img["alt"]=match["alt"]
         elif not img.get("alt","").strip():
             # A faithful conservative ALT—not an invented visual description.
-            img["alt"]=d["title"].split("｜",1)[0].strip()+"｜原官網文章圖片"
+            img["alt"]=(d.get("project_name") or d["title"].split("｜",1)[0]).strip()+"｜原官網文章圖片"
     source_html="".join(str(x) for x in root.contents)
     # The CMS's separate article-title field renders H1. Some original NEWS
     # bodies begin with visual <span> headings only and have no semantic H2
