@@ -1270,7 +1270,10 @@ function renderNativePlatformAnswers(){
         "vendor_progress_network_error":"查詢進度時連線中斷",
         "vendor_progress_unknown_status":"供應商回傳未知工作狀態",
         "vendor_snapshot_invalid_payload":"工作回覆資料格式不完整",
-        "vendor_progress_unverified_error":"工作查核失敗，原因待確認"
+        "vendor_progress_unverified_error":"工作查核失敗，原因待確認",
+        "vendor_input_only_no_answer":"供應商只回傳查詢輸入，沒有產生 AI 回答",
+        "vendor_snapshot_invalid_json":"快照 JSON 不完整，無法解析回答",
+        "vendor_snapshot_too_large":"快照超過安全容量上限，尚未保存"
       };
       const latestJobs=data.latest_job_status||{};
       const operational=Object.entries(latestJobs).filter(([platform])=>["ChatGPT","Gemini","Perplexity"].includes(platform))
