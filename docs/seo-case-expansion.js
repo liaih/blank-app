@@ -19,6 +19,10 @@ const markup=[
 '<div class="cyexp-actions"><label class="cyexp-file">選擇新案件圖片（可一次選多張）<input id="cyexp-files" type="file" accept="image/png,image/jpeg,image/webp,image/avif" multiple></label>',
 '<button type="button" id="cyexp-read">自動讀圖／補齊介紹與 ALT</button>',
 '<button type="button" id="cyexp-summary">依讀圖結果整理案件總覽</button></div>',
+'<details class="cyexp-advanced"><summary>快速上稿｜批次貼入所有圖片網址（免逐張輸入）</summary>',
+'<p class="cyexp-muted">先依目前圖片順序貼入一行一個正式圖片網址；或貼入「圖片檔名 | 官網網址」來自動配對，包含新格局圖。僅接受晨陽官網 HTTPS 圖片網址。</p>',
+'<textarea id="cyexp-bulk-urls" rows="4" placeholder="https://chen-yang.com.tw/upload/images/新案-01.png&#10;https://chen-yang.com.tw/upload/images/新案-02.png"></textarea>',
+'<button type="button" id="cyexp-apply-urls">批次套用圖片網址</button></details>',
 '<p class="cyexp-muted">本次丹佛花都 9 張原始示意圖已提供核對過的辨識結果；其他新圖可嘗試免費瀏覽器本機視覺模型（首次需下載模型、需裝置支援 WebGPU）。讀圖結果都是草稿，必須人工核對，無模型時不可假裝已辨識。</p>',
 '<p id="cyexp-vision-status" class="cyexp-muted" role="status"></p>',
 '<div id="cyexp-items" class="cyexp-images"><p>請選擇新案件圖片；包含新平面配置圖／格局圖。</p></div>',
@@ -264,6 +268,31 @@ function refreshAutoAlts(){
  }
  renderItems();
 }
+function applyBulkUrls(){
+ const lines=$("cyexp-bulk-urls").value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+ if(!lines.length||!S.files.length){message("先加入圖片並貼入官網網址。",true);return;}
+ let changes=[];
+ if(lines.every(x=>x.includes("|"))){
+  const mapped=lines.map(x=>{const p=x.split("|");return {name:p[0].trim(),url:p.slice(1).join("|").trim()};});
+  const seen=new Set();
+  for(const pair of mapped){
+   const item=S.files.find(x=>x.name===pair.name);
+   if(!item||seen.has(item)||!validUrl(pair.url)){message("配對失敗："+pair.name+"。請使用圖片目前顯示的完整檔名與晨陽網址。",true);return;}
+   changes.push([item,pair.url]);seen.add(item);
+  }
+ }else{
+  if(lines.length!==S.files.length||!lines.every(validUrl)){
+   message("依順序貼網址時，行數必須等於已選圖片張數（目前 "+S.files.length+" 張），且每行必須是晨陽官網圖片網址。",true);return;
+  }
+  changes=lines.map((url,i)=>[S.files[i],url]);
+ }
+ const all=changes.map(x=>x[1]);
+ if(new Set(all).size!==all.length){message("批次網址有重複，請先檢查。",true);return;}
+ for(const [item,url]of changes){item.url=url;item.verified=false;}
+ $("cyexp-confirm-urls").checked=false;
+ renderItems();
+ message("已為 "+changes.length+" 張圖套用網址。請逐張開啟網址確認圖片可載入，再勾選最後的網址驗收項目。");
+}
 function generateSummary(){
  const descriptions=S.files.filter(x=>x.role!=="格局圖"&&x.description.trim()).map(x=>x.description.trim());
  if(!descriptions.length){message("沒有可用的圖片描述，請先讀圖再產生整體介紹。",true);return;}
@@ -325,6 +354,7 @@ $("cyexp-read").addEventListener("click",readImages);
 $("cyexp-unit").addEventListener("change",refreshAutoAlts);
 $("cyexp-type").addEventListener("change",refreshAutoAlts);
 $("cyexp-summary").addEventListener("click",generateSummary);
+$("cyexp-apply-urls").addEventListener("click",applyBulkUrls);
 $("cyexp-export").addEventListener("click",exportDraft);
 $("cyexp-import").addEventListener("change",ev=>{if(ev.target.files[0])importDraft(ev.target.files[0]);ev.target.value="";});
 $("cyexp-copy").addEventListener("click",async()=>{
