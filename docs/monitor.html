@@ -87,6 +87,7 @@ tbody tr:last-child td{border-bottom:0}
 
 .ai-manual-panel{margin:14px 0}.ai-manual-panel>summary{cursor:pointer;padding:13px 17px;border:1px solid var(--line);background:#fff;border-radius:12px;color:var(--muted);font-size:13px;font-weight:750}.ai-manual-panel[open]>summary{border-radius:12px 12px 0 0}.ai-manual-panel .panel{margin:0}
 </style>
+<link rel="stylesheet" href="./seo-case-expansion.css">
 </head>
 <body>
 <div class="shell">
@@ -313,6 +314,7 @@ tbody tr:last-child td{border-bottom:0}
       </label>
     </div>
     <p class="detail" id="action-state-summary">正在讀取文章狀態。</p>
+    <div id="case-expansion" aria-label="同建案新增案件與圖像判讀">正在載入新增案件功能。</div>
     <div id="seo-article-actions" aria-live="polite">正在載入單篇圖文影音 HTML。</div>
     <p class="detail">原媒體不需重新上傳，但仍須核對原頁的媒體是否完整、圖片 ALT 是否符合實際畫面及 CMS 能否保留 HTML 格式。SEO 改善是測試假設，非保證排名提升。</p>
   </section>
@@ -1271,5 +1273,6 @@ fetch("./data.json",{cache:"no-store"})
 });
 })();
 </script>
+<script defer src="./seo-case-expansion.js"></script>
 </body>
 </html>
