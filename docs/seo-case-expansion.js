@@ -6,7 +6,7 @@ if(!host)return;
 const $=id=>host.querySelector("#"+id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 const zones=["格局圖","玄關與客廳","玄關","客廳","客餐廳","廚房與走道","多功能工作區","臥室","更衣收納","其他"];
-const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,translator:null,transformers:null,modelBusy:false,visionReady:false,verifiedBase:false,localConnected:false,localModel:"",cmsUrls:[]};
+const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,translator:null,transformers:null,modelBusy:false,visionReady:false,verifiedBase:false,localConnected:false,localModel:"",cmsUrls:[],matchRunning:false,matchCancelled:false,matchControllers:new Set(),matchStartedAt:0,matchTimer:null,matchStage:"",matchStep:0,matchTotal:0};
 const markup=[
 '<div class="cyexp-head"><h3>同建案新增案件｜AI 讀圖＋ALT＋格局圖</h3>',
 '<p class="cyexp-muted">原文章＋舊戶型全部保留。新增圖片在本機辨識；圖片須先上傳晨陽官網取得正式網址，才可輸出正式 HTML。</p></div>',
@@ -73,6 +73,24 @@ draftPanel.innerHTML=[
  '<details class="cyexp-advanced" open><summary>草稿文章預覽與完整 HTML</summary><div id="cyexp-draft-preview"></div><textarea id="cyexp-draft-html" readonly rows="7"></textarea></details>'
 ].join("");
 host.appendChild(draftPanel);
+const matchHud=document.createElement("aside");
+matchHud.id="cyexp-match-hud";
+matchHud.hidden=true;
+matchHud.setAttribute("role","status");
+matchHud.setAttribute("aria-live","polite");
+matchHud.style.cssText="position:fixed;bottom:18px;right:18px;width:min(420px,calc(100vw - 36px));z-index:9999;padding:16px;background:#122747;color:#fff;border-radius:14px;box-shadow:0 12px 35px rgba(10,30,50,.28)";
+matchHud.innerHTML=[
+ '<div style="display:flex;gap:12px;align-items:center;justify-content:space-between">',
+ '<strong id="cyexp-match-hud-title">正在配對圖片</strong>',
+ '<span id="cyexp-match-elapsed" style="font-size:12px">0 秒</span></div>',
+ '<p id="cyexp-match-stage" style="margin:8px 0;font-size:13px;color:#e8f1ff">準備開始</p>',
+ '<progress id="cyexp-match-meter" style="width:100%;height:12px" max="1" value="0"></progress>',
+ '<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:8px">',
+ '<span id="cyexp-match-numbers" style="font-size:12px">0 / 0 張</span>',
+ '<button type="button" id="cyexp-stop-match" style="border:1px solid #fff;color:#fff;background:transparent;border-radius:8px;padding:8px 12px;cursor:pointer">停止配對</button>',
+ '</div>'
+].join("");
+host.appendChild(matchHud);
 
 // Beginner-first layout: MOVE existing controls, never clone/remove working
 // AI or export controls. All IDs and event handlers remain unchanged.
@@ -134,7 +152,7 @@ function buildBeginnerLayout(){
  cmsTitle.textContent="貼入官網圖片 HTML｜本機 AI 自動對圖（整批一次）";
  const cmsHelp=cms.querySelector("p.cyexp-muted");
  if(cmsHelp)cmsHelp.textContent="一次貼入官網圖片 HTML，再按「自動配對」：先比對檔名／像素；遇到亂數檔名或瀏覽器跨網域限制，就交給已連線的 LM Studio Qwen3-VL 直接看官網圖片與本機原圖。能確認唯一同一畫面的圖自動套用 ALT，不能確認的才列出。";
- three.append(cms,baseCheck,urlCheck,planCheck,status,copyGroup,preview);
+ three.append(cms,matchHud,baseCheck,urlCheck,planCheck,status,copyGroup,preview);
  extra.append(internalId,bulk,originals,exportBtn,importLabel);
  if(savedIntro?.matches("p.cyexp-muted"))savedIntro.remove();
  // Remove old repetitive direct-copy instructions; progress and three
@@ -879,6 +897,66 @@ async function localImagePreviewData(file){
   return canvas.toDataURL("image/jpeg",0.82);
  }finally{image.close?.();}
 }
+function setCmsMatchProgress(stage,step=S.matchStep,total=S.matchTotal){
+ S.matchStage=stage;S.matchStep=step;S.matchTotal=total;
+ const hud=$("cyexp-match-hud");hud.hidden=!S.matchRunning;
+ $("cyexp-match-stage").textContent=stage;
+ $("cyexp-match-meter").max=Math.max(1,total);
+ $("cyexp-match-meter").value=Math.max(0,Math.min(step,total));
+ $("cyexp-match-numbers").textContent=total?(step+" / "+total+" 張"):"正在準備";
+ $("cyexp-cms-match-status").textContent=stage;
+}
+function newCmsMatchController(ms=75000){
+ const controller=new AbortController();
+ S.matchControllers.add(controller);
+ const timer=setTimeout(()=>controller.abort(),ms);
+ return {signal:controller.signal,dispose:()=>{clearTimeout(timer);S.matchControllers.delete(controller);}};
+}
+function stopCmsMatch(){
+ if(!S.matchRunning)return;
+ S.matchCancelled=true;
+ $("cyexp-stop-match").disabled=true;
+ $("cyexp-match-hud-title").textContent="正在停止圖片配對";
+ setCmsMatchProgress("已收到停止指令，正在中止請求並保留已完成結果。");
+ for(const controller of S.matchControllers)controller.abort();
+}
+async function runCmsMatch(raw){
+ if(S.modelBusy){$("cyexp-cms-match-status").textContent="本機 Qwen3-VL 正在執行前面的圖片辨識；同時啟動配對可能導致記憶體不足。請在讀圖完成後再按配對。";return;}
+ if(S.matchRunning){$("cyexp-cms-match-status").textContent="圖片仍在處理中，可使用右下角的「停止配對」取消。";return;}
+ if(!String(raw||"").trim()){$("cyexp-cms-match-status").textContent="請先貼入晨陽後台圖片 HTML，再按自動配對。";return;}
+ S.matchRunning=true;S.matchCancelled=false;S.matchStartedAt=Date.now();
+ S.matchStep=0;S.matchTotal=0;
+ $("cyexp-match-hud-title").textContent="正在比對官網圖片";
+ $("cyexp-match-elapsed").textContent="0 秒";
+ $("cyexp-stop-match").disabled=false;
+ $("cyexp-match-cms").disabled=true;$("cyexp-paste-cms").disabled=true;
+ setCmsMatchProgress("正在解析 HTML 並檢查圖片網址……",0,0);
+ S.matchTimer=setInterval(()=>{
+  if(!S.matchRunning)return;
+  const elapsed=Math.floor((Date.now()-S.matchStartedAt)/1000);
+  $("cyexp-match-elapsed").textContent=elapsed+" 秒";
+ },1000);
+ try{
+  const result=await matchImagesFromCms(raw);
+  if(S.matchCancelled){
+   $("cyexp-cms-match-status").textContent="已停止配對。已確認的圖片資料保留，未完成圖片仍標記待確認。"+
+    "目前已指派 "+result.assigned+"/"+S.files.length+" 張；需要時可再次按自動配對。";
+  }else{
+   showCmsMatch(result);
+  }
+ }catch(e){
+  $("cyexp-cms-match-status").textContent="圖片配對已中斷："+(e?.message||"未知錯誤")+"。未核對圖片不會輸出正式 HTML。";
+ }finally{
+  if(S.matchTimer){clearInterval(S.matchTimer);S.matchTimer=null;}
+  for(const controller of S.matchControllers)controller.abort();
+  S.matchControllers.clear();
+  S.matchRunning=false;
+  $("cyexp-match-hud").hidden=true;
+  $("cyexp-match-cms").disabled=false;
+  $("cyexp-paste-cms").disabled=false;
+  updateStatus();
+ }
+}
 async function localVisionRemoteRequest(remoteUrl,prompt,originalData,reverse=false){
  if(!validUrl(remoteUrl))throw Error("只允許晨陽官網 HTTPS 圖片作為遠端 AI 輸入");
  const model=$("cyexp-local-model").value||S.localModel;
@@ -892,17 +970,17 @@ async function localVisionRemoteRequest(remoteUrl,prompt,originalData,reverse=fa
  }else{
   contents.push({type:"input_image",image_url:remoteUrl});
  }
- const controller=new AbortController();
- const timer=setTimeout(()=>controller.abort(),120000);
+ if(S.matchCancelled)throw Error("使用者已停止配對");
+ const tracked=newCmsMatchController(75000);
  try{
   const response=await fetch(LMSTUDIO_BASE+"/v1/responses",{
    method:"POST",headers:localAuthHeaders(true),mode:"cors",
-   targetAddressSpace:"loopback",signal:controller.signal,
+   targetAddressSpace:"loopback",signal:tracked.signal,
    body:JSON.stringify({model,temperature:0,max_output_tokens:250,stream:false,input:[{role:"user",content:contents}]})
   });
   if(!response.ok)throw Error("LM Studio 遠端圖片 API HTTP "+response.status+"："+(await response.text()).slice(0,170));
   return parseRemoteVisionJson(await response.json());
- }finally{clearTimeout(timer);}
+ }finally{tracked.dispose();}
 }
 function visionMatchYes(result){
  const verdict=String(result?.same||"").toLowerCase();
@@ -913,16 +991,19 @@ async function matchRemoteImagesWithLMStudio(urls,remaining,used){
  const output={suggested:0,accepted:0,failed:0,reason:""};
  if(!remaining.size)return output;
  if(!S.files.some(x=>x.file&&x.description?.trim()))return {...output,reason:"本機原圖或 AI 描述不足，無法進行視覺自動配對"};
- if(!S.localConnected)await connectLocalAI();
+ if(!S.localConnected){
+  setCmsMatchProgress("正在連接本機 LM Studio Qwen3-VL……",0,remaining.size);
+  await connectLocalAI();
+ }
  if(!S.localConnected)return {...output,reason:"本機 LM Studio 無法連線，請檢查已載入的 Qwen3-VL"};
  const originals=S.files.filter(x=>x.file&&x.description?.trim()&&!used.has(x));
  if(!originals.length)return output;
- const status=$("cyexp-cms-match-status");
  const proposals=[];
  const originalImages=new Map();
+ const total=remaining.size;
  for(const [number,url] of [...remaining].entries()){
-  status.textContent="Qwen3-VL 正在辨識官網圖片 "+(number+1)+"/"+remaining.size+
-   "；再與本機原圖比對（官網若改名也可以辨識），不靠檔案順序。";
+  if(S.matchCancelled){output.reason="使用者已停止配對";break;}
+  setCmsMatchProgress("第 "+(number+1)+"/"+total+" 張：Qwen3-VL 正在辨識官網圖片，接著比對本機原圖。",number,total);
   const catalogue=originals.map((item,i)=>{
    return i+"："+String(item.role||"其他")+"｜"+String(item.description||"").replace(/\s+/g," ").slice(0,140);
   }).join("\n");
@@ -941,8 +1022,10 @@ async function matchRemoteImagesWithLMStudio(urls,remaining,used){
     const prompt="比較接下來兩張圖片，判斷是否同一張設計畫面的相同視角，即使第二張被重新命名、縮放、壓縮或稍微裁切。兩張不同客廳即使風格、家具類似也必須回答 no。不得只憑文字。"+
      "請逐一比對家具相對位置、畫框數量與位置、門窗、櫃體輪廓及背景。若看不到圖片或不確定則回答 unsure。只回 JSON："+ 
      '{"same":"yes|no|unsure","matching_details":["兩張共有的具體視覺特徵1","兩張共有的具體視覺特徵2"],"difference":"有何差異或無"}。';
+    setCmsMatchProgress("第 "+(number+1)+"/"+total+" 張：正在比較官網圖與本機原圖細節。",number,total);
     const first=await localVisionRemoteRequest(url,prompt,data,false);
     if(!visionMatchYes(first))continue;
+    setCmsMatchProgress("第 "+(number+1)+"/"+total+" 張：正在反向確認，避免錯誤的圖片套用 ALT。",number,total);
     const second=await localVisionRemoteRequest(url,prompt,data,true);
     if(!visionMatchYes(second))continue;
     proposals.push({url,item:original,first,second});
@@ -951,10 +1034,13 @@ async function matchRemoteImagesWithLMStudio(urls,remaining,used){
   }catch(error){
    output.failed++;
    output.reason=String(error?.message||"本機 AI 遠端讀圖失敗");
+   if(S.matchCancelled)break;
+   setCmsMatchProgress("第 "+(number+1)+"/"+total+" 張讀圖失敗："+output.reason,number,total);
    // Unsupported /v1/responses or inaccessible images are capability
    // failures; do not repeatedly run costly requests with fabricated matches.
    if(/HTTP 40[01435]|HTTP 50[013]|未確認看見遠端圖片|Failed to fetch|aborted/i.test(output.reason))break;
   }
+  setCmsMatchProgress("已處理 "+(number+1)+"/"+total+" 張官網圖片。",number+1,total);
  }
  // Only accept unambiguous one-to-one image pairs. Two positive VLM calls
  // are visually cross-checked, but still carry the model-assisted label.
@@ -1061,12 +1147,15 @@ async function matchImagesFromCms(raw){
   item.urlMatch="唯一檔名相符，仍須核對圖片";
   remaining.delete(found[0]);used.add(item);exact++;
  }
+ setCmsMatchProgress("正在檢查官網圖片網址與是否能讀取圖片像素……",0,urls.length);
  // Browser can compare the actual bytes only if the official site permits CORS.
  // Identical SHA256 is proof of identical image file bytes; similarity merely proposes a candidate.
  const remote=new Map();
  await Promise.all([...remaining].map(async url=>{
+  if(S.matchCancelled)return;
+  const tracked=newCmsMatchController(7000);
   try{
-   const response=await fetch(url,{mode:"cors",cache:"force-cache"});
+   const response=await fetch(url,{mode:"cors",cache:"force-cache",signal:tracked.signal});
    if(!response.ok)throw Error("HTTP "+response.status);
    const blob=await response.blob();
    if(!blob.type.startsWith("image/"))return;
@@ -1075,6 +1164,7 @@ async function matchImagesFromCms(raw){
    const dh=await imageDhash(blob).catch(()=>"");
    remote.set(url,{sha,dh});
   }catch(_){/* CORS may forbid reading pixels; never fake identity. */}
+  finally{tracked.dispose();}
  }));
  for(const item of S.files){
   if(used.has(item)||!item.file)continue;
@@ -1094,7 +1184,7 @@ async function matchImagesFromCms(raw){
  }
  // When filenames are randomized or browser CORS blocks pixels, let the
  // user's already-running local Qwen3-VL compare remote URLs to originals.
- const ai=remaining.size?await matchRemoteImagesWithLMStudio(urls,remaining,used):
+ const ai=remaining.size&&!S.matchCancelled?await matchRemoteImagesWithLMStudio(urls,remaining,used):
   {accepted:0,suggested:0,failed:0,reason:""};
  $("cyexp-confirm-urls").checked=false;
  renderItems();renderCmsPairingReview();
@@ -1143,7 +1233,7 @@ async function pasteCmsImages(){
   if(!data&&navigator.clipboard.readText)data=await navigator.clipboard.readText();
   if(!data)throw Error("剪貼簿中沒有 HTML 或文字圖片網址");
   $("cyexp-cms-html").value=data;
-  showCmsMatch(await matchImagesFromCms(data));
+  await runCmsMatch(data);
  }catch(error){
   $("cyexp-cms-match-status").textContent="無法讀取剪貼簿："+(error?.message||"未知原因")+"。請按 Ctrl+V 貼入上方輸入框，再點「自動讀取官網 HTML」。";
  }finally{btn.disabled=false;}
@@ -1248,13 +1338,8 @@ $("cyexp-local-model").addEventListener("change",()=>{S.localModel=$("cyexp-loca
 $("cyexp-unit").addEventListener("change",refreshAutoAlts);
 $("cyexp-type").addEventListener("change",refreshAutoAlts);
 $("cyexp-summary").addEventListener("click",generateSummary);
-$("cyexp-match-cms").addEventListener("click",async()=>{
- const btn=$("cyexp-match-cms");btn.disabled=true;
- $("cyexp-cms-match-status").textContent="正在比對圖片，不能僅憑上傳順序推定。";
- try{showCmsMatch(await matchImagesFromCms($("cyexp-cms-html").value));}
- catch(e){$("cyexp-cms-match-status").textContent="配對失敗："+(e?.message||"未知錯誤");}
- finally{btn.disabled=false;}
-});
+$("cyexp-match-cms").addEventListener("click",()=>runCmsMatch($("cyexp-cms-html").value));
+$("cyexp-stop-match").addEventListener("click",stopCmsMatch);
 $("cyexp-paste-cms").addEventListener("click",pasteCmsImages);
 $("cyexp-approve-reviewed").addEventListener("click",approveReviewedBatch);
 $("cyexp-apply-urls").addEventListener("click",applyBulkUrls);
