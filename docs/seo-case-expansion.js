@@ -120,8 +120,14 @@ function itemBox(a,i){
    updateStatus();
  });
  right.addEventListener("change",ev=>{const x=ev.target.dataset.attr;if(!x)return;
+   const wasAuto=!!(a.autoAlt&&a.alt===a.autoAlt);
    a[x]=x==="verified"?ev.target.checked:ev.target.value;
-   if(x==="role"){if(a.autoAlt&&a.alt===a.autoAlt){a.alt=makeAlt(a);a.autoAlt=a.alt;}a.verified=false;renderItems();}else updateStatus();
+   if(x==="alt"){a.autoAlt="";a.verified=false;updateStatus();return;}
+   if(x==="role"||x==="description"){
+     if(!a.alt?.trim()||wasAuto){a.alt=makeAlt(a);a.autoAlt=a.alt;}
+     a.verified=false;renderItems();return;
+   }
+   updateStatus();
  });
  return card;
 }
