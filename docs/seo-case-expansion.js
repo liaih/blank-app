@@ -181,6 +181,95 @@ buildBeginnerLayout();
 function message(text,isError){$("cyexp-vision-status").textContent=text;$("cyexp-vision-status").style.color=isError?"#b91c1c":"";}
 function pickBase(){return S.base.find(x=>x.id===$("cyexp-base").value);}
 function chooseTitle(){const p=pickBase();const d=S.drafts.find(x=>x.id===p?.id);return d?.project_name || (d?.title||p?.id||"").split("｜",1)[0];}
+// Per-project workspaces live in memory for this tab. They intentionally keep
+// File/Blob URLs and human edits separate, never copy materials to a new case.
+function takeCaseSnapshot(){
+ return {
+  files:S.files,cmsUrls:S.cmsUrls,cmsVisionCache:S.cmsVisionCache,
+  cmsCorsUnavailable:S.cmsCorsUnavailable,
+  unit:$("cyexp-unit").value,type:$("cyexp-type").value,
+  intro:$("cyexp-intro").value,newbase:$("cyexp-newbase").value,
+  cmsHtml:$("cyexp-cms-html").value,bulkUrls:$("cyexp-bulk-urls").value,
+  confirmedBase:$("cyexp-confirm-base").checked,
+  confirmedUrls:$("cyexp-confirm-urls").checked,
+  confirmedFloorplan:$("cyexp-confirm-floorplan").checked,
+  visionMessage:$("cyexp-vision-status").textContent,
+  cmsMessage:$("cyexp-cms-match-status").textContent
+ };
+}
+function assignCaseSnapshot(saved){
+ S.files=saved?.files||[];
+ S.cmsUrls=saved?.cmsUrls||[];
+ S.cmsVisionCache=saved?.cmsVisionCache||new Map();
+ S.cmsCorsUnavailable=!!saved?.cmsCorsUnavailable;
+ $("cyexp-unit").value=saved?.unit||"新增設計案例";
+ $("cyexp-type").value=saved?.type==="實景照片"?"實景照片":"3D 建模示意圖";
+ $("cyexp-intro").value=saved?.intro||"";
+ $("cyexp-newbase").value=saved?.newbase||"";
+ $("cyexp-cms-html").value=saved?.cmsHtml||"";
+ $("cyexp-bulk-urls").value=saved?.bulkUrls||"";
+ $("cyexp-confirm-base").checked=!!saved?.confirmedBase;
+ $("cyexp-confirm-urls").checked=!!saved?.confirmedUrls;
+ $("cyexp-confirm-floorplan").checked=!!saved?.confirmedFloorplan;
+ $("cyexp-vision-status").textContent=saved?.visionMessage||"此案尚未加入新圖片，請選擇此案的新格局圖與設計圖片。";
+ $("cyexp-cms-match-status").textContent=saved?.cmsMessage||"此案尚未匯入官網圖片 HTML；其他案場的網址不會帶入。";
+}
+function topSelectedArticleId(){
+ return document.getElementById("action-article")?.value||"";
+}
+function articleContextMatches(){
+ const selected=topSelectedArticleId();
+ return !!(selected&&S.activeProjectId===selected&&pickBase()?.id===selected);
+}
+function showActiveCaseIdentity(){
+ const node=$("cyexp-current-article-info");
+ const project=pickBase();
+ if(!project||!articleContextMatches()){
+  node.textContent="尚未同步目前選擇的 SEO 文章，禁止混用其他案場的原文與圖片。";
+  node.dataset.status="blocked";
+  return;
+ }
+ const draft=S.drafts.find(x=>x.id===project.id);
+ const name=draft?.project_name||draft?.title||project.id;
+ const existingImages=(project.html_with_media?.match(/<img\b/gi)||[]).length;
+ node.textContent="目前編輯："+name+"｜已載入此案原文（既有圖片 "+existingImages+
+   " 張）｜本案新增圖片 "+S.files.length+" 張。不同案場資料獨立保存。";
+ node.dataset.status="ready";
+}
+function switchToCase(nextId){
+ if(!S.base.length)return false;
+ if(S.modelBusy||S.matchRunning||S.fileImportBusy)return false;
+ if(nextId===S.activeProjectId){
+  showActiveCaseIdentity();updateStatus();return true;
+ }
+ if(S.activeProjectId)S.caseStates.set(S.activeProjectId,takeCaseSnapshot());
+ S.activeProjectId=nextId||"";
+ const project=S.base.find(x=>x.id===nextId);
+ $("cyexp-base").value=project?project.id:"";
+ assignCaseSnapshot(project?S.caseStates.get(project.id):null);
+ showActiveCaseIdentity();
+ renderItems();
+ renderCmsPairingReview();
+ if(!project){
+  message("所選文章沒有經驗證的完整原文與圖片資料，不能沿用上一個案場；請檢查文章資料同步。",true);
+ }else if(!S.caseStates.has(project.id)){
+  message("已切換到「"+(S.drafts.find(x=>x.id===project.id)?.project_name||project.id)+
+   "」。原文章與舊圖已載入；新案例圖片尚未選取，請加入此案新圖片。");
+ }
+ return !!project;
+}
+function handleMainSeoArticleSelection(event){
+ if(!S.base.length)return;
+ const nextId=String(event?.detail?.id||"");
+ if(nextId===S.activeProjectId){showActiveCaseIdentity();return;}
+ if(S.modelBusy||S.matchRunning||S.fileImportBusy){
+  event.detail.revertTo=S.activeProjectId;
+  event.preventDefault();
+  message("正在為目前案場讀圖或配對，為避免跨案場串圖，請完成或停止後再切換文章。",true);
+  return;
+ }
+ switchToCase(nextId);
+}
 function validUrl(text){
  try{const u=new URL(text);return u.protocol==="https:"&&["chen-yang.com.tw","www.chen-yang.com.tw"].includes(u.hostname.toLowerCase())&&/\.(png|jpe?g|webp|avif)$/i.test(u.pathname);}
  catch(_){return false;}
