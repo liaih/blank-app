@@ -4,9 +4,9 @@
   "not_first_party_analytics": true,
   "not_real_consumer_query_volume": true,
   "not_own_tavily_rag": true,
-  "window_start": "2026-10-14",
-  "window_end": "2026-11-12",
-  "generated_at": "2026-11-12T18:34:11+08:00",
+  "window_start": "2026-10-15",
+  "window_end": "2026-11-13",
+  "generated_at": "2026-11-13T21:13:41+08:00",
   "total_samples": 2,
   "platforms": [
     {
@@ -115,6 +115,23 @@
       "stored": 0,
       "failed": 0,
       "no-evidence": 1
+    }
+  },
+  "latest_job_status": {
+    "ChatGPT": {
+      "day": "2026-11-12",
+      "status": "stored",
+      "reason": "legacy_unknown"
+    },
+    "Gemini": {
+      "day": "2026-11-12",
+      "status": "stored",
+      "reason": "legacy_unknown"
+    },
+    "Perplexity": {
+      "day": "2026-11-12",
+      "status": "no-evidence",
+      "reason": "legacy_unknown"
     }
   },
   "intent_analysis": {
