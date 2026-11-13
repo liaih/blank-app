@@ -131,9 +131,9 @@ function buildBeginnerLayout(){
  one.append(fields,actions,aiInfo,localPanel);
  two.append(images,reviewed,reviewedHelp,intro,summaryActions,imageStatus,draftPanel);
  const cmsTitle=cms.querySelector("summary");
- cmsTitle.textContent="貼入官網剛上傳的圖片 HTML（一批貼一次）";
+ cmsTitle.textContent="貼入官網圖片 HTML｜本機 AI 自動對圖（整批一次）";
  const cmsHelp=cms.querySelector("p.cyexp-muted");
- if(cmsHelp)cmsHelp.textContent="在官網編輯器一次上傳新圖片 → 複製那批圖片的 HTML → 在下方貼上並按「自動配對」。不用逐張填網址。";
+ if(cmsHelp)cmsHelp.textContent="一次貼入官網圖片 HTML，再按「自動配對」：先比對檔名／像素；遇到亂數檔名或瀏覽器跨網域限制，就交給已連線的 LM Studio Qwen3-VL 直接看官網圖片與本機原圖。能確認唯一同一畫面的圖自動套用 ALT，不能確認的才列出。";
  three.append(cms,baseCheck,urlCheck,planCheck,status,copyGroup,preview);
  extra.append(internalId,bulk,originals,exportBtn,importLabel);
  if(savedIntro?.matches("p.cyexp-muted"))savedIntro.remove();
