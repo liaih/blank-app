@@ -6,7 +6,7 @@ if(!host)return;
 const $=id=>host.querySelector("#"+id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 const zones=["格局圖","玄關與客廳","玄關","客廳","客餐廳","廚房與走道","多功能工作區","臥室","更衣收納","其他"];
-const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,modelBusy:false,visionReady:false,verifiedBase:false};
+const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,translator:null,transformers:null,modelBusy:false,visionReady:false,verifiedBase:false};
 const markup=[
 '<div class="cyexp-head"><h3>同建案新增案件｜AI 讀圖＋ALT＋格局圖</h3>',
 '<p class="cyexp-muted">原文章＋舊戶型全部保留。新增圖片在本機辨識；圖片須先上傳晨陽官網取得正式網址，才可輸出正式 HTML。</p></div>',
@@ -23,7 +23,7 @@ const markup=[
 '<p class="cyexp-muted">先依目前圖片順序貼入一行一個正式圖片網址；或貼入「圖片檔名 | 官網網址」來自動配對，包含新格局圖。僅接受晨陽官網 HTTPS 圖片網址。</p>',
 '<textarea id="cyexp-bulk-urls" rows="4" placeholder="https://chen-yang.com.tw/upload/images/新案-01.png&#10;https://chen-yang.com.tw/upload/images/新案-02.png"></textarea>',
 '<button type="button" id="cyexp-apply-urls">批次套用圖片網址</button></details>',
-'<p class="cyexp-muted">本次丹佛花都 9 張原始示意圖已提供核對過的辨識結果；其他新圖可嘗試免費瀏覽器本機視覺模型（首次需下載模型、需裝置支援 WebGPU）。讀圖結果都是草稿，必須人工核對，無模型時不可假裝已辨識。</p>',
+'<p class="cyexp-muted">本次丹佛花都 9 張原始示意圖有既有人工辨識範本；其他新圖改用 Transformers.js 官方支援的 image-to-text 讀圖模型，再以本機英文轉中文模型翻譯。首次須下載模型，通常使用 CPU 也能執行，不強制 WebGPU。圖片不送往付費 AI API；描述僅是草稿，需人工核對，格局圖需確認圖面。</p>',
 '<p id="cyexp-vision-status" class="cyexp-muted" role="status"></p>',
 '<div id="cyexp-items" class="cyexp-images"><p>請選擇新案件圖片；包含新平面配置圖／格局圖。</p></div>',
 '<details class="cyexp-advanced"><summary>進階｜原文不同步時貼上官網最新正文 HTML</summary>',
@@ -244,11 +244,26 @@ async function addFiles(files){
 }
 async function initLocalModel(){
  if(S.pipeline)return S.pipeline;
- if(!navigator.gpu)throw Error("這台裝置未提供 WebGPU。可改用電腦 Chrome／Edge，或在 ChatGPT 上傳新圖取得讀圖文案後貼入；不會把檔名當作已讀圖。");
- message("正在從公開模型來源載入免費本機視覺模型；首次下載較大，圖片不送到第三方推論 API。");
+ message("正在下載本機圖片描述模型 Xenova/vit-gpt2-image-captioning（image-to-text）。首次下載需要網路與瀏覽器快取空間，不依賴 WebGPU。");
  const mod=await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1/+esm");
- S.pipeline=await mod.pipeline("image-text-to-text","HuggingFaceTB/SmolVLM-256M-Instruct",{device:"webgpu",dtype:"q4"});
+ if(typeof mod.pipeline!=="function")throw Error("Transformers.js 模型載入介面無法使用");
+ S.transformers=mod;
+ // Transformers.js v3.8.1 exposes image-to-text, not image-text-to-text.
+ // Default CPU/WASM backend is deliberately used for broad device support.
+ S.pipeline=await mod.pipeline("image-to-text","Xenova/vit-gpt2-image-captioning");
  return S.pipeline;
+}
+async function translateToChinese(caption){
+ if(!S.transformers)throw Error("圖片模型尚未初始化");
+ if(!S.translator){
+  message("已取得英文圖片描述，正在載入免費英文轉中文模型（首次下載需時間）。");
+  S.translator=await S.transformers.pipeline("translation","Xenova/opus-mt-en-zh");
+ }
+ const output=await S.translator(caption,{max_new_tokens:100});
+ const item=Array.isArray(output)?output[0]:output;
+ const result=String(item?.translation_text||item?.generated_text||"").trim();
+ if(!result)throw Error("翻譯模型未回傳可用的中文內容");
+ return result;
 }
 function parseGenerated(res){
  const a=Array.isArray(res)?res[0]:res;
@@ -269,20 +284,29 @@ async function readImages(){
   for(let i=0;i<todo.length;i++){
    const a=todo[i];if(!a.file){message("匯入舊草稿但未重新選圖片，無法讀圖："+a.name,true);continue;}
    message("本機 AI 讀圖 "+(i+1)+"/"+todo.length+"："+a.name);
-   const messages=[{role:"user",content:[
-    {type:"image",image:a.preview},
-    {type:"text",text:"Describe the visible interior architecture and furniture in this image in Traditional Chinese. Mention only things that are actually visible, such as layout, cabinets, bed, windows, materials. Do not invent dimensions, floor plan unit code, completion status, or a real homeowner. Maximum 80 Chinese characters."}
-   ]}];
-   const out=await pipe(messages,{max_new_tokens:120,return_full_text:false});
-   const result=parseGenerated(out);
-   if(!result)throw Error("模型未輸出可用描述，請人工核對");
-   a.description=result;a.origin="瀏覽器本機視覺模型草稿｜尚待人工核對";
-   if(a.role==="其他"&&/格局|平面圖|floor.?plan/i.test(result))a.role="格局圖";
+   // ImageToTextPipeline expects an image URL/blob URL, NOT chat message arrays.
+   const out=await pipe(a.preview,{max_new_tokens:70});
+   const caption=parseGenerated(out);
+   if(!caption)throw Error("圖片描述模型未輸出內容");
+   let result="";
+   try{
+    result=await translateToChinese(caption);
+    a.origin="圖片描述模型＋英文轉中文模型產生的草稿；需人工核對，非完工證明";
+   }catch(translationError){
+    // Keep the observed caption, not a fabricated Chinese claim.
+    result=caption;
+    a.origin="已完成圖片辨識，但中文翻譯失敗；目前顯示英文描述，請人工改寫中文後再確認 ALT";
+    message("圖片已辨識但翻譯未完成："+(translationError?.message||"未知原因")+"；英文內容可以人工編輯。",true);
+   }
+   a.captionEn=caption;
+   a.description=result;
+   // A caption model cannot reliably distinguish a plan from a 3D render.
+   // The floorplan status is only accepted after manual selection/verification.
    a.alt=makeAlt(a);a.autoAlt=a.alt;a.verified=false;
    renderItems();
   }
-  message("讀圖草稿已產生；請逐張核對畫面內容、ALT 和戶型。AI 說明不是已驗證事實。");
- }catch(e){message("本機 AI 讀圖未完成："+(e?.message||"裝置或模型限制")+"。請在支援 WebGPU 的電腦重試，或將圖片交給 ChatGPT 讀圖後貼回欄位。",true);}
+  message("已使用相容的 image-to-text 模型產生圖片描述；請核對中文、ALT、3D 示意圖身分及新格局圖。模型可能描述錯誤，確認後才能複製 HTML。");
+ }catch(e){message("本機圖片辨識未完成："+(e?.message||"模型下載／執行失敗")+"。可換用桌面 Chrome／Edge 重新開啟，或將圖片交給 ChatGPT 讀圖後，把繁中描述貼回欄位；不會假裝模型已成功。",true);}
  finally{S.modelBusy=false;$("cyexp-read").disabled=false;updateStatus();}
 }
 function refreshAutoAlts(){
