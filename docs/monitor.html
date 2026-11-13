@@ -110,11 +110,11 @@ tbody tr:last-child td{border-bottom:0}
   <section class="panel" aria-label="ChatGPT Gemini Perplexity 原平台回答自動監測">
     <div class="flexhead">
       <div><h2>ChatGPT・Gemini・Perplexity｜原平台回答監測</h2>
-        <p class="muted">每天由獨立第三方資料服務查詢三個平台的實際回答，分析晨陽被提及與被引用、其他設計公司及來源網域。</p>
+        <p class="muted">顯示已取得的第三方原平台回答，分開分析 ChatGPT、Gemini、Perplexity 的提及與引用；是否每天更新，依實際採樣日期判斷。</p>
       </div>
       <span class="label wait" id="native-ai-status">尚未取得真實平台樣本</span>
     </div>
-    <p class="message" id="native-ai-hint">此區不使用自建 Tavily＋Gemini 回答，也不使用過去那一筆 Gemini 不連網測試。等待免費 Bright Data 帳號與正式平台樣本。沒有來源時不會假裝監測成功。</p>
+    <p class="message" id="native-ai-hint">正在核對原平台的有效樣本數、採樣日期、題目覆蓋率與缺少的平台；自建 RAG 和不連網 Gemini 不列入此區。</p>
     <div class="metrics">
       <div class="metric"><div class="name">近30天｜ChatGPT</div><div class="number" id="native-chatgpt">未取得</div><div class="sub">第三方擷取平台回答</div></div>
       <div class="metric"><div class="name">近30天｜Gemini</div><div class="number" id="native-gemini">未取得</div><div class="sub">與官方 API 自建分析分開</div></div>
@@ -1225,13 +1225,23 @@ function renderNativePlatformAnswers(){
       el("native-perplexity-progress").textContent="Perplexity 既有任務：處理中 "+(perplexity.pending||0)+" 筆、已保存 "+(perplexity.stored||0)+" 筆、失敗 "+(perplexity.failed||0)+" 筆、無有效證據 "+(perplexity["no-evidence"]||0)+" 筆。僅查詢舊 Snapshot，不新增採樣。";
       put("native-total",total+" 筆");
       put("legacy-sourced-count",total?(sourced+"／"+total+" 筆"):"尚無有效回答");
+      const promptIds=new Set(data.platforms.flatMap(p=>p.tested_prompt_ids||[]));
+      const missing=data.platforms.filter(p=>Number(p.samples||0)===0).map(p=>p.platform);
+      const lastSample=data.platforms.map(p=>p.last_sample_date).filter(Boolean).sort().at(-1)||"尚無回答日期";
+      const lastDay=Date.parse(lastSample+"T00:00:00+08:00");
+      const ageDays=Number.isFinite(lastDay)?Math.max(0,Math.floor((Date.now()-lastDay)/86400000)):null;
+      const stale=ageDays===null||ageDays>=3;
       if(total){
-        status.textContent="已取得真實平台觀測";
-        status.className="label yes";
-        el("native-ai-hint").textContent="資料期間："+data.window_start+" 至 "+data.window_end+"。第三方擷取的固定問題回答，不等於所有消費者或官方平台的市場推薦率。";
+        status.textContent="已取得 "+total+" 筆｜"+promptIds.size+" 題"+(stale?"｜待更新":"");
+        status.className=stale||missing.length?"label wait":"label yes";
+        el("native-ai-hint").textContent="實際最近回答："+lastSample+"；題目覆蓋 "+promptIds.size+
+          " 題，取得 "+total+" 筆；"+(missing.length?"尚未取得："+missing.join("、")+"。":"三平台均有樣本。")+
+          (stale?"資料已超過 2 天，須檢查排程／供應商。":"")+
+          " 這是固定提問的受控樣本，不代表每天全部平台都成功，也不是全市場推薦率。";
       }else{
-        status.textContent="已連接，但尚無有效回答";
-        el("native-ai-hint").textContent="來源尚未產出有效回答，不能把沒有樣本當成零推薦。可查看 GitHub Actions 的錯誤與供應商額度狀態。";
+        status.textContent="三平台尚無有效回答";
+        status.className="label wait";
+        el("native-ai-hint").textContent="來源尚未產出可核對的原平台回答；請檢查排程及供應商狀態。沒有樣本不等於零推薦。";
       }
     }).catch(()=>{
       for(const id of ["legacy-chatgpt-status","legacy-gemini-status","legacy-perplexity-status"]) {
