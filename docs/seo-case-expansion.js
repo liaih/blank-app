@@ -1146,12 +1146,15 @@ async function matchImagesFromCms(raw){
   item.urlMatch="唯一檔名相符，仍須核對圖片";
   remaining.delete(found[0]);used.add(item);exact++;
  }
+ setCmsMatchProgress("正在檢查官網圖片網址與是否能讀取圖片像素……",0,urls.length);
  // Browser can compare the actual bytes only if the official site permits CORS.
  // Identical SHA256 is proof of identical image file bytes; similarity merely proposes a candidate.
  const remote=new Map();
  await Promise.all([...remaining].map(async url=>{
+  if(S.matchCancelled)return;
+  const tracked=newCmsMatchController(7000);
   try{
-   const response=await fetch(url,{mode:"cors",cache:"force-cache"});
+   const response=await fetch(url,{mode:"cors",cache:"force-cache",signal:tracked.signal});
    if(!response.ok)throw Error("HTTP "+response.status);
    const blob=await response.blob();
    if(!blob.type.startsWith("image/"))return;
@@ -1160,6 +1163,7 @@ async function matchImagesFromCms(raw){
    const dh=await imageDhash(blob).catch(()=>"");
    remote.set(url,{sha,dh});
   }catch(_){/* CORS may forbid reading pixels; never fake identity. */}
+  finally{tracked.dispose();}
  }));
  for(const item of S.files){
   if(used.has(item)||!item.file)continue;
@@ -1179,7 +1183,7 @@ async function matchImagesFromCms(raw){
  }
  // When filenames are randomized or browser CORS blocks pixels, let the
  // user's already-running local Qwen3-VL compare remote URLs to originals.
- const ai=remaining.size?await matchRemoteImagesWithLMStudio(urls,remaining,used):
+ const ai=remaining.size&&!S.matchCancelled?await matchRemoteImagesWithLMStudio(urls,remaining,used):
   {accepted:0,suggested:0,failed:0,reason:""};
  $("cyexp-confirm-urls").checked=false;
  renderItems();renderCmsPairingReview();
@@ -1228,7 +1232,7 @@ async function pasteCmsImages(){
   if(!data&&navigator.clipboard.readText)data=await navigator.clipboard.readText();
   if(!data)throw Error("剪貼簿中沒有 HTML 或文字圖片網址");
   $("cyexp-cms-html").value=data;
-  showCmsMatch(await matchImagesFromCms(data));
+  await runCmsMatch(data);
  }catch(error){
   $("cyexp-cms-match-status").textContent="無法讀取剪貼簿："+(error?.message||"未知原因")+"。請按 Ctrl+V 貼入上方輸入框，再點「自動讀取官網 HTML」。";
  }finally{btn.disabled=false;}
@@ -1333,13 +1337,8 @@ $("cyexp-local-model").addEventListener("change",()=>{S.localModel=$("cyexp-loca
 $("cyexp-unit").addEventListener("change",refreshAutoAlts);
 $("cyexp-type").addEventListener("change",refreshAutoAlts);
 $("cyexp-summary").addEventListener("click",generateSummary);
-$("cyexp-match-cms").addEventListener("click",async()=>{
- const btn=$("cyexp-match-cms");btn.disabled=true;
- $("cyexp-cms-match-status").textContent="正在比對圖片，不能僅憑上傳順序推定。";
- try{showCmsMatch(await matchImagesFromCms($("cyexp-cms-html").value));}
- catch(e){$("cyexp-cms-match-status").textContent="配對失敗："+(e?.message||"未知錯誤");}
- finally{btn.disabled=false;}
-});
+$("cyexp-match-cms").addEventListener("click",()=>runCmsMatch($("cyexp-cms-html").value));
+$("cyexp-stop-match").addEventListener("click",stopCmsMatch);
 $("cyexp-paste-cms").addEventListener("click",pasteCmsImages);
 $("cyexp-approve-reviewed").addEventListener("click",approveReviewedBatch);
 $("cyexp-apply-urls").addEventListener("click",applyBulkUrls);
