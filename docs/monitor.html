@@ -886,8 +886,14 @@ function renderSeoImprovementPlan(){
    notice.textContent="改稿資料尚未同步，暫不提供不完整的 HTML。";
    target.appendChild(notice);return;
  }
+ const cmsTitle=document.createElement("p");cmsTitle.style.marginTop="14px";
+ const cmsTitleLabel=document.createElement("strong");
+ cmsTitleLabel.textContent="建議文章標題（官網後台的文章標題欄；由 CMS 輸出 H1，尚未改動）：";
+ cmsTitle.appendChild(cmsTitleLabel);
+ cmsTitle.appendChild(document.createTextNode(draft.title||plan.title));
+ target.appendChild(cmsTitle);
  const title=document.createElement("p");title.style.marginTop="14px";
- const label=document.createElement("strong");label.textContent="SEO Title 備選稿（暫不更動原有建案標題）：";
+ const label=document.createElement("strong");label.textContent="SEO Title（搜尋結果標題備選稿，需在後台 SEO 標題欄另外設定）：";
  title.appendChild(label);title.appendChild(document.createTextNode(draft.metaTitle));
  target.appendChild(title);
  const desc=document.createElement("p");desc.className="small";
@@ -934,6 +940,9 @@ function renderSeoImprovementPlan(){
    target.appendChild(note);
    return;
  }
+ const headingInfo=document.createElement("p");headingInfo.className="detail";
+ headingInfo.textContent="內文真正的 H2 抬頭："+(integrity.opening_h2_text||"待重新產生標題驗證");
+ target.appendChild(headingInfo);
  const content=media.html_with_media;
  note.textContent="已通過防錯驗收：原文、圖片、影片、連結及原格局圖順序保留。保護的格局／平面圖："+integrity.floorplan_count+" 張。仍需編輯核對房型、交屋年份、圖片畫面及 CMS 實際上稿效果。";
  target.appendChild(note);
@@ -951,10 +960,14 @@ function renderSeoImprovementPlan(){
  frame.setAttribute("sandbox","");frame.style.width="100%";frame.style.maxWidth="100%";frame.style.height="min(64vh,460px)";
  frame.style.marginTop="12px";frame.style.border="1px solid #dfe7f0";
  frame.style.borderRadius="10px";frame.loading="lazy";
+ const previewCmsTitle=String(draft.title||plan.title).replace(/[&<>"]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
  frame.srcdoc='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">'+
   '<meta name="viewport" content="width=device-width,initial-scale=1">'+
   '<style>*,*::before,*::after{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{font-size:16px;line-height:1.8}img,video,iframe,figure,svg{max-width:100%!important}img{display:block;width:auto!important;height:auto!important;max-height:300px!important;object-fit:contain;margin:12px auto}@media(max-width:600px){img{max-height:220px!important}}iframe{width:100%!important;aspect-ratio:16/9;height:auto!important}p,h2,h3{overflow-wrap:anywhere}table{display:block;max-width:100%;overflow:auto}</style></head>'+
-  '<body style="padding:12px;margin:0;font-family:system-ui,sans-serif;">'+content+'</body></html>';
+  '<body style="padding:12px;margin:0;font-family:system-ui,sans-serif;">'+
+  '<div style="font-size:12px;color:#64748b;">以下 H1 為 CMS 文章標題欄的預覽示意，不在複製的內文 HTML 內</div>'+
+  '<h1 style="font-size:24px;line-height:1.4;margin:8px 0 20px;">'+previewCmsTitle+'</h1>'+
+  content+'</body></html>';
  preview.appendChild(frame);target.appendChild(preview);
  const raw=document.createElement("details");raw.style.marginTop="12px";
  const rawLabel=document.createElement("summary");rawLabel.textContent="查看這篇 HTML 原始碼";
