@@ -1221,8 +1221,33 @@ function renderNativePlatformAnswers(){
         }
         tests.appendChild(details);
       }
+      const nativeReasonLabel={
+        "vendor_job_failed":"第三方擷取失敗",
+        "stale_vendor_cache":"回傳過期回答，未計入有效樣本",
+        "invalid_vendor_timestamp":"平台時間格式有誤",
+        "vendor_record_error":"平台回覆含錯誤",
+        "malformed_vendor_record":"供應商資料格式不符",
+        "prompt_mismatch":"回覆問題與測試題目不同",
+        "missing_or_short_answer":"缺少可核對的回答內容",
+        "invalid_evidence_url":"缺少有效平台回答網址",
+        "wrong_platform_url":"回答網址不是此平台",
+        "sample_validation_failed":"回答未通過驗證",
+        "empty_vendor_snapshot":"擷取完成但沒有回答資料",
+        "legacy_unknown":"既有資料尚無錯誤原因",
+        "unverified_vendor_record":"需要人工查核資料格式"
+      };
+      const latestJobs=data.latest_job_status||{};
+      const operational=Object.entries(latestJobs).filter(([platform])=>["ChatGPT","Gemini","Perplexity"].includes(platform))
+        .map(([platform,job])=>{
+          const reason=job?.reason&&nativeReasonLabel[job.reason]?"（"+nativeReasonLabel[job.reason]+"）":"";
+          return platform+" "+(job?.day||"日期未知")+"："+(job?.status||"未執行")+reason;
+        }).join("；");
       const perplexity=(data.existing_job_status||{}).Perplexity||{};
-      el("native-perplexity-progress").textContent="Perplexity 既有任務：處理中 "+(perplexity.pending||0)+" 筆、已保存 "+(perplexity.stored||0)+" 筆、失敗 "+(perplexity.failed||0)+" 筆、無有效證據 "+(perplexity["no-evidence"]||0)+" 筆。僅查詢舊 Snapshot，不新增採樣。";
+      const lastPerplexity=latestJobs.Perplexity||{};
+      const perplexityReason=lastPerplexity.reason&&nativeReasonLabel[lastPerplexity.reason]?
+        "；最近未取得有效回答原因："+nativeReasonLabel[lastPerplexity.reason]:"";
+      el("native-perplexity-progress").textContent="Perplexity 既有任務：處理中 "+(perplexity.pending||0)+" 筆、已保存 "+(perplexity.stored||0)+" 筆、失敗 "+(perplexity.failed||0)+" 筆、無有效證據 "+(perplexity["no-evidence"]||0)+" 筆"+
+        perplexityReason+"。只顯示既有擷取結果，不因此建立新採樣。";
       put("native-total",total+" 筆");
       put("legacy-sourced-count",total?(sourced+"／"+total+" 筆"):"尚無有效回答");
       const promptIds=new Set(data.platforms.flatMap(p=>p.tested_prompt_ids||[]));
@@ -1243,6 +1268,7 @@ function renderNativePlatformAnswers(){
         status.className="label wait";
         el("native-ai-hint").textContent="來源尚未產出可核對的原平台回答；請檢查排程及供應商狀態。沒有樣本不等於零推薦。";
       }
+      if(operational)el("native-ai-hint").textContent+=" 最新三平台工作狀態："+operational+"。工作成功不等於回答有效，僅有效回答計入上方樣本。";
     }).catch(()=>{
       for(const id of ["legacy-chatgpt-status","legacy-gemini-status","legacy-perplexity-status"]) {
         const label=el(id);label.textContent="平台報表讀取失敗";label.className="label wait";
