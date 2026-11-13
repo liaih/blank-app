@@ -119,7 +119,7 @@ tbody tr:last-child td{border-bottom:0}
   <section class="panel" aria-label="ChatGPT Gemini Perplexity 原平台回答自動監測">
     <div class="flexhead">
       <div><h2>ChatGPT・Gemini・Perplexity｜原平台回答監測</h2>
-        <p class="muted">顯示已取得的第三方原平台回答，分開分析 ChatGPT、Gemini、Perplexity 的提及與引用；是否每天更新，依實際採樣日期判斷。</p>
+        <p class="muted">顯示已取得的第三方原平台回答，分開分析 ChatGPT、Gemini、Perplexity 的提及與引用；每 2 分鐘自動檢查已發布報表，不會另行發起付費擷取。</p>
       </div>
       <span class="label wait" id="native-ai-status">尚未取得真實平台樣本</span>
     </div>
@@ -1108,6 +1108,7 @@ function renderGeoTasks(report){
   };
 }
 
+let lastNativeResultVersion="";
 function renderNativePlatformAnswers(){
   const status=el("native-ai-status");
   fetch("./native-ai-summary.json",{cache:"no-store"})
@@ -1115,6 +1116,12 @@ function renderNativePlatformAnswers(){
     .then(data=>{
       if(!data||!Array.isArray(data.platforms)||data.not_own_tavily_rag!==true)
         throw Error("原平台來源驗證失敗");
+      const latestVersion=String(data.generated_at||"")+"|"+String(data.total_samples||0)+
+        "|"+JSON.stringify(data.latest_job_status||{});
+      // Polling the public JSON is free and DOES NOT trigger Bright Data.
+      // Preserve scroll, expanded replies and filter selections if unchanged.
+      if(latestVersion===lastNativeResultVersion)return;
+      lastNativeResultVersion=latestVersion;
       const names={"ChatGPT":"native-chatgpt","Gemini":"native-gemini","Perplexity":"native-perplexity"};
       let total=0;
       let sourced=0;
@@ -1291,6 +1298,11 @@ function renderNativePlatformAnswers(){
       for(const id of ["legacy-chatgpt-status","legacy-gemini-status","legacy-perplexity-status"]) {
         const label=el(id);label.textContent="平台報表讀取失敗";label.className="label wait";
       }
+      if(lastNativeResultVersion){
+        status.textContent="公開資料暫時無法更新（保留已讀取的回答）";
+        status.className="label wait";
+        return;
+      }
       const questionRows=el("native-question-rows");
       questionRows.replaceChildren();
       const errorRow=document.createElement("tr");const errorCell=document.createElement("td");
@@ -1305,6 +1317,12 @@ function renderNativePlatformAnswers(){
     });
 }
 renderNativePlatformAnswers();
+// Refresh only the already-PUBLISHED public summary. No vendor API requests.
+window.setInterval(()=>{
+  const aiPanel=document.getElementById("view-ai");
+  if(document.visibilityState==="visible"&&aiPanel&&!aiPanel.hidden)
+    renderNativePlatformAnswers();
+},120000);
 function renderDailyAISummary(){
   const state=el("ai-daily-status");
   fetch("./ai-search-summary.json",{cache:"no-store"})
