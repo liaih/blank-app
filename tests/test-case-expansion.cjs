@@ -348,7 +348,7 @@ test("REGRESSION: primary visible AI-read button is next to upload and reconnect
  assert.match(item.querySelector('[data-attr="description"]').value,/木質調的臥室/);
  assert.match(item.querySelector('[data-attr="alt"]').value,/丹佛花都/);
  assert.equal(item.querySelector('[data-attr="verified"]').checked,false);
- assert.match(d.querySelector("#cyexp-main-ai-status").textContent,/本機讀圖完成/);
+ assert.match(d.querySelector("#cyexp-main-ai-status").textContent,/處理完成：Qwen3-VL 已辨識/);
  assert.ok(d.querySelector("#cyexp-cms-import-panel"),"CMS batch URL import must remain intact");
  assert.ok(d.querySelector("#cyexp-approve-reviewed"),"batch approval must remain intact");
  assert.ok(d.querySelector("#cyexp-fallback-read"),"fallback must remain explicitly available");
@@ -513,7 +513,7 @@ test("FLOORPLAN: a safe floorplan remains unverified after batch approval until 
  assert.equal(item.querySelector('[data-attr="verified"]').checked,false);
  d.querySelector("#cyexp-approve-reviewed").click();
  assert.equal(d.querySelector(".cyexp-item [data-attr=verified]").checked,false);
- assert.match(d.querySelector("#cyexp-vision-status").textContent,/格局圖仍須逐張核對/);
+ assert.match(d.querySelector("#cyexp-vision-status").textContent,/平面配置圖仍須逐張核對/);
  const checkbox=d.querySelector(".cyexp-item [data-attr=verified]");
  checkbox.checked=true;
  checkbox.dispatchEvent(new dom.window.Event("change",{bubbles:true}));
