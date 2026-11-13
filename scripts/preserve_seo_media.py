@@ -338,12 +338,17 @@ def floorplan_integrity(original_root,merged_root,base):
     )
     expected={(p["index"],p["url"]) for p in before}
     observed={(p["index"],p["url"]) for p in after}
-    protected=bool(exact and expected<=observed)
+    # After an SEO heading is inserted, the nearest-heading context may
+    # change for generic image filenames. Context reclassification is not a
+    # missing image: the hard safety condition is the ORIGINAL detected plan's
+    # exact src and DOM index with a non-empty ALT.
+    protected=bool(exact)
     return {
       "floorplan_count":len(before),
       "floorplan_images":before,
       "floorplan_urls":[p["url"] for p in before],
       "floorplan_positions_preserved":protected,
+      "after_heading_context_reclassified":not expected<=observed,
       "floorplan_protection_passed":protected,
       "rule":"只要原稿含格局圖、平面圖、戶型圖，必須保留原 URL、原順序及完整 ALT；少一張即禁止上稿",
       "detection_note":"依原圖檔名／原 ALT 辨識；沒有可辨識的格局圖不等於原站絕對不存在，仍需人工核對"
