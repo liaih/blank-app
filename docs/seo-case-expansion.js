@@ -6,7 +6,7 @@ if(!host)return;
 const $=id=>host.querySelector("#"+id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 const zones=["格局圖","玄關與客廳","玄關","客廳","客餐廳","廚房與走道","多功能工作區","臥室","更衣收納","其他"];
-const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,translator:null,transformers:null,modelBusy:false,visionReady:false,verifiedBase:false,localConnected:false,localModel:"",cmsUrls:[],cmsVisionCache:new Map(),cmsCorsUnavailable:false,matchRunning:false,matchCancelled:false,matchControllers:new Set(),matchStartedAt:0,matchTimer:null,matchStage:"",matchStep:0,matchTotal:0,activeProjectId:"",activeView:"pending",caseStates:new Map(),fileImportBusy:false,aiStarting:false};
+const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,translator:null,transformers:null,modelBusy:false,visionReady:false,verifiedBase:false,localConnected:false,localModel:"",cmsUrls:[],cmsVisionCache:new Map(),cmsCorsUnavailable:false,matchRunning:false,matchCancelled:false,matchControllers:new Set(),matchStartedAt:0,matchTimer:null,matchStage:"",matchStep:0,matchTotal:0,activeProjectId:"",activeView:"pending",caseStates:new Map(),fileImportBusy:false,aiStarting:false,autosaveReady:false,autosaveTimer:null,recoveredProjects:0};
 const markup=[
 '<div class="cyexp-head"><h3>同建案新增案件｜AI 讀圖＋ALT＋格局圖</h3>',
 '<p class="cyexp-muted">原文章＋舊戶型全部保留。新增圖片在本機辨識；圖片須先上傳晨陽官網取得正式網址，才可輸出正式 HTML。</p></div>',
@@ -60,7 +60,7 @@ const markup=[
 '<button type="button" id="cyexp-export">匯出案件草稿 JSON</button>',
 '<label class="cyexp-file">匯入先前草稿 JSON<input id="cyexp-import" type="file" accept=".json,application/json"></label></div>',
 '<details class="cyexp-advanced"><summary>查看新增案件 HTML 預覽與完整原始碼</summary><div id="cyexp-preview"></div><textarea id="cyexp-html" readonly rows="7"></textarea></details>',
-'<p class="cyexp-muted">不會自動上傳圖片或修改正式官網。草稿匯出不含圖片本體，重新開啟需重新選擇圖檔，官網圖片網址與 ALT 可由 JSON 恢復。</p>'
+'<p class="cyexp-muted">不會自動上傳圖片或修改正式官網。每篇文章的介紹、ALT 與官網網址會在此瀏覽器自動儲存；重新開啟需重選原始圖片並核對，且不會自動解除正式上稿驗收。跨電腦請另行匯出草稿 JSON。</p>'
 ].join("");
 host.innerHTML=markup;
 const draftPanel=document.createElement("section");
@@ -125,6 +125,11 @@ function buildBeginnerLayout(){
  currentProject.className="cyexp-current-article";
  currentProject.setAttribute("role","status");
  currentProject.textContent="正在同步上方選擇的文章……";
+ const saveStatus=document.createElement("p");
+ saveStatus.id="cyexp-save-state";
+ saveStatus.className="cyexp-save-state";
+ saveStatus.setAttribute("role","status");
+ saveStatus.textContent="本機草稿自動儲存準備中；保留描述、ALT、官網網址，不含原圖與 API Token。";
  const internalId=$("cyexp-unit").closest("label");
  const actions=$("cyexp-files").closest(".cyexp-actions");
  const manualSummary=$("cyexp-summary");
@@ -153,7 +158,7 @@ function buildBeginnerLayout(){
  // Keep internal case ID available for audits but remove it from the
  // novice's required input flow; a safe internal default suffices.
  if(!$("cyexp-unit").value)$("cyexp-unit").value="新增設計案例";
- one.append(currentProject,fields,actions,aiInfo,localPanel);
+ one.append(currentProject,saveStatus,fields,actions,aiInfo,localPanel);
  two.append(cms,images,reviewed,reviewedHelp,intro,summaryActions,imageStatus,draftPanel);
  const cmsTitle=cms.querySelector("summary");
  cmsTitle.textContent="匯入官網圖片 HTML｜每張原圖下方直接選圖";
@@ -183,6 +188,113 @@ function pickBase(){return S.base.find(x=>x.id===$("cyexp-base").value);}
 function chooseTitle(){const p=pickBase();const d=S.drafts.find(x=>x.id===p?.id);return d?.project_name || (d?.title||p?.id||"").split("｜",1)[0];}
 // Per-project workspaces live in memory for this tab. They intentionally keep
 // File/Blob URLs and human edits separate, never copy materials to a new case.
+const CASE_AUTOSAVE_KEY="chenyang-seo-case-drafts-v2";
+const CASE_AUTOSAVE_MAX=3500000;
+function autosaveLabel(message,isError=false){
+ const label=$("cyexp-save-state");
+ if(!label)return;
+ label.textContent=message;
+ label.dataset.status=isError?"error":"ready";
+}
+function safeSavedCase(snapshot){
+ const src=snapshot||{};
+ return {
+  files:(src.files||[]).slice(0,50).map(x=>({
+   name:String(x.name||"").slice(0,160),
+   sha256:/^[a-f0-9]{64}$/i.test(String(x.sha256||""))?String(x.sha256):"",
+   role:zones.includes(x.role)?x.role:"其他",
+   description:String(x.description||"").slice(0,2500),
+   alt:String(x.alt||"").slice(0,350),
+   altSuffix:String(x.altSuffix||"").slice(0,350),
+   autoAlt:String(x.autoAlt||"").slice(0,350),
+   url:validUrl(x.url)?x.url:"",
+   urlMatch:String(x.urlMatch||"").slice(0,180),
+   pairVerified:!!(x.urlPairVerified||x.savedUrlPairVerified||x.pairVerified),
+   origin:String(x.origin||"").slice(0,180)
+  })),
+  cmsUrls:[...new Set((src.cmsUrls||[]).filter(validUrl))].slice(0,60),
+  unit:String(src.unit||"").slice(0,120),
+  type:src.type==="實景照片"?"實景照片":"3D 建模示意圖",
+  intro:String(src.intro||"").slice(0,4000),
+  newbase:String(src.newbase||""),
+  cmsHtml:String(src.cmsHtml||""),
+  bulkUrls:String(src.bulkUrls||""),
+  // Approval cannot survive a reload without the original image bytes.
+  confirmedBase:false,confirmedUrls:false,confirmedFloorplan:false
+ };
+}
+function restoredCase(saved){
+ const x=safeSavedCase(saved);
+ return {
+  ...x,
+  files:x.files.map(item=>({
+   ...item,file:null,preview:null,verified:false,urlPairVerified:false,
+   savedUrlPairVerified:!!item.pairVerified&&!!item.sha256&&validUrl(item.url),
+   origin:"已自動恢復描述／ALT／官網網址，請重新選取同一張原圖完成核對"
+  })),
+  cmsVisionCache:new Map(),cmsCorsUnavailable:false,
+  visionMessage:"已從本機保存恢復文字與網址；原始圖片需重新選取。確認圖片內容後才能正式上稿。",
+  cmsMessage:"已恢復該案的官網網址清單；重新選原圖後請核對圖片配對。",
+  confirmedBase:false,confirmedUrls:false,confirmedFloorplan:false
+ };
+}
+function restoreCaseAutosave(){
+ let recovered=0;
+ try{
+  const raw=localStorage.getItem(CASE_AUTOSAVE_KEY);
+  if(raw){
+   const data=JSON.parse(raw);
+   if(data?.schema===2&&data.cases&&typeof data.cases==="object"){
+    const allowed=new Set(S.base.map(x=>x.id));
+    for(const [id,snapshot]of Object.entries(data.cases)){
+     if(!allowed.has(id)||!snapshot||typeof snapshot!=="object")continue;
+     S.caseStates.set(id,restoredCase(snapshot));
+     recovered++;
+    }
+   }
+  }
+  S.recoveredProjects=recovered;
+  if(recovered){
+   autosaveLabel("已從此瀏覽器恢復 "+recovered+" 篇文章草稿（描述／ALT／官網網址）。原始照片需重新選取核對；僅本機保存，非團隊同步。");
+  }else{
+   autosaveLabel("本機草稿自動儲存已啟用。文字、ALT 與圖片網址在重新整理後可恢復；照片原檔需重新選取。");
+  }
+ }catch(error){
+  autosaveLabel("本機草稿讀取失敗，請用「匯入案件草稿 JSON」還原。原因："+String(error?.message||"瀏覽器儲存權限"),true);
+ }
+ S.autosaveReady=true;
+ return recovered;
+}
+function saveCaseAutosave(){
+ if(!S.autosaveReady||!S.base.length)return;
+ try{
+  const cases=new Map(S.caseStates);
+  if(S.activeProjectId)cases.set(S.activeProjectId,takeCaseSnapshot());
+  const permitted=new Set(S.base.map(x=>x.id));
+  const payload={schema:2,saved_at:new Date().toISOString(),cases:{}};
+  for(const [id,caseState]of cases){
+   if(permitted.has(id))payload.cases[id]=safeSavedCase(caseState);
+  }
+  const json=JSON.stringify(payload);
+  if(json.length>CASE_AUTOSAVE_MAX)throw Error("草稿資料過大，請匯出 JSON 備份");
+  localStorage.setItem(CASE_AUTOSAVE_KEY,json);
+  const count=Object.keys(payload.cases).length;
+  const clock=new Date().toLocaleTimeString("zh-TW",{hour:"2-digit",minute:"2-digit"});
+  autosaveLabel("已自動儲存 "+count+" 篇文章草稿｜"+clock+
+   "｜只保留在此瀏覽器，不含圖片原檔或 AI Token。重新開啟需選取原圖核對。");
+ }catch(error){
+  autosaveLabel("無法自動儲存："+String(error?.message||"瀏覽器儲存空間不足")+
+   "。請使用「匯出案件草稿 JSON」保存目前工作。",true);
+ }
+}
+function scheduleCaseAutosave(){
+ if(!S.autosaveReady||!S.activeProjectId)return;
+ if(S.autosaveTimer)clearTimeout(S.autosaveTimer);
+ S.autosaveTimer=setTimeout(()=>{
+  S.autosaveTimer=null;
+  saveCaseAutosave();
+ },800);
+}
 function takeCaseSnapshot(){
  return {
   files:S.files,cmsUrls:S.cmsUrls,cmsVisionCache:S.cmsVisionCache,
@@ -762,7 +874,7 @@ function updateStatus(){
  $("cyexp-html").value=c.pass?generate():"正式上稿驗收尚未完成；SEO 草稿可在第二步預覽及複製。";
  $("cyexp-preview").replaceChildren();
  if(c.pass){
-  const tag=document.createElement("p");tag.className="cyexp-muted";tag.textContent="新增 "+c.newImageCount+" 張圖片、其中新格局圖 "+c.newFloorplanCount+" 張；原 HTML 完整保留於最前方。";$("cyexp-preview").appendChild(tag);
+  const tag=document.createElement("p");tag.className="cyexp-muted";tag.textContent="新增 "+c.newImageCount+" 張圖片、其中新格局圖 "+c.newFloorplanCount+" 張；原文保留，新增案例排列於 FAQ 與延伸閱讀之前。";$("cyexp-preview").appendChild(tag);
   const frame=document.createElement("iframe");
   frame.setAttribute("sandbox","");frame.title="原文及新增案件完整 HTML 預覽";
   frame.style.cssText="width:100%;max-width:100%;height:480px;border:1px solid #d6dfe8;border-radius:10px;background:white";
@@ -771,6 +883,7 @@ function updateStatus(){
     generate()+'</body></html>';
   $("cyexp-preview").appendChild(frame);
  }
+ scheduleCaseAutosave();
 }
 async function loadKnown(){
  try{
@@ -1604,6 +1717,7 @@ async function start(){
  }
  S.base=(out[0].value.articles||[]).filter(x=>x.html_with_media);
  S.drafts=out[1].value.articles||[];
+ restoreCaseAutosave();
  const sel=$("cyexp-base");sel.replaceChildren();
  for(const item of S.base){
   const dr=S.drafts.find(x=>x.id===item.id);
@@ -1660,5 +1774,9 @@ for(const id of ["cyexp-unit","cyexp-type","cyexp-intro","cyexp-newbase","cyexp-
  $(id).addEventListener("input",updateStatus);$(id).addEventListener("change",updateStatus);
 }
 document.addEventListener("chenyang:seo-article-selection",handleMainSeoArticleSelection);
+window.addEventListener("pagehide",()=>{
+ if(S.autosaveTimer){clearTimeout(S.autosaveTimer);S.autosaveTimer=null;}
+ saveCaseAutosave();
+});
 start();
 })();
