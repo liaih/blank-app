@@ -46,8 +46,8 @@ const markup=[
 '<p class="cyexp-muted">AI 讀圖優先使用你已啟動的 LM Studio Qwen3-VL。免費瀏覽器小模型僅作為手動備援，不會自動取代本機 AI。所有描述與 ALT 都是待核對草稿。</p>',
 '<p id="cyexp-vision-status" class="cyexp-muted" role="status"></p>',
 '<div id="cyexp-items" class="cyexp-images"><p>請選擇新案件圖片；包含新平面配置圖／格局圖。</p></div>',
-'<div class="cyexp-actions"><button type="button" id="cyexp-approve-reviewed">我已看過本批圖片，一次核對全部描述與 ALT</button></div>',
-'<p class="cyexp-muted">此按鈕只代替逐張重複勾選；不會替你確認圖片是否已上傳官網，也不會跳過新增格局圖及原文保護檢查。</p>',
+'<div class="cyexp-actions"><button type="button" id="cyexp-approve-reviewed">一鍵確認已檢查的 3D 圖／實景照（格局圖需另外核對）</button></div>',
+'<p class="cyexp-muted">格局圖易被誤判：請查看原圖後單獨勾選。批次確認不會核准格局圖，也不會跳過圖片網址和原文保護檢查。</p>',
 '<details class="cyexp-advanced"><summary>進階｜原文不同步時貼上官網最新正文 HTML</summary>',
 '<p class="cyexp-muted">既有原文預設取自通過保留驗收的改稿資料。若官網最近有人修改過，請貼入「最新後台正文 HTML」，避免用舊內容覆蓋新內容。貼入自訂原文時須自行核對原有圖片與格局圖。</p>',
 '<textarea id="cyexp-newbase" rows="5" placeholder="可選：貼入最新原官網 CMS 正文 HTML；不要貼整頁 html/head/body"></textarea></details>',
@@ -269,7 +269,9 @@ function itemBox(a,i){
  const sel=document.createElement("select");sel.dataset.attr="role";
  for(const z of zones){const op=document.createElement("option");op.value=z;op.textContent=z;sel.appendChild(op);}
  sel.value=a.role||"其他";role.appendChild(sel);right.appendChild(role);
- right.appendChild(textField("此圖的描述（來自圖像辨識，請核對）",a.description,"description",true));
+ right.appendChild(textField(a.role==="格局圖"?
+  "平面配置圖描述（保守說明，非 AI 精讀圖面）":
+  "AI 讀圖描述（請依畫面核對）",a.description,"description",true));
  right.appendChild(textField("圖片 ALT（建案與畫面優先，不強制寫戶型）",a.alt,"alt",false));
  const urlBox=document.createElement("details");urlBox.className="cyexp-advanced";
  const urlSummary=document.createElement("summary");
@@ -344,9 +346,12 @@ function approveReviewedBatch(){
  if(!S.files.length){message("尚未加入圖片，無法批次核對。",true);return;}
  const incomplete=S.files.filter(x=>!x.description?.trim()||!x.alt?.trim()||!zones.includes(x.role)||unsafeFloorplanClaim(x));
  if(incomplete.length){message("還有 "+incomplete.length+" 張圖片缺少說明、ALT，或格局圖仍有不實材質／家具敘述。請先修改，不能整批核對。",true);return;}
- for(const a of S.files)a.verified=true;
+ const plans=S.files.filter(x=>x.role==="格局圖");
+ for(const a of S.files)if(a.role!=="格局圖")a.verified=true;
+ for(const a of plans)a.verified=false;
  renderItems();
- message("已核對本批 "+S.files.length+" 張圖片的描述與 ALT。下一步仍需核對正式圖片網址、包含新格局圖，以及保留原文章。");
+ message("已批次確認非格局圖 "+(S.files.length-plans.length)+" 張；"+plans.length+
+  " 張平面配置圖仍須逐張核對一次，不能用批次按鈕跳過圖面確認。之後再核對官網圖片網址。");
 }
 function renderItems(){
  const box=$("cyexp-items");box.replaceChildren();
@@ -596,7 +601,7 @@ async function readWithLocalAI(){
  if(!model){localStatus("請先選擇本機看圖模型。",true);return;}
  if(!S.files.length){localStatus("請先選擇要讀圖的圖片。",true);return;}
  S.modelBusy=true;$("cyexp-local-read").disabled=true;$("cyexp-read").disabled=true;
- let done=0,fail=0;
+ let done=0,fail=0,planSafe=0,visionDone=0;
  try{
   for(let i=0;i<S.files.length;i++){
    const a=S.files[i];
@@ -608,21 +613,23 @@ async function readWithLocalAI(){
     if(a.role==="格局圖"||isPlanFileName(a.name)){
      // Never ask a generic room caption model to imagine a 3D scene from a
      // 2D floorplan. This intentionally uses a conservative, auditable caption.
-     resetForFloorplan(a);
+     resetForFloorplan(a);planSafe++;
     }else{
      a.description=found.description;
      a.altSuffix=""; // Invalidate older reference captions after new AI read.
      if(found.role!=="格局圖")a.role=found.role;
      if(!manuallyEdited){a.alt=makeAlt(a);a.autoAlt=a.alt;}
      a.origin="LM Studio 本機視覺模型 "+model+" 的草稿，仍須人工核對";
-     a.verified=false;
+     a.verified=false;visionDone++;
     }
     done++;
    }catch(e){fail++;a.verified=false;localStatus("第 "+(i+1)+" 張出錯："+(e?.message||"讀圖失敗"),true);}
    renderItems();
   }
   if(done>0&&!$("cyexp-intro").value.trim())generateSummary();
-  localStatus("本機讀圖完成："+done+" 張有新描述，"+fail+" 張失敗。已在缺少總覽時自動產生初稿；請核對並可按「一次核對全部描述與 ALT」。新增格局圖與圖片網址仍須驗收。",fail>0);
+  localStatus("處理完成：Qwen3-VL 已辨識 "+visionDone+" 張室內圖；"+planSafe+
+   " 張格局圖採不臆測材質或家具的保守說明（並非精讀圖面）；失敗 "+fail+
+   " 張。請先核對介紹與 ALT，格局圖須單獨勾選確認。",fail>0);
  }finally{
   S.modelBusy=false;$("cyexp-local-read").disabled=!S.localConnected;
   $("cyexp-read").disabled=false;updateStatus();
