@@ -291,3 +291,23 @@ test("one human batch approval replaces repeated checkboxes but cannot bypass fl
  assert.match(d.querySelector("#cyexp-status").textContent,/新圖片尚未全部取得有效/);
  dom.window.close();
 });
+
+test("clipboard import prefers rich text/html from CMS over copied visible text, without per-image URL entry",async()=>{
+ const dom=await setup(),d=dom.window.document;
+ await fileSelect(dom,"living.png");await fileSelect(dom,"新格局圖.png");
+ Object.defineProperty(dom.window.navigator,"clipboard",{configurable:true,value:{
+  read:async()=>[{types:["text/plain","text/html"],getType:async(type)=>({
+   text:async()=>type==="text/html"?
+    '<p><img src="https://chen-yang.com.tw/upload/images/living.webp"></p><p><img src="https://chen-yang.com.tw/upload/images/%E6%96%B0%E6%A0%BC%E5%B1%80%E5%9C%96.webp"></p>':
+    "客廳照片和格局圖"
+  })}],
+  readText:async()=>{throw Error("Should prefer rich HTML over text");}
+ }});
+ d.querySelector("#cyexp-paste-cms").click();
+ await new Promise(r=>setTimeout(r,25));
+ const urls=[...d.querySelectorAll(".cyexp-item [data-attr=url]")].map(x=>x.value);
+ assert.match(urls[0],/living.webp/);
+ assert.match(urls[1],/E6%96%B0/);
+ assert.match(d.querySelector("#cyexp-cms-match-status").textContent,/檔名配對 2/);
+ dom.window.close();
+});
