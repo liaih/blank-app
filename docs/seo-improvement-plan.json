@@ -11,7 +11,7 @@
         "SEO"
       ],
       "keyword": "丹佛花都",
-      "title": "丹佛花都｜林口 A7 兩房格局規劃",
+      "title": "丹佛花都｜林口A7室內設計與收納",
       "url": "https://www.chen-yang.com.tw/news-content.php?id=234",
       "reason": "近30天對應搜尋字詞曝光高、點擊偏低；文章開頭著重建案背景，且『預計 2026 年完工』屬需更新查證的時效資訊。",
       "proposedTitle": "丹佛花都 D11 戶裝潢規劃｜A7 小宅收納、兩房動線與格局分析｜晨陽設計",
@@ -31,7 +31,7 @@
         "AI SEO"
       ],
       "keyword": "允將大聚",
-      "title": "允將大聚｜L 戶與 A 戶裝修規劃",
+      "title": "允將大聚｜林口A7簡約療癒室內設計",
       "url": "https://chen-yang.com.tw/news-content.php?id=331",
       "reason": "對應查詢字詞曝光最高；原文前段較多建案交通敘述，裝修的使用者問題與解決方案可更靠前。",
       "proposedTitle": "允將大聚裝潢規劃｜A7 L 戶與 A 戶收納動線、無印風設計｜晨陽設計",
@@ -50,7 +50,7 @@
         "SEO"
       ],
       "keyword": "鴻廣繪青",
-      "title": "鴻廣繪青｜林口 C3 戶兩房規劃",
+      "title": "鴻廣繪青｜林口A7北歐風室內設計",
       "url": "https://chen-yang.com.tw/news-content.php?id=253",
       "reason": "對應搜尋字詞有曝光、點擊偏低；文章出現『繪青／絵青』異體字，建議先核對正式名稱，避免標題和使用者查詢不一致。",
       "proposedTitle": "鴻廣繪青 C3 戶裝潢｜林口 A7 兩房收納與北歐風案例｜晨陽設計",
@@ -69,7 +69,7 @@
         "SEO"
       ],
       "keyword": "福美富琚",
-      "title": "福美富琚｜新莊 C 戶美式現代風",
+      "title": "福美富琚｜新莊美式現代室內設計",
       "url": "https://www.chen-yang.com.tw/news-content.php?id=503",
       "reason": "對應字詞曝光 327 次、點擊率偏低；文章有模擬圖及 FAQ，但圖片是不是完工實景的回答不夠明確。",
       "proposedTitle": "福美富琚 C 戶裝潢規劃｜新莊 2–3 房收納與美式現代風｜晨陽設計",
@@ -88,7 +88,7 @@
         "SEO"
       ],
       "keyword": "立軒天諾",
-      "title": "立軒天諾｜A1 戶三房規劃",
+      "title": "立軒天諾｜林口新成屋室內設計",
       "url": "https://www.chen-yang.com.tw/news-content.php?id=217",
       "reason": "對應搜尋字詞已有曝光但沒有點擊；頁面著重建案特色、品牌介紹和模擬圖，缺少讓搜尋者立即理解 A1 戶規劃的重點摘要。",
       "proposedTitle": "立軒天諾 A1 戶裝潢｜林口三房動線與收納格局規劃｜晨陽設計",
@@ -108,7 +108,7 @@
         "內容品質"
       ],
       "keyword": "厚陞晴",
-      "title": "厚陞晴｜中壢北歐風 B1 戶",
+      "title": "厚陞晴｜中壢北歐風室內設計",
       "url": "https://www.chen-yang.com.tw/news-content.php?id=451",
       "reason": "官網內文出現『湖適居 室內設計』而非本篇建案名稱，屬可直接檢查的文章校對問題；同時對應搜尋字詞有曝光。",
       "proposedTitle": "厚陞晴 B1 戶裝潢｜中壢 A20 北歐風收納與格局規劃｜晨陽設計",
@@ -128,7 +128,7 @@
         "SEO"
       ],
       "keyword": null,
-      "title": "高雄仁武星河畔｜A6 戶 20 坪小宅",
+      "title": "星河畔｜高雄仁武小宅室內設計",
       "url": "https://www.chen-yang.com.tw/news-content.php?id=536",
       "reason": "2026/11/12 對高雄首購裝修的 ChatGPT／Gemini 受控問法各取得一筆回答，兩者均未提及晨陽；此頁符合高雄、小宅、首購需求，是待優化的候選，不代表已證明未推薦原因。",
       "proposedTitle": "高雄首購 20 坪小宅裝潢案例｜星河畔 A6 戶收納動線與預算比較重點｜晨陽設計",
@@ -160,5 +160,6 @@
       ],
       "verification": "需補該頁 GSC 實際流量與收錄數據才能衡量優化成效。"
     }
-  ]
+  ],
+  "title_policy": "建案級文章標題以建案及區域＋設計特色為主，不在文章 H1／SEO Title／改稿任務名中限定 L/A/D11/A1 等戶型；具體戶型應保留於正文段落、格局圖與精確 Alt。"
 }
