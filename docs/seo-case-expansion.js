@@ -296,10 +296,10 @@ function selectOfficialPicture(item,index,url){
   $("cyexp-confirm-urls").checked=false;
  }
  item.pickerOpen=false;
- const previous=document.getElementById("cyexp-image-card-"+index);
- if(previous)previous.replaceWith(itemBox(item,index));
- else renderItems();
- renderCmsPairingReview();updateStatus();
+ // Refresh all in-card candidate buttons so previously chosen CMS images
+ // instantly show "already used" elsewhere. Keep typed descriptions in S.
+ renderItems();
+ renderCmsPairingReview();
 }
 function inlineCmsMatcher(item,index){
  const panel=document.createElement("section");panel.className="cyexp-inline-matcher";
