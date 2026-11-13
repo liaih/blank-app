@@ -1039,7 +1039,7 @@ async function matchRemoteImagesWithLMStudio(urls,remaining,used){
    const indexList=[...new Set(shortlist.candidate_indices.map(Number))]
     .filter(i=>Number.isInteger(i)&&i>=0&&i<originals.length).slice(0,2);
    const features=Array.isArray(shortlist.distinctive_features)?shortlist.distinctive_features:[];
-   const fastCandidate=indexList.length===1&&String(shortlist.confidence||"").toLowerCase()==="high"&&
+   const fastCandidate=originals[indexList[0]]?.role!=="格局圖"&&indexList.length===1&&String(shortlist.confidence||"").toLowerCase()==="high"&&
     features.length>=2&&features.every(v=>String(v||"").trim().length>=5);
    for(const index of indexList){
     const original=originals[index];
@@ -1185,21 +1185,37 @@ async function matchImagesFromCms(raw){
  // Browser can compare the actual bytes only if the official site permits CORS.
  // Identical SHA256 is proof of identical image file bytes; similarity merely proposes a candidate.
  const remote=new Map();
- await Promise.all([...remaining].map(async url=>{
-  if(S.matchCancelled)return;
-  const tracked=newCmsMatchController(7000);
+ // Probe just one official CMS URL. Image upload files share the same host
+ // and CORS policy. Do not make all 10 requests wait 7 seconds each if the
+ // image server blocks pixel access from GitHub Pages.
+ async function downloadForFingerprint(url,ms){
+  if(S.matchCancelled)return null;
+  const tracked=newCmsMatchController(ms);
   try{
    const response=await fetch(url,{mode:"cors",cache:"force-cache",signal:tracked.signal});
    if(!response.ok)throw Error("HTTP "+response.status);
    const blob=await response.blob();
-   if(!blob.type.startsWith("image/"))return;
+   if(!blob.type.startsWith("image/"))throw Error("回傳不是圖片");
    const hash=await crypto.subtle.digest("SHA-256",await blob.arrayBuffer());
    const sha=Array.from(new Uint8Array(hash)).map(x=>x.toString(16).padStart(2,"0")).join("");
    const dh=await imageDhash(blob).catch(()=>"");
    remote.set(url,{sha,dh});
-  }catch(_){/* CORS may forbid reading pixels; never fake identity. */}
+   return true;
+  }catch(_){return false;}
   finally{tracked.dispose();}
- }));
+ }
+ if(remaining.size&&!S.cmsCorsUnavailable&&!S.matchCancelled){
+  const all=[...remaining];
+  const firstUrl=all[0];
+  const canRead=await downloadForFingerprint(firstUrl,3000);
+  if(canRead){
+   await Promise.all(all.slice(1).map(url=>downloadForFingerprint(url,5000)));
+  }else{
+   // Repeated matching within this page skips the unusable CORS path and
+   // immediately uses local vision instead.
+   S.cmsCorsUnavailable=true;
+  }
+ }
  for(const item of S.files){
   if(used.has(item)||!item.file)continue;
   const candidates=[...remaining].filter(url=>remote.has(url));
@@ -1227,7 +1243,8 @@ async function matchImagesFromCms(raw){
  const issues=[];
  if(assigned<S.files.length)issues.push("尚有 "+(S.files.length-assigned)+" 張官網圖片未可靠配對，請在下方縮圖區選擇");
  if(unverified)issues.push("尚有 "+unverified+" 張匹配候選未核對圖片內容");
- if(ai.accepted)issues.push("本機 Qwen3-VL 已雙向視覺確認 "+ai.accepted+" 張；這是 AI 判斷，不等於像素雜湊證明，正式上稿前仍應抽查");
+ if(ai.accepted)issues.push("本機 Qwen3-VL 自動配對 "+ai.accepted+" 張（快速核對 "+ai.fastConfirmed+"、深度核對 "+ai.deepConfirmed+"；非像素證明，上稿前需抽查）");
+ if(ai.remoteCalls)issues.push("本次本機 AI 呼叫 "+ai.remoteCalls+" 次；重複使用候選快取 "+ai.cached+" 次");
  if(ai.reason)issues.push("本機 AI 遠端比對限制："+ai.reason);
  if(remote.size===0&&exact<S.files.length&&!ai.accepted)issues.push("瀏覽器無法直接讀取官網圖片像素；已嘗試本機 AI 遠端讀圖，無法確認時不亂配");
  return {total:urls.length,assigned,exact,visual,ai:ai.accepted,unverified,issues};
@@ -1235,7 +1252,7 @@ async function matchImagesFromCms(raw){
 function showCmsMatch(result){
  const box=$("cyexp-cms-match-status");
  const text=["官網圖片 "+result.total+" 張；已找到對應或候選 "+result.assigned+" / "+S.files.length+
-  "（檔名 "+result.exact+"、像素 "+result.visual+"、本機 AI 雙向確認 "+(result.ai||0)+"、順序推定 0）"];
+  "（檔名 "+result.exact+"、像素 "+result.visual+"、本機 AI 確認 "+(result.ai||0)+"、順序推定 0）"];
  if(result.issues?.length)text.push(...result.issues);
  box.textContent=text.join("；");
  box.style.color=result.unverified||result.assigned<S.files.length?"#9a3412":"#157356";
