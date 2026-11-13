@@ -132,7 +132,7 @@ function checks(){
  if(!unit)items.push("請填新案件／戶型名稱");
  if(!S.files.length)items.push("尚未選擇新案件圖片");
  if(!floor.length)items.push("缺少新的平面配置圖／格局圖");
- if(floor.length>1)items.push("目前有 "+floor.length+" 張新格局圖，請確認是否同一戶型（可保留多張）");
+
  if(!urls)items.push("新圖片尚未全部取得有效的晨陽官網 HTTPS 圖片網址");
  if(!unique)items.push("新圖片網址重複，請修正");
  if(!alt)items.push("圖片描述、ALT 或逐張人工核對尚未完成");
@@ -180,6 +180,13 @@ function updateStatus(){
  $("cyexp-preview").replaceChildren();
  if(c.pass){
   const tag=document.createElement("p");tag.className="cyexp-muted";tag.textContent="新增 "+c.newImageCount+" 張圖片、其中新格局圖 "+c.newFloorplanCount+" 張；原 HTML 完整保留於最前方。";$("cyexp-preview").appendChild(tag);
+  const frame=document.createElement("iframe");
+  frame.setAttribute("sandbox","");frame.title="原文及新增案件完整 HTML 預覽";
+  frame.style.cssText="width:100%;max-width:100%;height:480px;border:1px solid #d6dfe8;border-radius:10px;background:white";
+  frame.srcdoc='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'+
+    '<style>html,body{max-width:100%;overflow-x:hidden;font:16px/1.8 sans-serif;color:#293645}body{padding:12px;margin:0}img{max-width:100%;height:auto;display:block;margin:10px auto}h2{font-size:22px}h3{font-size:18px}figure{margin:14px 0}figcaption{text-align:center;font-size:13px;color:#64748b}</style></head><body>'+
+    generate()+'</body></html>';
+  $("cyexp-preview").appendChild(frame);
  }
 }
 async function loadKnown(){
