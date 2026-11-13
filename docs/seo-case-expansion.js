@@ -12,7 +12,7 @@ const markup=[
 '<p class="cyexp-muted">原文章＋舊戶型全部保留。新增圖片在本機辨識；圖片須先上傳晨陽官網取得正式網址，才可輸出正式 HTML。</p></div>',
 '<div class="cyexp-fields">',
 '<label>原建案文章<select id="cyexp-base"><option value="">正在載入原文章</option></select></label>',
-'<label>新案件／戶型名稱（必填）<input id="cyexp-unit" placeholder="例如：新新增案代號；依真實戶別填寫"></label>',
+'<label>新增案件內部識別（必填，不會寫入公開標題或 ALT）<input id="cyexp-unit" placeholder="例如：第二組設計提案／專案編號，僅供管理"></label>',
 '<label>素材類型<select id="cyexp-type"><option value="3D 建模示意圖">3D 建模示意圖（未完工）</option><option value="實景照片">真實完工照片（需確認確實完工）</option></select></label>',
 '</div>',
 '<label>新增案件整體介紹（可以自動產生後編輯）<textarea id="cyexp-intro" rows="3" placeholder="由已讀取的圖片描述組合，請核對。不可把 3D 示意圖稱為完工實景。"></textarea></label>',
@@ -59,11 +59,30 @@ async function identify(file){
  return Array.from(new Uint8Array(digest)).map(x=>x.toString(16).padStart(2,"0")).join("");
 }
 function makeAlt(a){
+ // 晨陽圖片 ALT：建案名稱＋可核對的地區／實際畫面＋晨陽設計；
+ // 25–45字是編輯參考，不堆疊關鍵字，不把3D示意圖寫成完工照。
+ // 戶型／新案件內部識別不自動放入 ALT。
  const project=chooseTitle();
- if(a.role==="格局圖")return project+"｜"+($("cyexp-unit").value.trim()||"新增案件")+"平面配置圖（請核對）";
- const detail=(a.altSuffix||a.description||"室內空間").slice(0,70);
- return project+"｜"+($("cyexp-unit").value.trim()||"新增案件")+"｜"+detail.replace(/[\r\n]+/g," ").slice(0,65)+
-  "｜"+$("cyexp-type").value;
+ const region={
+  "seo-danfo-234":"林口A7","seo-yunjiang-331":"林口A7",
+  "seo-hongguang-253":"林口A7","seo-fumei-503":"新莊頭前",
+  "seo-lixuan-217":"林口","seo-housheng-451":"中壢A20",
+  "ai-kaohsiung-536":"高雄仁武"
+ }[pickBase()?.id]||"";
+ const where=region?region+" ":"";
+ const kind=$("cyexp-type").value;
+ const detail=String(a.altSuffix||a.description||a.role||"室內空間")
+   .replace(/[\r\n]+/g," ")
+   .replace(/[｜|]+/g,"、")
+   .trim();
+ if(a.role==="格局圖"){
+   // 不推測房數、坪數、代碼；如有多個方案，人工以圖面確實差異區分。
+   const specific=(detail==="格局圖"||detail==="平面配置圖")?
+     "住宅室內格局與空間動線規劃":detail.slice(0,25);
+   return project+"｜"+where+"平面配置圖、"+specific+"｜晨陽設計";
+ }
+ const visible=detail.slice(0,40);
+ return project+"｜"+where+visible+"｜"+kind+"｜晨陽設計";
 }
 function enrichKnown(a){
  const known=S.known.get(a.sha256);
@@ -84,7 +103,7 @@ function itemBox(a,i){
  for(const z of zones){const op=document.createElement("option");op.value=z;op.textContent=z;sel.appendChild(op);}
  sel.value=a.role||"其他";role.appendChild(sel);right.appendChild(role);
  right.appendChild(textField("此圖的描述（來自圖像辨識，請核對）",a.description,"description",true));
- right.appendChild(textField("圖片 ALT（會寫入完整 HTML）",a.alt,"alt",false));
+ right.appendChild(textField("圖片 ALT（建案與畫面優先，不強制寫戶型）",a.alt,"alt",false));
  right.appendChild(textField("晨陽官網正式圖片網址（必填）",a.url,"url",false));
  const state=document.createElement("p");state.className="cyexp-muted";
  state.textContent=a.origin||"尚未讀圖：請點「自動讀圖」，或自行描述畫面。";right.appendChild(state);
@@ -133,7 +152,7 @@ function checks(){
  const validatedBase=!!(base?.media_integrated&&base?.floorplan_protection_passed&&base?.preservation_audit?.original_main_content_preserved);
  const items=[];
  if(!project||!base)items.push("請選擇已有原文的建案");
- if(!unit)items.push("請填新案件／戶型名稱");
+ if(!unit)items.push("請填新增案件的內部識別名稱");
  if(!S.files.length)items.push("尚未選擇新案件圖片");
  if(!floor.length)items.push("缺少新的平面配置圖／格局圖");
 
@@ -156,16 +175,16 @@ function generate(){
  if(!base)return "";
  const project=chooseTitle(),unit=$("cyexp-unit").value.trim(),kind=$("cyexp-type").value;
  let h="\n<hr>\n<section class=\"chenyang-case-addition\" data-append-version=\"1\">\n";
- h+="<h2>"+esc(project+"｜"+unit+" 空間規劃")+"</h2>\n";
+ h+="<h2>"+esc(project+"｜室內設計新提案與空間收納規劃")+"</h2>\n";
  h+="<p>"+esc($("cyexp-intro").value.trim())+"</p>\n";
  const list=[...S.files].sort((a,b)=>(a.role==="格局圖"?-1:0)-(b.role==="格局圖"?-1:0));
  let zone="";
  for(const a of list){
-   if(a.role!==zone){zone=a.role;h+="<h3>"+esc(zone==="格局圖"?unit+"｜平面配置圖":unit+"｜"+zone)+"</h3>\n";}
+   if(a.role!==zone){zone=a.role;h+="<h3>"+esc(zone==="格局圖"?project+"｜平面配置與空間動線":zone+"｜空間設計重點")+"</h3>\n";}
    const copy=a.description.trim()+"（"+(a.role==="格局圖"?"平面配置圖，請以最終核准圖說為準":kind+"，非施工完成證明")+"）";
    h+="<p>"+esc(copy)+"</p>\n";
    h+="<figure><img loading=\"lazy\" decoding=\"async\" src=\""+esc(a.url.trim())+"\" alt=\""+esc(a.alt.trim())+"\">";
-   h+="<figcaption>"+esc(project+" "+unit+"｜"+zone+"｜"+(a.role==="格局圖"?"平面配置圖":kind))+"</figcaption></figure>\n";
+   h+="<figcaption>"+esc(project+"｜"+zone+"｜"+(a.role==="格局圖"?"平面配置圖":kind))+"</figcaption></figure>\n";
  }
  h+="</section>\n";
  return base+"\n"+h;
@@ -296,10 +315,10 @@ function applyBulkUrls(){
 function generateSummary(){
  const descriptions=S.files.filter(x=>x.role!=="格局圖"&&x.description.trim()).map(x=>x.description.trim());
  if(!descriptions.length){message("沒有可用的圖片描述，請先讀圖再產生整體介紹。",true);return;}
- const project=chooseTitle(),unit=$("cyexp-unit").value.trim()||"新增案件",kind=$("cyexp-type").value;
+ const project=chooseTitle(),kind=$("cyexp-type").value;
  const unique=[...new Set(S.files.filter(x=>x.role!=="格局圖").map(x=>x.role).filter(x=>x!=="其他"))];
  const highlights=unique.length?unique.slice(0,6).join("、"):"空間規劃";
- $("cyexp-intro").value=project+"新增 "+unit+" 方案，以"+highlights+"的設計提案呈現空間安排。本專區使用"+kind+"說明配置與收納方向，實際尺寸、材質及工程成果仍須以核准圖說與現場確認為準。";
+ $("cyexp-intro").value=project+"新增室內設計提案，以"+highlights+"的空間配置呈現生活動線與收納規劃。本專區使用"+kind+"說明設計方向，實際尺寸、材質及工程成果仍須以核准圖說與現場確認為準。";
  updateStatus();
 }
 function exportDraft(){
