@@ -221,3 +221,51 @@ test("HTTPS GitHub Pages connects to loopback with explicit browser address-spac
  assert.match(d.querySelector("#cyexp-local-ai").textContent,/Serve on Local Network/);
  dom.window.close();
 });
+
+test("import full CMS HTML in one paste and match uploads by filename even when image order is reversed",async()=>{
+ const dom=await setup();const d=dom.window.document;
+ await fileSelect(dom,"living.png");
+ await fileSelect(dom,"新格局圖.png");
+ const html=[
+  '<p><img src="https://chen-yang.com.tw/upload/images/%E6%96%B0%E6%A0%BC%E5%B1%80%E5%9C%96.webp" alt="uploaded layout"></p>',
+  '<p><img src="https://chen-yang.com.tw/upload/images/living.jpg" alt="uploaded render"></p>'
+ ].join("\n");
+ edit(dom,d.querySelector("#cyexp-cms-html"),html);
+ d.querySelector("#cyexp-match-cms").click();
+ const urls=[...d.querySelectorAll(".cyexp-item [data-attr=url]")].map(x=>x.value);
+ assert.equal(urls[0],"https://chen-yang.com.tw/upload/images/living.jpg");
+ assert.match(urls[1],/%E6%96%B0%E6%A0%BC%E5%B1%80%E5%9C%96.webp/);
+ assert.match(d.querySelector("#cyexp-cms-match-status").textContent,/檔名配對 2、順序推定 0/);
+ assert.equal(d.querySelector("#cyexp-copy").disabled,true,"Still requires valid floorplan, text and verification");
+ dom.window.close();
+});
+test("unknown CMS renames use exact batch order only, never silently match extra existing images",async()=>{
+ const dom=await setup();const d=dom.window.document;
+ await fileSelect(dom,"living.png");await fileSelect(dom,"新格局圖.png");
+ edit(dom,d.querySelector("#cyexp-cms-html"),
+  '<div><img src="https://chen-yang.com.tw/upload/images/random-1.jpg"><img src="https://chen-yang.com.tw/upload/images/random-2.jpg"></div>');
+ d.querySelector("#cyexp-match-cms").click();
+ assert.match(d.querySelector("#cyexp-cms-match-status").textContent,/順序推定 2/);
+ assert.match(d.querySelector(".cyexp-item .cyexp-muted").textContent,/1\. living\.png/);
+ const rows=d.querySelectorAll(".cyexp-item [data-attr=url]");
+ assert.match(rows[0].value,/random-1/);
+ assert.match(rows[1].value,/random-2/);
+ edit(dom,d.querySelector("#cyexp-cms-html"),
+  '<div><img src="https://chen-yang.com.tw/upload/images/old.jpg"><img src="https://chen-yang.com.tw/upload/images/next.jpg"><img src="https://chen-yang.com.tw/upload/images/extra.jpg"></div>');
+ rows.forEach(x=>edit(dom,x,""));
+ d.querySelector("#cyexp-match-cms").click();
+ assert.match(d.querySelector("#cyexp-cms-match-status").textContent,/沒有安全的檔名配對/);
+ assert.ok([...d.querySelectorAll(".cyexp-item [data-attr=url]")].every(x=>x.value===""),"no guessing for unsafe pasted batch");
+ dom.window.close();
+});
+test("CMS HTML importer refuses offsite image URLs and never runs pasted scripts",async()=>{
+ const dom=await setup();const d=dom.window.document;
+ await fileSelect(dom,"living.png");
+ edit(dom,d.querySelector("#cyexp-cms-html"),
+  '<script>window.exampleInjected=1</script><img src="https://evil.example/upload/living.jpg"><img src="javascript:alert(1)">');
+ d.querySelector("#cyexp-match-cms").click();
+ assert.equal(dom.window.exampleInjected,undefined);
+ assert.match(d.querySelector("#cyexp-cms-match-status").textContent,/沒有找到晨陽官網可使用的圖片網址/);
+ assert.equal(d.querySelector(".cyexp-item [data-attr=url]").value,"");
+ dom.window.close();
+});
