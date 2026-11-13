@@ -1547,7 +1547,27 @@ function exportDraft(){
 async function importDraft(file){
  let data;try{data=JSON.parse(await file.text());}catch(_){message("草稿 JSON 格式錯誤",true);return;}
  if(data?.version!==1||!Array.isArray(data.items)||data.items.length>50){message("草稿版本或圖片數量不符合規範",true);return;}
- const project=S.base.find(x=>x.id===data.project_id);if(project)$("cyexp-base").value=project.id;
+ const project=S.base.find(x=>x.id===data.project_id);
+ if(!project){
+  message("這份草稿的案場 "+String(data.project_id||"未標示")+" 並不在可編輯文章內；為防止跨案場覆蓋，未匯入任何圖片。",true);
+  return;
+ }
+ if(S.modelBusy||S.matchRunning||S.fileImportBusy){
+  message("AI 仍在處理圖片，請完成或停止後再匯入另一案草稿。",true);return;
+ }
+ if(S.activeProjectId!==project.id){
+  const main=document.getElementById("action-article");
+  if(!main||![...main.options].some(x=>x.value===project.id)){
+   message("請先在上方「選擇文章」切至「"+(S.drafts.find(x=>x.id===project.id)?.project_name||project.id)+
+    "」；如果已完成請先切換歷史紀錄。草稿沒有覆蓋目前案場。",true);
+   return;
+  }
+  main.value=project.id;
+  main.dispatchEvent(new Event("change",{bubbles:true}));
+  if(S.activeProjectId!==project.id){
+   message("文章切換尚未完成，草稿沒有套用，避免跨案場覆蓋。",true);return;
+  }
+ }
  $("cyexp-unit").value=String(data.unit||"").slice(0,90);$("cyexp-type").value=data.type==="實景照片"?"實景照片":"3D 建模示意圖";
  $("cyexp-intro").value=String(data.intro||"").slice(0,2000);
  for(const a of S.files)if(a.preview)URL.revokeObjectURL(a.preview);
