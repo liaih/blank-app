@@ -269,3 +269,25 @@ test("CMS HTML importer refuses offsite image URLs and never runs pasted scripts
  assert.equal(d.querySelector(".cyexp-item [data-attr=url]").value,"");
  dom.window.close();
 });
+
+test("one human batch approval replaces repeated checkboxes but cannot bypass floorplan or CMS image URL requirements",async()=>{
+ const dom=await setup(),d=dom.window.document;
+ await fileSelect(dom,"living.png");await fileSelect(dom,"新格局圖.png");
+ d.querySelector("#cyexp-approve-reviewed").click();
+ assert.match(d.querySelector("#cyexp-vision-status").textContent,/缺少描述或 ALT/);
+ let rows=d.querySelectorAll(".cyexp-item");
+ for(let i=0;i<rows.length;i++){
+  let row=d.querySelectorAll(".cyexp-item")[i];
+  edit(dom,row.querySelector('[data-attr="description"]'),
+   i===0?"沙發和木製收納櫃、開放客餐廳":"平面圖標示室內格局與不同區域動線","change");
+  row=d.querySelectorAll(".cyexp-item")[i];
+  edit(dom,row.querySelector('[data-attr="alt"]'),
+   i===0?"丹佛花都｜木質櫃體客廳3D建模示意圖｜晨陽設計":"丹佛花都｜住宅平面配置圖｜晨陽設計","change");
+ }
+ d.querySelector("#cyexp-approve-reviewed").click();
+ rows=d.querySelectorAll(".cyexp-item");
+ assert.ok([...rows].every(x=>x.querySelector('[data-attr="verified"]').checked));
+ assert.equal(d.querySelector("#cyexp-copy").disabled,true,"No export unless new floorplan, CMS URLs, original article and other checks pass");
+ assert.match(d.querySelector("#cyexp-status").textContent,/新圖片尚未全部取得有效/);
+ dom.window.close();
+});
