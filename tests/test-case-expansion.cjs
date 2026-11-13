@@ -377,3 +377,38 @@ test("REGRESSION: no-image AI click explains what to do and does not connect or 
  assert.match(d.querySelector("#cyexp-main-ai-status").textContent,/先選擇要讀圖的照片/);
  dom.window.close();
 });
+
+test("BEGINNER UX: one visible 3-step flow keeps all working features and hides only admin tools",async()=>{
+ const dom=await setup(),d=dom.window.document;
+ const app=d.querySelector("#case-expansion");
+ const steps=[1,2,3].map(n=>d.querySelector("#cyexp-step"+n));
+ assert.ok(steps.every(Boolean));
+ assert.equal(d.querySelector("#cyexp-progress span[aria-current=step]").textContent.trim(),"① 選圖");
+ assert.ok(steps[0].contains(d.querySelector("#cyexp-base")));
+ assert.ok(steps[0].contains(d.querySelector("#cyexp-files")));
+ assert.ok(steps[0].contains(d.querySelector("#cyexp-read")));
+ assert.equal(d.querySelector("#cyexp-read").closest("details"),null,"AI must not hide inside any collapsed panel");
+ assert.ok(steps[1].contains(d.querySelector("#cyexp-items")));
+ assert.ok(steps[1].contains(d.querySelector("#cyexp-approve-reviewed")));
+ assert.ok(steps[1].contains(d.querySelector("#cyexp-intro")));
+ assert.ok(steps[2].contains(d.querySelector("#cyexp-cms-import-panel")));
+ assert.ok(steps[2].contains(d.querySelector("#cyexp-copy")));
+ assert.ok(steps[2].contains(d.querySelector("#cyexp-confirm-floorplan")));
+ assert.ok(d.querySelector("#cyexp-extra").contains(d.querySelector("#cyexp-bulk-urls")));
+ assert.ok(d.querySelector("#cyexp-extra").contains(d.querySelector("#cyexp-newbase")));
+ assert.ok(d.querySelector("#cyexp-extra").contains(d.querySelector("#cyexp-export")));
+ assert.equal(d.querySelector("#cyexp-extra").open,false);
+ assert.ok(d.querySelector("#cyexp-unit").value,"new hires do not need to type a unit code");
+ assert.match(d.querySelector("#cyexp-next").textContent,/選擇建案與圖片/);
+ assert.equal(d.querySelector("#cyexp-copy").disabled,true);
+ dom.window.close();
+});
+test("BEGINNER UX: progress advances from select images to image review, and does not mislabel missing floorplan as done",async()=>{
+ const dom=await setup(),d=dom.window.document;
+ await fileSelect(dom,"living.png");
+ assert.match(d.querySelector("#cyexp-next").textContent,/AI 讀圖/);
+ assert.equal(d.querySelector("#cyexp-progress span[aria-current=step]").textContent.trim(),"② AI 介紹與 ALT");
+ assert.equal(d.querySelector("#cyexp-copy").disabled,true);
+ assert.match(d.querySelector("#cyexp-status").textContent,/缺少新的平面配置圖/);
+ dom.window.close();
+});
