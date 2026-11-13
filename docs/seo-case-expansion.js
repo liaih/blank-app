@@ -6,7 +6,7 @@ if(!host)return;
 const $=id=>host.querySelector("#"+id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 const zones=["格局圖","玄關與客廳","玄關","客廳","客餐廳","廚房與走道","多功能工作區","臥室","更衣收納","其他"];
-const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,translator:null,transformers:null,modelBusy:false,visionReady:false,verifiedBase:false,localConnected:false,localModel:"",cmsUrls:[],cmsVisionCache:new Map(),cmsCorsUnavailable:false,matchRunning:false,matchCancelled:false,matchControllers:new Set(),matchStartedAt:0,matchTimer:null,matchStage:"",matchStep:0,matchTotal:0,activeProjectId:"",activeView:"pending",caseStates:new Map(),fileImportBusy:false,aiStarting:false};
+const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,translator:null,transformers:null,modelBusy:false,visionReady:false,verifiedBase:false,localConnected:false,localModel:"",cmsUrls:[],cmsVisionCache:new Map(),cmsCorsUnavailable:false,matchRunning:false,matchCancelled:false,matchControllers:new Set(),matchStartedAt:0,matchTimer:null,matchStage:"",matchStep:0,matchTotal:0,activeProjectId:"",activeView:"pending",caseStates:new Map(),fileImportBusy:false,aiStarting:false,autosaveReady:false,autosaveTimer:null,recoveredProjects:0};
 const markup=[
 '<div class="cyexp-head"><h3>同建案新增案件｜AI 讀圖＋ALT＋格局圖</h3>',
 '<p class="cyexp-muted">原文章＋舊戶型全部保留。新增圖片在本機辨識；圖片須先上傳晨陽官網取得正式網址，才可輸出正式 HTML。</p></div>',
@@ -125,6 +125,11 @@ function buildBeginnerLayout(){
  currentProject.className="cyexp-current-article";
  currentProject.setAttribute("role","status");
  currentProject.textContent="正在同步上方選擇的文章……";
+ const saveStatus=document.createElement("p");
+ saveStatus.id="cyexp-save-state";
+ saveStatus.className="cyexp-save-state";
+ saveStatus.setAttribute("role","status");
+ saveStatus.textContent="本機草稿自動儲存準備中；保留描述、ALT、官網網址，不含原圖與 API Token。";
  const internalId=$("cyexp-unit").closest("label");
  const actions=$("cyexp-files").closest(".cyexp-actions");
  const manualSummary=$("cyexp-summary");
@@ -153,7 +158,7 @@ function buildBeginnerLayout(){
  // Keep internal case ID available for audits but remove it from the
  // novice's required input flow; a safe internal default suffices.
  if(!$("cyexp-unit").value)$("cyexp-unit").value="新增設計案例";
- one.append(currentProject,fields,actions,aiInfo,localPanel);
+ one.append(currentProject,saveStatus,fields,actions,aiInfo,localPanel);
  two.append(cms,images,reviewed,reviewedHelp,intro,summaryActions,imageStatus,draftPanel);
  const cmsTitle=cms.querySelector("summary");
  cmsTitle.textContent="匯入官網圖片 HTML｜每張原圖下方直接選圖";
