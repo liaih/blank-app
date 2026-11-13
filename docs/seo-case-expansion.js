@@ -112,8 +112,8 @@ function buildBeginnerLayout(){
   head.append(h,desc);wrapper.append(head);return wrapper;
  };
  const one=section(1,"選擇建案及圖片","照片與平面配置圖可一次選取；上傳後直接按 AI 讀圖，不必先進模型設定。");
- const two=section(2,"確認 AI 介紹與圖片 ALT","AI 會產生每張圖的描述與 ALT；只需查看是否符合畫面，再按整批核對。");
- const three=section(3,"匯入官網圖片並複製 HTML","先在官網編輯器一次上傳新圖，將那批圖片 HTML 複製貼入，就能自動對應圖片網址。");
+ const two=section(2,"AI 圖文與官網圖片配對","先貼一次官網圖片 HTML，再於每張原圖卡片中直接選官網縮圖、核對介紹與 ALT。");
+ const three=section(3,"正式上稿驗收與完整 HTML","核對原文、格局圖、官網圖片網址後才解鎖正式上稿 HTML。");
  const extra=document.createElement("details");extra.className="cyexp-advanced";extra.id="cyexp-extra";
  const summary=document.createElement("summary");summary.textContent="其他選項｜備份草稿、手動網址、更新原文（一般不需要）";
  extra.append(summary);
@@ -147,12 +147,12 @@ function buildBeginnerLayout(){
  // novice's required input flow; a safe internal default suffices.
  if(!$("cyexp-unit").value)$("cyexp-unit").value="新增設計案例";
  one.append(fields,actions,aiInfo,localPanel);
- two.append(images,reviewed,reviewedHelp,intro,summaryActions,imageStatus,draftPanel);
+ two.append(cms,images,reviewed,reviewedHelp,intro,summaryActions,imageStatus,draftPanel);
  const cmsTitle=cms.querySelector("summary");
- cmsTitle.textContent="貼入官網圖片 HTML｜本機 AI 自動對圖（整批一次）";
+ cmsTitle.textContent="匯入官網圖片 HTML｜每張原圖下方直接選圖";
  const cmsHelp=cms.querySelector("p.cyexp-muted");
- if(cmsHelp)cmsHelp.textContent="一次貼入官網圖片 HTML，再按「自動配對」：先比對檔名／像素；遇到亂數檔名或瀏覽器跨網域限制，就交給已連線的 LM Studio Qwen3-VL 直接看官網圖片與本機原圖。能確認唯一同一畫面的圖自動套用 ALT，不能確認的才列出。";
- three.append(cms,matchHud,baseCheck,urlCheck,planCheck,status,copyGroup,preview);
+ if(cmsHelp)cmsHelp.textContent="一次貼入官網批次圖片 HTML → 按自動配對 → 直接在下方每張原圖旁點選官網縮圖。AI 無法確認的才需要你選擇；不用來回捲動或手動輸入網址。";
+ three.append(matchHud,baseCheck,urlCheck,planCheck,status,copyGroup,preview);
  extra.append(internalId,bulk,originals,exportBtn,importLabel);
  if(savedIntro?.matches("p.cyexp-muted"))savedIntro.remove();
  // Remove old repetitive direct-copy instructions; progress and three
@@ -1218,85 +1218,32 @@ function cmsImageUrlSuffix(url){
 function renderCmsPairingReview(){
  const panel=$("cyexp-cms-review");panel.replaceChildren();
  if(!S.cmsUrls.length)return;
- const heading=document.createElement("h4");heading.textContent="原圖與官網圖比對（不依順序猜測）";panel.appendChild(heading);
- const gallery=document.createElement("div");
- gallery.style.cssText="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:9px;margin:12px 0 20px";
- for(const [index,url] of S.cmsUrls.entries()){
-  const tile=document.createElement("div");tile.style.cssText="border:1px solid #dce7f2;padding:8px;border-radius:8px;background:#fff";
-  const img=document.createElement("img");img.src=url;img.alt="官網圖片 "+(index+1);
-  img.loading="lazy";img.style.cssText="width:100%;height:95px;object-fit:contain";
-  const label=document.createElement("p");label.className="cyexp-muted";
-  const suffix=cmsImageUrlSuffix(url);
-  label.textContent="官網圖 "+(index+1);
-  label.style.cssText="font-size:12px;line-height:1.5;margin:4px 0 0;overflow-wrap:anywhere";
-  const digits=document.createElement("strong");
-  digits.textContent="數字末3位："+suffix.digits;
-  digits.style.cssText="display:block;font-size:15px;color:#17416d;font-variant-numeric:tabular-nums";
-  const chars=document.createElement("span");
-  chars.textContent="檔名末3碼："+suffix.code;
-  chars.style.cssText="display:block;font-size:12px";
-  tile.title="檔名："+suffix.filename+"\n完整網址："+url;
-  img.title=tile.title;
-  tile.append(img,label,digits,chars);gallery.appendChild(tile);
+ const verified=S.files.filter(x=>x.urlPairVerified&&validUrl(x.url)).length;
+ const heading=document.createElement("p");
+ heading.className="cyexp-muted";
+ heading.textContent="官網已載入 "+S.cmsUrls.length+" 張圖片；"+verified+"/"+S.files.length+
+  " 張配對已確認。下方每張原圖旁皆有官網縮圖選擇器，不必在這裡逐張找圖。";
+ panel.appendChild(heading);
+ const pending=S.files.map((item,index)=>({item,index}))
+  .filter(({item})=>!item.urlPairVerified||!validUrl(item.url));
+ if(!pending.length)return;
+ const area=document.createElement("div");area.className="cyexp-match-shortcuts";
+ const heading2=document.createElement("strong");heading2.textContent="直接跳到待核對圖片：";
+ area.appendChild(heading2);
+ for(const {item,index} of pending){
+  const button=document.createElement("button");button.type="button";
+  button.textContent=(index+1)+". "+item.name;
+  button.addEventListener("click",()=>{
+   item.pickerOpen=true;
+   const old=document.getElementById("cyexp-image-card-"+index);
+   if(old)old.replaceWith(itemBox(item,index));
+   else renderItems();
+   const target=document.getElementById("cyexp-image-card-"+index);
+   target?.scrollIntoView({behavior:"smooth",block:"center"});
+  });
+  area.append(button);
  }
- panel.appendChild(gallery);
- for(const [index,item] of S.files.entries()){
-  const row=document.createElement("div");
-  row.style.cssText="display:grid;grid-template-columns:1fr 1fr;gap:12px;border-top:1px solid #dce7f2;padding:12px 0;min-width:0";
-  const left=document.createElement("div");
-  const title=document.createElement("strong");title.textContent=(index+1)+". "+item.name+"｜本機原圖";left.appendChild(title);
-  if(item.preview){
-   const img=document.createElement("img");img.src=item.preview;img.alt="本機原圖";
-   img.style.cssText="display:block;width:100%;max-width:250px;max-height:170px;object-fit:contain;margin-top:8px";
-   left.appendChild(img);
-  }else{
-   const note=document.createElement("p");note.textContent="需重新選取原圖才能核對";left.appendChild(note);
-  }
-  const right=document.createElement("div");
-  const label=document.createElement("label");label.textContent="請選同一張官網圖";
-  const select=document.createElement("select");select.style.cssText="display:block;width:100%;padding:8px;margin:6px 0";
-  const none=document.createElement("option");none.value="";none.textContent="尚未配對";select.appendChild(none);
-  for(const [j,url]of S.cmsUrls.entries()){
-   const op=document.createElement("option");op.value=url;
-   const suffix=cmsImageUrlSuffix(url);
-   op.textContent=(j+1)+". 數字末3位 "+suffix.digits+"｜末3碼 "+suffix.code+"｜"+suffix.filename.slice(0,48);
-   select.appendChild(op);
-  }
-  select.value=S.cmsUrls.includes(item.url)?item.url:"";
-  label.appendChild(select);right.appendChild(label);
-  const pic=document.createElement("img");pic.alt="官網圖片縮圖，需比對原圖";
-  pic.loading="lazy";pic.style.cssText="display:block;width:100%;max-width:250px;max-height:170px;object-fit:contain;margin:8px 0";
-  if(select.value)pic.src=select.value;else pic.hidden=true;
-  right.appendChild(pic);
-  const status=document.createElement("p");status.className="cyexp-muted";
-  status.textContent=item.urlPairVerified?"圖片內容已確認":"待確認：不能正式上稿";
-  right.appendChild(status);
-  const confirm=document.createElement("button");confirm.type="button";confirm.className="cyexp-main-action";
-  confirm.textContent=item.urlPairVerified?"取消確認":"確認兩張是相同圖片";
-  confirm.disabled=!select.value||!item.preview;
-  right.appendChild(confirm);
-  select.onchange=()=>{
-   const url=select.value;
-   if(url&&S.files.some(other=>other!==item&&other.url===url)){
-    status.textContent="此網址已配給其他原圖，不能重複使用";
-    select.value=S.cmsUrls.includes(item.url)?item.url:"";return;
-   }
-   item.url=url;item.urlPairVerified=false;
-   item.urlMatch="人工選擇，尚待核對";
-   $("cyexp-confirm-urls").checked=false;
-   if(url){pic.src=url;pic.hidden=false;}else pic.hidden=true;
-   status.textContent="請比對兩張圖片是否相同";
-   confirm.disabled=!url||!item.preview;confirm.textContent="確認兩張是相同圖片";
-   renderItems();
-  };
-  confirm.onclick=()=>{
-   if(!validUrl(item.url)||!item.preview)return;
-   item.urlPairVerified=!item.urlPairVerified;
-   item.urlMatch=item.urlPairVerified?"人工目視確認原圖相同":"待核對";
-   renderItems();renderCmsPairingReview();updateStatus();
-  };
-  row.append(left,right);panel.appendChild(row);
- }
+ panel.append(area);
 }
 async function matchImagesFromCms(raw){
  const urls=extractCmsImageUrls(raw);S.cmsUrls=urls;
