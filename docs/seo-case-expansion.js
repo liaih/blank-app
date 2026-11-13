@@ -897,6 +897,65 @@ async function localImagePreviewData(file){
   return canvas.toDataURL("image/jpeg",0.82);
  }finally{image.close?.();}
 }
+function setCmsMatchProgress(stage,step=S.matchStep,total=S.matchTotal){
+ S.matchStage=stage;S.matchStep=step;S.matchTotal=total;
+ const hud=$("cyexp-match-hud");hud.hidden=!S.matchRunning;
+ $("cyexp-match-stage").textContent=stage;
+ $("cyexp-match-meter").max=Math.max(1,total);
+ $("cyexp-match-meter").value=Math.max(0,Math.min(step,total));
+ $("cyexp-match-numbers").textContent=total?(step+" / "+total+" 張"):"正在準備";
+ $("cyexp-cms-match-status").textContent=stage;
+}
+function newCmsMatchController(ms=75000){
+ const controller=new AbortController();
+ S.matchControllers.add(controller);
+ const timer=setTimeout(()=>controller.abort(),ms);
+ return {signal:controller.signal,dispose:()=>{clearTimeout(timer);S.matchControllers.delete(controller);}};
+}
+function stopCmsMatch(){
+ if(!S.matchRunning)return;
+ S.matchCancelled=true;
+ $("cyexp-stop-match").disabled=true;
+ $("cyexp-match-hud-title").textContent="正在停止圖片配對";
+ setCmsMatchProgress("已收到停止指令，正在中止請求並保留已完成結果。");
+ for(const controller of S.matchControllers)controller.abort();
+}
+async function runCmsMatch(raw){
+ if(S.matchRunning){$("cyexp-cms-match-status").textContent="圖片仍在處理中，可使用右下角的「停止配對」取消。";return;}
+ if(!String(raw||"").trim()){$("cyexp-cms-match-status").textContent="請先貼入晨陽後台圖片 HTML，再按自動配對。";return;}
+ S.matchRunning=true;S.matchCancelled=false;S.matchStartedAt=Date.now();
+ S.matchStep=0;S.matchTotal=0;
+ $("cyexp-match-hud-title").textContent="正在比對官網圖片";
+ $("cyexp-match-elapsed").textContent="0 秒";
+ $("cyexp-stop-match").disabled=false;
+ $("cyexp-match-cms").disabled=true;$("cyexp-paste-cms").disabled=true;
+ setCmsMatchProgress("正在解析 HTML 並檢查圖片網址……",0,0);
+ S.matchTimer=setInterval(()=>{
+  if(!S.matchRunning)return;
+  const elapsed=Math.floor((Date.now()-S.matchStartedAt)/1000);
+  $("cyexp-match-elapsed").textContent=elapsed+" 秒";
+ },1000);
+ try{
+  const result=await matchImagesFromCms(raw);
+  if(S.matchCancelled){
+   $("cyexp-cms-match-status").textContent="已停止配對。已確認的圖片資料保留，未完成圖片仍標記待確認。"+
+    "目前已指派 "+result.assigned+"/"+S.files.length+" 張；需要時可再次按自動配對。";
+  }else{
+   showCmsMatch(result);
+  }
+ }catch(e){
+  $("cyexp-cms-match-status").textContent="圖片配對已中斷："+(e?.message||"未知錯誤")+"。未核對圖片不會輸出正式 HTML。";
+ }finally{
+  if(S.matchTimer){clearInterval(S.matchTimer);S.matchTimer=null;}
+  for(const controller of S.matchControllers)controller.abort();
+  S.matchControllers.clear();
+  S.matchRunning=false;
+  $("cyexp-match-hud").hidden=true;
+  $("cyexp-match-cms").disabled=false;
+  $("cyexp-paste-cms").disabled=false;
+  updateStatus();
+ }
+}
 async function localVisionRemoteRequest(remoteUrl,prompt,originalData,reverse=false){
  if(!validUrl(remoteUrl))throw Error("只允許晨陽官網 HTTPS 圖片作為遠端 AI 輸入");
  const model=$("cyexp-local-model").value||S.localModel;
