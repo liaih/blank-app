@@ -927,7 +927,7 @@ async function matchImagesFromCms(raw){
   const stem=normalizedImageStem(item.name);
   const found=[...remaining].filter(url=>{
    const target=urlStem(url);
-   return target===stem||target.startsWith(stem+"-")||target.startsWith(stem+"_");
+   return target===stem||(stem.length>=8&&!/^\d+$/.test(stem)&&(target.startsWith(stem+"-")||target.startsWith(stem+"_")));
   });
   if(found.length!==1)continue;
   item.url=found[0];item.urlPairVerified=false;
