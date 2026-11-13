@@ -6,8 +6,8 @@
   "not_own_tavily_rag": true,
   "window_start": "2026-10-15",
   "window_end": "2026-11-13",
-  "generated_at": "2026-11-13T21:20:37+08:00",
-  "total_samples": 2,
+  "generated_at": "2026-11-13T21:36:07+08:00",
+  "total_samples": 3,
   "platforms": [
     {
       "platform": "ChatGPT",
@@ -30,28 +30,54 @@
     },
     {
       "platform": "Gemini",
-      "samples": 1,
+      "samples": 2,
       "existing_jobs": {
         "pending": 0,
-        "stored": 1,
+        "stored": 2,
         "failed": 0,
         "no-evidence": 0
       },
       "mentions": 0,
       "direct_domain_citations": 0,
-      "answers_with_sources": 0,
-      "last_sample_date": "2026-11-12",
+      "answers_with_sources": 1,
+      "last_sample_date": "2026-11-13",
       "competitor_candidates": [],
-      "cited_domains": [],
+      "cited_domains": [
+        {
+          "domain": "www.pro360.com.tw",
+          "occurrences": 2
+        },
+        {
+          "domain": "hcdesign.com.tw",
+          "occurrences": 2
+        },
+        {
+          "domain": "www.lu-woo.com",
+          "occurrences": 2
+        },
+        {
+          "domain": "www.100.com.tw",
+          "occurrences": 1
+        },
+        {
+          "domain": "livinglife.com.tw",
+          "occurrences": 1
+        },
+        {
+          "domain": "www.happytogether35.com.tw",
+          "occurrences": 1
+        }
+      ],
       "tested_prompt_ids": [
-        "kaohsiung-condo"
+        "kaohsiung-condo",
+        "renovation-cost"
       ]
     },
     {
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 0,
+        "pending": 1,
         "stored": 0,
         "failed": 0,
         "no-evidence": 1
@@ -66,6 +92,28 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "c06f123f33516439",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "Gemini",
+      "prompt_id": "renovation-cost",
+      "prompt": "2026年台灣住宅老屋翻新每坪預算如何評估？請引用施工實例或業者公開資料。",
+      "answered_at": "2026-11-13T21:33:50+08:00",
+      "answer_excerpt": "評估台灣住宅老屋翻新（通常指屋齡 20 年、30 年甚至 40 年以上的中古屋與透天）的每坪預算時，業界公認的基準與施工實例顯示，費用會受到 屋況嚴重程度、基礎工程（水電、防水、結構）占比 以及 室內設計材質 而有顯著落差。 依據多家室內設計公司、裝修平台（如 PRO360、100室內設計、綠屋設計、黃巢設計工務店等）的公開資料與實務經驗，2026 年台灣老屋翻新的每坪預算評估架構如下： 一、 每坪總價行情區間 老屋翻新（不含家電與部分獨立家具）的平均市場行情大約落在 每坪 8 萬元至 15 萬元以上 ，若屋況極度老舊或為結構複雜的透天厝，單價甚至可能上看 15 萬至 20 萬元/坪。 依屋齡與裝修精緻度， 市場通常細分為以下三個等級： 裝修等級 / 需求 每坪預算參考（工程款） 包含主要施工項目 基本型（局部翻新/輕度整修） 約 6萬 ～ 8萬 /坪 基礎拆除、全面水電重拉、油漆粉刷、基本超耐磨地板、局部修繕。 標準型（全面翻新/機能健全） 約 8萬 ～ 12萬 /坪 包含上述外加：全室氣密窗更新、衛浴與廚具打掉重練、天花板、系統櫃收納。 質感/高階型（全室訂製與重度改造） 12萬 ～ 20萬+/坪 涉及格局大風吹、嚴重壁癌/結構補強、頂級建材與進口衛浴、全室訂製木作與特殊塗料。 二、 基礎工程與細項成本解析 老屋翻新最燒錢的地方在於「看不見的隱蔽工程」，通常會佔總預算的 50% 甚至更高 。業者公開的單項工程行情大約如下： 拆除與清運工程： 約 $5,000 ～ $8,000/坪 （若包含RC鋼筋混凝土牆面拆除或特定地磚敲除會更高）。 水電管線工程： 約 $9,000 ～ $20,000/坪 。老屋超過 20 年以上，建議電線全面抽換、給排水管更新，以避免用電過載或漏水。 防水與泥作工程： 防水工程約 $600 ～ $15,000/坪 （視浴室、外牆、屋頂漏水嚴重度而定）；泥作粉光及壁癌處理約 $4,500/坪起 。 設計費與監工費（額外計費）： 設計費： 舊屋多落在 $5,000 ～ $12,000/坪 之間（因需繪製複雜的拆除圖、水電迴路圖等）。 監工費： 多數設計公司或統包會以 總工程款的 5% ～ 10% 來計算。 三、 施工實例與預算配置參考 以業界常見的 30 坪中古屋（屋齡約 30 年） 全室翻新為例： 標準型翻新實例估算： 若以每坪 9 萬元計算， 30 坪的總工程款約為 270 萬元 。 預算比例配置建議： 基礎工程（水電、防水、泥作、拆除）： 約佔 50%（約 135 萬元）。 木作、系統櫃與裝潢表面： 約佔 30% ～ 40%（約 81 萬至 108 萬元）。 設計與監工費： 另計（設計費以每坪 6,000 元計約 18 萬元；監工費約 13 萬元）。 預備金： 老屋常有開挖後才發現的隱藏狀況（如管線嚴重鏽蝕、結構瑕疵），業者普遍建議 必須額外抓總預算的 10% ～ 15% 作為緊急預備金 。 Was this visual helpful? Yes No 四、 2026 年老屋翻新省錢與規劃建議 避免過度變更格局： 頻繁更動隔間會大幅增加拆除、廢棄物清運以及地面、天花板修補的泥作成本。 善用系統櫃取代木作： 現場木作人工成本高且搬遷無法帶走；改用系統櫃能有效控制預算， 且施工期較短。 優先投資「看不見」的地方： 水電、壁癌防水千萬不要省，否則裝潢完幾年後漏水壁癌復發，拆除重練的代價將遠高於一開始的施工成本。",
+      "excerpt_truncated": false,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "hcdesign.com.tw",
+        "livinglife.com.tw",
+        "www.100.com.tw",
+        "www.happytogether35.com.tw",
+        "www.lu-woo.com",
+        "www.pro360.com.tw"
+      ]
+    },
     {
       "evidence_id": "f3685e4a380e4207",
       "recommendation_status": "未提及晨陽",
@@ -106,12 +154,12 @@
     },
     "Gemini": {
       "pending": 0,
-      "stored": 1,
+      "stored": 2,
       "failed": 0,
       "no-evidence": 0
     },
     "Perplexity": {
-      "pending": 0,
+      "pending": 1,
       "stored": 0,
       "failed": 0,
       "no-evidence": 1
@@ -124,13 +172,13 @@
       "reason": ""
     },
     "Gemini": {
-      "day": "2026-11-12",
+      "day": "2026-11-13",
       "status": "stored",
       "reason": ""
     },
     "Perplexity": {
-      "day": "2026-11-12",
-      "status": "no-evidence",
+      "day": "2026-11-13",
+      "status": "pending",
       "reason": ""
     }
   },
@@ -421,7 +469,7 @@
             "direct_citations": 0
           },
           "Gemini": {
-            "samples": 0,
+            "samples": 1,
             "mentions": 0,
             "direct_citations": 0
           },
