@@ -442,13 +442,16 @@ def source_preserving_hybrid(d,assets,document,url):
     after_imgs=[x.get("src","") for x in after.find_all("img")]
     after_links=[x.get("href","") for x in after.find_all("a",href=True)]
     after_videos=[x.get("src","") for x in after.find_all(["iframe","video"],src=True)]
+    preservation_checks={
+        "source_text":text_original_sequence.startswith(old_text),
+        "images_in_order":after_imgs[:len(orig_imgs)]==orig_imgs,
+        "links_in_order":after_links[:len(orig_links)]==orig_links,
+        "videos_in_order":after_videos[:len(orig_videos)]==orig_videos,
+        "source_has_images":bool(orig_imgs),
+    }
     integrity={
-        "original_main_content_preserved":bool(
-            text_original_sequence.startswith(old_text)
-            and after_imgs[:len(orig_imgs)]==orig_imgs
-            and after_links[:len(orig_links)]==orig_links
-            and after_videos[:len(orig_videos)]==orig_videos
-            and bool(orig_imgs)),
+        "original_main_content_preserved":all(preservation_checks.values()),
+        "preservation_checks":preservation_checks,
         "original_text_characters":len(old_text),
         "merged_text_characters":len(text_after),
         "original_image_urls_count":len(orig_imgs),
@@ -504,6 +507,13 @@ def main():
         except Exception as exc:
             assets=[];html="";error=type(exc).__name__
             audit={"original_main_content_preserved":False,"failure":error}
+        if not audit.get("original_main_content_preserved"):
+            print("SOURCE_PRESERVATION_CHECK_FAILURE "+json.dumps({
+                "id":draft["id"],
+                "checks":audit.get("preservation_checks",{}),
+                "floorplan":audit.get("floorplan_protection_passed"),
+                "reason":audit.get("failure"),
+            },ensure_ascii=False))
         output.append({"id":draft["id"],"source_url":url,
                       "article_mode":article_mode,"template":"chenyang-existing-article-v1.1",
                       "media_count":len(assets),
