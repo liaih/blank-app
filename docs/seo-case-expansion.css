@@ -61,3 +61,8 @@ font:inherit;line-height:1.6;color:inherit;min-width:0;max-width:100%;width:100%
  #case-expansion .cyexp-main-action{font-size:13px}
  #case-expansion .cyexp-fields{grid-template-columns:1fr}
 }
+
+/* Separate evidence-grounded floorplans from interior render descriptions. */
+#case-expansion .cyexp-plan-note{margin:5px 0;padding:8px 10px;font-size:12px;line-height:1.6;background:#f1f5f9;color:#334155;border-left:3px solid #64748b;border-radius:5px}
+#case-expansion .cyexp-plan-warning{margin:7px 0;padding:9px 11px;border:1px solid #e2c6ad;border-radius:7px;color:#8a3c16;background:#fffaf6;font-size:12px;font-weight:600;line-height:1.7}
+#case-expansion .cyexp-item input[type="checkbox"]:disabled{cursor:not-allowed;opacity:.55}
