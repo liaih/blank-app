@@ -849,6 +849,16 @@ function renderCmsPairingReview(){
  const panel=$("cyexp-cms-review");panel.replaceChildren();
  if(!S.cmsUrls.length)return;
  const heading=document.createElement("h4");heading.textContent="原圖與官網圖比對（不依順序猜測）";panel.appendChild(heading);
+ const gallery=document.createElement("div");
+ gallery.style.cssText="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:9px;margin:12px 0 20px";
+ for(const [index,url] of S.cmsUrls.entries()){
+  const tile=document.createElement("div");tile.style.cssText="border:1px solid #dce7f2;padding:8px;border-radius:8px;background:#fff";
+  const img=document.createElement("img");img.src=url;img.alt="官網圖片 "+(index+1);
+  img.loading="lazy";img.style.cssText="width:100%;height:95px;object-fit:contain";
+  const label=document.createElement("p");label.className="cyexp-muted";
+  label.textContent="官網圖 "+(index+1);tile.append(img,label);gallery.appendChild(tile);
+ }
+ panel.appendChild(gallery);
  for(const [index,item] of S.files.entries()){
   const row=document.createElement("div");
   row.style.cssText="display:grid;grid-template-columns:1fr 1fr;gap:12px;border-top:1px solid #dce7f2;padding:12px 0;min-width:0";
