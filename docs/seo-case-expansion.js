@@ -62,6 +62,86 @@ const markup=[
 '<p class="cyexp-muted">不會自動上傳圖片或修改正式官網。草稿匯出不含圖片本體，重新開啟需重新選擇圖檔，官網圖片網址與 ALT 可由 JSON 恢復。</p>'
 ].join("");
 host.innerHTML=markup;
+
+// Beginner-first layout: MOVE existing controls, never clone/remove working
+// AI or export controls. All IDs and event handlers remain unchanged.
+// Technical settings and backup tools use progressive disclosure.
+function buildBeginnerLayout(){
+ const heading=host.querySelector(".cyexp-head");
+ heading.querySelector("h3").textContent="同建案新增案例｜3 步完成";
+ heading.querySelector("p").textContent="選照片與新格局圖 → AI 自動讀圖、產生 ALT → 從官網批次取得圖片網址並複製完整 HTML。原文章與舊格局圖完整保留。";
+ const progress=document.createElement("div");progress.className="cyexp-progress";
+ progress.id="cyexp-progress";
+ progress.innerHTML='<span>① 選圖</span><span>② AI 介紹與 ALT</span><span>③ 官網上稿</span>';
+ const next=document.createElement("p");next.id="cyexp-next";next.className="cyexp-next";
+ next.setAttribute("role","status");next.textContent="第一步：選擇新案件圖片，務必包含新的平面配置圖。";
+ const section=(n,title,description)=>{
+  const wrapper=document.createElement("section");wrapper.className="cyexp-step";wrapper.id="cyexp-step"+n;
+  const head=document.createElement("div");head.className="cyexp-step-header";
+  const h=document.createElement("h4");h.textContent=n+". "+title;
+  const desc=document.createElement("p");desc.textContent=description;
+  head.append(h,desc);wrapper.append(head);return wrapper;
+ };
+ const one=section(1,"選擇建案及圖片","照片與平面配置圖可一次選取；上傳後直接按 AI 讀圖，不必先進模型設定。");
+ const two=section(2,"確認 AI 介紹與圖片 ALT","AI 會產生每張圖的描述與 ALT；只需查看是否符合畫面，再按整批核對。");
+ const three=section(3,"匯入官網圖片並複製 HTML","先在官網編輯器一次上傳新圖，將那批圖片 HTML 複製貼入，就能自動對應圖片網址。");
+ const extra=document.createElement("details");extra.className="cyexp-advanced";extra.id="cyexp-extra";
+ const summary=document.createElement("summary");summary.textContent="其他選項｜備份草稿、手動網址、更新原文（一般不需要）";
+ extra.append(summary);
+ const fields=$("cyexp-base").closest(".cyexp-fields");
+ const internalId=$("cyexp-unit").closest("label");
+ const actions=$("cyexp-files").closest(".cyexp-actions");
+ const manualSummary=$("cyexp-summary");
+ const summaryActions=document.createElement("div");summaryActions.className="cyexp-actions";
+ summaryActions.appendChild(manualSummary);
+ const intro=$("cyexp-intro").closest("label");
+ const aiInfo=$("cyexp-main-ai-status");
+ const localPanel=$("cyexp-local-ai");
+ const cms=$("cyexp-cms-import-panel");
+ const bulk=$("cyexp-bulk-urls").closest("details");
+ const originals=$("cyexp-newbase").closest("details");
+ const images=$("cyexp-items");
+ const reviewed=$("cyexp-approve-reviewed").closest(".cyexp-actions");
+ const reviewedHelp=reviewed.nextElementSibling;
+ const imageStatus=$("cyexp-vision-status");
+ const baseCheck=$("cyexp-confirm-base").closest("label");
+ const urlCheck=$("cyexp-confirm-urls").closest("label");
+ const planCheck=$("cyexp-confirm-floorplan").closest("label");
+ const status=$("cyexp-status");
+ const copyGroup=$("cyexp-copy").closest(".cyexp-actions");
+ const exportBtn=$("cyexp-export");
+ const importLabel=$("cyexp-import").closest("label");
+ const preview=$("cyexp-html").closest("details");
+ const savedIntro=$("cyexp-vision-status").previousElementSibling;
+ const footer=host.lastElementChild;
+ // Keep internal case ID available for audits but remove it from the
+ // novice's required input flow; a safe internal default suffices.
+ if(!$("cyexp-unit").value)$("cyexp-unit").value="新增設計案例";
+ one.append(fields,actions,aiInfo,localPanel);
+ two.append(images,reviewed,reviewedHelp,intro,summaryActions,imageStatus);
+ const cmsTitle=cms.querySelector("summary");
+ cmsTitle.textContent="貼入官網剛上傳的圖片 HTML（一批貼一次）";
+ const cmsHelp=cms.querySelector("p.cyexp-muted");
+ if(cmsHelp)cmsHelp.textContent="在官網編輯器一次上傳新圖片 → 複製那批圖片的 HTML → 在下方貼上並按「自動配對」。不用逐張填網址。";
+ three.append(cms,baseCheck,urlCheck,planCheck,status,copyGroup,preview);
+ extra.append(internalId,bulk,originals,exportBtn,importLabel);
+ if(savedIntro?.matches("p.cyexp-muted"))savedIntro.remove();
+ // Remove old repetitive direct-copy instructions; progress and three
+ // grouped steps are now the single source of instructions.
+ for(const child of [...host.children]){
+  if(child===heading)continue;
+  if(child.matches?.("p.cyexp-muted")&&!child.id)child.remove();
+ }
+ host.append(progress,next,one,two,three,extra);
+ // Preserve any other nonempty existing panels under advanced settings.
+ for(const child of [...host.children]){
+  if([heading,progress,next,one,two,three,extra].includes(child))continue;
+  if(child!==footer)extra.append(child);
+  else if(child.matches?.("p.cyexp-muted"))child.remove();
+  else extra.append(child);
+ }
+}
+buildBeginnerLayout();
 function message(text,isError){$("cyexp-vision-status").textContent=text;$("cyexp-vision-status").style.color=isError?"#b91c1c":"";}
 function pickBase(){return S.base.find(x=>x.id===$("cyexp-base").value);}
 function chooseTitle(){const p=pickBase();const d=S.drafts.find(x=>x.id===p?.id);return d?.project_name || (d?.title||p?.id||"").split("｜",1)[0];}
