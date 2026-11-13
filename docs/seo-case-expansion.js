@@ -6,7 +6,7 @@ if(!host)return;
 const $=id=>host.querySelector("#"+id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 const zones=["格局圖","玄關與客廳","玄關","客廳","客餐廳","廚房與走道","多功能工作區","臥室","更衣收納","其他"];
-const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,translator:null,transformers:null,modelBusy:false,visionReady:false,verifiedBase:false,localConnected:false,localModel:"",cmsUrls:[]};
+const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,translator:null,transformers:null,modelBusy:false,visionReady:false,verifiedBase:false,localConnected:false,localModel:"",cmsUrls:[],matchRunning:false,matchCancelled:false,matchControllers:new Set(),matchStartedAt:0,matchTimer:null,matchStage:"",matchStep:0,matchTotal:0};
 const markup=[
 '<div class="cyexp-head"><h3>同建案新增案件｜AI 讀圖＋ALT＋格局圖</h3>',
 '<p class="cyexp-muted">原文章＋舊戶型全部保留。新增圖片在本機辨識；圖片須先上傳晨陽官網取得正式網址，才可輸出正式 HTML。</p></div>',
@@ -73,6 +73,24 @@ draftPanel.innerHTML=[
  '<details class="cyexp-advanced" open><summary>草稿文章預覽與完整 HTML</summary><div id="cyexp-draft-preview"></div><textarea id="cyexp-draft-html" readonly rows="7"></textarea></details>'
 ].join("");
 host.appendChild(draftPanel);
+const matchHud=document.createElement("aside");
+matchHud.id="cyexp-match-hud";
+matchHud.hidden=true;
+matchHud.setAttribute("role","status");
+matchHud.setAttribute("aria-live","polite");
+matchHud.style.cssText="position:fixed;bottom:18px;right:18px;width:min(420px,calc(100vw - 36px));z-index:9999;padding:16px;background:#122747;color:#fff;border-radius:14px;box-shadow:0 12px 35px rgba(10,30,50,.28)";
+matchHud.innerHTML=[
+ '<div style="display:flex;gap:12px;align-items:center;justify-content:space-between">',
+ '<strong id="cyexp-match-hud-title">正在配對圖片</strong>',
+ '<span id="cyexp-match-elapsed" style="font-size:12px">0 秒</span></div>',
+ '<p id="cyexp-match-stage" style="margin:8px 0;font-size:13px;color:#e8f1ff">準備開始</p>',
+ '<progress id="cyexp-match-meter" style="width:100%;height:12px" max="1" value="0"></progress>',
+ '<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:8px">',
+ '<span id="cyexp-match-numbers" style="font-size:12px">0 / 0 張</span>',
+ '<button type="button" id="cyexp-stop-match" style="border:1px solid #fff;color:#fff;background:transparent;border-radius:8px;padding:8px 12px;cursor:pointer">停止配對</button>',
+ '</div>'
+].join("");
+host.appendChild(matchHud);
 
 // Beginner-first layout: MOVE existing controls, never clone/remove working
 // AI or export controls. All IDs and event handlers remain unchanged.
@@ -134,7 +152,7 @@ function buildBeginnerLayout(){
  cmsTitle.textContent="貼入官網圖片 HTML｜本機 AI 自動對圖（整批一次）";
  const cmsHelp=cms.querySelector("p.cyexp-muted");
  if(cmsHelp)cmsHelp.textContent="一次貼入官網圖片 HTML，再按「自動配對」：先比對檔名／像素；遇到亂數檔名或瀏覽器跨網域限制，就交給已連線的 LM Studio Qwen3-VL 直接看官網圖片與本機原圖。能確認唯一同一畫面的圖自動套用 ALT，不能確認的才列出。";
- three.append(cms,baseCheck,urlCheck,planCheck,status,copyGroup,preview);
+ three.append(cms,matchHud,baseCheck,urlCheck,planCheck,status,copyGroup,preview);
  extra.append(internalId,bulk,originals,exportBtn,importLabel);
  if(savedIntro?.matches("p.cyexp-muted"))savedIntro.remove();
  // Remove old repetitive direct-copy instructions; progress and three
