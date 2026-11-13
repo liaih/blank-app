@@ -163,3 +163,47 @@ test("perceptual image reference matching has distinct reference hashes and neve
   assert.match(script,/ranked\[0\]\?\.diff<=7/);
   assert.match(script,/a\.verified=false;return true/);
 });
+
+test("user-initiated LM Studio connects only to loopback, re-reads bad caption, preserves floorplan verification",async()=>{
+ const dom=await setup(),d=dom.window.document;
+ edit(dom,d.querySelector("#cyexp-unit"),"內部方案");
+ await fileSelect(dom,"臥室.png");
+ const initial=d.querySelector(".cyexp-item");
+ edit(dom,initial.querySelector('[data-attr="description"]'),"床與桌子和電視機的房間","change");
+ const calls=[];
+ dom.window.fetch=async (url,opts)=>{
+   calls.push({url:String(url),method:opts?.method,headers:opts?.headers});
+   if(String(url).endsWith("/v1/models")){
+     return {ok:true,json:async()=>({data:[{id:"qwen3-vl-8b"}]})};
+   }
+   if(String(url).endsWith("/v1/chat/completions")){
+     const req=JSON.parse(opts.body);
+     assert.equal(req.model,"qwen3-vl-8b");
+     assert.ok(req.messages[1].content.some(p=>p.type==="image_url"&&p.image_url.url.startsWith("data:image/png;base64,")));
+     return {ok:true,json:async()=>({choices:[{message:{
+       content:JSON.stringify({space:"臥室",description:"臥室採用淺木色床頭背板與大片窗簾，梳妝桌旁配置圓形燈鏡，畫面為室內設計3D示意圖。"})
+     }}]})};
+   }
+   throw Error("unexpected URL: "+url);
+ };
+ edit(dom,d.querySelector("#cyexp-local-token"),"temporary-only");
+ assert.equal(calls.length,0,"No localhost call until explicit click");
+ d.querySelector("#cyexp-connect").click();
+ await new Promise(r=>setTimeout(r,30));
+ assert.equal(d.querySelector("#cyexp-local-read").disabled,false,d.querySelector("#cyexp-local-status").textContent);
+ d.querySelector("#cyexp-local-read").click();
+ await new Promise(r=>setTimeout(r,90));
+ const result=d.querySelector(".cyexp-item");
+ assert.match(result.querySelector('[data-attr="description"]').value,/淺木色床頭背板/);
+ assert.match(result.querySelector('[data-attr="alt"]').value,/丹佛花都/);
+ assert.equal(result.querySelector('[data-attr="verified"]').checked,false);
+ assert.ok(calls.every(x=>x.url.startsWith("http://127.0.0.1:1234/v1/")));
+ assert.ok(calls.every(x=>x.headers?.Authorization==="Bearer temporary-only"));
+ assert.doesNotMatch(script,/localStorage\.setItem\([^)]*cyexp-local-token/);
+ dom.window.close();
+});
+test("local vision rejects unsupported or hallucinated non-JSON output",()=>{
+ assert.match(script,/parseLocalVision\(output\)/);
+ assert.match(script,/throw Error\("模型沒有提供 JSON 圖片描述/);
+ assert.match(script,/a\.verified=false;done\+\+/);
+});
