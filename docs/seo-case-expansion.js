@@ -6,7 +6,7 @@ if(!host)return;
 const $=id=>host.querySelector("#"+id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 const zones=["格局圖","玄關與客廳","玄關","客廳","客餐廳","廚房與走道","多功能工作區","臥室","更衣收納","其他"];
-const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,translator:null,transformers:null,modelBusy:false,visionReady:false,verifiedBase:false,localConnected:false,localModel:""};
+const S={base:[],drafts:[],known:new Map(),files:[],pipeline:null,translator:null,transformers:null,modelBusy:false,visionReady:false,verifiedBase:false,localConnected:false,localModel:"",cmsUrls:[]};
 const markup=[
 '<div class="cyexp-head"><h3>同建案新增案件｜AI 讀圖＋ALT＋格局圖</h3>',
 '<p class="cyexp-muted">原文章＋舊戶型全部保留。新增圖片在本機辨識；圖片須先上傳晨陽官網取得正式網址，才可輸出正式 HTML。</p></div>',
@@ -21,13 +21,14 @@ const markup=[
 '<button type="button" id="cyexp-summary">依讀圖結果整理案件總覽</button></div>',
 '<p id="cyexp-main-ai-status" role="status" class="cyexp-muted">選好圖片後，按上面的「AI 讀圖」即可連接 LM Studio 並分析圖片；不必先展開下方設定。</p>',
 '<details class="cyexp-advanced" id="cyexp-cms-import-panel" open><summary>最快流程｜貼入官網編輯器圖片 HTML，自動辨識並配對全部網址</summary>',
-'<p class="cyexp-muted">在晨陽官網編輯器將這次新增的圖片「一次批次上傳」，複製該批圖片的 HTML 貼到下面；系統會自動讀取所有 img src，依檔名配對，無法辨識時只在圖片數完全相同的情況下依順序配對。**不用逐張貼網址。** 上傳與儲存仍需在公司 CMS 完成。</p>',
+'<p class="cyexp-muted">在晨陽官網編輯器將這次新增的圖片「一次批次上傳」，複製該批圖片的 HTML 貼到下面；系統會自動讀取所有 img src，優先以檔名與可驗證的圖像內容比對；即使張數相同，也不能直接依順序宣稱配對成功。官網重新命名時，請核對下方圖片縮圖。</p>',
 '<textarea id="cyexp-cms-html" rows="5" placeholder="貼上官網編輯器圖片 HTML，例如：&lt;p&gt;&lt;img src=&quot;https://chen-yang.com.tw/upload/images/1.0.png&quot;&gt;&lt;/p&gt; ..."></textarea>',
 '<div class="cyexp-actions"><button type="button" id="cyexp-match-cms">自動讀取官網 HTML 並配對圖片</button>',
 '<button type="button" id="cyexp-paste-cms">直接讀取剪貼簿的 HTML／文字</button></div>',
-'<p id="cyexp-cms-match-status" role="status" class="cyexp-muted">尚未讀取官網已上傳的圖片。AI 說明及 ALT 可以先產生，正式可上稿 HTML 須有實際圖片網址。</p></details>',
+'<p id="cyexp-cms-match-status" role="status" class="cyexp-muted">尚未讀取官網圖片；不會將順序推定視為成功配對。</p>',
+'<div id="cyexp-cms-review" aria-label="官網圖片與本機原圖對照區"></div></details>',
 '<details class="cyexp-advanced"><summary>快速上稿｜批次貼入所有圖片網址（免逐張輸入）</summary>',
-'<p class="cyexp-muted">先依目前圖片順序貼入一行一個正式圖片網址；或貼入「圖片檔名 | 官網網址」來自動配對，包含新格局圖。僅接受晨陽官網 HTTPS 圖片網址。</p>',
+'<p class="cyexp-muted">建議使用「圖片檔名 | 官網網址」。若只貼網址仍需驗證圖片內容，不能只憑順序確認。僅接受晨陽官網 HTTPS 圖片網址。</p>',
 '<textarea id="cyexp-bulk-urls" rows="4" placeholder="https://chen-yang.com.tw/upload/images/新案-01.png&#10;https://chen-yang.com.tw/upload/images/新案-02.png"></textarea>',
 '<button type="button" id="cyexp-apply-urls">批次套用圖片網址</button></details>',
 '<details class="cyexp-advanced" id="cyexp-local-ai"><summary>本機 AI 進階設定與連線排錯｜LM Studio Qwen3-VL</summary>',
@@ -283,6 +284,18 @@ function itemBox(a,i){
   "平面配置圖描述（保守說明，非 AI 精讀圖面）":
   "AI 讀圖描述（請依畫面核對）",a.description,"description",true));
  right.appendChild(textField("圖片 ALT（建案與畫面優先，不強制寫戶型）",a.alt,"alt",false));
+ if(validUrl(a.url)){
+  const pair=document.createElement("label");pair.className="cyexp-check";
+  const verifiedBox=document.createElement("input");verifiedBox.type="checkbox";verifiedBox.checked=!!a.urlPairVerified;
+  pair.append(verifiedBox,document.createTextNode("已比對官網圖片與左側原圖為同一張"));
+  verifiedBox.disabled=!a.preview;
+  verifiedBox.addEventListener("change",()=>{if(!a.preview){a.urlPairVerified=false;return;}a.urlPairVerified=verifiedBox.checked;updateStatus();renderCmsPairingReview();});
+  right.appendChild(pair);
+  const officialPreview=document.createElement("img");
+  officialPreview.src=a.url;officialPreview.alt="官網圖片對照縮圖";officialPreview.loading="lazy";
+  officialPreview.style.cssText="display:block;max-width:260px;max-height:145px;object-fit:contain;margin:5px 0 12px";
+  right.appendChild(officialPreview);
+ }
  const urlBox=document.createElement("details");urlBox.className="cyexp-advanced";
  const urlSummary=document.createElement("summary");
  urlSummary.textContent=validUrl(a.url)?"官網圖片：已取得正式網址（點此查看／修改）":"官網圖片：尚待批次配對（點此手動修改）";
@@ -320,8 +333,11 @@ function itemBox(a,i){
    // single character invalidates it IMMEDIATELY, not only after blur.
    a.verified=false;box.checked=false;
   }
-  if(x==="url")urlSummary.textContent=validUrl(a.url)?
-   "官網圖片：已取得正式網址（點此查看／修改）":"官網圖片：尚待批次配對（點此手動修改）";
+  if(x==="url"){
+   a.urlPairVerified=false;
+   $("cyexp-confirm-urls").checked=false;
+   urlSummary.textContent=validUrl(a.url)?"官網圖片：已取得正式網址（點此查看／修改）":"官網圖片：尚待批次配對（點此手動修改）";
+  }
   updateStatus();
  });
  right.addEventListener("change",ev=>{
@@ -348,7 +364,7 @@ function itemBox(a,i){
    a.verified=false;renderItems();return;
   }
   if(x==="alt"){a.autoAlt="";a.verified=false;renderItems();return;}
-  updateStatus();
+  if(x==="url")renderItems();else updateStatus();
  });
  return card;
 }
@@ -389,6 +405,7 @@ function checks(){
  const suppliedUrls=S.files.map(x=>x.url?.trim()).filter(Boolean);
   const unique=new Set(suppliedUrls).size===suppliedUrls.length;
  const alt=S.files.every(x=>x.alt?.trim()&&x.description?.trim()&&x.verified);
+ const pairVerified=S.files.every(x=>x.urlPairVerified===true);
  const unit=$("cyexp-unit").value.trim();
  const project=chooseTitle();
  const pasted=$("cyexp-newbase").value.trim();
@@ -401,6 +418,7 @@ function checks(){
 
  if(!urls)items.push("新圖片尚未全部取得有效的晨陽官網 HTTPS 圖片網址");
  if(!unique)items.push("新圖片網址重複，請修正");
+ if(S.files.length&&urls&&!pairVerified)items.push("尚有 "+S.files.filter(x=>!x.urlPairVerified).length+" 張未核對官網圖片與原圖的對應，正式上稿暫停");
  if(!alt)items.push("圖片描述、ALT 或逐張人工核對尚未完成");
  const badPlans=S.files.filter(a=>unsafeFloorplanClaim(a));
  if(badPlans.length)items.push("有 "+badPlans.length+" 張格局圖含有木作、家具或材質等未核實敘述，禁止匯出");
@@ -533,7 +551,7 @@ async function addFiles(files){
   if(S.files.some(x=>x.sha256&&x.sha256===file._sha))continue;
   const a={name:file.name,file,preview:URL.createObjectURL(file),sha256:"",
     role:/(?:平面|格局|配置|floor.?plan)/i.test(file.name)?"格局圖":"其他",
-    description:"",alt:"",altSuffix:"",url:"",verified:false,origin:"尚未由 AI 讀圖"};
+    description:"",alt:"",altSuffix:"",url:"",verified:false,urlPairVerified:false,origin:"尚未由 AI 讀圖"};
   try{a.sha256=await identify(file);}catch(_){}
   if(S.files.some(x=>x.sha256&&x.sha256===a.sha256)){URL.revokeObjectURL(a.preview);continue;}
   if(isPlanFileName(a.name)){resetForFloorplan(a);}
@@ -828,56 +846,143 @@ function normalizedImageStem(filename){
 function urlStem(url){
  try{return normalizedImageStem(new URL(url).pathname);}catch(_){return "";}
 }
-function matchImagesFromCms(raw){
- const urls=extractCmsImageUrls(raw);
- if(!S.files.length){return {total:urls.length,assigned:0,exact:0,byOrder:0,issues:["請先在改稿中心選擇這批新案件圖片，再匯入官網 HTML"]};}
- if(!urls.length){return {total:0,assigned:0,exact:0,byOrder:0,issues:["沒有找到晨陽官網可使用的圖片網址。請貼入 CMS 中真正已上傳圖片的 <img> HTML。"]};}
- const available=new Set(urls),assign=new Map(),used=new Set();
- let exact=0,byOrder=0;
- // Unique filename matches are the safest, including CMS conversion to webp.
+function renderCmsPairingReview(){
+ const panel=$("cyexp-cms-review");panel.replaceChildren();
+ if(!S.cmsUrls.length)return;
+ const heading=document.createElement("h4");heading.textContent="原圖與官網圖比對（不依順序猜測）";panel.appendChild(heading);
+ const gallery=document.createElement("div");
+ gallery.style.cssText="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:9px;margin:12px 0 20px";
+ for(const [index,url] of S.cmsUrls.entries()){
+  const tile=document.createElement("div");tile.style.cssText="border:1px solid #dce7f2;padding:8px;border-radius:8px;background:#fff";
+  const img=document.createElement("img");img.src=url;img.alt="官網圖片 "+(index+1);
+  img.loading="lazy";img.style.cssText="width:100%;height:95px;object-fit:contain";
+  const label=document.createElement("p");label.className="cyexp-muted";
+  label.textContent="官網圖 "+(index+1);tile.append(img,label);gallery.appendChild(tile);
+ }
+ panel.appendChild(gallery);
+ for(const [index,item] of S.files.entries()){
+  const row=document.createElement("div");
+  row.style.cssText="display:grid;grid-template-columns:1fr 1fr;gap:12px;border-top:1px solid #dce7f2;padding:12px 0;min-width:0";
+  const left=document.createElement("div");
+  const title=document.createElement("strong");title.textContent=(index+1)+". "+item.name+"｜本機原圖";left.appendChild(title);
+  if(item.preview){
+   const img=document.createElement("img");img.src=item.preview;img.alt="本機原圖";
+   img.style.cssText="display:block;width:100%;max-width:250px;max-height:170px;object-fit:contain;margin-top:8px";
+   left.appendChild(img);
+  }else{
+   const note=document.createElement("p");note.textContent="需重新選取原圖才能核對";left.appendChild(note);
+  }
+  const right=document.createElement("div");
+  const label=document.createElement("label");label.textContent="請選同一張官網圖";
+  const select=document.createElement("select");select.style.cssText="display:block;width:100%;padding:8px;margin:6px 0";
+  const none=document.createElement("option");none.value="";none.textContent="尚未配對";select.appendChild(none);
+  for(const [j,url]of S.cmsUrls.entries()){
+   const op=document.createElement("option");op.value=url;op.textContent=(j+1)+". "+decodeURIComponent(new URL(url).pathname.split("/").pop()).slice(0,60);
+   select.appendChild(op);
+  }
+  select.value=S.cmsUrls.includes(item.url)?item.url:"";
+  label.appendChild(select);right.appendChild(label);
+  const pic=document.createElement("img");pic.alt="官網圖片縮圖，需比對原圖";
+  pic.loading="lazy";pic.style.cssText="display:block;width:100%;max-width:250px;max-height:170px;object-fit:contain;margin:8px 0";
+  if(select.value)pic.src=select.value;else pic.hidden=true;
+  right.appendChild(pic);
+  const status=document.createElement("p");status.className="cyexp-muted";
+  status.textContent=item.urlPairVerified?"圖片內容已確認":"待確認：不能正式上稿";
+  right.appendChild(status);
+  const confirm=document.createElement("button");confirm.type="button";confirm.className="cyexp-main-action";
+  confirm.textContent=item.urlPairVerified?"取消確認":"確認兩張是相同圖片";
+  confirm.disabled=!select.value||!item.preview;
+  right.appendChild(confirm);
+  select.onchange=()=>{
+   const url=select.value;
+   if(url&&S.files.some(other=>other!==item&&other.url===url)){
+    status.textContent="此網址已配給其他原圖，不能重複使用";
+    select.value=S.cmsUrls.includes(item.url)?item.url:"";return;
+   }
+   item.url=url;item.urlPairVerified=false;item.verified=false;
+   item.urlMatch="人工選擇，尚待核對";
+   $("cyexp-confirm-urls").checked=false;
+   if(url){pic.src=url;pic.hidden=false;}else pic.hidden=true;
+   status.textContent="請比對兩張圖片是否相同";
+   confirm.disabled=!url||!item.preview;confirm.textContent="確認兩張是相同圖片";
+   renderItems();
+  };
+  confirm.onclick=()=>{
+   if(!validUrl(item.url)||!item.preview)return;
+   item.urlPairVerified=!item.urlPairVerified;
+   item.urlMatch=item.urlPairVerified?"人工目視確認原圖相同":"待核對";
+   renderItems();renderCmsPairingReview();updateStatus();
+  };
+  row.append(left,right);panel.appendChild(row);
+ }
+}
+async function matchImagesFromCms(raw){
+ const urls=extractCmsImageUrls(raw);S.cmsUrls=urls;
+ if(!S.files.length)return {total:urls.length,assigned:0,exact:0,visual:0,unverified:0,issues:["請先在第一步選擇本機原圖"]};
+ if(!urls.length)return {total:0,assigned:0,exact:0,visual:0,unverified:0,issues:["官網 HTML 沒有有效的圖片網址"]};
+ const remaining=new Set(urls),used=new Set();
+ let exact=0,visual=0;
  for(const item of S.files){
+  if(item.url&&!urls.includes(item.url)){item.url="";item.urlMatch="";item.urlPairVerified=false;item.verified=false;}
+  if(item.urlPairVerified&&urls.includes(item.url)){remaining.delete(item.url);used.add(item);continue;}
   const stem=normalizedImageStem(item.name);
-  if(!stem)continue;
-  const matches=[...available].filter(url=>{
+  const found=[...remaining].filter(url=>{
    const target=urlStem(url);
-   return target===stem||target.startsWith(stem+"-")||target.startsWith(stem+"_");
+   return target===stem||(stem.length>=8&&!/^\d+$/.test(stem)&&(target.startsWith(stem+"-")||target.startsWith(stem+"_")));
   });
-  if(matches.length===1&&!used.has(matches[0])){
-   assign.set(item,matches[0]);used.add(matches[0]);exact++;
+  if(found.length!==1)continue;
+  item.url=found[0];item.urlPairVerified=false;
+  item.urlMatch="唯一檔名相符，仍須核對圖片";item.verified=false;
+  remaining.delete(found[0]);used.add(item);exact++;
+ }
+ // Browser can compare the actual bytes only if the official site permits CORS.
+ // Identical SHA256 is proof of identical image file bytes; similarity merely proposes a candidate.
+ const remote=new Map();
+ await Promise.all([...remaining].map(async url=>{
+  try{
+   const response=await fetch(url,{mode:"cors",cache:"force-cache"});
+   if(!response.ok)throw Error("HTTP "+response.status);
+   const blob=await response.blob();
+   if(!blob.type.startsWith("image/"))return;
+   const hash=await crypto.subtle.digest("SHA-256",await blob.arrayBuffer());
+   const sha=Array.from(new Uint8Array(hash)).map(x=>x.toString(16).padStart(2,"0")).join("");
+   const dh=await imageDhash(blob).catch(()=>"");
+   remote.set(url,{sha,dh});
+  }catch(_){/* CORS may forbid reading pixels; never fake identity. */}
+ }));
+ for(const item of S.files){
+  if(used.has(item)||!item.file)continue;
+  const candidates=[...remaining].filter(url=>remote.has(url));
+  const identical=candidates.filter(url=>item.sha256&&remote.get(url).sha===item.sha256);
+  if(identical.length===1){
+   const url=identical[0];item.url=url;item.urlMatch="SHA-256 完全相同圖片";
+   item.urlPairVerified=true;item.verified=false;remaining.delete(url);used.add(item);visual++;continue;
   }
- }
- // Only allow order inference when pasted batch size exactly equals the
- // selected images count. Leave unknown/extra images unmatched otherwise.
- if(urls.length===S.files.length&&assign.size<S.files.length){
-  const leftovers=S.files.filter(item=>!assign.has(item));
-  const remaining=urls.filter(url=>!used.has(url));
-  if(remaining.length===leftovers.length){
-   for(let i=0;i<leftovers.length;i++){assign.set(leftovers[i],remaining[i]);byOrder++;}
+  let dh="";try{dh=await imageDhash(item.file);}catch(_){}
+  if(!dh)continue;
+  const ranked=candidates.filter(url=>remote.get(url).dh).map(url=>({url,dist:hammingHex(dh,remote.get(url).dh)})).sort((a,b)=>a.dist-b.dist);
+  if(ranked[0]?.dist<=2&&(!ranked[1]||ranked[1].dist-ranked[0].dist>=8)){
+   const url=ranked[0].url;item.url=url;item.urlMatch="像素相似候選，請核對";
+   item.urlPairVerified=false;item.verified=false;remaining.delete(url);used.add(item);visual++;
   }
- }
- if(!assign.size){
-  return {total:urls.length,assigned:0,exact:0,byOrder:0,issues:[
-   "已找到 "+urls.length+" 張官網圖片，但沒有安全的檔名配對；圖片數與目前 "+S.files.length+" 張不同，為避免配錯不會自動填入。請只複製本次新上傳的圖片。"
-  ]};
- }
- for(const [item,url] of assign){
-  item.url=url;item.urlMatch=urlStem(url)===normalizedImageStem(item.name)?"檔名對應":"圖片上傳順序推定";
-  item.verified=false;
  }
  $("cyexp-confirm-urls").checked=false;
- renderItems();
+ renderItems();renderCmsPairingReview();
+ const assigned=S.files.filter(x=>urls.includes(x.url)).length;
+ const unverified=S.files.filter(x=>urls.includes(x.url)&&!x.urlPairVerified).length;
  const issues=[];
- if(assign.size!==S.files.length)issues.push("還有 "+(S.files.length-assign.size)+" 張無法可靠配對；請只複製本次圖片，或使用檔名清單");
- if(byOrder)issues.push("有 "+byOrder+" 張依上傳順序推定，仍須檢查每張縮圖是否對應正確官網網址");
- return {total:urls.length,assigned:assign.size,exact,byOrder,issues};
+ if(assigned<S.files.length)issues.push("尚有 "+(S.files.length-assigned)+" 張官網圖片未可靠配對，請在下方縮圖區選擇");
+ if(unverified)issues.push("尚有 "+unverified+" 張匹配候選未核對圖片內容");
+ if(remote.size===0&&exact<S.files.length)issues.push("官網未允許直接讀取圖片像素；無法自動識圖時須比對縮圖，絕不依照圖片順序猜測");
+ return {total:urls.length,assigned,exact,visual,unverified,issues};
 }
 function showCmsMatch(result){
  const box=$("cyexp-cms-match-status");
- const lines=["從官網 HTML 找到 "+result.total+" 張圖片；自動帶入 "+result.assigned+" / "+S.files.length+" 張（檔名配對 "+result.exact+"、順序推定 "+result.byOrder+"）"];
- if(result.issues?.length)lines.push(...result.issues);
- if(result.assigned===S.files.length)lines.push("已一次帶入所有網址。圖片描述、ALT、新格局圖及正式上稿核對仍需完成。");
- box.textContent=lines.join("；");
- box.style.color=result.issues?.length?"#9a3412":"";
+ const text=["官網圖片 "+result.total+" 張；已找到對應或候選 "+result.assigned+" / "+S.files.length+
+  "（檔名 "+result.exact+"、影像內容 "+result.visual+"、純順序推定 0）"];
+ if(result.issues?.length)text.push(...result.issues);
+ box.textContent=text.join("；");
+ box.style.color=result.issues?.length?"#9a3412":"#157356";
 }
 async function pasteCmsImages(){
  const btn=$("cyexp-paste-cms");btn.disabled=true;
@@ -906,7 +1011,7 @@ async function pasteCmsImages(){
   if(!data&&navigator.clipboard.readText)data=await navigator.clipboard.readText();
   if(!data)throw Error("剪貼簿中沒有 HTML 或文字圖片網址");
   $("cyexp-cms-html").value=data;
-  showCmsMatch(matchImagesFromCms(data));
+  showCmsMatch(await matchImagesFromCms(data));
  }catch(error){
   $("cyexp-cms-match-status").textContent="無法讀取剪貼簿："+(error?.message||"未知原因")+"。請按 Ctrl+V 貼入上方輸入框，再點「自動讀取官網 HTML」。";
  }finally{btn.disabled=false;}
@@ -931,10 +1036,12 @@ function applyBulkUrls(){
  }
  const all=changes.map(x=>x[1]);
  if(new Set(all).size!==all.length){message("批次網址有重複，請先檢查。",true);return;}
- for(const [item,url]of changes){item.url=url;item.verified=false;}
+ for(const [item,url]of changes){item.url=url;item.urlPairVerified=false;item.verified=false;}
+ S.cmsUrls=[...new Set(changes.map(x=>x[1]))];
  $("cyexp-confirm-urls").checked=false;
  renderItems();
- message("已為 "+changes.length+" 張圖套用網址。請逐張開啟網址確認圖片可載入，再勾選最後的網址驗收項目。");
+ message("已套用 "+changes.length+" 個網址，但未證明圖片內容對應正確。請核對原圖和官網縮圖。");
+ renderCmsPairingReview();
 }
 function generateSummary(){
  const descriptions=S.files.filter(x=>x.role!=="格局圖"&&x.description.trim()).map(x=>x.description.trim());
@@ -966,7 +1073,7 @@ async function importDraft(file){
   role:zones.includes(x.role)?x.role:"其他",
   description:String(x.description||"").slice(0,1500),
   alt:String(x.alt||"").slice(0,260),url:String(x.url||"").slice(0,1200),
-  verified:false,origin:"已從草稿恢復；需重新人工核對",preview:null,file:null
+  verified:false,urlPairVerified:false,origin:"已從草稿恢復；需重新人工核對",preview:null,file:null
  }));
  $("cyexp-confirm-base").checked=false;$("cyexp-confirm-urls").checked=false;$("cyexp-confirm-floorplan").checked=false;
  renderItems();message("草稿已讀取，但照片本體未包含於 JSON，請重新上傳核對；所有完成勾選已重設。");
@@ -1009,7 +1116,13 @@ $("cyexp-local-model").addEventListener("change",()=>{S.localModel=$("cyexp-loca
 $("cyexp-unit").addEventListener("change",refreshAutoAlts);
 $("cyexp-type").addEventListener("change",refreshAutoAlts);
 $("cyexp-summary").addEventListener("click",generateSummary);
-$("cyexp-match-cms").addEventListener("click",()=>showCmsMatch(matchImagesFromCms($("cyexp-cms-html").value)));
+$("cyexp-match-cms").addEventListener("click",async()=>{
+ const btn=$("cyexp-match-cms");btn.disabled=true;
+ $("cyexp-cms-match-status").textContent="正在比對圖片，不能僅憑上傳順序推定。";
+ try{showCmsMatch(await matchImagesFromCms($("cyexp-cms-html").value));}
+ catch(e){$("cyexp-cms-match-status").textContent="配對失敗："+(e?.message||"未知錯誤");}
+ finally{btn.disabled=false;}
+});
 $("cyexp-paste-cms").addEventListener("click",pasteCmsImages);
 $("cyexp-approve-reviewed").addEventListener("click",approveReviewedBatch);
 $("cyexp-apply-urls").addEventListener("click",applyBulkUrls);
