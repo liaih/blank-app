@@ -308,7 +308,17 @@ async function translateToChinese(caption){
  const item=Array.isArray(output)?output[0]:output;
  const result=String(item?.translation_text||item?.generated_text||"").trim();
  if(!result)throw Error("翻譯模型未回傳可用的中文內容");
- return result;
+ try{
+  // English-to-zh model can emit Simplified Chinese. Convert to Taiwan
+  // Traditional Chinese when the lightweight converter is available.
+  const cc=await import("https://cdn.jsdelivr.net/npm/opencc-js@1.4.2/dist/esm/full.js");
+  const factory=cc.default?.Converter||cc.Converter;
+  return factory({from:"cn",to:"twp"})(result);
+ }catch(_){
+  // Do not hide failed language conversion; editor still must verify.
+  message("中文翻譯完成，但台灣繁體轉換套件未載入，請核對字形與用詞。");
+  return result;
+ }
 }
 function parseGenerated(res){
  const a=Array.isArray(res)?res[0]:res;
