@@ -206,7 +206,8 @@ test("user-initiated LM Studio connects only to loopback, re-reads bad caption, 
 test("local vision rejects unsupported or hallucinated non-JSON output",()=>{
  assert.match(script,/parseLocalVision\(output\)/);
  assert.match(script,/throw Error\("模型沒有提供 JSON 圖片描述/);
- assert.match(script,/a\.verified=false;done\+\+/);
+ assert.match(script,/a\.verified=false;/);
+ assert.match(script,/done\+\+;/);
 });
 
 test("HTTPS GitHub Pages connects to loopback with explicit browser address-space hint and diagnostic link", async()=>{
@@ -410,5 +411,96 @@ test("BEGINNER UX: progress advances from select images to image review, and doe
  assert.equal(d.querySelector("#cyexp-progress span[aria-current=step]").textContent.trim(),"② AI 介紹與 ALT");
  assert.equal(d.querySelector("#cyexp-copy").disabled,true);
  assert.match(d.querySelector("#cyexp-status").textContent,/缺少新的平面配置圖/);
+ dom.window.close();
+});
+
+test("FLOORPLAN: uploaded floorplan is described as 2D layout, never invented furniture, material or 3D rendering",async()=>{
+ const dom=await setup(),d=dom.window.document;
+ await fileSelect(dom,"1.平面配置_套版 (1).png");
+ const item=d.querySelector(".cyexp-item");
+ assert.equal(item.querySelector('[data-attr="role"]').value,"格局圖");
+ const description=item.querySelector('[data-attr="description"]').value;
+ const alt=item.querySelector('[data-attr="alt"]').value;
+ assert.match(description,/住宅平面配置圖/);
+ assert.match(description,/空間分區/);
+ assert.doesNotMatch(description,/木作|沙發|茶几|電視牆|收納櫃|3D/);
+ assert.match(alt,/丹佛花都/);
+ assert.match(alt,/平面配置圖與空間動線/);
+ assert.doesNotMatch(alt,/木作|沙發|茶几|電視牆|3D/);
+ assert.equal(item.querySelector('[data-attr="verified"]').checked,false);
+ dom.window.close();
+});
+test("FLOORPLAN: LM Studio only analyzes renders; uploaded floorplans use explicitly conservative 2D descriptions",async()=>{
+ const dom=await setup(),d=dom.window.document;
+ await fileSelect(dom,"1.平面配置_套版 (1).png");
+ await fileSelect(dom,"living.png");
+ const calls=[];
+ dom.window.fetch=async (url,opts)=>{
+  if(String(url).endsWith("/v1/models"))return {ok:true,json:async()=>({data:[{id:"qwen/qwen3-vl-8b"}]})};
+  if(String(url).endsWith("/v1/chat/completions")){
+   calls.push(JSON.parse(opts.body));
+   return {ok:true,json:async()=>({choices:[{message:{content:JSON.stringify({
+    space:"客廳",description:"室內客廳設計呈現淺色沙發與淺木色展示櫃，旁邊有開放式客餐廳連接廚房。"
+   })}}]})};
+  }
+  throw Error("unexpected fetch "+url);
+ };
+ d.querySelector("#cyexp-read").click();
+ await new Promise(r=>setTimeout(r,160));
+ assert.equal(calls.length,1,"AI must not invent floorplan interior finishes");
+ const rows=d.querySelectorAll(".cyexp-item");
+ assert.match(rows[0].querySelector('[data-attr="description"]').value,/住宅平面配置圖/);
+ assert.doesNotMatch(rows[0].querySelector('[data-attr="description"]').value,/沙發|木作|茶几|電視牆/);
+ assert.match(rows[1].querySelector('[data-attr="description"]').value,/淺色沙發/);
+ assert.equal(rows[0].querySelector('[data-attr="verified"]').checked,false);
+ assert.match(rows[0].textContent,/不是精確圖面判讀/);
+ dom.window.close();
+});
+test("FLOORPLAN: wrong room caption, ALT and previously checked approval cannot pass batch review or export",async()=>{
+ const dom=await setup(),d=dom.window.document;
+ await fileSelect(dom,"1.平面配置_套版 (1).png");
+ let item=d.querySelector(".cyexp-item");
+ edit(dom,item.querySelector('[data-attr="description"]'),"客廳區域標有沙發與茶几，牆面有木作線條及電視牆收納櫃","change");
+ item=d.querySelector(".cyexp-item");
+ edit(dom,item.querySelector('[data-attr="alt"]'),"丹佛花都 林口A7 平面配置圖｜木作與沙發茶几3D示意","change");
+ item=d.querySelector(".cyexp-item");
+ assert.equal(item.querySelector('[data-attr="verified"]').disabled,true,"cannot approve claim about 3D furnishing from a floorplan");
+ assert.match(item.textContent,/格局圖/);
+ d.querySelector("#cyexp-approve-reviewed").click();
+ assert.equal(item.querySelector('[data-attr="verified"]').checked,false);
+ assert.equal(d.querySelector("#cyexp-copy").disabled,true);
+ assert.match(d.querySelector("#cyexp-vision-status").textContent,/格局圖仍有不實材質／家具敘述/);
+ dom.window.close();
+});
+test("FLOORPLAN: changing photo classification to floorplan resets wrong AI room narrative and ALT, invalidates approval",async()=>{
+ const dom=await setup(),d=dom.window.document;
+ await fileSelect(dom,"living.png");
+ let item=d.querySelector(".cyexp-item");
+ edit(dom,item.querySelector('[data-attr="description"]'),"臥室有沙發茶几電視牆和木作飾板","change");
+ item=d.querySelector(".cyexp-item");
+ edit(dom,item.querySelector('[data-attr="alt"]'),"丹佛花都 臥室沙發茶几電視牆","change");
+ item=d.querySelector(".cyexp-item");
+ item.querySelector('[data-attr="role"]').value="格局圖";
+ item.querySelector('[data-attr="role"]').dispatchEvent(new dom.window.Event("change",{bubbles:true}));
+ item=d.querySelector(".cyexp-item");
+ assert.equal(item.querySelector('[data-attr="role"]').value,"格局圖");
+ assert.match(item.querySelector('[data-attr="description"]').value,/住宅平面配置圖/);
+ assert.doesNotMatch(item.querySelector('[data-attr="alt"]').value,/沙發|茶几|電視牆/);
+ assert.equal(item.querySelector('[data-attr="verified"]').checked,false);
+ dom.window.close();
+});
+test("FLOORPLAN: editing an approved plan description instantly revokes approval, even before input blur",async()=>{
+ const dom=await setup(),d=dom.window.document;
+ await fileSelect(dom,"1.平面配置_套版 (1).png");
+ let item=d.querySelector(".cyexp-item");
+ item.querySelector('[data-attr="verified"]').checked=true;
+ item.querySelector('[data-attr="verified"]').dispatchEvent(new dom.window.Event("change",{bubbles:true}));
+ item=d.querySelector(".cyexp-item");
+ assert.equal(item.querySelector('[data-attr="verified"]').checked,true);
+ const field=item.querySelector('[data-attr="description"]');
+ field.value="木作線條和沙發的格局圖";
+ field.dispatchEvent(new dom.window.Event("input",{bubbles:true}));
+ assert.equal(item.querySelector('[data-attr="verified"]').checked,false);
+ assert.equal(d.querySelector("#cyexp-copy").disabled,true);
  dom.window.close();
 });
