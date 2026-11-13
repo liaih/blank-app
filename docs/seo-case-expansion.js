@@ -846,6 +846,132 @@ function normalizedImageStem(filename){
 function urlStem(url){
  try{return normalizedImageStem(new URL(url).pathname);}catch(_){return "";}
 }
+/* LM Studio /v1/responses can fetch remote HTTPS images server-side.
+   This avoids browser image-pixel CORS restrictions without a cloud API.
+   A match needs two independent reversed visual comparisons, one-to-one.
+   Visual model agreement is a model judgment, NOT byte-level proof. */
+function parseRemoteVisionJson(response){
+ const outputs=[];
+ if(typeof response.output_text==="string")outputs.push(response.output_text);
+ for(const entry of response.output||[]){
+  if(typeof entry.text==="string")outputs.push(entry.text);
+  for(const part of entry.content||[])if(typeof part.text==="string")outputs.push(part.text);
+ }
+ const raw=outputs.join("\n").replace(/<think>[\s\S]*?<\/think>/gi,"").trim();
+ const a=raw.indexOf("{"),b=raw.lastIndexOf("}");
+ if(a<0||b<=a)throw Error("本機 AI 沒有輸出可解析的圖片比對 JSON");
+ try{return JSON.parse(raw.slice(a,b+1));}
+ catch(_){throw Error("本機 AI 圖片比對結果不是合法 JSON");}
+}
+async function localImagePreviewData(file){
+ if(!file)throw Error("找不到本機原圖");
+ if(typeof createImageBitmap!=="function")return fileAsDataUrl(file);
+ const image=await createImageBitmap(file);
+ try{
+  const scale=Math.min(1,900/Math.max(image.width,image.height));
+  const canvas=document.createElement("canvas");
+  canvas.width=Math.max(1,Math.round(image.width*scale));
+  canvas.height=Math.max(1,Math.round(image.height*scale));
+  const ctx=canvas.getContext("2d");
+  if(!ctx)throw Error("無法建立本機圖片縮圖");
+  ctx.fillStyle="#ffffff";ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.drawImage(image,0,0,canvas.width,canvas.height);
+  return canvas.toDataURL("image/jpeg",0.82);
+ }finally{image.close?.();}
+}
+async function localVisionRemoteRequest(remoteUrl,prompt,originalData,reverse=false){
+ if(!validUrl(remoteUrl))throw Error("只允許晨陽官網 HTTPS 圖片作為遠端 AI 輸入");
+ const model=$("cyexp-local-model").value||S.localModel;
+ if(!S.localConnected||!model)throw Error("LM Studio 尚未連線或未選擇看圖模型");
+ const contents=[{type:"input_text",text:prompt}];
+ if(originalData){
+  contents.push({type:"input_text",text:reverse?"第一張：官網圖片":"第一張：本機原圖"});
+  contents.push({type:"input_image",image_url:reverse?remoteUrl:originalData});
+  contents.push({type:"input_text",text:reverse?"第二張：本機原圖":"第二張：官網圖片"});
+  contents.push({type:"input_image",image_url:reverse?originalData:remoteUrl});
+ }else{
+  contents.push({type:"input_image",image_url:remoteUrl});
+ }
+ const controller=new AbortController();
+ const timer=setTimeout(()=>controller.abort(),120000);
+ try{
+  const response=await fetch(LMSTUDIO_BASE+"/v1/responses",{
+   method:"POST",headers:localAuthHeaders(true),mode:"cors",
+   targetAddressSpace:"loopback",signal:controller.signal,
+   body:JSON.stringify({model,temperature:0,max_output_tokens:250,stream:false,input:[{role:"user",content:contents}]})
+  });
+  if(!response.ok)throw Error("LM Studio 遠端圖片 API HTTP "+response.status+"："+(await response.text()).slice(0,170));
+  return parseRemoteVisionJson(await response.json());
+ }finally{clearTimeout(timer);}
+}
+function visionMatchYes(result){
+ const verdict=String(result?.same||"").toLowerCase();
+ const evidence=Array.isArray(result?.matching_details)?result.matching_details:[];
+ return verdict==="yes"&&evidence.length>=2&&evidence.every(v=>String(v||"").trim().length>=4);
+}
+async function matchRemoteImagesWithLMStudio(urls,remaining,used){
+ const output={suggested:0,accepted:0,failed:0,reason:""};
+ if(!remaining.size)return output;
+ if(!S.files.some(x=>x.file&&x.description?.trim()))return {...output,reason:"本機原圖或 AI 描述不足，無法進行視覺自動配對"};
+ if(!S.localConnected)await connectLocalAI();
+ if(!S.localConnected)return {...output,reason:"本機 LM Studio 無法連線，請檢查已載入的 Qwen3-VL"};
+ const originals=S.files.filter(x=>x.file&&x.description?.trim()&&!used.has(x));
+ if(!originals.length)return output;
+ const status=$("cyexp-cms-match-status");
+ const proposals=[];
+ const originalImages=new Map();
+ for(const [number,url] of [...remaining].entries()){
+  status.textContent="Qwen3-VL 正在辨識官網圖片 "+(number+1)+"/"+remaining.size+
+   "；再與本機原圖比對（官網若改名也可以辨識），不靠檔案順序。";
+  const catalogue=originals.map((item,i)=>{
+   return i+"："+String(item.role||"其他")+"｜"+String(item.description||"").replace(/\s+/g," ").slice(0,140);
+  }).join("\n");
+  try{
+   const shortlist=await localVisionRemoteRequest(url,
+    "仔細觀察這張官網室內設計圖片，從下面本機原圖的文字描述中挑選最可能是同一個攝影視角、相同家具位置與細節的 1-2 個候選。不是只判斷風格類似。完全無法判斷時回空陣列。僅回 JSON："+
+    '{"visible":true,"candidate_indices":[0,1],"observation":"畫面中可見的具體物件位置"}。索引從0開始，禁止憑候選順序猜測。\n本機圖片清單：\n'+catalogue);
+   if(shortlist?.visible!==true||!Array.isArray(shortlist.candidate_indices))
+    throw Error("本機 AI 未確認看見遠端圖片");
+   const indexList=[...new Set(shortlist.candidate_indices)]
+    .filter(i=>Number.isInteger(i)&&i>=0&&i<originals.length).slice(0,2);
+   for(const index of indexList){
+    const original=originals[index];
+    if(!originalImages.has(original))originalImages.set(original,await localImagePreviewData(original.file));
+    const data=originalImages.get(original);
+    const prompt="比較接下來兩張圖片，判斷是否同一張設計畫面的相同視角，即使第二張被重新命名、縮放、壓縮或稍微裁切。兩張不同客廳即使風格、家具類似也必須回答 no。不得只憑文字。"+
+     "請逐一比對家具相對位置、畫框數量與位置、門窗、櫃體輪廓及背景。若看不到圖片或不確定則回答 unsure。只回 JSON："+ 
+     '{"same":"yes|no|unsure","matching_details":["兩張共有的具體視覺特徵1","兩張共有的具體視覺特徵2"],"difference":"有何差異或無"}。';
+    const first=await localVisionRemoteRequest(url,prompt,data,false);
+    if(!visionMatchYes(first))continue;
+    const second=await localVisionRemoteRequest(url,prompt,data,true);
+    if(!visionMatchYes(second))continue;
+    proposals.push({url,item:original,first,second});
+    break;
+   }
+  }catch(error){
+   output.failed++;
+   output.reason=String(error?.message||"本機 AI 遠端讀圖失敗");
+   // Unsupported /v1/responses or inaccessible images are capability
+   // failures; do not repeatedly run costly requests with fabricated matches.
+   if(/HTTP 40[01435]|HTTP 50[013]|未確認看見遠端圖片|Failed to fetch|aborted/i.test(output.reason))break;
+  }
+ }
+ // Only accept unambiguous one-to-one image pairs. Two positive VLM calls
+ // are visually cross-checked, but still carry the model-assisted label.
+ const counts=new Map();
+ for(const p of proposals)counts.set(p.item,(counts.get(p.item)||0)+1);
+ for(const pair of proposals){
+  if(counts.get(pair.item)!==1)continue;
+  if(pair.item.urlPairVerified&&pair.item.url!==pair.url)continue;
+  pair.item.url=pair.url;
+  pair.item.urlPairVerified=true;
+  pair.item.urlMatch="Qwen3-VL 雙向視覺比對通過（非像素證明；上稿前抽查）";
+  used.add(pair.item);remaining.delete(pair.url);
+  output.accepted++;
+ }
+ output.suggested=proposals.length;
+ return output;
+}
 function renderCmsPairingReview(){
  const panel=$("cyexp-cms-review");panel.replaceChildren();
  if(!S.cmsUrls.length)return;
