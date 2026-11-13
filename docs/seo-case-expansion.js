@@ -320,12 +320,13 @@ function inlineCmsMatcher(item,index){
   heading.textContent=(idx>=0?"官網圖 "+(idx+1):"目前官網圖片")+"｜"+suffix.code;
   const digits=document.createElement("p");digits.textContent="數字末3位："+suffix.digits+"　檔名末3碼："+suffix.code;
   const status=document.createElement("p");status.className="cyexp-muted";
-  status.textContent=item.urlPairVerified?"已記錄配對，請核對圖片內容":"尚未確認圖片一致";
+  const aiMatched=/Qwen3-VL/.test(String(item.urlMatch||""));
+  status.textContent=item.urlPairVerified?(aiMatched?"AI 比對通過，建議再目視確認":"人工配對已確認"):"尚未確認圖片一致";
   const actions=document.createElement("div");actions.className="cyexp-inline-pair-actions";
   const check=document.createElement("label");check.className="cyexp-check";
   const tick=document.createElement("input");tick.type="checkbox";
   tick.checked=!!item.urlPairVerified;tick.disabled=!item.preview;
-  check.append(tick,document.createTextNode("我確認官網圖和左側原圖相同"));
+  check.append(tick,document.createTextNode(aiMatched?"AI 已比對相同（仍建議目視抽查）":"確認官網圖與左側原圖相同"));
   tick.addEventListener("change",()=>{
    if(!item.preview){tick.checked=false;item.urlPairVerified=false;return;}
    item.urlPairVerified=tick.checked;
