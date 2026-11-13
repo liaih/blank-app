@@ -17,7 +17,7 @@ const markup=[
 '</div>',
 '<label>新增案件整體介紹（可以自動產生後編輯）<textarea id="cyexp-intro" rows="3" placeholder="由已讀取的圖片描述組合，請核對。不可把 3D 示意圖稱為完工實景。"></textarea></label>',
 '<div class="cyexp-actions"><label class="cyexp-file">選擇新案件圖片（可一次選多張）<input id="cyexp-files" type="file" accept="image/png,image/jpeg,image/webp,image/avif" multiple></label>',
-'<button type="button" id="cyexp-read">自動讀圖／補齊介紹與 ALT</button>',
+'<button type="button" id="cyexp-read">免費備援小模型讀圖（品質有限）</button>',
 '<button type="button" id="cyexp-summary">依讀圖結果整理案件總覽</button></div>',
 '<details class="cyexp-advanced"><summary>快速上稿｜批次貼入所有圖片網址（免逐張輸入）</summary>',
 '<p class="cyexp-muted">先依目前圖片順序貼入一行一個正式圖片網址；或貼入「圖片檔名 | 官網網址」來自動配對，包含新格局圖。僅接受晨陽官網 HTTPS 圖片網址。</p>',
@@ -331,8 +331,9 @@ async function connectLocalAI(){
   }
   S.localConnected=true;S.localModel=select.value;select.disabled=false;
   $("cyexp-local-read").disabled=false;
+  $("cyexp-read").textContent="使用已連接的本機 AI 讀圖";
   localStatus("本機連線成功，共 "+models.length+" 個模型。選擇已載入的視覺模型後按「用本機 AI 重新讀取全部」。連線不等於讀圖測試通過。");
- }catch(e){S.localConnected=false;$("cyexp-local-model").disabled=true;localStatus(localError(e),true);}
+ }catch(e){S.localConnected=false;$("cyexp-local-model").disabled=true;$("cyexp-read").textContent="免費備援小模型讀圖（品質有限）";localStatus(localError(e),true);}
  finally{btn.disabled=false;}
 }
 function fileAsDataUrl(file){
@@ -453,6 +454,7 @@ function parseGenerated(res){
  return String(result).trim().replace(/^assistant\s*:\s*/i,"").slice(0,550);
 }
 async function readImages(){
+ if(S.localConnected)return readWithLocalAI();
  if(S.modelBusy)return;
  const todo=S.files.filter(x=>!x.description?.trim());
  if(!todo.length){
