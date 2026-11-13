@@ -286,14 +286,108 @@ async function enrichKnown(a){
  a.alt=makeAlt(a);a.autoAlt=a.alt;a.origin="已判讀的丹佛花都參考圖："+method+"；描述仍需人工核對";
  a.verified=false;return true;
 }
+function selectOfficialPicture(item,index,url){
+ if(url&&!validUrl(url))return;
+ const owner=url&&S.files.find(x=>x!==item&&x.url===url);
+ if(owner){message("這張官網圖已配給「"+owner.name+"」，請先清除原配對。",true);return;}
+ if(item.url!==url){
+  item.url=url;item.urlPairVerified=false;
+  item.urlMatch=url?"手動選擇候選圖，待核對":"尚未配對官網圖片";
+  $("cyexp-confirm-urls").checked=false;
+ }
+ item.pickerOpen=false;
+ const previous=document.getElementById("cyexp-image-card-"+index);
+ if(previous)previous.replaceWith(itemBox(item,index));
+ else renderItems();
+ renderCmsPairingReview();updateStatus();
+}
+function inlineCmsMatcher(item,index){
+ const panel=document.createElement("section");panel.className="cyexp-inline-matcher";
+ const header=document.createElement("div");header.className="cyexp-inline-match-head";
+ const title=document.createElement("strong");title.textContent="選擇對應的官網圖片";
+ const count=document.createElement("span");count.className="cyexp-muted";
+ count.textContent=S.cmsUrls.length?"可選 "+S.cmsUrls.length+" 張":"尚未取得官網圖片";
+ header.append(title,count);panel.appendChild(header);
+ const official=validUrl(item.url)?item.url:"";
+ if(official){
+  const selected=document.createElement("div");selected.className="cyexp-inline-selected";
+  const picture=document.createElement("img");picture.src=official;
+  picture.alt="目前對應官網圖片，請與左側本機原圖比較";picture.loading="lazy";
+  const info=document.createElement("div");info.className="cyexp-inline-selected-info";
+  const suffix=cmsImageUrlSuffix(official);
+  const idx=S.cmsUrls.indexOf(official);
+  const heading=document.createElement("strong");
+  heading.textContent=(idx>=0?"官網圖 "+(idx+1):"目前官網圖片")+"｜"+suffix.code;
+  const digits=document.createElement("p");digits.textContent="數字末3位："+suffix.digits+"　檔名末3碼："+suffix.code;
+  const status=document.createElement("p");status.className="cyexp-muted";
+  status.textContent=item.urlPairVerified?"已記錄配對，請核對圖片內容":"尚未確認圖片一致";
+  const actions=document.createElement("div");actions.className="cyexp-inline-pair-actions";
+  const check=document.createElement("label");check.className="cyexp-check";
+  const tick=document.createElement("input");tick.type="checkbox";
+  tick.checked=!!item.urlPairVerified;tick.disabled=!item.preview;
+  check.append(tick,document.createTextNode("我確認官網圖和左側原圖相同"));
+  tick.addEventListener("change",()=>{
+   if(!item.preview){tick.checked=false;item.urlPairVerified=false;return;}
+   item.urlPairVerified=tick.checked;
+   item.urlMatch=tick.checked?"人工目視確認圖片相同":"尚未核對圖片";
+   status.textContent=tick.checked?"圖片配對已確認":"尚未確認圖片一致";
+   renderCmsPairingReview();updateStatus();
+  });
+  const clear=document.createElement("button");clear.type="button";
+  clear.className="cyexp-clear-pair";clear.textContent="清除配對";
+  clear.addEventListener("click",()=>selectOfficialPicture(item,index,""));
+  actions.append(check,clear);info.append(heading,digits,status,actions);
+  selected.append(picture,info);panel.append(selected);
+ }
+ if(S.cmsUrls.length){
+  const choices=document.createElement("details");choices.className="cyexp-image-choice";
+  choices.open=!!item.pickerOpen;
+  const summary=document.createElement("summary");
+  summary.textContent=official?"更換官網圖片（開啟縮圖選擇）":"開啟官網縮圖，直接選擇這張原圖的配對";
+  choices.append(summary);
+  choices.addEventListener("toggle",()=>{item.pickerOpen=choices.open;});
+  const grid=document.createElement("div");grid.className="cyexp-inline-candidates";
+  for(const [j,url]of S.cmsUrls.entries()){
+   const owner=S.files.find(x=>x!==item&&x.url===url);
+   const suffix=cmsImageUrlSuffix(url);
+   const button=document.createElement("button");button.type="button";
+   button.className="cyexp-inline-candidate";
+   button.disabled=!!owner;
+   if(official===url)button.classList.add("selected");
+   if(owner)button.classList.add("occupied");
+   button.setAttribute("aria-pressed",String(official===url));
+   button.title=owner?"已配對："+owner.name:"選擇官網圖 "+(j+1)+"｜"+suffix.filename;
+   const img=document.createElement("img");img.src=url;img.alt="官網候選圖 "+(j+1);img.loading="lazy";
+   const name=document.createElement("strong");name.textContent="官網圖 "+(j+1)+"｜"+suffix.code;
+   const detail=document.createElement("small");
+   detail.textContent=owner?"已用："+owner.name:"數字末3位："+suffix.digits;
+   button.append(img,name,detail);
+   button.addEventListener("click",()=>selectOfficialPicture(item,index,url));
+   grid.append(button);
+  }
+  choices.append(grid);panel.append(choices);
+ }else{
+  const empty=document.createElement("div");empty.className="cyexp-inline-empty";
+  const hint=document.createElement("span");hint.textContent="批次貼入官網圖片 HTML 後，就能在此卡片直接選圖，不必來回捲動。";
+  const jump=document.createElement("button");jump.type="button";jump.textContent="前往批次匯入";
+  jump.addEventListener("click",()=>{
+   const target=$("cyexp-cms-import-panel");target.open=true;
+   target.scrollIntoView({behavior:"smooth",block:"start"});
+   $("cyexp-cms-html").focus({preventScroll:true});
+  });
+  empty.append(hint,jump);panel.append(empty);
+ }
+ return panel;
+}
 function itemBox(a,i){
- const card=document.createElement("article");card.className="cyexp-item";
+ const card=document.createElement("article");card.className="cyexp-item";card.id="cyexp-image-card-"+i;
  const side=document.createElement("div");side.className="cyexp-thumb";
  if(a.preview){const img=document.createElement("img");img.src=a.preview;img.alt="僅供編輯者預覽的新圖片";side.appendChild(img);}
  else{const missing=document.createElement("div");missing.textContent="尚未重新選圖，可用正式圖片網址上稿";side.appendChild(missing);}
  const name=document.createElement("div");name.className="cyexp-muted";name.textContent=(i+1)+". "+(a.name||"已匯入圖片資料");side.appendChild(name);
  card.appendChild(side);
  const right=document.createElement("div");right.className="cyexp-item-fields";
+ right.appendChild(inlineCmsMatcher(a,i));
  const role=document.createElement("label");role.textContent="圖片類型／空間";
  const sel=document.createElement("select");sel.dataset.attr="role";
  for(const z of zones){const op=document.createElement("option");op.value=z;op.textContent=z;sel.appendChild(op);}
@@ -302,21 +396,9 @@ function itemBox(a,i){
   "平面配置圖描述（保守說明，非 AI 精讀圖面）":
   "AI 讀圖描述（請依畫面核對）",a.description,"description",true));
  right.appendChild(textField("圖片 ALT（建案與畫面優先，不強制寫戶型）",a.alt,"alt",false));
- if(validUrl(a.url)){
-  const pair=document.createElement("label");pair.className="cyexp-check";
-  const verifiedBox=document.createElement("input");verifiedBox.type="checkbox";verifiedBox.checked=!!a.urlPairVerified;
-  pair.append(verifiedBox,document.createTextNode("已比對官網圖片與左側原圖為同一張"));
-  verifiedBox.disabled=!a.preview;
-  verifiedBox.addEventListener("change",()=>{if(!a.preview){a.urlPairVerified=false;return;}a.urlPairVerified=verifiedBox.checked;updateStatus();renderCmsPairingReview();});
-  right.appendChild(pair);
-  const officialPreview=document.createElement("img");
-  officialPreview.src=a.url;officialPreview.alt="官網圖片對照縮圖";officialPreview.loading="lazy";
-  officialPreview.style.cssText="display:block;max-width:260px;max-height:145px;object-fit:contain;margin:5px 0 12px";
-  right.appendChild(officialPreview);
- }
  const urlBox=document.createElement("details");urlBox.className="cyexp-advanced";
  const urlSummary=document.createElement("summary");
- urlSummary.textContent=validUrl(a.url)?"官網圖片：已取得正式網址（點此查看／修改）":"官網圖片：尚待批次配對（點此手動修改）";
+ urlSummary.textContent="其他方式｜手動輸入官網圖片網址（一般不需要）";
  urlBox.appendChild(urlSummary);
  urlBox.appendChild(textField("晨陽官網圖片網址（通常不必逐張輸入）",a.url,"url",false));
  right.appendChild(urlBox);
@@ -354,7 +436,7 @@ function itemBox(a,i){
   if(x==="url"){
    a.urlPairVerified=false;
    $("cyexp-confirm-urls").checked=false;
-   urlSummary.textContent=validUrl(a.url)?"官網圖片：已取得正式網址（點此查看／修改）":"官網圖片：尚待批次配對（點此手動修改）";
+   urlSummary.textContent="其他方式｜手動輸入官網圖片網址（一般不需要）";
   }
   updateStatus();
  });
