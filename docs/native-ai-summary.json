@@ -6,14 +6,14 @@
   "not_own_tavily_rag": true,
   "window_start": "2026-10-15",
   "window_end": "2026-11-13",
-  "generated_at": "2026-11-13T21:13:41+08:00",
+  "generated_at": "2026-11-13T21:16:14+08:00",
   "total_samples": 2,
   "platforms": [
     {
       "platform": "ChatGPT",
       "samples": 1,
       "existing_jobs": {
-        "pending": 0,
+        "pending": 1,
         "stored": 1,
         "failed": 0,
         "no-evidence": 0
@@ -99,7 +99,7 @@
   ],
   "existing_job_status": {
     "ChatGPT": {
-      "pending": 0,
+      "pending": 1,
       "stored": 1,
       "failed": 0,
       "no-evidence": 0
@@ -119,19 +119,19 @@
   },
   "latest_job_status": {
     "ChatGPT": {
-      "day": "2026-11-12",
-      "status": "stored",
-      "reason": "legacy_unknown"
+      "day": "2026-11-13",
+      "status": "pending",
+      "reason": ""
     },
     "Gemini": {
       "day": "2026-11-12",
       "status": "stored",
-      "reason": "legacy_unknown"
+      "reason": ""
     },
     "Perplexity": {
       "day": "2026-11-12",
       "status": "no-evidence",
-      "reason": "legacy_unknown"
+      "reason": ""
     }
   },
   "intent_analysis": {
