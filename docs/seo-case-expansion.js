@@ -577,8 +577,12 @@ async function addFiles(files){
     // Reattach the exact same image while preserving edited descriptions,
     // ALT, and official URLs. Verification does not carry over.
     existing.file=file;existing.preview=a.preview;
-    existing.verified=false;existing.urlPairVerified=false;
-    existing.origin="已以 SHA-256 重新連結原圖；描述與 ALT 保留，需重新核對";
+    existing.verified=false;
+    existing.urlPairVerified=!!existing.savedUrlPairVerified&&validUrl(existing.url);
+    existing.urlMatch=existing.urlPairVerified?
+     "從草稿恢復已核對配對（原圖 SHA-256 一致；仍須確認網站 URL）":(existing.urlMatch||"待核對圖片");
+    delete existing.savedUrlPairVerified;
+    existing.origin="已核對原圖 SHA-256，保留已編輯的圖片描述與 ALT";
     restored++;
    }else URL.revokeObjectURL(a.preview);
    continue;
@@ -954,6 +958,7 @@ async function runCmsMatch(raw){
     "目前已指派 "+result.assigned+"/"+S.files.length+" 張；需要時可再次按自動配對。";
   }else{
    showCmsMatch(result);
+   $("cyexp-cms-match-status").textContent+="；本次耗時 "+((Date.now()-S.matchStartedAt)/1000).toFixed(1)+" 秒";
   }
  }catch(e){
   $("cyexp-cms-match-status").textContent="圖片配對已中斷："+(e?.message||"未知錯誤")+"。未核對圖片不會輸出正式 HTML。";
@@ -1329,7 +1334,11 @@ function exportDraft(){
  const base=pickBase();
  const safe={
   version:1,project_id:base?.id||"",unit:$("cyexp-unit").value,type:$("cyexp-type").value,
-  intro:$("cyexp-intro").value,items:S.files.map(({name,sha256,role,description,alt,url,verified,origin})=>({name,sha256,role,description,alt,url,verified,origin})),
+  intro:$("cyexp-intro").value,items:S.files.map(({name,sha256,role,description,alt,url,verified,origin,urlPairVerified,urlMatch})=>({
+   name,sha256,role,description,alt,url,verified,origin,
+   urlPairVerified:!!urlPairVerified&&/^[a-f0-9]{64}$/i.test(String(sha256||""))&&validUrl(url),
+   urlMatch:String(urlMatch||"").slice(0,180)
+  })),
   note:"僅儲存文字／照片雜湊及正式圖片網址，不包含原始照片、現有 CMS HTML、任何 API 密鑰"
  };
  download("chenyang-new-case-draft-"+(base?.id||"unknown")+".json",JSON.stringify(safe,null,2));
@@ -1346,10 +1355,13 @@ async function importDraft(file){
   role:zones.includes(x.role)?x.role:"其他",
   description:String(x.description||"").slice(0,1500),
   alt:String(x.alt||"").slice(0,260),url:String(x.url||"").slice(0,1200),
-  verified:false,urlPairVerified:false,origin:"已從草稿恢復；需重新人工核對",preview:null,file:null
+  verified:false,urlPairVerified:false,
+  savedUrlPairVerified:!!x.urlPairVerified&&/^[a-f0-9]{64}$/i.test(String(x.sha256||""))&&validUrl(String(x.url||"")),
+  urlMatch:String(x.urlMatch||"").slice(0,180),
+  origin:"已從草稿載入。需重新選取相同原圖才能恢復已確認的網址配對",preview:null,file:null
  }));
  $("cyexp-confirm-base").checked=false;$("cyexp-confirm-urls").checked=false;$("cyexp-confirm-floorplan").checked=false;
- renderItems();message("草稿已讀取，但照片本體未包含於 JSON，請重新上傳核對；所有完成勾選已重設。");
+ renderItems();message("草稿已讀取。重新選取相同原圖後會透過 SHA-256 恢復已確認圖片配對；描述與 ALT 保留，正式上稿仍需核對。");
 }
 async function start(){
  const out=await Promise.allSettled([
