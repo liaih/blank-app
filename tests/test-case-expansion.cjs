@@ -147,3 +147,19 @@ test("public ALT and section headings avoid unneeded unit names while retaining 
   assert.ok(altLabels.some(input=>input.value.includes("平面配置圖")));
   dom.window.close();
 });
+
+test("browser image recognition uses documented Transformers.js image-to-text task and a compatible vision model",()=>{
+  assert.match(script,/mod\.pipeline\("image-to-text","Xenova\/vit-gpt2-image-captioning"\)/);
+  assert.match(script,/S\.transformers\.pipeline\("translation","Xenova\/opus-mt-en-zh"\)/);
+  assert.match(script,/await pipe\(a\.preview,\{max_new_tokens:70\}\)/);
+  assert.doesNotMatch(script,/\.pipeline\("image-text-to-text"/);
+  assert.doesNotMatch(script,/await pipe\(messages/);
+});
+test("perceptual image reference matching has distinct reference hashes and never auto-approves captions",()=>{
+  const hashes=library.matched_images.map(x=>x.dhash_v1);
+  assert.equal(hashes.length,9);
+  assert.ok(hashes.every(x=>/^[a-f0-9]{16}$/.test(x)));
+  assert.equal(new Set(hashes).size,9);
+  assert.match(script,/ranked\[0\]\?\.diff<=7/);
+  assert.match(script,/a\.verified=false;return true/);
+});
