@@ -188,6 +188,113 @@ function pickBase(){return S.base.find(x=>x.id===$("cyexp-base").value);}
 function chooseTitle(){const p=pickBase();const d=S.drafts.find(x=>x.id===p?.id);return d?.project_name || (d?.title||p?.id||"").split("｜",1)[0];}
 // Per-project workspaces live in memory for this tab. They intentionally keep
 // File/Blob URLs and human edits separate, never copy materials to a new case.
+const CASE_AUTOSAVE_KEY="chenyang-seo-case-drafts-v2";
+const CASE_AUTOSAVE_MAX=3500000;
+function autosaveLabel(message,isError=false){
+ const label=$("cyexp-save-state");
+ if(!label)return;
+ label.textContent=message;
+ label.dataset.status=isError?"error":"ready";
+}
+function safeSavedCase(snapshot){
+ const src=snapshot||{};
+ return {
+  files:(src.files||[]).slice(0,50).map(x=>({
+   name:String(x.name||"").slice(0,160),
+   sha256:/^[a-f0-9]{64}$/i.test(String(x.sha256||""))?String(x.sha256):"",
+   role:zones.includes(x.role)?x.role:"其他",
+   description:String(x.description||"").slice(0,2500),
+   alt:String(x.alt||"").slice(0,350),
+   altSuffix:String(x.altSuffix||"").slice(0,350),
+   autoAlt:String(x.autoAlt||"").slice(0,350),
+   url:validUrl(x.url)?x.url:"",
+   urlMatch:String(x.urlMatch||"").slice(0,180),
+   pairVerified:!!(x.urlPairVerified||x.savedUrlPairVerified),
+   origin:String(x.origin||"").slice(0,180)
+  })),
+  cmsUrls:[...new Set((src.cmsUrls||[]).filter(validUrl))].slice(0,60),
+  unit:String(src.unit||"").slice(0,120),
+  type:src.type==="實景照片"?"實景照片":"3D 建模示意圖",
+  intro:String(src.intro||"").slice(0,4000),
+  newbase:String(src.newbase||""),
+  cmsHtml:String(src.cmsHtml||""),
+  bulkUrls:String(src.bulkUrls||""),
+  // Approval cannot survive a reload without the original image bytes.
+  confirmedBase:false,confirmedUrls:false,confirmedFloorplan:false
+ };
+}
+function restoredCase(saved){
+ const x=safeSavedCase(saved);
+ return {
+  ...x,
+  files:x.files.map(item=>({
+   ...item,file:null,preview:null,verified:false,urlPairVerified:false,
+   savedUrlPairVerified:!!item.pairVerified&&!!item.sha256&&validUrl(item.url),
+   origin:"已自動恢復描述／ALT／官網網址，請重新選取同一張原圖完成核對"
+  })),
+  cmsVisionCache:new Map(),cmsCorsUnavailable:false,
+  visionMessage:"已從本機保存恢復文字與網址；原始圖片需重新選取。確認圖片內容後才能正式上稿。",
+  cmsMessage:"已恢復該案的官網網址清單；重新選原圖後請核對圖片配對。",
+  confirmedBase:false,confirmedUrls:false,confirmedFloorplan:false
+ };
+}
+function restoreCaseAutosave(){
+ let recovered=0;
+ try{
+  const raw=localStorage.getItem(CASE_AUTOSAVE_KEY);
+  if(raw){
+   const data=JSON.parse(raw);
+   if(data?.schema===2&&data.cases&&typeof data.cases==="object"){
+    const allowed=new Set(S.base.map(x=>x.id));
+    for(const [id,snapshot]of Object.entries(data.cases)){
+     if(!allowed.has(id)||!snapshot||typeof snapshot!=="object")continue;
+     S.caseStates.set(id,restoredCase(snapshot));
+     recovered++;
+    }
+   }
+  }
+  S.recoveredProjects=recovered;
+  if(recovered){
+   autosaveLabel("已從此瀏覽器恢復 "+recovered+" 篇文章草稿（描述／ALT／官網網址）。原始照片需重新選取核對；僅本機保存，非團隊同步。");
+  }else{
+   autosaveLabel("本機草稿自動儲存已啟用。文字、ALT 與圖片網址在重新整理後可恢復；照片原檔需重新選取。");
+  }
+ }catch(error){
+  autosaveLabel("本機草稿讀取失敗，請用「匯入案件草稿 JSON」還原。原因："+String(error?.message||"瀏覽器儲存權限"),true);
+ }
+ S.autosaveReady=true;
+ return recovered;
+}
+function saveCaseAutosave(){
+ if(!S.autosaveReady||!S.base.length)return;
+ try{
+  const cases=new Map(S.caseStates);
+  if(S.activeProjectId)cases.set(S.activeProjectId,takeCaseSnapshot());
+  const permitted=new Set(S.base.map(x=>x.id));
+  const payload={schema:2,saved_at:new Date().toISOString(),cases:{}};
+  for(const [id,caseState]of cases){
+   if(permitted.has(id))payload.cases[id]=safeSavedCase(caseState);
+  }
+  const json=JSON.stringify(payload);
+  if(json.length>CASE_AUTOSAVE_MAX)throw Error("草稿資料過大，請匯出 JSON 備份");
+  localStorage.setItem(CASE_AUTOSAVE_KEY,json);
+  const count=Object.keys(payload.cases).length;
+  const clock=new Date().toLocaleTimeString("zh-TW",{hour:"2-digit",minute:"2-digit"});
+  autosaveLabel("已自動儲存 "+count+" 篇文章草稿｜"+clock+
+   "｜只保留在此瀏覽器，不含圖片原檔或 AI Token。重新開啟需選取原圖核對。");
+ }catch(error){
+  autosaveLabel("無法自動儲存："+String(error?.message||"瀏覽器儲存空間不足")+
+   "。請使用「匯出案件草稿 JSON」保存目前工作。",true);
+ }
+}
+function scheduleCaseAutosave(){
+ if(!S.autosaveReady||!S.activeProjectId)return;
+ if(S.autosaveTimer)clearTimeout(S.autosaveTimer);
+ S.autosaveTimer=setTimeout(()=>{
+  S.autosaveTimer=null;
+  saveCaseAutosave();
+ },800);
+}
 function takeCaseSnapshot(){
  return {
   files:S.files,cmsUrls:S.cmsUrls,cmsVisionCache:S.cmsVisionCache,
