@@ -47,7 +47,8 @@ function renderCurrent(){
   const entry=findKeyword(daily,term),latest=entry?.current_30d||{};
   const tr=document.createElement("tr");
   cell(tr,term);
-  cell(tr,rank(latest.position));
+  const tiny=latest.impressions!==null&&latest.impressions!==undefined&&latest.impressions<=2;
+  cell(tr,rank(latest.position)+(tiny&&latest.position!==null?"（樣本極少）":""));
   cell(tr,rank(latest.latest_daily_position));
   cell(tr,showDate(latest.last_observed_day));
   cell(tr,latest.impressions===null||latest.impressions===undefined?"—":num(latest.impressions));
