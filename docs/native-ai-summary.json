@@ -6,7 +6,7 @@
   "not_own_tavily_rag": true,
   "window_start": "2026-10-17",
   "window_end": "2026-11-15",
-  "generated_at": "2026-11-15T02:50:04+08:00",
+  "generated_at": "2026-11-15T03:24:35+08:00",
   "total_samples": 8,
   "platforms": [
     {
@@ -370,7 +370,7 @@
     "Perplexity": {
       "day": "2026-11-15",
       "status": "no-evidence",
-      "reason": "vendor_record_error"
+      "reason": "vendor_scraper_timeout"
     }
   },
   "intent_analysis": {
