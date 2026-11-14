@@ -5,6 +5,9 @@ on:
     paths:
       - docs/seo-case-expansion.js
       - docs/monitor.html
+      - docs/seo-daily-ui.js
+      - docs/seo-daily-history.json
+      - tests/seo-gsc-daily-ui.mjs
       - docs/native-ai-summary.json
       - tests/native-ai-answer-ux.mjs
       - docs/seo-improvement-plan.json
@@ -16,6 +19,9 @@ on:
     paths:
       - docs/seo-case-expansion.js
       - docs/monitor.html
+      - docs/seo-daily-ui.js
+      - docs/seo-daily-history.json
+      - tests/seo-gsc-daily-ui.mjs
       - docs/native-ai-summary.json
       - tests/native-ai-answer-ux.mjs
       - docs/seo-improvement-plan.json
@@ -37,4 +43,4 @@ jobs:
         with:
           node-version: "22"
       - name: Run source-backed article isolation and reload tests
-        run: node --test tests/seo-editor-regression.mjs tests/native-ai-answer-ux.mjs
+        run: node --test tests/seo-editor-regression.mjs tests/native-ai-answer-ux.mjs tests/seo-gsc-daily-ui.mjs

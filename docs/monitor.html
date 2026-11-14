@@ -95,6 +95,12 @@ tbody tr:last-child td{border-bottom:0}
 @media(max-width:530px){.ai-fields{grid-template-columns:1fr}}
 
 .ai-manual-panel{margin:14px 0}.ai-manual-panel>summary{cursor:pointer;padding:13px 17px;border:1px solid var(--line);background:#fff;border-radius:12px;color:var(--muted);font-size:13px;font-weight:750}.ai-manual-panel[open]>summary{border-radius:12px 12px 0 0}.ai-manual-panel .panel{margin:0}
+
+#seo-history .switch{align-items:center;flex-wrap:wrap;background:transparent}
+#seo-history select{font:inherit;border:1px solid #d7e0ec;border-radius:8px;padding:7px 8px;background:#fff}
+#seo-history .market-action{font-size:12px;padding:8px 11px}
+#seo-today table,#seo-history table{min-width:690px}
+@media(max-width:530px){#seo-history .flexhead{display:block}#seo-history .switch{margin-top:12px}}
 </style>
 <link rel="stylesheet" href="./seo-case-expansion.css?v=case-autosave-qa-20261113">
 </head>
@@ -356,6 +362,16 @@ tbody tr:last-child td{border-bottom:0}
   <div class="flexhead"><div><h2>SEO｜Google 搜尋優化監測</h2><p class="muted">追蹤一般屋主搜尋「室內設計」「室內設計推薦」「桃園室內設計」時，晨陽實際的 Google 平均排名；並保留全站自然搜尋成效。</p></div>
    <div class="switch" role="group" aria-label="統計期間"><button data-days="30" aria-pressed="true">30 天</button><button data-days="90" aria-pressed="false">90 天</button></div>
   </div>
+  <section id="seo-today" class="panel soft" aria-label="今天的 Google SEO 檢查結果">
+   <div class="flexhead"><div><h3>今日 Google SEO 檢查｜真實 GSC</h3><p class="small" id="seo-daily-date">等待每日檢查。</p></div>
+    <span id="seo-daily-status" class="label wait">待首次日檢</span></div>
+   <p class="message" id="seo-daily-source">核對 Google 官方資料截止日；檢查日期不等於今天的即時 Google 排名。</p>
+   <div class="tablebox"><table><thead><tr><th>核心搜尋詞</th><th class="num">30天平均排名</th><th class="num">最近有曝光日單日排名</th><th>最近曝光日期</th><th class="num">30天曝光</th></tr></thead>
+   <tbody id="seo-daily-keywords"><tr><td colspan="5">尚未取得日檢結果。</td></tr></tbody></table></div>
+   <p class="detail" id="seo-daily-note">沒有曝光就顯示未取得，不填第 0 名。</p>
+   <p class="detail">每日 16:00 收集 GSC；18:20 獨立檢查並保存。Google 數據有延遲，以官方截止日為準。<a href="#seo-history">查看歷史紀錄</a></p>
+  </section>
+  <p id="seo-period-source" class="small">30／90 天目前沿用舊公開快照，等待新 GSC 日檢同步。</p>
   <div class="metrics">
    <div class="metric"><div class="name">自然搜尋點擊</div><div class="number" id="seo-clicks">—</div><div class="sub">搜尋結果點進官網</div></div>
    <div class="metric"><div class="name">搜尋曝光</div><div class="number" id="seo-impressions">—</div><div class="sub">搜尋結果顯示官網的次數</div></div>
@@ -393,6 +409,16 @@ tbody tr:last-child td{border-bottom:0}
    <div class="progress"><div class="fill" id="seo-progress"></div></div>
    <p class="detail">上方色帶是點擊占曝光的比例，不是逐日折線圖；30 天與 90 天彼此重疊，不能直接當成前後成長率。</p>
   </div>
+  <section class="panel" id="seo-history" aria-label="Google SEO 每日歷史紀錄">
+   <div class="flexhead"><div><h3>每日檢查歷史｜獨立保存</h3><p id="seo-history-state" class="small">正在讀取每日歷史。</p></div>
+    <div class="switch"><label for="seo-history-filter" class="small" style="align-self:center">顯示</label>
+      <select id="seo-history-filter" aria-label="Google SEO 歷史紀錄筆數"><option value="7">最近 7 次</option><option value="30">最近 30 次</option><option value="90">最近 90 次</option><option value="all">全部</option></select>
+      <button type="button" id="seo-history-export" class="market-action secondary">匯出 CSV</button></div></div>
+   <div class="tablebox"><table><thead><tr><th>檢查日期</th><th>狀態</th><th>GSC 截止</th><th class="num">30天點擊</th>
+      <th class="num">室內設計</th><th class="num">室內設計推薦</th><th class="num">桃園室內設計</th></tr></thead>
+      <tbody id="seo-history-rows"><tr><td colspan="7">尚無正式日檢歷史。</td></tr></tbody></table></div>
+   <p class="detail">每天保存一次檢查狀態；同日重新執行會更新當天紀錄。排名是當時 GSC 30 天曝光加權平均，不是當天的即時搜尋名次。</p>
+  </section>
  </section>
 
  <section id="view-opps" role="tabpanel" aria-labelledby="tab-opps" hidden>
@@ -524,6 +550,7 @@ tbody tr:last-child td{border-bottom:0}
 </div>
 <script src="./market-opportunity.js"></script>
 <script src="./ai-seo-evidence.js"></script>
+<script src="./seo-daily-ui.js?v=gsc-history-20261115" defer></script>
 <script>
 (function(){
 "use strict";
@@ -532,8 +559,14 @@ const put=(id,value)=>{el(id).textContent=String(value)};
 const count=n=>Number(n).toLocaleString("zh-TW");
 const percent=n=>(Number(n)*100).toFixed(2)+"%";
 const local=s=>String(s||"").replace(/-/g,"/");
-let data=null,period=30;
+let data=null,period=30,seoDaily=null;
 const pageNames=["ai","actions","seo","opps","quality"];
+window.addEventListener("chenyang:gsc-daily-ready",event=>{
+ const report=event.detail;
+ if(!report||report.no_mock!==true||report.not_live_google_serp!==true)return;
+ seoDaily=report;
+ if(data){renderPeriod();renderRankings();}
+});
 function show(tab,updateHash){
  if(!pageNames.includes(tab))tab="ai";
  for(const key of pageNames){
@@ -574,20 +607,28 @@ function renderRankings(){
   if(!data||!data.seo.keyword_rankings)return;
   const report=data.seo.keyword_rankings;
   const original=report.rows.find(row=>row.keyword==="室內設計");
-  put("main-rank",original&&original.current_30d.position!==null?Number(original.current_30d.position).toFixed(2):"未取得");
-  const change=original&&original.position_improvement_30d;
+  const freshMain=seoDaily?.keywords?.find(row=>row.keyword==="室內設計");
+  const actualMain=freshMain?freshMain.current_30d.position:original?.current_30d.position;
+  put("main-rank",actualMain===null||actualMain===undefined?"未取得":Number(actualMain).toFixed(2));
+  const change=freshMain?freshMain.position_improvement_30d:original?.position_improvement_30d;
   put("main-rank-change",change===null||change===undefined?"無前期資料":(change>0?"+":"")+Number(change).toFixed(2)+" 名");
   put("ranks-total",count(report.total_tracked)+" 組");
   put("ranks-observed",count(report.with_impressions_30d)+" 組");
-  put("rank-daterange",local(report.start_day)+" 至 "+local(report.end_day)+"；歷史平均排名並非 Google 即時查詢的名次。");
+  put("rank-daterange",seoDaily?.gsc_latest_day?
+ "核心三個搜尋詞截至 "+local(seoDaily.gsc_latest_day)+
+ "；其餘搜尋詞仍是舊快照（截止 "+local(report.end_day)+"），不是即時 Google 排名。":
+ local(report.start_day)+" 至 "+local(report.end_day)+"；目前是舊公開快照，非今天的日檢結果。");
+  const badge=el("rank-sync");badge.textContent=seoDaily?.gsc_latest_day?"核心三詞已讀取最新 GSC":"舊排名歷史快照";
+  badge.className="label "+(seoDaily?.gsc_latest_day?"yes":"wait");
   const tbody=el("ranks-body");
   tbody.replaceChildren();
   const selected=report.rows.filter(row=>rankCategory==="all"||row.category===rankCategory);
   for(const row of selected){
-    const current=row.current_30d;
-    const prior=row.previous_30d;
-    const delta=row.position_improvement_30d;
-    const change=delta===null?"—":(delta>0?"改善 ":"退步 ")+Math.abs(delta).toFixed(1)+" 名";
+    const fresh=seoDaily?.keywords?.find(x=>x.keyword===row.keyword);
+    const current=fresh?fresh.current_30d:row.current_30d;
+    const prior=fresh?{position:fresh.previous_30d_position}:row.previous_30d;
+    const delta=fresh?fresh.position_improvement_30d:row.position_improvement_30d;
+    const change=delta===null||delta===undefined?"—":(delta>0?"改善 ":delta<0?"退步 ":"持平 ")+Math.abs(delta).toFixed(1)+" 名";
     const low=current.impressions!==null && current.impressions<=2;
     const label=low?"（樣本極少）":"";
     tableRow(tbody,[
@@ -607,13 +648,21 @@ for(const button of document.querySelectorAll("[data-rank-group]")){
 }
 function renderPeriod(){
  if(!data)return;
- const row=data.seo["period"+period];
- put("seo-clicks",count(row.clicks));
- put("seo-impressions",count(row.impressions));
- put("seo-ctr",percent(row.ctr));
+ const candidate=seoDaily?.periods?.[String(period)];
+ const verified=candidate&&candidate.clicks!==null&&candidate.clicks!==undefined;
+ const row=verified?candidate:data.seo["period"+period];
+ put("seo-clicks",row.clicks===null||row.clicks===undefined?"未取得":count(row.clicks));
+ put("seo-impressions",row.impressions===null||row.impressions===undefined?"未取得":count(row.impressions));
+ put("seo-ctr",row.ctr===null||row.ctr===undefined?"未取得":percent(row.ctr));
  put("seo-days",count(row.days_with_data)+" 天");
- put("seo-context",local(row.from)+" 至 "+local(row.to)+"：Google 全站搜尋曝光 "+count(row.impressions)+" 次，帶來自然搜尋點擊 "+count(row.clicks)+" 次，點擊率為 "+percent(row.ctr)+"。這不是客戶詢問數，更不是 AI 搜尋曝光。");
- el("seo-progress").style.width=Math.min(100,Number(row.ctr)*100)+"%";
+ put("seo-period-source",verified?
+   "真實 GSC 每日檢查｜官方截止 "+local(seoDaily.gsc_latest_day)+"｜已回傳 "+row.days_with_data+"/"+row.expected_days+" 天"+
+    (seoDaily.status!=="ok"?"｜資料更新延遲":""):
+   "既有舊公開快照（Google 截止 "+local(data.gsc_last_day)+"），尚未取得新日檢數據；不能當作今天的成果。");
+ put("seo-context",local(row.from)+" 至 "+local(row.to)+"：Google 全站搜尋曝光 "+count(row.impressions)+" 次，帶來自然搜尋點擊 "+count(row.clicks)+" 次，點擊率為 "+(row.ctr===null?"未取得":percent(row.ctr))+"。"+
+  (verified?"已使用每日 GSC 最新的官方可用資料。":"這些仍是舊公開快照的數字。")+
+  "這不是客戶詢問數，也不是即時 Google 排名。");
+ el("seo-progress").style.width=row.ctr===null?"0%":Math.min(100,Number(row.ctr)*100)+"%";
 }
 for(const btn of document.querySelectorAll("[data-days]")){
  btn.addEventListener("click",()=>{
