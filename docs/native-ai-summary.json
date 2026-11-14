@@ -4,29 +4,53 @@
   "not_first_party_analytics": true,
   "not_real_consumer_query_volume": true,
   "not_own_tavily_rag": true,
-  "window_start": "2026-10-16",
-  "window_end": "2026-11-14",
-  "generated_at": "2026-11-14T21:25:57+08:00",
-  "total_samples": 6,
+  "window_start": "2026-10-17",
+  "window_end": "2026-11-15",
+  "generated_at": "2026-11-15T01:22:37+08:00",
+  "total_samples": 8,
   "platforms": [
     {
       "platform": "ChatGPT",
-      "samples": 3,
+      "samples": 4,
       "existing_jobs": {
         "pending": 0,
-        "stored": 3,
+        "stored": 4,
         "failed": 0,
         "no-evidence": 0
       },
       "mentions": 0,
       "direct_domain_citations": 0,
-      "answers_with_sources": 2,
-      "last_sample_date": "2026-11-14",
+      "answers_with_sources": 3,
+      "last_sample_date": "2026-11-15",
       "competitor_candidates": [],
       "cited_domains": [
         {
           "domain": "www.100.com.tw",
           "occurrences": 6
+        },
+        {
+          "domain": "www.shengt.com.tw",
+          "occurrences": 2
+        },
+        {
+          "domain": "www.yixin.studio",
+          "occurrences": 1
+        },
+        {
+          "domain": "cent.com.tw",
+          "occurrences": 1
+        },
+        {
+          "domain": "www.dongsendesign.com",
+          "occurrences": 1
+        },
+        {
+          "domain": "tanxin.space",
+          "occurrences": 1
+        },
+        {
+          "domain": "www.ideas-design.com.tw",
+          "occurrences": 1
         },
         {
           "domain": "wowhouse1115.com",
@@ -52,24 +76,29 @@
       "tested_prompt_ids": [
         "kaohsiung-condo",
         "renovation-cost",
+        "tainan-renovation",
         "zhubei-engineer"
       ]
     },
     {
       "platform": "Gemini",
-      "samples": 3,
+      "samples": 4,
       "existing_jobs": {
         "pending": 0,
-        "stored": 3,
+        "stored": 4,
         "failed": 0,
         "no-evidence": 0
       },
       "mentions": 0,
       "direct_domain_citations": 0,
-      "answers_with_sources": 2,
-      "last_sample_date": "2026-11-14",
+      "answers_with_sources": 3,
+      "last_sample_date": "2026-11-15",
       "competitor_candidates": [],
       "cited_domains": [
+        {
+          "domain": "www.yixin.studio",
+          "occurrences": 5
+        },
         {
           "domain": "www.lihaocreator.com",
           "occurrences": 3
@@ -85,6 +114,22 @@
         {
           "domain": "www.lu-woo.com",
           "occurrences": 2
+        },
+        {
+          "domain": "www.genedicsdesign.com.tw",
+          "occurrences": 1
+        },
+        {
+          "domain": "www.clinteriordesign.com.tw",
+          "occurrences": 1
+        },
+        {
+          "domain": "www.dongsendesign.com",
+          "occurrences": 1
+        },
+        {
+          "domain": "showdesign.com.tw",
+          "occurrences": 1
         },
         {
           "domain": "decomyplace.com",
@@ -114,6 +159,7 @@
       "tested_prompt_ids": [
         "kaohsiung-condo",
         "renovation-cost",
+        "tainan-renovation",
         "zhubei-engineer"
       ]
     },
@@ -121,7 +167,7 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 0,
+        "pending": 1,
         "stored": 0,
         "failed": 0,
         "no-evidence": 3
@@ -136,6 +182,49 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "e98ebe93c2e1873e",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "Gemini",
+      "prompt_id": "tainan-renovation",
+      "prompt": "台南舊屋翻新，有哪些室內設計公司具住宅翻修作品？請給可查證的案例來源。",
+      "answered_at": "2026-11-15T01:20:20+08:00",
+      "answer_excerpt": "台南有許多擅長住宅老屋、舊屋翻新的室內設計與工程團隊。以下整理出幾家具備實際翻修作品、且官網或公開平台可查證案例來源的室內設計公司： 1. 一新設計 特色與經歷： 由具備室內設計與工程管理雙證照的主理人吳俊賢（大大）帶領，深耕台南，專注於台南在地老屋全屋翻新（如三至四層樓透天厝）與結構動線重整。 可查證案例來源： 北區邱宅（30年透天老屋翻新）： 改善原先零碎格局、狹長廚房與頂樓石棉瓦問題，重整一樓交誼與備課動線。 永康張宅 / 永康陳宅： 近40年透天孝親與返鄉全屋翻新。 案例官網連結： 一新設計作品案例專區 2. 成立室內裝修設計 特色與經歷： 跨足台南與高雄地區， 擅長打破傳統大樓或老屋的侷限， 透過現代風與獨特材質（如特殊漆、 鐵件、 極簡美學）為老宅注入全新生命。 可查證案例來源： 台南蔡公館（30年大樓住宅翻新）： 顛覆30年華廈傳統格局，打通兩戶並以現代極簡「極黑宅」風格重塑餐廚與公領域。 案例官網連結： 成立室內設計老屋翻新案例 3. 冬森室內設計 特色與經歷： 提供住宅空間、 老屋翻新與商業空間規劃， 擅長依據屋主實際生活需求重新配置格局， 並善用軟裝與採光營造溫馨、 北歐風或現代簡約的居家氛圍。 可查證案例來源： 台南「前奏與夜曲」透天老屋翻修改造： 針對原屋況動線不佳進行重新規劃，放大公領域並融入北歐風格與舊家具循環利用。 案例官網連結： 冬森設計老屋翻新案例專區 4. 秀空間設計 特色與經歷： 於台南在地擁有豐富的住宅及老屋改造經驗，作品涵蓋寵物友善宅、老宅延壽、透天翻新等多樣化住宅類型。 可查證案例來源： 包含台南南化寵物友善老屋翻新、新市30年透天老屋翻新、中西區老屋翻修等實績。 案例官網連結： 秀空間設計老屋翻新作品集 💡 翻修注意事項 台南有許多屋齡超過30至40年的透天厝或老華廈，進行舊屋翻新時，建議優先請設計團隊針對 「基礎工程（如防水抓漏、老舊水電管線全面換新、結構與壁癌處理）」 進行詳細評估，並確認其是否具備專業的工程管理與透明化報價機制，才能住得安心長久。 想了解台南老屋翻新在水電與防水工程上的常見費用與注意事項嗎？ Yes",
+      "excerpt_truncated": false,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "showdesign.com.tw",
+        "www.clinteriordesign.com.tw",
+        "www.dongsendesign.com",
+        "www.genedicsdesign.com.tw",
+        "www.yixin.studio"
+      ]
+    },
+    {
+      "evidence_id": "865bad3230ba2330",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "ChatGPT",
+      "prompt_id": "tainan-renovation",
+      "prompt": "台南舊屋翻新，有哪些室內設計公司具住宅翻修作品？請給可查證的案例來源。",
+      "answered_at": "2026-11-15T01:19:06+08:00",
+      "answer_excerpt": "台南有不少室內設計公司承接老屋翻新，但如果你的需求是 真正有住宅舊屋翻修實績，而不只是新成屋裝潢或漂亮的3D效果圖 ，我會優先挑選能公開提供以下資料的公司： 老屋屋齡、坪數及所在區域。 翻修前後照片，而非只有完工美照。 水電、浴室、防水、壁癌及結構等工程處理紀錄。 實際住宅案例，而非商業空間或出租套房為主。 我整理了以下幾家，並優先採用官方作品集或可追溯的實際案例報導。以下是值得進一步比較的名單，不代表已替各公司驗證施工品質。 一、台南有住宅老屋翻修案例的設計公司 1. 一新設計 優先考察 老透天翻修實績 這家值得優先研究，因為官方網站公開的老屋案例資料相對完整，不只是展示裝潢照片。 可查證案例： 永康張宅：近40年透天，3層樓，室內約40坪。為退休父母重新規劃生活空間。 永康陳宅：約40年透天，4層樓，主建物約51.2坪。處理壁癌、水電更新及採光通風。 東區辜宅：約30年透天，4層樓，室內約43坪。重新配置各樓層生活機能。 北區邱宅：30年以上透天，處理格局、屋頂等問題。 值得注意： 官方案例頁表示有改造前後照片、平面圖及施工紀錄，適合用來評估工程能力。 案例來源： 一新設計｜官方住宅案例與老屋翻新作品集 2. 聖德室內裝修設計 住宅老屋翻新 threerow.tw 官方作品集有明確標示老屋翻新類別，且有多個台南住宅案例。 可查證案例： 佳里・祖孫宅：41～50坪、5房2廳3衛，標示為老屋翻新。 貓宅：21～30坪、2房2廳1衛，標示為老屋翻新。 台南・王宅：10～20坪、2房1廳1衛，標示為老屋翻新。 台南・蘇宅：51～80坪、4房2廳4衛，標示為老屋翻新。 作品集也列有坪數、格局及部分預算區間，方便初步比較。 案例來源： 聖德室內裝修設計｜完整作品錦集 聖德｜老屋翻新分類作品 3. 森德室內設計 台南住宅老屋翻修 dongsendesign.com 可查證案例：《灰歸》 地點：台南市北區。 類型：住宅作品、老屋翻新。 設計方向：現代灰階親子宅。 改造理念：保留老宅原有骨架及生活記憶，重新整理家庭生活空間。 這個案例適合想保留老房子原有特色、不希望整間房子變成全新制式裝潢的屋主參考。 案例來源： 森德室內設計｜《灰歸》台南老屋翻新 4. 冬森室內設計 公寓住宅老屋翻新 dongsendesign.com 可查證案例：《旭禾》 地點：台南安南區。 屋況類型：老屋翻新。 室內坪數：20坪。 格局：3房2廳1衛。 居住成員：2大2小。 案例原本只有兩間臥室，因孩子成長需要分房而重新規劃，透過輕隔間重新安排客餐廳與臥室。 這個案例比較適合公寓、小坪數住宅或需要調整家庭格局的屋主。 案例來源： 冬森室內設計｜旭禾案例 5. 添心設計 台南住宅翻修案例 threerow.tw 可查證案例： PROJECT #243：台南東區老屋翻新。 設計內容包括古典門板、鋁框屏風與收納規劃。 官方作品集另有多件台南住宅設計案例。 值得比較的是其住宅空間規劃及收納設計。 案例來源： 添心設計｜官方作品集 6. 逸硯室內設計 大型透天老宅改造 ideas-design.com.tw 可查證案例：《摩登家庭》 地點：台南。 屋齡：約40年。 建物：70坪透天。 居住需求：三代同堂。 設計風格：美式浪漫。 改造內容包括： 一樓客廳及孝親房重新配置。 改善樓梯與天井採光。 三樓斜屋頂空間重新利用。 增加家庭收納及家事空間。 如果是老透天、家庭成員多、需要重新規劃樓層功能，可以參考這個案例。 案例來源： 逸硯室內設計｜《摩登家庭》台南40年老宅改造 二、案例比較表 公司 可查證住",
+      "excerpt_truncated": true,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "cent.com.tw",
+        "tanxin.space",
+        "www.dongsendesign.com",
+        "www.ideas-design.com.tw",
+        "www.shengt.com.tw",
+        "www.yixin.studio"
+      ]
+    },
     {
       "evidence_id": "5b38c88df34221e1",
       "recommendation_status": "未提及晨陽",
@@ -250,18 +339,18 @@
   "existing_job_status": {
     "ChatGPT": {
       "pending": 0,
-      "stored": 3,
+      "stored": 4,
       "failed": 0,
       "no-evidence": 0
     },
     "Gemini": {
       "pending": 0,
-      "stored": 3,
+      "stored": 4,
       "failed": 0,
       "no-evidence": 0
     },
     "Perplexity": {
-      "pending": 0,
+      "pending": 1,
       "stored": 0,
       "failed": 0,
       "no-evidence": 3
@@ -269,19 +358,19 @@
   },
   "latest_job_status": {
     "ChatGPT": {
-      "day": "2026-11-14",
+      "day": "2026-11-15",
       "status": "stored",
       "reason": ""
     },
     "Gemini": {
-      "day": "2026-11-14",
+      "day": "2026-11-15",
       "status": "stored",
       "reason": ""
     },
     "Perplexity": {
-      "day": "2026-11-14",
-      "status": "no-evidence",
-      "reason": "vendor_record_error"
+      "day": "2026-11-15",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     }
   },
   "intent_analysis": {
@@ -450,12 +539,12 @@
         ],
         "platforms": {
           "ChatGPT": {
-            "samples": 0,
+            "samples": 1,
             "mentions": 0,
             "direct_citations": 0
           },
           "Gemini": {
-            "samples": 0,
+            "samples": 1,
             "mentions": 0,
             "direct_citations": 0
           },
