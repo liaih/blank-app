@@ -8,11 +8,11 @@
       "source": "Google Search Console private real SQLite (is_mock=0)",
       "site": "https://chen-yang.com.tw/",
       "check_date": "2026-11-15",
-      "checked_at": "2026-11-15T04:01:53+08:00",
-      "gsc_expected_through": "2026-11-11",
+      "checked_at": "2026-11-15T04:07:06+08:00",
+      "gsc_expected_through": "2026-11-10",
       "gsc_latest_day": "2026-11-10",
-      "status": "delayed",
-      "status_text": "已檢查，但 Google 最後有效資料日期落後預期",
+      "status": "ok",
+      "status_text": "已檢查真實 GSC 資料（非即時排名）",
       "periods": {
         "30": {
           "from": "2026-10-12",
