@@ -559,8 +559,14 @@ const put=(id,value)=>{el(id).textContent=String(value)};
 const count=n=>Number(n).toLocaleString("zh-TW");
 const percent=n=>(Number(n)*100).toFixed(2)+"%";
 const local=s=>String(s||"").replace(/-/g,"/");
-let data=null,period=30;
+let data=null,period=30,seoDaily=null;
 const pageNames=["ai","actions","seo","opps","quality"];
+window.addEventListener("chenyang:gsc-daily-ready",event=>{
+ const report=event.detail;
+ if(!report||report.no_mock!==true||report.not_live_google_serp!==true)return;
+ seoDaily=report;
+ if(data){renderPeriod();renderRankings();}
+});
 function show(tab,updateHash){
  if(!pageNames.includes(tab))tab="ai";
  for(const key of pageNames){
@@ -601,20 +607,28 @@ function renderRankings(){
   if(!data||!data.seo.keyword_rankings)return;
   const report=data.seo.keyword_rankings;
   const original=report.rows.find(row=>row.keyword==="室內設計");
-  put("main-rank",original&&original.current_30d.position!==null?Number(original.current_30d.position).toFixed(2):"未取得");
-  const change=original&&original.position_improvement_30d;
+  const freshMain=seoDaily?.keywords?.find(row=>row.keyword==="室內設計");
+  const actualMain=freshMain?freshMain.current_30d.position:original?.current_30d.position;
+  put("main-rank",actualMain===null||actualMain===undefined?"未取得":Number(actualMain).toFixed(2));
+  const change=freshMain?freshMain.position_improvement_30d:original?.position_improvement_30d;
   put("main-rank-change",change===null||change===undefined?"無前期資料":(change>0?"+":"")+Number(change).toFixed(2)+" 名");
   put("ranks-total",count(report.total_tracked)+" 組");
   put("ranks-observed",count(report.with_impressions_30d)+" 組");
-  put("rank-daterange",local(report.start_day)+" 至 "+local(report.end_day)+"；歷史平均排名並非 Google 即時查詢的名次。");
+  put("rank-daterange",seoDaily?.gsc_latest_day?
+ "核心三個搜尋詞截至 "+local(seoDaily.gsc_latest_day)+
+ "；其餘搜尋詞仍是舊快照（截止 "+local(report.end_day)+"），不是即時 Google 排名。":
+ local(report.start_day)+" 至 "+local(report.end_day)+"；目前是舊公開快照，非今天的日檢結果。");
+  const badge=el("rank-sync");badge.textContent=seoDaily?.gsc_latest_day?"核心三詞已讀取最新 GSC":"舊排名歷史快照";
+  badge.className="label "+(seoDaily?.gsc_latest_day?"yes":"wait");
   const tbody=el("ranks-body");
   tbody.replaceChildren();
   const selected=report.rows.filter(row=>rankCategory==="all"||row.category===rankCategory);
   for(const row of selected){
-    const current=row.current_30d;
-    const prior=row.previous_30d;
-    const delta=row.position_improvement_30d;
-    const change=delta===null?"—":(delta>0?"改善 ":"退步 ")+Math.abs(delta).toFixed(1)+" 名";
+    const fresh=seoDaily?.keywords?.find(x=>x.keyword===row.keyword);
+    const current=fresh?fresh.current_30d:row.current_30d;
+    const prior=fresh?{position:fresh.previous_30d_position}:row.previous_30d;
+    const delta=fresh?fresh.position_improvement_30d:row.position_improvement_30d;
+    const change=delta===null||delta===undefined?"—":(delta>0?"改善 ":delta<0?"退步 ":"持平 ")+Math.abs(delta).toFixed(1)+" 名";
     const low=current.impressions!==null && current.impressions<=2;
     const label=low?"（樣本極少）":"";
     tableRow(tbody,[
@@ -634,13 +648,21 @@ for(const button of document.querySelectorAll("[data-rank-group]")){
 }
 function renderPeriod(){
  if(!data)return;
- const row=data.seo["period"+period];
- put("seo-clicks",count(row.clicks));
- put("seo-impressions",count(row.impressions));
- put("seo-ctr",percent(row.ctr));
+ const candidate=seoDaily?.periods?.[String(period)];
+ const verified=candidate&&candidate.clicks!==null&&candidate.clicks!==undefined;
+ const row=verified?candidate:data.seo["period"+period];
+ put("seo-clicks",row.clicks===null||row.clicks===undefined?"未取得":count(row.clicks));
+ put("seo-impressions",row.impressions===null||row.impressions===undefined?"未取得":count(row.impressions));
+ put("seo-ctr",row.ctr===null||row.ctr===undefined?"未取得":percent(row.ctr));
  put("seo-days",count(row.days_with_data)+" 天");
- put("seo-context",local(row.from)+" 至 "+local(row.to)+"：Google 全站搜尋曝光 "+count(row.impressions)+" 次，帶來自然搜尋點擊 "+count(row.clicks)+" 次，點擊率為 "+percent(row.ctr)+"。這不是客戶詢問數，更不是 AI 搜尋曝光。");
- el("seo-progress").style.width=Math.min(100,Number(row.ctr)*100)+"%";
+ put("seo-period-source",verified?
+   "真實 GSC 每日檢查｜官方截止 "+local(seoDaily.gsc_latest_day)+"｜已回傳 "+row.days_with_data+"/"+row.expected_days+" 天"+
+    (seoDaily.status!=="ok"?"｜資料更新延遲":""):
+   "既有舊公開快照（Google 截止 "+local(data.gsc_last_day)+"），尚未取得新日檢數據；不能當作今天的成果。");
+ put("seo-context",local(row.from)+" 至 "+local(row.to)+"：Google 全站搜尋曝光 "+count(row.impressions)+" 次，帶來自然搜尋點擊 "+count(row.clicks)+" 次，點擊率為 "+(row.ctr===null?"未取得":percent(row.ctr))+"。"+
+  (verified?"已使用每日 GSC 最新的官方可用資料。":"這些仍是舊公開快照的數字。")+
+  "這不是客戶詢問數，也不是即時 Google 排名。");
+ el("seo-progress").style.width=row.ctr===null?"0%":Math.min(100,Number(row.ctr)*100)+"%";
 }
 for(const btn of document.querySelectorAll("[data-days]")){
  btn.addEventListener("click",()=>{
