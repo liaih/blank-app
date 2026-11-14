@@ -40,7 +40,7 @@ test("history has meaningful date filtering and CSV and doesn't invent 0 rank",(
  assert.match(js,/history\.entries/);
  assert.match(js,/\.slice\(0,count\)/);
  assert.match(js,/Number\(x\)\.toFixed\(2\)/);
- assert.match(js,/return x===null/);
+ assert.match(js,/x=>x===null/);
 });
 
 test("both browser scripts compile",()=>{
