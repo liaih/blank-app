@@ -1,6 +1,84 @@
 {
   "schema_version": 1,
   "source": "Google Search Console private real SQLite (is_mock=0)",
-  "last_check_date": null,
-  "entries": []
+  "last_check_date": "2026-11-15",
+  "entries": [
+    {
+      "schema_version": 1,
+      "source": "Google Search Console private real SQLite (is_mock=0)",
+      "site": "https://chen-yang.com.tw/",
+      "check_date": "2026-11-15",
+      "checked_at": "2026-11-15T04:01:53+08:00",
+      "gsc_expected_through": "2026-11-11",
+      "gsc_latest_day": "2026-11-10",
+      "status": "delayed",
+      "status_text": "已檢查，但 Google 最後有效資料日期落後預期",
+      "periods": {
+        "30": {
+          "from": "2026-10-12",
+          "to": "2026-11-10",
+          "clicks": 1359.0,
+          "impressions": 50028.0,
+          "ctr": 0.027165,
+          "days_with_data": 30,
+          "expected_days": 30
+        },
+        "90": {
+          "from": "2026-08-13",
+          "to": "2026-11-10",
+          "clicks": 4800.0,
+          "impressions": 177416.0,
+          "ctr": 0.027055,
+          "days_with_data": 90,
+          "expected_days": 90
+        }
+      },
+      "keywords": [
+        {
+          "keyword": "室內設計",
+          "current_30d": {
+            "position": 25.02,
+            "clicks": 3.0,
+            "impressions": 42.0,
+            "days_with_impressions": 10,
+            "last_observed_day": "2026-10-21",
+            "latest_daily_position": 22.5
+          },
+          "previous_30d_position": 32.25,
+          "position_improvement_30d": 7.23
+        },
+        {
+          "keyword": "室內設計推薦",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0,
+            "last_observed_day": null,
+            "latest_daily_position": null
+          },
+          "previous_30d_position": null,
+          "position_improvement_30d": null
+        },
+        {
+          "keyword": "桃園室內設計",
+          "current_30d": {
+            "position": 61.0,
+            "clicks": 0.0,
+            "impressions": 1.0,
+            "days_with_impressions": 1,
+            "last_observed_day": "2026-10-17",
+            "latest_daily_position": 61.0
+          },
+          "previous_30d_position": 18.83,
+          "position_improvement_30d": -42.17
+        }
+      ],
+      "not_live_google_serp": true,
+      "no_mock": true,
+      "note": "今日是系統執行檢查的日期，GSC 資料日依 Google 回傳日期，不是今日即時排名。",
+      "data_age_days": 5,
+      "coverage_warning": false
+    }
+  ]
 }
