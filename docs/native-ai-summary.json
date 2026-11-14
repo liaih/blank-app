@@ -4,16 +4,16 @@
   "not_first_party_analytics": true,
   "not_real_consumer_query_volume": true,
   "not_own_tavily_rag": true,
-  "window_start": "2026-10-15",
-  "window_end": "2026-11-13",
-  "generated_at": "2026-11-13T22:21:22+08:00",
-  "total_samples": 4,
+  "window_start": "2026-10-16",
+  "window_end": "2026-11-14",
+  "generated_at": "2026-11-14T20:03:55+08:00",
+  "total_samples": 5,
   "platforms": [
     {
       "platform": "ChatGPT",
       "samples": 2,
       "existing_jobs": {
-        "pending": 0,
+        "pending": 1,
         "stored": 2,
         "failed": 0,
         "no-evidence": 0
@@ -52,19 +52,23 @@
     },
     {
       "platform": "Gemini",
-      "samples": 2,
+      "samples": 3,
       "existing_jobs": {
         "pending": 0,
-        "stored": 2,
+        "stored": 3,
         "failed": 0,
         "no-evidence": 0
       },
       "mentions": 0,
       "direct_domain_citations": 0,
-      "answers_with_sources": 1,
-      "last_sample_date": "2026-11-13",
+      "answers_with_sources": 2,
+      "last_sample_date": "2026-11-14",
       "competitor_candidates": [],
       "cited_domains": [
+        {
+          "domain": "www.lihaocreator.com",
+          "occurrences": 3
+        },
         {
           "domain": "www.pro360.com.tw",
           "occurrences": 2
@@ -76,6 +80,18 @@
         {
           "domain": "www.lu-woo.com",
           "occurrences": 2
+        },
+        {
+          "domain": "decomyplace.com",
+          "occurrences": 1
+        },
+        {
+          "domain": "www.nanyi-design.com",
+          "occurrences": 1
+        },
+        {
+          "domain": "blog.udn.com",
+          "occurrences": 1
         },
         {
           "domain": "www.100.com.tw",
@@ -92,14 +108,15 @@
       ],
       "tested_prompt_ids": [
         "kaohsiung-condo",
-        "renovation-cost"
+        "renovation-cost",
+        "zhubei-engineer"
       ]
     },
     {
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 0,
+        "pending": 1,
         "stored": 0,
         "failed": 0,
         "no-evidence": 2
@@ -114,6 +131,26 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "797d3927fe99b3dc",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "Gemini",
+      "prompt_id": "zhubei-engineer",
+      "prompt": "竹北工程師家庭要裝修新成屋，推薦哪些室內設計公司？比較施工溝通和預算透明度。",
+      "answered_at": "2026-11-14T20:01:40+08:00",
+      "answer_excerpt": "竹北地區有很高比例的屋主為竹科工程師家庭：這群客群的特質通常是 重視邏輯效率、對空間機能與收納坪效要求高、平時工作忙碌無法天天盯工地，且極度在意「預算控管透明度」與「施工溝通的數位化/即時性」 。 針對竹北新成屋的裝修需求，以下為您推薦幾家在地評價良好、且在工程師圈子或網路論壇（PTT、Mobile01、Dcard）備受討論的室內設計公司，並特別針對「施工溝通」 與 「預算透明度」進行深度比較。 一、 竹北新成屋室內設計公司推薦清單 裏好製造所 特色 ： 擅長現代簡約風格，主打空間坪效最大化，非常適合竹北常見的 25~40 坪 3-4 房新成屋。 優勢 ： 設計細膩，在前期能提供精準的 3D 模擬預覽，讓理性派的工程師屋主能「所見即所得」，減少認知落差。 微自然室內裝修設計 特色 ：深耕大新竹多年， 非常了解竹北的氣候（如潮濕、 季風）與新成屋採光通風條件。 優勢 ： 風格清新自然、綠意質感好。其團隊在施工細節與建材挑選上口碑穩定，特別適合重視居住健康與生活品質的小家庭。 南邑室內裝修設計 特色 ：位於竹北市興隆路， Google 評價極高。 擅長現代風與高質感家庭住宅。 優勢 ：從預售屋客變到新成屋完工的整合度高， 工地管理嚴謹， 對於忙碌、 無法時常請假監工的工程師家庭來說， 屬於讓人安心的「放手型」團隊。 小寶優居（竹科設計分部） 特色 ： 標準化、系統化的服務流程，特別針對首購族與竹科家庭。 優勢 ： 強調系統化需求對應、報價透明與工期管控，對於喜歡條理分明、按部就班推進流程的理工背景屋主而言，溝通成本相對較低。 二、 施工溝通與預算透明度比較 對於工程師家庭而言， 裝修最怕遇到「溝通鬼打牆」與「無限追加預算」。 以下從這兩個維度進行比較： 比較維度 重點關注指標 推薦應對方向 / 優秀團隊特質 施工溝通 • 是否使用群組（如 Line）即時回報進度？ • 能否理解高科技/智慧宅需求（如網通配置、智能家居、掃地機器人動線）？ • 圖面與施工落差的容忍度。 • 推薦具備 3D 擬真與詳細施工圖（水電圖、立面圖）的團隊 （如：裏好製造所）。 • 工程師重視邏輯與數據，優秀的設計師會用「條列式會議記錄」與「進度甘特圖」來對齊進度，避免口頭承諾模糊不清。 • 監工回報：現代優良團隊多會建立工地群組，定時上傳施工照片（如水電配管、防水測試），滿足工程師想掌握現況的需求。 預算透明度 • 報價單是否為「逐項明細」（含工帶料、材質、型號、尺寸）？ • 是否有預備金機制？ • 中途追加費用的溝通規則。 • 預算透明的關鍵在於「拒絕統包式模糊報價」 （例如只寫「木作工程一式 XX 萬」是大忌）。 • 選擇會提供詳細 Excel 逐項報價的設計公司，每一才、每一片磁磚或系統櫃才數皆可受檢視。 • 簽約前務必確認合約中的「變更設計（追加減）條款」：是否需經屋主簽認同意才能施作，防止完工後出現意料之外的帳單。 三、 給工程師家庭的裝修避雷建議 善用「預售屋客變」階段 ： 如果您的新成屋還在預售階段， 務必優先找能在「客變期」介入的團隊（如南邑、 微自然等）。 在毛胚/客變期就先改好插座位置、 開關、 退掉不合用的建材（如地磚或衛浴）， 可以省下交屋後打牆重練的龐大工程費與時間。 規格與材質白紙黑字 ：工程師對性價比與耐用度要求高， 建議在看報價單時， 要求設計師標明系統板材等級（如 E1-V313 防潮板）、 五金品牌（如 Blum、 Grass 緩衝鉸鍊）、 塗料品牌（如 Dulux、 Skid ), 避免完工後產生認知落差。 預留 10%~15% 裝修預備金",
+      "excerpt_truncated": true,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "blog.udn.com",
+        "decomyplace.com",
+        "www.lihaocreator.com",
+        "www.nanyi-design.com"
+      ]
+    },
     {
       "evidence_id": "ebd710e0b70b3280",
       "recommendation_status": "未提及晨陽",
@@ -190,19 +227,19 @@
   ],
   "existing_job_status": {
     "ChatGPT": {
-      "pending": 0,
+      "pending": 1,
       "stored": 2,
       "failed": 0,
       "no-evidence": 0
     },
     "Gemini": {
       "pending": 0,
-      "stored": 2,
+      "stored": 3,
       "failed": 0,
       "no-evidence": 0
     },
     "Perplexity": {
-      "pending": 0,
+      "pending": 1,
       "stored": 0,
       "failed": 0,
       "no-evidence": 2
@@ -210,19 +247,19 @@
   },
   "latest_job_status": {
     "ChatGPT": {
-      "day": "2026-11-13",
-      "status": "stored",
-      "reason": ""
+      "day": "2026-11-14",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     },
     "Gemini": {
-      "day": "2026-11-13",
+      "day": "2026-11-14",
       "status": "stored",
       "reason": ""
     },
     "Perplexity": {
-      "day": "2026-11-13",
-      "status": "no-evidence",
-      "reason": "vendor_input_only_no_answer"
+      "day": "2026-11-14",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     }
   },
   "intent_analysis": {
@@ -308,7 +345,7 @@
             "direct_citations": 0
           },
           "Gemini": {
-            "samples": 0,
+            "samples": 1,
             "mentions": 0,
             "direct_citations": 0
           },
