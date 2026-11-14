@@ -6,24 +6,28 @@
   "not_own_tavily_rag": true,
   "window_start": "2026-10-16",
   "window_end": "2026-11-14",
-  "generated_at": "2026-11-14T20:03:55+08:00",
-  "total_samples": 5,
+  "generated_at": "2026-11-14T21:25:57+08:00",
+  "total_samples": 6,
   "platforms": [
     {
       "platform": "ChatGPT",
-      "samples": 2,
+      "samples": 3,
       "existing_jobs": {
-        "pending": 1,
-        "stored": 2,
+        "pending": 0,
+        "stored": 3,
         "failed": 0,
         "no-evidence": 0
       },
       "mentions": 0,
       "direct_domain_citations": 0,
-      "answers_with_sources": 1,
-      "last_sample_date": "2026-11-13",
+      "answers_with_sources": 2,
+      "last_sample_date": "2026-11-14",
       "competitor_candidates": [],
       "cited_domains": [
+        {
+          "domain": "www.100.com.tw",
+          "occurrences": 6
+        },
         {
           "domain": "wowhouse1115.com",
           "occurrences": 1
@@ -47,7 +51,8 @@
       ],
       "tested_prompt_ids": [
         "kaohsiung-condo",
-        "renovation-cost"
+        "renovation-cost",
+        "zhubei-engineer"
       ]
     },
     {
@@ -116,10 +121,10 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 1,
+        "pending": 0,
         "stored": 0,
         "failed": 0,
-        "no-evidence": 2
+        "no-evidence": 3
       },
       "mentions": 0,
       "direct_domain_citations": 0,
@@ -131,6 +136,23 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "5b38c88df34221e1",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "ChatGPT",
+      "prompt_id": "zhubei-engineer",
+      "prompt": "竹北工程師家庭要裝修新成屋，推薦哪些室內設計公司？比較施工溝通和預算透明度。",
+      "answered_at": "2026-11-14T21:25:54+08:00",
+      "answer_excerpt": "竹北的新成屋裝修，如果是工程師家庭，我會建議優先找 工程管理制度成熟、報價拆項清楚、施工進度可追蹤 的室內設計公司，而不只是挑作品照片漂亮的設計師。 尤其新成屋通常不需要大規模拆除，裝修重點會放在： 預算控制： 木作、系統櫃、燈具、空調、窗簾及收納配置是否逐項報價。 施工溝通： 是否有固定專案窗口、LINE 群組、施工進度回報及現場紀錄。 追加費用： 變更設計、材料升級及現場追加工程是否事前報價、經屋主確認。 工程品質： 水電、泥作、防水、木作及系統櫃是否有驗收標準。 我會特別重視「報價透明度」和「施工期間不用屋主天天盯工地」，這兩點對平常工作忙碌的家庭很重要。 一、我會優先推薦的 6 家竹北設計公司 以下是依照竹北在地服務、公開作品、業主評價及可查到的工程管理資訊整理。這不是實際施工品質的保證，特別要注意：網路評價和報價資訊仍需透過面談及合約確認。 1. 東風室內設計 預算透明優先 竹北成功十五街｜Google 4.8／77則 平台業主回饋提到報價單有項目單價、預算符合預期、願意配合節省預算。 公開新成屋參考價約 4 萬元／坪起。 適合重視成本拆解、不想花太多時間反覆追問報價的家庭。 留意：確認報價是否包含監工、設計及各項工程管理費。 參考： 東風設計作品與業主評價 2. 創境設計 施工管理優先 竹北文興路一段｜平台評分 4.7／6則 公開資訊有專人監工、分階段付款及完工保固。 業主評價提到每週回報進度、流程透明、施工管理好。 公開新成屋參考價約 7 萬元／坪起。 適合工作繁忙、不方便頻繁跑工地的家庭。 參考： 創境設計作品與業主評價 3. 谷田設計 竹北成功七街｜設計總監 18 年經驗 公開新成屋參考價約 6.5 萬元／坪起。 有接客變案、穩定合作工班及樣板間參觀。 公開作品包含 25 坪新成屋約 130 萬元的案例。 適合重視格局、收納、家庭生活動線的屋主。 參考： 谷田設計作品及團隊介紹 4. 相捷空間設計 竹北隘口一街｜平台評分 4.4／10則 公開新成屋參考價約 4.5 萬元／坪起。 有穩定合作工班、分階段檢驗及付款機制。 公開案例有 35 坪新成屋約 108 萬元。 適合想控制預算，又希望有明確工程驗收流程的家庭。 參考： 相捷設計作品及工程管理 5. 文苡安室內設計 竹北環北路五段 公開新成屋參考價約 3.5 萬元／坪起。 有完整圖面繪製、初步報價及分階段檢驗。 公開作品有 17 坪、27 坪等新成屋案例。 適合希望先以中等預算完成基本設計與收納的家庭。 參考： 文苡安設計作品及收費資訊 6. 南邑室內設計 竹北興隆路五段｜Google 5.0／143則 平台公開評分 4.8／23則，兩個平台的評價樣本不同。 業主評價提及溝通無壓力、監工嚴謹、售後服務完善。 公開新成屋參考價約 180 萬元起。 適合比較重視設計質感、細節和售後服務的家庭。 參考： 新竹縣室內設計公司評價與作品 二、施工溝通與預算透明度比較 以下是根據目前公開資料的初步判斷，不代表已實地稽核各公司的管理能力。 公司 施工溝通 預算透明度 初步定位 東風 良好 高 重視報價拆項 創境 高 良好 重視工程進度 谷田 待面談確認 待面談確認 重視格局機能 相捷 有分階段驗收 良好 重視工程控管 文苡安 有完整圖面流程 待面談確認 中等預算 南邑 評價偏正面 待面談確認 重視設計細節 我的初步排序： 最先約談：東風、創境、相捷。 想看設計與機能：谷田。 願意提高預算追求設計細節：南邑。 三、竹北公司位置 這六家都可以安排同一天或分兩天面談，先比較設計理念，再比較報價與工程",
+      "excerpt_truncated": true,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "www.100.com.tw"
+      ]
+    },
     {
       "evidence_id": "797d3927fe99b3dc",
       "recommendation_status": "未提及晨陽",
@@ -227,8 +249,8 @@
   ],
   "existing_job_status": {
     "ChatGPT": {
-      "pending": 1,
-      "stored": 2,
+      "pending": 0,
+      "stored": 3,
       "failed": 0,
       "no-evidence": 0
     },
@@ -239,17 +261,17 @@
       "no-evidence": 0
     },
     "Perplexity": {
-      "pending": 1,
+      "pending": 0,
       "stored": 0,
       "failed": 0,
-      "no-evidence": 2
+      "no-evidence": 3
     }
   },
   "latest_job_status": {
     "ChatGPT": {
       "day": "2026-11-14",
-      "status": "pending",
-      "reason": "vendor_still_processing"
+      "status": "stored",
+      "reason": ""
     },
     "Gemini": {
       "day": "2026-11-14",
@@ -258,8 +280,8 @@
     },
     "Perplexity": {
       "day": "2026-11-14",
-      "status": "pending",
-      "reason": "vendor_still_processing"
+      "status": "no-evidence",
+      "reason": "vendor_record_error"
     }
   },
   "intent_analysis": {
@@ -340,7 +362,7 @@
         ],
         "platforms": {
           "ChatGPT": {
-            "samples": 0,
+            "samples": 1,
             "mentions": 0,
             "direct_citations": 0
           },
