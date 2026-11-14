@@ -4,9 +4,9 @@
   "not_chatgpt": true,
   "not_perplexity": true,
   "search_verified_by": "原生 Gemini: groundingMetadata；自建 RAG: 外部網頁搜尋來源與 AI 回答明確引用網址",
-  "window_start": "2026-10-14",
-  "window_end": "2026-11-12",
-  "last_responded_date": "2026-11-12",
+  "window_start": "2026-10-16",
+  "window_end": "2026-11-14",
+  "last_responded_date": "2026-11-14",
   "model": "gemini-2.5-flash-lite / gemini-3.8-flash / gemini-3.5-flash-lite + external retrieval (by cohort)",
   "source_types": {
     "native_gemini_google_grounding": {
@@ -15,15 +15,20 @@
       "direct_domain_citations": 0
     },
     "custom_live_web_rag": {
-      "samples": 3,
+      "samples": 6,
       "mentions": 0,
       "direct_domain_citations": 0
     }
   },
-  "sample_count": 3,
+  "sample_count": 6,
   "brand_mentioned": 0,
   "own_domain_direct_cited": 0,
   "competitor_candidates": [
+    {
+      "name": "水設室內設計",
+      "occurrences": 1,
+      "verification": "需人工核對是否為推薦，可能只是列入比較"
+    },
     {
       "name": "栩璞室內設計",
       "occurrences": 1,
@@ -36,6 +41,12 @@
     }
   ],
   "prompts": [
+    {
+      "id": "a7-new-home",
+      "samples": 1,
+      "mentions": 0,
+      "direct_domain_citations": 0
+    },
     {
       "id": "kaohsiung-condo",
       "samples": 1,
@@ -50,6 +61,18 @@
     },
     {
       "id": "small-home-budget",
+      "samples": 1,
+      "mentions": 0,
+      "direct_domain_citations": 0
+    },
+    {
+      "id": "taichung-condo",
+      "samples": 1,
+      "mentions": 0,
+      "direct_domain_citations": 0
+    },
+    {
+      "id": "zhubei-engineer",
       "samples": 1,
       "mentions": 0,
       "direct_domain_citations": 0
