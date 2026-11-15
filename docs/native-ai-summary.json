@@ -6,7 +6,7 @@
   "not_own_tavily_rag": true,
   "window_start": "2026-10-18",
   "window_end": "2026-11-16",
-  "generated_at": "2026-11-16T02:01:15+08:00",
+  "generated_at": "2026-11-16T05:42:03+08:00",
   "total_samples": 10,
   "platforms": [
     {
@@ -181,10 +181,10 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 1,
+        "pending": 0,
         "stored": 0,
         "failed": 0,
-        "no-evidence": 4
+        "no-evidence": 5
       },
       "mentions": 0,
       "direct_domain_citations": 0,
@@ -407,10 +407,10 @@
       "no-evidence": 0
     },
     "Perplexity": {
-      "pending": 1,
+      "pending": 0,
       "stored": 0,
       "failed": 0,
-      "no-evidence": 4
+      "no-evidence": 5
     }
   },
   "latest_job_status": {
@@ -426,8 +426,8 @@
     },
     "Perplexity": {
       "day": "2026-11-16",
-      "status": "pending",
-      "reason": "vendor_still_processing"
+      "status": "no-evidence",
+      "reason": "vendor_wait_element_timeout"
     }
   },
   "intent_analysis": {
