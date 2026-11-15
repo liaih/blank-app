@@ -4,24 +4,24 @@
   "not_first_party_analytics": true,
   "not_real_consumer_query_volume": true,
   "not_own_tavily_rag": true,
-  "window_start": "2026-10-17",
-  "window_end": "2026-11-15",
-  "generated_at": "2026-11-15T20:34:26+08:00",
-  "total_samples": 8,
+  "window_start": "2026-10-18",
+  "window_end": "2026-11-16",
+  "generated_at": "2026-11-16T02:01:15+08:00",
+  "total_samples": 10,
   "platforms": [
     {
       "platform": "ChatGPT",
-      "samples": 4,
+      "samples": 5,
       "existing_jobs": {
         "pending": 0,
-        "stored": 4,
+        "stored": 5,
         "failed": 0,
         "no-evidence": 0
       },
       "mentions": 0,
       "direct_domain_citations": 0,
-      "answers_with_sources": 3,
-      "last_sample_date": "2026-11-15",
+      "answers_with_sources": 4,
+      "last_sample_date": "2026-11-16",
       "competitor_candidates": [],
       "cited_domains": [
         {
@@ -29,8 +29,28 @@
           "occurrences": 6
         },
         {
+          "domain": "www.moi.gov.tw",
+          "occurrences": 2
+        },
+        {
+          "domain": "www.nlma.gov.tw",
+          "occurrences": 2
+        },
+        {
           "domain": "www.shengt.com.tw",
           "occurrences": 2
+        },
+        {
+          "domain": "cloudbm.nlma.gov.tw",
+          "occurrences": 1
+        },
+        {
+          "domain": "law.moj.gov.tw",
+          "occurrences": 1
+        },
+        {
+          "domain": "appeal.cpc.ey.gov.tw",
+          "occurrences": 1
         },
         {
           "domain": "www.yixin.studio",
@@ -63,36 +83,29 @@
         {
           "domain": "www.openworld.tv",
           "occurrences": 1
-        },
-        {
-          "domain": "www.pro360.com.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.yufang-design.com.tw",
-          "occurrences": 1
         }
       ],
       "tested_prompt_ids": [
         "kaohsiung-condo",
         "renovation-cost",
+        "renovation-process",
         "tainan-renovation",
         "zhubei-engineer"
       ]
     },
     {
       "platform": "Gemini",
-      "samples": 4,
+      "samples": 5,
       "existing_jobs": {
         "pending": 0,
-        "stored": 4,
+        "stored": 5,
         "failed": 0,
         "no-evidence": 0
       },
       "mentions": 0,
       "direct_domain_citations": 0,
-      "answers_with_sources": 3,
-      "last_sample_date": "2026-11-15",
+      "answers_with_sources": 4,
+      "last_sample_date": "2026-11-16",
       "competitor_candidates": [],
       "cited_domains": [
         {
@@ -102,6 +115,10 @@
         {
           "domain": "www.lihaocreator.com",
           "occurrences": 3
+        },
+        {
+          "domain": "www.100.com.tw",
+          "occurrences": 2
         },
         {
           "domain": "www.pro360.com.tw",
@@ -114,6 +131,26 @@
         {
           "domain": "www.lu-woo.com",
           "occurrences": 2
+        },
+        {
+          "domain": "www.ciaosyuan.com",
+          "occurrences": 1
+        },
+        {
+          "domain": "howroom.ai",
+          "occurrences": 1
+        },
+        {
+          "domain": "ewa.com.tw",
+          "occurrences": 1
+        },
+        {
+          "domain": "www.decorations.com.tw",
+          "occurrences": 1
+        },
+        {
+          "domain": "www.moi.gov.tw",
+          "occurrences": 1
         },
         {
           "domain": "www.genedicsdesign.com.tw",
@@ -130,35 +167,12 @@
         {
           "domain": "showdesign.com.tw",
           "occurrences": 1
-        },
-        {
-          "domain": "decomyplace.com",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.nanyi-design.com",
-          "occurrences": 1
-        },
-        {
-          "domain": "blog.udn.com",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.100.com.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "livinglife.com.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.happytogether35.com.tw",
-          "occurrences": 1
         }
       ],
       "tested_prompt_ids": [
         "kaohsiung-condo",
         "renovation-cost",
+        "renovation-process",
         "tainan-renovation",
         "zhubei-engineer"
       ]
@@ -167,7 +181,7 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 0,
+        "pending": 1,
         "stored": 0,
         "failed": 0,
         "no-evidence": 4
@@ -182,6 +196,49 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "6d9f32a122009a3f",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "Gemini",
+      "prompt_id": "renovation-process",
+      "prompt": "台灣找室內設計公司，如何驗證施工品質、保固和客戶溝通？有哪些可靠的資訊來源？",
+      "answered_at": "2026-11-16T01:59:00+08:00",
+      "answer_excerpt": "在台灣尋找室內設計公司時，要如何確保施工品質、保障後續保固並維持良好的客戶溝通，是每位屋主在裝修前最重要的功課。以下為您整理具體查驗方法、合約關鍵與可靠的資訊來源： 一、 如何驗證「施工品質」？ 施工品質不能只靠設計圖的精美程度來判斷，必須從 資質審查、分段驗收與工班透明度 下手： 查驗合法室內裝修證照： 內政部規定，從事室內裝修的業者必須具備經濟部公司/商業登記，並向內政部營建署登記取得「室內裝修業登記證」 與 「專業技術人員登記證」（建築物室內裝修工程管理乙級技術士或內政部登記證）。 查詢管道： 可至內政部國土管理署的「全國建築管理資訊系統入口網」輸入公司名稱或統一編號，確認其證照狀態為「有效」。 要求「分段驗收」機制： 正規的公司不會把驗收全部塞到完工那一天。 工程應分為： 拆除/泥作階段、水電配管階段、木作天花板階段、油漆收尾階段 等進行分段驗收。 每完成一個階段， 雙方至現場核對圖面與施工品質（如牆面垂直度、 管線是否按規範配置）， 確認無誤並簽名後， 才能撥付該階段的工程款。 第三方信託或資金代管： 部分平台（如 PULO、狸樂聚等）提供裝修款項的 第三方代管服務 ，工程款會先匯入信託帳戶，依照驗收進度撥款，能有效避免設計公司爛尾或工程品質不如預期卻拿不到錢處理的窘境。 二、 如何確保「保固與客戶溝通」？ 白紙黑字寫明保固條款： 保固年限： 一般業界基礎工程（如泥作、水電、木作結構）保固期為 1 年至 2 年 居多；若是衛浴、冷氣、電器等設備，則依原廠或經銷商保固規定。 界定「施工瑕疵 vs 人為耗損」： 合約中應明訂，若因施工不當（如管線漏水、牆面不正常壁癌、木作結構變形）導致的問題由設計公司 免費修繕 ；若為人為破壞或天災則不在免費範圍內。 售後聯繫窗口： 確保合約或保固書上寫明固定的客服窗口、緊急修繕時效（例如接到通知後幾天內派人勘查），避免日後找不到人。 評估溝通機制與應變能力： 回報頻率： 優良的設計團隊會在施工期間透過群組（如 LINE）定期回報進度、 上傳現場施工照片。 追加減項機制： 裝修常遇到現場實際狀況與圖紙有落差需要調整。 合約必須載明「追加減項的報價與計算方式」， 所有變更都必須經過雙方書面或訊息確認並簽名， 杜絕施工到一半隨意喊價、 口頭承諾卻不算數的情況。 三、 可靠的資訊來源與查詢管道 在尋找設計公司與評估其信用時， 可交叉比對以下幾類最具公信力的來源： 政府與官方查詢平台（確保合法性）： 全國建築管理資訊系統入口網 / 經濟部商業司商工登記公示資料查詢： 用於查核公司的登記狀況、 負責人與資本額、 有無營業處罰紀錄。 行政院消費者保護會 / 內政部國土管理署： 可下載官方版的《建築物室內裝修—設計委託及工程承攬契約書範本》，建議直接拿官方定型化契約範本與設計公司提供的合約進行比對，保障雙方權益。 裝修專屬媒合與作品平台（評估風格與口碑）： 100室內設計、設計家 Searchome、幸福空間： 適合用來大量瀏覽完工案例、查詢設計公司評價、過往案場規模與擅長風格。部分平台設有認證機制或屋主真實評價留言，具備參考價值。 PULO、狸樂聚等媒合平台： 強調實名制審查與第三方保障制度，適合希望平台能協助初步把關、提供安心裝修機制的屋主。 社群與真實社群論壇（過濾真實災情）： Dcard 裝潢版、Mobile01 居家討論區： 搜尋設計公司名稱時，常能找到網友分享的實際開箱文、施工血淚史或好評推薦。特別建議尋找「有附施工過程照片、完工後住了一陣子心得」的長文，其真實度與參考價值通常高於純粹的星等評分。 想了解在與",
+      "excerpt_truncated": true,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "ewa.com.tw",
+        "howroom.ai",
+        "www.100.com.tw",
+        "www.ciaosyuan.com",
+        "www.decorations.com.tw",
+        "www.moi.gov.tw"
+      ]
+    },
+    {
+      "evidence_id": "29b1e5def246c817",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "ChatGPT",
+      "prompt_id": "renovation-process",
+      "prompt": "台灣找室內設計公司，如何驗證施工品質、保固和客戶溝通？有哪些可靠的資訊來源？",
+      "answered_at": "2026-11-16T01:58:18+08:00",
+      "answer_excerpt": "在台灣找室內設計公司，我會建議不要只看作品集、裝潢風格或網路評價，而是把評估重點放在三件事： 施工品質是否可驗證 ：能不能看到實際完工案例、施工紀錄、材料規格及驗收標準。 保固責任是否明確 ：有沒有正式合約、保固期限、瑕疵修繕責任及後續服務機制。 客戶溝通是否透明 ：報價、進度、追加減帳、設計變更及問題處理是否有書面紀錄。 尤其要注意：設計公司的作品漂亮，不代表施工品質好；客戶評價很好，也不代表售後服務可靠。 以下整理一套適合台灣屋主實際使用的查核方法。 一、施工品質：如何確認不是只有照片漂亮？ 建議從四個層面查證： 1. 要求看實際完工案例 不要只看設計公司網站上的精修照片，應要求： 至少參觀 2～3 個已完工的住宅案例。 優先看完工半年至兩年以上的案子。 最好能看與自己房屋條件相似的案例，例如中古屋翻新、老屋翻修或新成屋。 詢問屋主是否願意分享實際使用心得。 特別觀察： 木作接縫、收邊是否平整。 磁磚是否有空心、裂縫或高低差。 浴室排水是否順暢。 門片、抽屜、五金使用是否正常。 油漆是否龜裂、起泡或色差明顯。 矽利康及防水交界是否有異常。 2. 要求提供施工過程照片 真正能反映施工管理能力的，往往不是完工照片，而是隱蔽工程紀錄。 工程項目 應要求的證明 防水工程 防水材料、施工層數、試水紀錄 水電工程 配線、管路配置及迴路紀錄 泥作工程 基底處理、水平垂直檢查 木作工程 骨架、板材品牌及規格 油漆工程 底漆、面漆及施工程序 空調工程 管線配置、排水及測試紀錄 重要： 不要只接受口頭承諾，應將施工規格、材料品牌、型號及驗收方式寫入合約附件。 3. 確認施工者的專業資格 可以查核： 公司或商業登記是否存在。 是否有室內裝修業登記及相關專業技術人員。 涉及室內裝修許可的工程，是否依法申請。 電氣、消防等專業工程是否由合格專業人員處理。 設計師有室內設計相關證照，不等於公司一定具備合法承攬及施工資格。兩者要分開確認。 4. 找第三方驗收 如果工程金額較高，或是中古屋、老屋翻修，可以考慮聘請獨立驗屋或工程顧問。 讓第三方在以下階段檢查： 水電及管線完成後。 防水試水完成後。 泥作、木作完成後。 最終交屋前。 這比完工後才發現問題，更容易釐清責任。 二、保固：合約必須寫清楚哪些事情？ homecheck.tw 不要只問「保固幾年？」因為保固年限長，不代表實際願意負責。 建議將保固拆成以下幾個部分： 項目 應確認的內容 防水工程 保固年限、漏水判定及修繕責任 水電工程 管線、接頭、迴路故障如何處理 木作工程 變形、開裂、五金故障 油漆工程 起泡、剝落、龜裂 系統櫃 板材、五金及施工安裝保固 設備產品 原廠保固與設計公司安裝責任 合約中建議明確寫入的 8 項內容 保固起算日 ：從驗收日、交屋日或其他明確日期起算。 保固期限 ：不同工程項目分別約定，不要只寫統一保固年限。 保固範圍 ：區分施工瑕疵、材料瑕疵及自然耗損。 報修方式 ：指定聯絡窗口、電話或電子郵件。 回覆期限 ：例如報修後 2 個工作天內回覆。 修繕期限 ：依問題嚴重程度訂定處理時間。 緊急狀況 ：漏水、跳電等問題的緊急處理機制。 保固例外 ：明確列出哪些情況不在保固範圍，而不是籠統寫「人為因素除外」。 這裡有一個很重要的觀念： 保固承諾必須能夠追溯到實際負責的公司，而不只是當初接洽的設計師。 例如設計師離職、公司更換工班，或承包商倒閉時，究竟由誰負責？簽約前就應該確認。 三、客戶溝通：如何判斷設計公司是否值得信任？ dotbrand.design 我會特別觀察以下五件事： 觀察項目 好的公司應該",
+      "excerpt_truncated": true,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "appeal.cpc.ey.gov.tw",
+        "cloudbm.nlma.gov.tw",
+        "law.moj.gov.tw",
+        "www.moi.gov.tw",
+        "www.nlma.gov.tw"
+      ]
+    },
     {
       "evidence_id": "e98ebe93c2e1873e",
       "recommendation_status": "未提及晨陽",
@@ -339,18 +396,18 @@
   "existing_job_status": {
     "ChatGPT": {
       "pending": 0,
-      "stored": 4,
+      "stored": 5,
       "failed": 0,
       "no-evidence": 0
     },
     "Gemini": {
       "pending": 0,
-      "stored": 4,
+      "stored": 5,
       "failed": 0,
       "no-evidence": 0
     },
     "Perplexity": {
-      "pending": 0,
+      "pending": 1,
       "stored": 0,
       "failed": 0,
       "no-evidence": 4
@@ -358,19 +415,19 @@
   },
   "latest_job_status": {
     "ChatGPT": {
-      "day": "2026-11-15",
+      "day": "2026-11-16",
       "status": "stored",
       "reason": ""
     },
     "Gemini": {
-      "day": "2026-11-15",
+      "day": "2026-11-16",
       "status": "stored",
       "reason": ""
     },
     "Perplexity": {
-      "day": "2026-11-15",
-      "status": "no-evidence",
-      "reason": "vendor_wait_element_timeout"
+      "day": "2026-11-16",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     }
   },
   "intent_analysis": {
@@ -627,12 +684,12 @@
         ],
         "platforms": {
           "ChatGPT": {
-            "samples": 0,
+            "samples": 1,
             "mentions": 0,
             "direct_citations": 0
           },
           "Gemini": {
-            "samples": 0,
+            "samples": 1,
             "mentions": 0,
             "direct_citations": 0
           },
