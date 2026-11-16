@@ -162,22 +162,3 @@ font:inherit;line-height:1.6;color:inherit;min-width:0;max-width:100%;width:100%
 #case-expansion .cyexp-save-state[data-status="error"]{
  background:#fff5f1;color:#9d4826;border-color:#f0cbba;
 }
-
-/* Pair the original and selected CMS picture in equal-width columns. */
-#case-expansion .cyexp-item{display:block}
-#case-expansion .cyexp-compare{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start;margin-bottom:18px}
-#case-expansion .cyexp-compare>*{min-width:0}
-#case-expansion .cyexp-original-label{display:block;font-size:14px;line-height:1.7;margin:0 0 12px}
-#case-expansion .cyexp-compare .cyexp-inline-matcher{margin:0;padding:0;border:0;background:transparent}
-#case-expansion .cyexp-compare .cyexp-inline-match-head{min-height:24px;margin:0 0 12px}
-#case-expansion .cyexp-compare .cyexp-inline-selected{display:block;padding:0;border:0;background:transparent}
-#case-expansion .cyexp-compare .cyexp-thumb>img,
-#case-expansion .cyexp-compare .cyexp-inline-selected>img{display:block;box-sizing:border-box;width:100%;height:clamp(180px,28vw,360px);max-height:none;object-fit:contain;background:#f3f4f6;border:1px solid #d8e0e8;border-radius:8px;margin:0 0 12px}
-#case-expansion .cyexp-item-fields{width:100%;box-sizing:border-box}
-@media(max-width:540px){
- #case-expansion .cyexp-compare{gap:8px}
- #case-expansion .cyexp-compare .cyexp-inline-match-head{display:block}
- #case-expansion .cyexp-compare .cyexp-inline-match-head .cyexp-muted{display:none}
- #case-expansion .cyexp-compare .cyexp-thumb>img,
- #case-expansion .cyexp-compare .cyexp-inline-selected>img{height:180px}
-}
