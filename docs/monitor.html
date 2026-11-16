@@ -551,6 +551,7 @@ tbody tr:last-child td{border-bottom:0}
 <script src="./market-opportunity.js"></script>
 <script src="./ai-seo-evidence.js"></script>
 <script src="./seo-daily-ui.js?v=gsc-history-20261115" defer></script>
+<script src="./seo-article-format.js?v=heading-gold-20261116"></script>
 <script>
 (function(){
 "use strict";
@@ -1021,7 +1022,7 @@ function renderSeoImprovementPlan(){
  const headingInfo=document.createElement("p");headingInfo.className="detail";
  headingInfo.textContent="內文真正的 H2 抬頭："+(integrity.opening_h2_text||"待重新產生標題驗證");
  target.appendChild(headingInfo);
- const content=media.html_with_media;
+ const content=window.formatChenyangArticleForCms(media.html_with_media);
  note.textContent="已通過防錯驗收：原文、圖片、影片、連結及原格局圖順序保留。保護的格局／平面圖："+integrity.floorplan_count+" 張。仍需編輯核對房型、交屋年份、圖片畫面及 CMS 實際上稿效果。";
  target.appendChild(note);
  const feedback=document.createElement("p");feedback.className="detail";
@@ -1042,9 +1043,9 @@ function renderSeoImprovementPlan(){
  frame.srcdoc='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">'+
   '<meta name="viewport" content="width=device-width,initial-scale=1">'+
   '<style>*,*::before,*::after{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{font-size:16px;line-height:1.8}img,video,iframe,figure,svg{max-width:100%!important}img{display:block;width:auto!important;height:auto!important;max-height:300px!important;object-fit:contain;margin:12px auto}@media(max-width:600px){img{max-height:220px!important}}iframe{width:100%!important;aspect-ratio:16/9;height:auto!important}p,h2,h3{overflow-wrap:anywhere}table{display:block;max-width:100%;overflow:auto}</style></head>'+
-  '<body style="padding:12px;margin:0;font-family:system-ui,sans-serif;">'+
+  '<body style="padding:12px;margin:0;font:18px/1.9 system-ui,sans-serif;color:#333333;">'+
   '<div style="font-size:12px;color:#64748b;">以下 H1 為 CMS 文章標題欄的預覽示意，不在複製的內文 HTML 內</div>'+
-  '<h1 style="font-size:24px;line-height:1.4;margin:8px 0 20px;">'+previewCmsTitle+'</h1>'+
+  '<h1 style="color:#C5A47E;font-size:24px;line-height:1.4;margin:8px 0 20px;">'+previewCmsTitle+'</h1>'+
   content+'</body></html>';
  preview.appendChild(frame);target.appendChild(preview);
  const raw=document.createElement("details");raw.style.marginTop="12px";
@@ -1441,6 +1442,6 @@ fetch("./data.json",{cache:"no-store"})
 });
 })();
 </script>
-<script defer src="./seo-case-expansion.js?v=compact-pair-20261116"></script>
+<script defer src="./seo-case-expansion.js?v=heading-gold-20261116"></script>
 </body>
 </html>

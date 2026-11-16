@@ -19,6 +19,7 @@ async function setup(){
   dom.window.URL.revokeObjectURL=()=>{};
   dom.window.fetch=async url=>({ok:true,json:async()=>String(url).includes("seo-media-rewrites")?media:
     String(url).includes("seo-rewrites")?drafts:library});
+  dom.window.eval(fs.readFileSync("docs/seo-article-format.js","utf8"));
   dom.window.eval(script);
   await new Promise(r=>setTimeout(r,20));
   return dom;

@@ -1,9 +1,9 @@
 name: Article URL import checks
 on:
   push:
-    paths: ['docs/seo-case-expansion.js', 'docs/monitor.html', 'docs/downloads/**', 'tests/article-url-import.cjs', 'tests/test_article_reader.py', '.github/workflows/article-url-audit.yml']
+    paths: ['docs/seo-case-expansion.js', 'docs/seo-article-format.js', 'docs/monitor.html', 'docs/downloads/**', 'tests/article-url-import.cjs', 'tests/test_article_reader.py', '.github/workflows/article-url-audit.yml']
   pull_request:
-    paths: ['docs/seo-case-expansion.js', 'docs/monitor.html', 'docs/downloads/**', 'tests/article-url-import.cjs', 'tests/test_article_reader.py', '.github/workflows/article-url-audit.yml']
+    paths: ['docs/seo-case-expansion.js', 'docs/seo-article-format.js', 'docs/monitor.html', 'docs/downloads/**', 'tests/article-url-import.cjs', 'tests/test_article_reader.py', '.github/workflows/article-url-audit.yml']
 permissions:
   contents: read
 jobs:

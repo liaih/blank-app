@@ -3,7 +3,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const {JSDOM}=require('jsdom');
 const html=fs.readFileSync('docs/monitor.html','utf8');
-const source='<div class="chenyang-seo-draft-warning" data-publish-status="not-approved"><strong>SEO 草稿｜未通過正式上稿驗收，不可直接發佈</strong><p>AI 描述與格局圖需人工核對。</p></div><p>舊描述（3D 建模示意圖，非施工完成證明）</p><h2>新建案原文</h2><p>保留原文與戶型</p><img src="https://chen-yang.com.tw/upload/old.png" alt="原格局圖"><h2>延伸閱讀</h2><p>原連結</p>';
+const source='<div class="chenyang-seo-draft-warning" data-publish-status="not-approved"><strong>SEO 草稿｜未通過正式上稿驗收，不可直接發佈</strong><p>AI 描述與格局圖需人工核對。</p></div><p>舊描述（3D 建模示意圖，非施工完成證明）</p><h2>新建案原文</h2><p style="margin:0 0 18px;line-height:1.9;"><span style="font-size:18px;color:#333333;">保留原文與戶型</span></p><p><a href="https://chen-yang.com.tw/news.php"><span style="color:#ADD8E6">原資料連結</span></a></p><img src="https://chen-yang.com.tw/upload/old.png" alt="原格局圖"><h2>延伸閱讀</h2><p>原連結</p>';
 async function setup(){
  const dom=new JSDOM(html,{runScripts:'outside-only',url:'https://liaih.github.io/blank-app/monitor.html#actions'});
  dom.window.fetch=async url=>{
@@ -43,7 +43,7 @@ test('new URL loads audit into existing editor, preserves original and isolates 
  file.arrayBuffer=async()=>bytes.buffer;
  Object.defineProperty(dom.window.crypto,'subtle',{value:require('node:crypto').webcrypto.subtle});
  dom.window.URL.createObjectURL=()=> 'blob:preview';dom.window.URL.revokeObjectURL=()=>{};
- const input=d.querySelector('#cyexp-files');Object.defineProperty(input,'files',{value:[file]});input.dispatchEvent(new dom.window.Event('change'));
+ const input=d.querySelector('#cyexp-files');Object.defineProperty(input,'files',{value:[file],configurable:true});input.dispatchEvent(new dom.window.Event('change'));
  await new Promise(r=>setTimeout(r,80));
  const draft=d.querySelector('#cyexp-draft-html').value;
  assert.match(draft,/保留原文與戶型/);assert.match(draft,/new-3d.png/);assert.doesNotMatch(draft,/3D\s*建模示意圖/);
@@ -51,8 +51,18 @@ test('new URL loads audit into existing editor, preserves original and isolates 
  const rendered=new JSDOM(draft).window.document;
  assert.equal(rendered.querySelector('.chenyang-seo-draft-warning'),null);
  assert.doesNotMatch(draft,/未通過正式上稿驗收，不可直接發佈|非施工完成證明/);
- for(const node of rendered.querySelectorAll('p,figcaption')){assert.equal(node.style.color,'rgb(197, 164, 126)');}
- for(const heading of rendered.querySelectorAll('h2,h3')){
+ const originalParagraph=[...rendered.querySelectorAll('p')].find(p=>p.textContent==='保留原文與戶型');
+ assert.equal(originalParagraph.style.lineHeight,'1.9');
+ assert.equal(originalParagraph.querySelector('span').style.fontSize,'18px');
+ assert.equal(originalParagraph.querySelector('span').style.color,'rgb(51, 51, 51)');
+ assert.equal(rendered.querySelector('.chenyang-case-addition p span').style.fontSize,'18px');
+ assert.equal(rendered.querySelector('.chenyang-case-addition p span').style.color,'');
+ assert.equal(rendered.querySelector('h3').style.color,'');
+ assert.equal(rendered.querySelector('figcaption').style.color,'rgb(102, 102, 102)');
+ assert.equal(rendered.querySelector('a span').style.color,'');
+ assert.equal(rendered.querySelector('a').style.color,'inherit');
+ assert.equal(rendered.querySelector('a').getAttribute('href'),'https://chen-yang.com.tw/news.php');
+ for(const heading of rendered.querySelectorAll('h2')){
   assert.match(heading.getAttribute('style'),/color:.*!important/);
   assert.equal(heading.style.color,'rgb(197, 164, 126)');
  }
@@ -72,11 +82,65 @@ test('new URL loads audit into existing editor, preserves original and isolates 
  assert.ok(d.querySelector('.cyexp-item-fields > .cyexp-inline-matcher input[type="checkbox"]'));
  const preview=d.querySelector('#cyexp-draft-preview .cyexp-article-frame');
  assert.equal(preview.closest('details').open,false);
+ const previewDoc=new JSDOM(preview.srcdoc).window.document;
+ assert.equal(previewDoc.querySelector('.chenyang-case-addition p span').style.color,'');
+ assert.equal(previewDoc.querySelector('h2').style.color,'rgb(197, 164, 126)');
  assert.match(d.querySelector('#cyexp-draft-state').textContent,/草稿不是正式上稿核准/);
  assert.equal(d.querySelector('#cyexp-copy').disabled,true);
 
+ const floorBytes=new TextEncoder().encode('floor plan');
+ const floor=new dom.window.File([floorBytes],'新格局圖.png',{type:'image/png'});
+ floor.arrayBuffer=async()=>floorBytes.buffer;
+ Object.defineProperty(input,'files',{value:[floor]});
+ input.dispatchEvent(new dom.window.Event('change'));
+ await new Promise(r=>setTimeout(r,80));
+ const change=new dom.window.Event('change',{bubbles:true});
+ const description=d.querySelector('.cyexp-item [data-attr="description"]');
+ description.value='客廳保留走道空間';
+ description.dispatchEvent(change);
+ const planUrl=d.querySelectorAll('.cyexp-item')[1].querySelector('[data-attr="url"]');
+ planUrl.value='https://chen-yang.com.tw/upload/new-plan.png';
+ planUrl.dispatchEvent(change);
+ for(const checkbox of d.querySelectorAll('.cyexp-inline-pair-actions input,.cyexp-item [data-attr="verified"],#cyexp-confirm-base,#cyexp-confirm-urls,#cyexp-confirm-floorplan')){
+  checkbox.checked=true;
+  checkbox.dispatchEvent(change);
+ }
+ const intro=d.querySelector('#cyexp-intro');
+ intro.value='新增案件整體介紹';
+ intro.dispatchEvent(change);
+ assert.equal(d.querySelector('#cyexp-copy').disabled,false,d.querySelector('#cyexp-status').textContent);
+ d.querySelector('#cyexp-copy').click();
+ await new Promise(r=>setTimeout(r,20));
+ assert.equal(copied,d.querySelector('#cyexp-html').value);
+ for(const html of [copied,d.querySelector('#cyexp-preview iframe').srcdoc]){
+  const formal=new JSDOM(html).window.document;
+  assert.equal(formal.querySelector('.chenyang-case-addition h2 span').style.color,'rgb(197, 164, 126)');
+  assert.equal(formal.querySelector('.chenyang-case-addition p span').style.color,'');
+  assert.equal(formal.querySelector('.chenyang-case-addition p span').style.fontSize,'18px');
+  assert.match(formal.querySelector('img[src$="new-plan.png"]').alt,/住宅平面配置圖與空間動線/);
+ }
 
-
+ }finally{dom.window.close();}
+});
+test('丹佛花都 standalone preview and HTML copy preserve original body size and use gold for H2',async()=>{
+ const dom=await setup();try{
+  const d=dom.window.document;
+  const chooser=d.querySelector('#action-article');
+  chooser.value='seo-danfo-234';chooser.dispatchEvent(new dom.window.Event('change'));
+  let copied='';
+  Object.defineProperty(dom.window.navigator,'clipboard',{value:{writeText:async html=>{copied=html;}}});
+  const panel=d.querySelector('#seo-article-actions');
+  [...panel.querySelectorAll('button')].find(b=>b.textContent==='複製這篇完整 HTML').click();
+  await new Promise(r=>setTimeout(r,20));
+  assert.equal(copied,panel.querySelector('textarea').value);
+  for(const html of [copied,panel.querySelector('iframe').srcdoc]){
+   const article=new JSDOM(html).window.document;
+   const bodyText=[...article.querySelectorAll('p span')].find(node=>node.textContent.startsWith('丹佛花都位於林口'));
+   assert.equal(bodyText.style.fontSize,'18px');
+   assert.equal(bodyText.style.color,'');
+   assert.equal(article.querySelector('h2 span').style.color,'rgb(197, 164, 126)');
+   assert.doesNotMatch(html,/#add8e6|rgb\(173, 216, 230\)|3D\s*建模示意圖/i);
+  }
  }finally{dom.window.close();}
 });
 test('invalid URL and reader failure leave existing source untouched',async()=>{

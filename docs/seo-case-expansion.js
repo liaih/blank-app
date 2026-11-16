@@ -791,83 +791,45 @@ function mergeCaseIntoArticleBeforeClosingSections(original,caseSection){
  if(separator)offset-=separator[0].length;
  return original.slice(0,offset)+caseSection+original.slice(offset);
 }
-// CMS export contains article content only; workflow notices stay in the editor.
-function cleanArticleLabel(text){
- return String(text||"")
-  .replace(/本專區使用(?:3D\s*建模示意圖|實景照片)說明設計方向，實際尺寸、材質及工程成果仍須以核准圖說與現場確認為準。/g,"")
-  .replace(/（(?:3D\s*建模示意圖，非施工完成證明|平面配置圖，請以最終核准圖說為準)）/g,"")
-  .replace(/；房間名稱、尺寸與實際配置應以原始核准圖面為準。/g,"。")
-  .replace(/[｜|]\s*3D\s*建模示意圖/g,"")
-  .replace(/3D\s*建模示意圖/g,"")
-  .replace(/可見\s*。/g,"。");
-}
-function formatArticleForCms(html){
- const template=document.createElement("template");template.innerHTML=html;
- template.content.querySelectorAll(".chenyang-seo-draft-warning").forEach(node=>node.remove());
- for(const node of template.content.querySelectorAll("p,li,span,strong,b,a,div,section")){
-  node.style.setProperty("color","#C5A47E","important");
- }
- for(const node of template.content.querySelectorAll("p,li")){
-  node.style.setProperty("font-size","18px","important");
-  node.style.setProperty("line-height","1.9","important");
-  node.style.setProperty("margin","0 0 18px","important");
-  for(const child of node.querySelectorAll("span,strong,b,a")){
-   child.style.setProperty("font-size","inherit","important");
-   child.style.setProperty("line-height","inherit","important");
-  }
- }
- for(const heading of template.content.querySelectorAll("h2,h3")){
-  const size=heading.tagName==="H2"?"20px":"18px";
-  heading.style.cssText="color:#C5A47E !important;font-size:"+size+" !important;line-height:1.9 !important;font-weight:700 !important;margin:28px 0 12px !important";
-  for(const child of heading.querySelectorAll("span,strong,b,a")){
-   child.style.setProperty("color","#C5A47E","important");
-   child.style.setProperty("font-size","inherit","important");
-  }
- }
- for(const caption of template.content.querySelectorAll("figcaption")){
-  caption.style.cssText="color:#C5A47E !important;font-size:15px !important;line-height:1.7 !important;text-align:center;margin:8px 0 20px";
-  for(const child of caption.querySelectorAll("*"))child.style.setProperty("color","#C5A47E","important");
- }
- for(const figure of template.content.querySelectorAll("figure"))figure.style.cssText="margin:20px 0;max-width:100%";
- for(const img of template.content.querySelectorAll("img")){
-  img.style.setProperty("max-width","100%","important");img.style.setProperty("height","auto","important");
-  img.style.setProperty("display","block");img.style.setProperty("margin","12px auto");
-  img.setAttribute("alt",cleanArticleLabel(img.getAttribute("alt")));
- }
- const walker=document.createTreeWalker(template.content,NodeFilter.SHOW_TEXT);
- while(walker.nextNode())walker.currentNode.textContent=cleanArticleLabel(walker.currentNode.textContent);
- return template.innerHTML;
+function articleParagraph(text){
+ return '<p style="margin:0 0 18px;line-height:1.9;"><span style="font-size:18px !important;line-height:1.9 !important;">'+esc(text)+'</span></p>\n';
 }
 function generate({draft=false,preview=false}={}){
  if(!articleContextMatches())throw Error("文章選擇尚未同步，禁止跨案場產出 HTML");
  const base=baseHtml();
  if(!base)return "";
- const project=chooseTitle(),kind=$("cyexp-type").value;
+ const project=chooseTitle();
  const intro=$("cyexp-intro").value.trim();
  let h="\n<hr>\n<section class=\"chenyang-case-addition\" data-append-version=\"2\">\n";
- h+="<h2>"+esc(project+"｜室內設計新提案與空間收納規劃")+"</h2>\n";
- h+="<p>"+esc(intro||(draft?"【待補：請先依讀圖結果整理案件介紹】":""))+"</p>\n";
+ h+='<h2 style="margin:28px 0 12px;"><span>'+esc(project+"｜室內設計新提案與空間收納規劃")+'</span></h2>\n';
+ h+=articleParagraph(intro||(draft?"【待補：請先依讀圖結果整理案件介紹】":""));
  const list=[...S.files].sort((a,b)=>(a.role==="格局圖"?-1:0)-(b.role==="格局圖"?-1:0));
  let zone="";
  for(const a of list){
-  if(a.role!==zone){zone=a.role;h+="<h3>"+esc(zone==="格局圖"?project+"｜平面配置與空間動線":zone+"｜空間設計重點")+"</h3>\n";}
+  if(a.role!==zone){
+   zone=a.role;
+   h+='<h3 style="margin:28px 0 12px;"><span style="font-size:20px !important;line-height:1.9 !important;font-weight:700 !important;">'+
+    esc(zone==="格局圖"?project+"｜平面配置與空間動線":zone+"｜空間設計重點")+'</span></h3>\n';
+  }
   const description=String(a.description||"").trim();
   const detail=description||"【待補 AI 讀圖描述："+(a.name||"未命名圖片")+"】";
-  h+="<p>"+esc(detail)+"</p>\n";
+  h+=articleParagraph(detail);
   const official=validUrl(a.url)?a.url.trim():"";
   const localPreview=draft&&preview&&!official&&a.preview?a.preview:"";
   if(!draft&&!official)throw Error("正式 HTML 不得使用未取得公開網址的新圖片："+a.name);
-  h+="<figure data-image-filename=\""+esc(a.name||"")+"\">";
+  h+='<figure data-image-filename="'+esc(a.name||"")+'" style="margin:20px 0;max-width:100%;">';
   if(official||localPreview){
-    h+="<img loading=\"lazy\" decoding=\"async\" src=\""+esc(official||localPreview)+"\" alt=\""+esc(a.alt?.trim()||"待核對圖片 ALT")+"\">";
+    h+='<img loading="lazy" decoding="async" src="'+esc(official||localPreview)+'" alt="'+esc(a.alt?.trim()||"待核對圖片 ALT")+
+     '" style="display:block;max-width:100% !important;height:auto !important;margin:12px auto;">';
   }else{
     h+="<p class=\"chenyang-draft-missing-image\" data-image-url-status=\"pending\">"+
       esc("【待補官網圖片網址："+(a.name||"未命名圖片")+"；草稿不可直接上稿】")+"</p>";
   }
-  h+="<figcaption>"+esc(project+"｜"+zone)+"</figcaption></figure>\n";
+  h+='<figcaption style="font-size:15px;line-height:1.7;color:#666666;text-align:center;margin:8px 0 20px;">'+
+   esc(project+"｜"+zone)+'</figcaption></figure>\n';
  }
  h+="</section>\n";
- return formatArticleForCms(mergeCaseIntoArticleBeforeClosingSections(base,h));
+ return window.formatChenyangArticleForCms(mergeCaseIntoArticleBeforeClosingSections(base,h));
 }
 function articlePreview(title,html){
  const frame=document.createElement("iframe");
@@ -876,7 +838,7 @@ function articlePreview(title,html){
  frame.title=title;frame.loading="lazy";
  frame.srcdoc='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">'+
   '<meta name="viewport" content="width=device-width,initial-scale=1">'+
-  '<style>html,body{max-width:100%;overflow-x:hidden;font:16px/1.8 sans-serif}body{padding:12px;margin:0}'+
+  '<style>html,body{max-width:100%;overflow-x:hidden;font:18px/1.9 sans-serif}body{padding:12px;margin:0;color:#333333}'+
   'img{display:block;width:auto!important;height:auto!important;max-width:100%!important;max-height:240px!important;object-fit:contain;margin:10px auto}'+
   'figure{margin:12px 0}p,h2,h3,figcaption{overflow-wrap:anywhere}</style></head><body>'+
   html+'</body></html>';
