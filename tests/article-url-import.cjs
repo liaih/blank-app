@@ -29,6 +29,13 @@ test('new URL loads audit into existing editor, preserves original and isolates 
  assert.equal(d.querySelector('#cyexp-newbase').value,source);
  assert.equal(d.querySelector('#cyexp-confirm-base').checked,false);
  assert.equal(d.querySelector('#cyexp-copy').disabled,true);
+ {const pair=d.querySelector('.cyexp-compare');
+ if(pair){
+  assert.ok(pair.querySelector(':scope > .cyexp-thumb'));
+  assert.ok(pair.querySelector(':scope > .cyexp-inline-matcher'));
+  assert.equal(d.querySelector('.cyexp-item-fields .cyexp-inline-matcher'),null);
+ }}
+
  const chooser=d.querySelector('#action-article');const other=[...chooser.options].find(o=>o.value!=='url-news-99999').value;
  chooser.value=other;chooser.dispatchEvent(new dom.window.Event('change'));
  assert.notEqual(d.querySelector('#cyexp-newbase').value,source);
@@ -44,11 +51,12 @@ test('new URL loads audit into existing editor, preserves original and isolates 
  const input=d.querySelector('#cyexp-files');Object.defineProperty(input,'files',{value:[file]});input.dispatchEvent(new dom.window.Event('change'));
  await new Promise(r=>setTimeout(r,80));
  const draft=d.querySelector('#cyexp-draft-html').value;
- assert.match(draft,/保留原文與戶型/);assert.match(draft,/new-3d.png/);assert.match(draft,/3D 建模示意圖/);
+ assert.match(draft,/保留原文與戶型/);assert.match(draft,/new-3d.png/);assert.doesNotMatch(draft,/3D\s*建模示意圖/);
  assert.ok(draft.indexOf('chenyang-case-addition')<draft.indexOf('延伸閱讀'));
  const rendered=new JSDOM(draft).window.document;
  assert.equal(rendered.querySelector('.chenyang-seo-draft-warning'),null);
  assert.doesNotMatch(draft,/未通過正式上稿驗收，不可直接發佈|非施工完成證明/);
+ for(const node of rendered.querySelectorAll('p,figcaption')){assert.equal(node.style.color,'rgb(197, 164, 126)');}
  for(const heading of rendered.querySelectorAll('h2,h3')){
   assert.match(heading.getAttribute('style'),/color:.*!important/);
   assert.equal(heading.style.color,'rgb(197, 164, 126)');
@@ -59,6 +67,13 @@ test('new URL loads audit into existing editor, preserves original and isolates 
  assert.equal(copied,draft);
  assert.match(d.querySelector('#cyexp-draft-state').textContent,/尚未通過正式上稿驗收/);
  assert.equal(d.querySelector('#cyexp-copy').disabled,true);
+ {const pair=d.querySelector('.cyexp-compare');
+ if(pair){
+  assert.ok(pair.querySelector(':scope > .cyexp-thumb'));
+  assert.ok(pair.querySelector(':scope > .cyexp-inline-matcher'));
+  assert.equal(d.querySelector('.cyexp-item-fields .cyexp-inline-matcher'),null);
+ }}
+
 
  }finally{dom.window.close();}
 });
