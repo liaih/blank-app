@@ -1,22 +1,22 @@
 {
-  "generated_at": "2026-11-12T21:48:38+08:00",
+  "generated_at": "2026-11-16T15:43:24+08:00",
   "source": "私人 GSC page 維度的每日已存檔資料，無新增外部 API 呼叫",
   "scope": "已授權官網的 NEWS／開箱頁面；只涵蓋 GSC 已回傳的 page 維度，非全站無限制爬取",
-  "last_gsc_day": "2026-11-07",
+  "last_gsc_day": "2026-11-11",
   "current_period": {
-    "from": "2026-10-11",
-    "to": "2026-11-07"
+    "from": "2026-10-15",
+    "to": "2026-11-11"
   },
   "previous_period": {
-    "from": "2026-09-13",
-    "to": "2026-10-10"
+    "from": "2026-09-17",
+    "to": "2026-10-14"
   },
   "days_covered": 56,
   "daily_page_rows_truncated": false,
   "not_query_page_confirmation": true,
   "not_html_generated": true,
   "not_article_quality_proof": true,
-  "total_candidate_pages": 271,
+  "total_candidate_pages": 256,
   "pages": [
     {
       "id": "seo-danfo-234",
@@ -25,16 +25,16 @@
       "title": "",
       "existing_improvement_task": true,
       "current": {
-        "clicks": 28.0,
-        "impressions": 1933.0,
-        "ctr": 0.01449,
-        "position": 7.43
+        "clicks": 23.0,
+        "impressions": 1696.0,
+        "ctr": 0.01356,
+        "position": 7.3
       },
       "previous": {
-        "clicks": 50.0,
-        "impressions": 2634.0,
-        "ctr": 0.01898,
-        "position": 7.94
+        "clicks": 49.0,
+        "impressions": 2698.0,
+        "ctr": 0.01816,
+        "position": 8.08
       },
       "status": "檢查流量下滑原因",
       "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
@@ -49,15 +49,15 @@
       "existing_improvement_task": true,
       "current": {
         "clicks": 5.0,
-        "impressions": 739.0,
-        "ctr": 0.00677,
-        "position": 9.14
+        "impressions": 722.0,
+        "ctr": 0.00693,
+        "position": 8.95
       },
       "previous": {
-        "clicks": 3.0,
-        "impressions": 563.0,
-        "ctr": 0.00533,
-        "position": 9.08
+        "clicks": 2.0,
+        "impressions": 542.0,
+        "ctr": 0.00369,
+        "position": 9.16
       },
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
@@ -72,42 +72,19 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 1.0,
-        "impressions": 475.0,
-        "ctr": 0.00211,
-        "position": 8.27
+        "impressions": 457.0,
+        "ctr": 0.00219,
+        "position": 8.19
       },
       "previous": {
         "clicks": 3.0,
-        "impressions": 519.0,
-        "ctr": 0.00578,
-        "position": 9.46
+        "impressions": 522.0,
+        "ctr": 0.00575,
+        "position": 9.16
       },
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
       "needs_article_review": true,
-      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
-    },
-    {
-      "id": "seo-fumei-503",
-      "path": "news-content.php?id=503",
-      "url": "https://chen-yang.com.tw/news-content.php?id=503",
-      "title": "",
-      "existing_improvement_task": true,
-      "current": {
-        "clicks": 4.0,
-        "impressions": 456.0,
-        "ctr": 0.00877,
-        "position": 8.44
-      },
-      "previous": {
-        "clicks": 7.0,
-        "impressions": 665.0,
-        "ctr": 0.01053,
-        "position": 7.98
-      },
-      "status": "檢查搜尋結果呈現",
-      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
-      "needs_article_review": false,
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
     },
     {
@@ -117,16 +94,16 @@
       "title": "建案 NEWS #410",
       "existing_improvement_task": false,
       "current": {
-        "clicks": 5.0,
-        "impressions": 397.0,
-        "ctr": 0.01259,
-        "position": 8.82
+        "clicks": 4.0,
+        "impressions": 391.0,
+        "ctr": 0.01023,
+        "position": 9.3
       },
       "previous": {
-        "clicks": 13.0,
-        "impressions": 502.0,
-        "ctr": 0.0259,
-        "position": 8.33
+        "clicks": 14.0,
+        "impressions": 501.0,
+        "ctr": 0.02794,
+        "position": 8.45
       },
       "status": "檢查流量下滑原因",
       "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
@@ -140,20 +117,43 @@
       "title": "",
       "existing_improvement_task": true,
       "current": {
-        "clicks": 1.0,
-        "impressions": 351.0,
-        "ctr": 0.00285,
-        "position": 8.8
+        "clicks": 2.0,
+        "impressions": 353.0,
+        "ctr": 0.00567,
+        "position": 8.82
       },
       "previous": {
         "clicks": 4.0,
-        "impressions": 317.0,
-        "ctr": 0.01262,
-        "position": 8.59
+        "impressions": 325.0,
+        "ctr": 0.01231,
+        "position": 8.5
       },
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
       "needs_article_review": false,
+      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
+    },
+    {
+      "id": "discovery-news-content-564",
+      "path": "news-content.php?id=564",
+      "url": "https://chen-yang.com.tw/news-content.php?id=564",
+      "title": "建案 NEWS #564",
+      "existing_improvement_task": false,
+      "current": {
+        "clicks": 8.0,
+        "impressions": 262.0,
+        "ctr": 0.03053,
+        "position": 8.24
+      },
+      "previous": {
+        "clicks": 13.0,
+        "impressions": 240.0,
+        "ctr": 0.05417,
+        "position": 9.26
+      },
+      "status": "檢查流量下滑原因",
+      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
+      "needs_article_review": true,
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
     },
     {
@@ -163,16 +163,39 @@
       "title": "建案 NEWS #83",
       "existing_improvement_task": false,
       "current": {
-        "clicks": 4.0,
-        "impressions": 279.0,
-        "ctr": 0.01434,
-        "position": 8.72
+        "clicks": 3.0,
+        "impressions": 257.0,
+        "ctr": 0.01167,
+        "position": 8.56
       },
       "previous": {
+        "clicks": 13.0,
+        "impressions": 401.0,
+        "ctr": 0.03242,
+        "position": 8.07
+      },
+      "status": "檢查流量下滑原因",
+      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
+      "needs_article_review": true,
+      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
+    },
+    {
+      "id": "discovery-news-content-473",
+      "path": "news-content.php?id=473",
+      "url": "https://chen-yang.com.tw/news-content.php?id=473",
+      "title": "建案 NEWS #473",
+      "existing_improvement_task": false,
+      "current": {
         "clicks": 12.0,
-        "impressions": 446.0,
-        "ctr": 0.02691,
-        "position": 7.74
+        "impressions": 244.0,
+        "ctr": 0.04918,
+        "position": 6.73
+      },
+      "previous": {
+        "clicks": 20.0,
+        "impressions": 380.0,
+        "ctr": 0.05263,
+        "position": 5.93
       },
       "status": "檢查流量下滑原因",
       "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
@@ -187,15 +210,15 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 7.0,
-        "impressions": 243.0,
-        "ctr": 0.02881,
-        "position": 9.51
+        "impressions": 239.0,
+        "ctr": 0.02929,
+        "position": 9.22
       },
       "previous": {
         "clicks": 12.0,
-        "impressions": 416.0,
-        "ctr": 0.02885,
-        "position": 8.61
+        "impressions": 402.0,
+        "ctr": 0.02985,
+        "position": 8.82
       },
       "status": "檢查流量下滑原因",
       "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
@@ -210,15 +233,15 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 4.0,
-        "impressions": 229.0,
-        "ctr": 0.01747,
-        "position": 8.62
+        "impressions": 231.0,
+        "ctr": 0.01732,
+        "position": 8.35
       },
       "previous": {
-        "clicks": 11.0,
-        "impressions": 328.0,
-        "ctr": 0.03354,
-        "position": 9.07
+        "clicks": 8.0,
+        "impressions": 295.0,
+        "ctr": 0.02712,
+        "position": 9.13
       },
       "status": "檢查流量下滑原因",
       "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
@@ -233,15 +256,15 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 1.0,
-        "impressions": 213.0,
-        "ctr": 0.00469,
-        "position": 8.66
+        "impressions": 209.0,
+        "ctr": 0.00478,
+        "position": 8.42
       },
       "previous": {
-        "clicks": 3.0,
-        "impressions": 262.0,
-        "ctr": 0.01145,
-        "position": 8.98
+        "clicks": 2.0,
+        "impressions": 265.0,
+        "ctr": 0.00755,
+        "position": 9.06
       },
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
@@ -249,45 +272,45 @@
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
     },
     {
-      "id": "discovery-news-content-354",
-      "path": "news-content.php?id=354",
-      "url": "https://chen-yang.com.tw/news-content.php?id=354",
-      "title": "建案 NEWS #354",
+      "id": "discovery-news-content-620",
+      "path": "news-content.php?id=620",
+      "url": "https://chen-yang.com.tw/news-content.php?id=620",
+      "title": "建案 NEWS #620",
       "existing_improvement_task": false,
       "current": {
-        "clicks": 0.0,
-        "impressions": 207.0,
-        "ctr": 0.0,
-        "position": 9.99
+        "clicks": 2.0,
+        "impressions": 208.0,
+        "ctr": 0.00962,
+        "position": 9.17
       },
       "previous": {
+        "clicks": 5.0,
+        "impressions": 284.0,
+        "ctr": 0.01761,
+        "position": 9.34
+      },
+      "status": "檢查搜尋結果呈現",
+      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
+      "needs_article_review": true,
+      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
+    },
+    {
+      "id": "discovery-news-content-36",
+      "path": "news-content.php?id=36",
+      "url": "https://chen-yang.com.tw/news-content.php?id=36",
+      "title": "建案 NEWS #36",
+      "existing_improvement_task": false,
+      "current": {
         "clicks": 6.0,
-        "impressions": 408.0,
-        "ctr": 0.01471,
-        "position": 9.97
-      },
-      "status": "檢查搜尋結果呈現",
-      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
-      "needs_article_review": true,
-      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
-    },
-    {
-      "id": "discovery-news-content-566",
-      "path": "news-content.php?id=566",
-      "url": "https://chen-yang.com.tw/news-content.php?id=566",
-      "title": "建案 NEWS #566",
-      "existing_improvement_task": false,
-      "current": {
-        "clicks": 3.0,
-        "impressions": 202.0,
-        "ctr": 0.01485,
-        "position": 8.31
+        "impressions": 200.0,
+        "ctr": 0.03,
+        "position": 8.45
       },
       "previous": {
-        "clicks": 25.0,
-        "impressions": 722.0,
-        "ctr": 0.03463,
-        "position": 7.53
+        "clicks": 11.0,
+        "impressions": 612.0,
+        "ctr": 0.01797,
+        "position": 7.87
       },
       "status": "檢查流量下滑原因",
       "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
@@ -302,15 +325,15 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 3.0,
-        "impressions": 192.0,
-        "ctr": 0.01562,
-        "position": 8.66
+        "impressions": 198.0,
+        "ctr": 0.01515,
+        "position": 8.77
       },
       "previous": {
-        "clicks": 5.0,
-        "impressions": 313.0,
-        "ctr": 0.01597,
-        "position": 8.35
+        "clicks": 6.0,
+        "impressions": 284.0,
+        "ctr": 0.02113,
+        "position": 8.41
       },
       "status": "檢查流量下滑原因",
       "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
@@ -318,48 +341,48 @@
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
     },
     {
-      "id": "discovery-news-content-419",
-      "path": "news-content.php?id=419",
-      "url": "https://chen-yang.com.tw/news-content.php?id=419",
-      "title": "建案 NEWS #419",
+      "id": "discovery-news-content-581",
+      "path": "news-content.php?id=581",
+      "url": "https://chen-yang.com.tw/news-content.php?id=581",
+      "title": "建案 NEWS #581",
       "existing_improvement_task": false,
       "current": {
-        "clicks": 0.0,
+        "clicks": 2.0,
         "impressions": 190.0,
-        "ctr": 0.0,
-        "position": 8.13
+        "ctr": 0.01053,
+        "position": 9.37
       },
       "previous": {
         "clicks": 5.0,
-        "impressions": 314.0,
-        "ctr": 0.01592,
-        "position": 8.07
+        "impressions": 328.0,
+        "ctr": 0.01524,
+        "position": 10.61
       },
-      "status": "檢查搜尋結果呈現",
-      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
+      "status": "檢查流量下滑原因",
+      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
       "needs_article_review": true,
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
     },
     {
-      "id": "discovery-news-content-468",
-      "path": "news-content.php?id=468",
-      "url": "https://chen-yang.com.tw/news-content.php?id=468",
-      "title": "建案 NEWS #468",
+      "id": "discovery-news-content-438",
+      "path": "news-content.php?id=438",
+      "url": "https://chen-yang.com.tw/news-content.php?id=438",
+      "title": "建案 NEWS #438",
       "existing_improvement_task": false,
       "current": {
-        "clicks": 1.0,
-        "impressions": 185.0,
-        "ctr": 0.00541,
-        "position": 8.45
+        "clicks": 10.0,
+        "impressions": 188.0,
+        "ctr": 0.05319,
+        "position": 5.67
       },
       "previous": {
-        "clicks": 13.0,
-        "impressions": 494.0,
-        "ctr": 0.02632,
-        "position": 9.32
+        "clicks": 20.0,
+        "impressions": 337.0,
+        "ctr": 0.05935,
+        "position": 5.13
       },
-      "status": "檢查搜尋結果呈現",
-      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
+      "status": "檢查流量下滑原因",
+      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
       "needs_article_review": true,
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
     },
@@ -373,16 +396,39 @@
         "clicks": 0.0,
         "impressions": 182.0,
         "ctr": 0.0,
-        "position": 9.37
+        "position": 9.15
       },
       "previous": {
         "clicks": 0.0,
-        "impressions": 289.0,
+        "impressions": 264.0,
         "ctr": 0.0,
-        "position": 8.81
+        "position": 8.94
       },
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
+      "needs_article_review": true,
+      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
+    },
+    {
+      "id": "discovery-news-content-256",
+      "path": "news-content.php?id=256",
+      "url": "https://chen-yang.com.tw/news-content.php?id=256",
+      "title": "建案 NEWS #256",
+      "existing_improvement_task": false,
+      "current": {
+        "clicks": 5.0,
+        "impressions": 179.0,
+        "ctr": 0.02793,
+        "position": 6.5
+      },
+      "previous": {
+        "clicks": 10.0,
+        "impressions": 175.0,
+        "ctr": 0.05714,
+        "position": 6.43
+      },
+      "status": "檢查流量下滑原因",
+      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
       "needs_article_review": true,
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
     },
@@ -393,16 +439,16 @@
       "title": "建案 NEWS #382",
       "existing_improvement_task": false,
       "current": {
-        "clicks": 4.0,
-        "impressions": 181.0,
-        "ctr": 0.0221,
-        "position": 9.07
+        "clicks": 5.0,
+        "impressions": 175.0,
+        "ctr": 0.02857,
+        "position": 8.98
       },
       "previous": {
-        "clicks": 9.0,
-        "impressions": 258.0,
-        "ctr": 0.03488,
-        "position": 9.13
+        "clicks": 8.0,
+        "impressions": 249.0,
+        "ctr": 0.03213,
+        "position": 9.11
       },
       "status": "檢查流量下滑原因",
       "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
@@ -416,88 +462,19 @@
       "title": "建案 NEWS #411",
       "existing_improvement_task": false,
       "current": {
-        "clicks": 1.0,
-        "impressions": 176.0,
-        "ctr": 0.00568,
-        "position": 7.3
-      },
-      "previous": {
-        "clicks": 4.0,
-        "impressions": 154.0,
-        "ctr": 0.02597,
-        "position": 6.4
-      },
-      "status": "檢查搜尋結果呈現",
-      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
-      "needs_article_review": true,
-      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
-    },
-    {
-      "id": "discovery-news-content-285",
-      "path": "news-content.php?id=285",
-      "url": "https://chen-yang.com.tw/news-content.php?id=285",
-      "title": "建案 NEWS #285",
-      "existing_improvement_task": false,
-      "current": {
         "clicks": 0.0,
-        "impressions": 175.0,
+        "impressions": 174.0,
         "ctr": 0.0,
-        "position": 9.17
-      },
-      "previous": {
-        "clicks": 6.0,
-        "impressions": 548.0,
-        "ctr": 0.01095,
-        "position": 9.11
-      },
-      "status": "檢查搜尋結果呈現",
-      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
-      "needs_article_review": true,
-      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
-    },
-    {
-      "id": "discovery-news-content-173",
-      "path": "news-content.php?id=173",
-      "url": "https://chen-yang.com.tw/news-content.php?id=173",
-      "title": "建案 NEWS #173",
-      "existing_improvement_task": false,
-      "current": {
-        "clicks": 3.0,
-        "impressions": 168.0,
-        "ctr": 0.01786,
-        "position": 8.25
-      },
-      "previous": {
-        "clicks": 6.0,
-        "impressions": 341.0,
-        "ctr": 0.0176,
-        "position": 8.34
-      },
-      "status": "檢查流量下滑原因",
-      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
-      "needs_article_review": true,
-      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
-    },
-    {
-      "id": "discovery-news-content-175",
-      "path": "news-content.php?id=175",
-      "url": "https://chen-yang.com.tw/news-content.php?id=175",
-      "title": "建案 NEWS #175",
-      "existing_improvement_task": false,
-      "current": {
-        "clicks": 2.0,
-        "impressions": 165.0,
-        "ctr": 0.01212,
-        "position": 9.3
+        "position": 8.03
       },
       "previous": {
         "clicks": 4.0,
-        "impressions": 313.0,
-        "ctr": 0.01278,
-        "position": 8.61
+        "impressions": 164.0,
+        "ctr": 0.02439,
+        "position": 6.3
       },
-      "status": "檢查流量下滑原因",
-      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
+      "status": "檢查搜尋結果呈現",
+      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
       "needs_article_review": true,
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
     },
@@ -508,16 +485,39 @@
       "title": "建案 NEWS #397",
       "existing_improvement_task": false,
       "current": {
-        "clicks": 5.0,
-        "impressions": 165.0,
-        "ctr": 0.0303,
-        "position": 9.24
+        "clicks": 3.0,
+        "impressions": 170.0,
+        "ctr": 0.01765,
+        "position": 9.28
       },
       "previous": {
-        "clicks": 16.0,
-        "impressions": 329.0,
-        "ctr": 0.04863,
-        "position": 8.23
+        "clicks": 19.0,
+        "impressions": 309.0,
+        "ctr": 0.06149,
+        "position": 8.41
+      },
+      "status": "檢查流量下滑原因",
+      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
+      "needs_article_review": true,
+      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
+    },
+    {
+      "id": "discovery-news-content-348",
+      "path": "news-content.php?id=348",
+      "url": "https://chen-yang.com.tw/news-content.php?id=348",
+      "title": "建案 NEWS #348",
+      "existing_improvement_task": false,
+      "current": {
+        "clicks": 2.0,
+        "impressions": 153.0,
+        "ctr": 0.01307,
+        "position": 7.99
+      },
+      "previous": {
+        "clicks": 4.0,
+        "impressions": 115.0,
+        "ctr": 0.03478,
+        "position": 9.01
       },
       "status": "檢查流量下滑原因",
       "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
@@ -532,18 +532,110 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 1.0,
-        "impressions": 165.0,
-        "ctr": 0.00606,
-        "position": 8.12
+        "impressions": 148.0,
+        "ctr": 0.00676,
+        "position": 8.1
       },
       "previous": {
-        "clicks": 2.0,
-        "impressions": 246.0,
-        "ctr": 0.00813,
-        "position": 8.28
+        "clicks": 1.0,
+        "impressions": 239.0,
+        "ctr": 0.00418,
+        "position": 8.26
       },
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
+      "needs_article_review": true,
+      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
+    },
+    {
+      "id": "discovery-news-content-419",
+      "path": "news-content.php?id=419",
+      "url": "https://chen-yang.com.tw/news-content.php?id=419",
+      "title": "建案 NEWS #419",
+      "existing_improvement_task": false,
+      "current": {
+        "clicks": 0.0,
+        "impressions": 146.0,
+        "ctr": 0.0,
+        "position": 7.86
+      },
+      "previous": {
+        "clicks": 5.0,
+        "impressions": 316.0,
+        "ctr": 0.01582,
+        "position": 8.26
+      },
+      "status": "檢查搜尋結果呈現",
+      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
+      "needs_article_review": true,
+      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
+    },
+    {
+      "id": "discovery-news-content-566",
+      "path": "news-content.php?id=566",
+      "url": "https://chen-yang.com.tw/news-content.php?id=566",
+      "title": "建案 NEWS #566",
+      "existing_improvement_task": false,
+      "current": {
+        "clicks": 3.0,
+        "impressions": 144.0,
+        "ctr": 0.02083,
+        "position": 8.1
+      },
+      "previous": {
+        "clicks": 22.0,
+        "impressions": 643.0,
+        "ctr": 0.03421,
+        "position": 7.6
+      },
+      "status": "檢查流量下滑原因",
+      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
+      "needs_article_review": true,
+      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
+    },
+    {
+      "id": "discovery-news-content-43",
+      "path": "news-content.php?id=43",
+      "url": "https://chen-yang.com.tw/news-content.php?id=43",
+      "title": "建案 NEWS #43",
+      "existing_improvement_task": false,
+      "current": {
+        "clicks": 1.0,
+        "impressions": 143.0,
+        "ctr": 0.00699,
+        "position": 6.85
+      },
+      "previous": {
+        "clicks": 4.0,
+        "impressions": 162.0,
+        "ctr": 0.02469,
+        "position": 6.62
+      },
+      "status": "檢查搜尋結果呈現",
+      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
+      "needs_article_review": true,
+      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
+    },
+    {
+      "id": "discovery-news-content-583",
+      "path": "news-content.php?id=583",
+      "url": "https://chen-yang.com.tw/news-content.php?id=583",
+      "title": "建案 NEWS #583",
+      "existing_improvement_task": false,
+      "current": {
+        "clicks": 3.0,
+        "impressions": 140.0,
+        "ctr": 0.02143,
+        "position": 8.35
+      },
+      "previous": {
+        "clicks": 6.0,
+        "impressions": 366.0,
+        "ctr": 0.01639,
+        "position": 9.6
+      },
+      "status": "檢查流量下滑原因",
+      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
       "needs_article_review": true,
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
     },
@@ -555,15 +647,15 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 4.0,
-        "impressions": 154.0,
-        "ctr": 0.02597,
-        "position": 9.11
+        "impressions": 137.0,
+        "ctr": 0.0292,
+        "position": 9.1
       },
       "previous": {
-        "clicks": 9.0,
-        "impressions": 470.0,
-        "ctr": 0.01915,
-        "position": 8.75
+        "clicks": 7.0,
+        "impressions": 406.0,
+        "ctr": 0.01724,
+        "position": 8.84
       },
       "status": "檢查流量下滑原因",
       "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
@@ -571,25 +663,25 @@
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
     },
     {
-      "id": "discovery-news-content-518",
-      "path": "news-content.php?id=518",
-      "url": "https://chen-yang.com.tw/news-content.php?id=518",
-      "title": "建案 NEWS #518",
+      "id": "discovery-news-content-354",
+      "path": "news-content.php?id=354",
+      "url": "https://chen-yang.com.tw/news-content.php?id=354",
+      "title": "建案 NEWS #354",
       "existing_improvement_task": false,
       "current": {
-        "clicks": 3.0,
-        "impressions": 147.0,
-        "ctr": 0.02041,
-        "position": 8.37
+        "clicks": 0.0,
+        "impressions": 135.0,
+        "ctr": 0.0,
+        "position": 9.52
       },
       "previous": {
         "clicks": 5.0,
-        "impressions": 310.0,
-        "ctr": 0.01613,
-        "position": 8.39
+        "impressions": 410.0,
+        "ctr": 0.0122,
+        "position": 10.09
       },
-      "status": "檢查流量下滑原因",
-      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
+      "status": "檢查搜尋結果呈現",
+      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
       "needs_article_review": true,
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
     },
@@ -600,16 +692,16 @@
       "title": "建案 NEWS #63",
       "existing_improvement_task": false,
       "current": {
-        "clicks": 0.0,
-        "impressions": 147.0,
-        "ctr": 0.0,
-        "position": 9.67
+        "clicks": 1.0,
+        "impressions": 135.0,
+        "ctr": 0.00741,
+        "position": 9.59
       },
       "previous": {
         "clicks": 4.0,
-        "impressions": 213.0,
-        "ctr": 0.01878,
-        "position": 7.34
+        "impressions": 210.0,
+        "ctr": 0.01905,
+        "position": 7.5
       },
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
@@ -617,45 +709,45 @@
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
     },
     {
-      "id": "discovery-news-content-348",
-      "path": "news-content.php?id=348",
-      "url": "https://chen-yang.com.tw/news-content.php?id=348",
-      "title": "建案 NEWS #348",
+      "id": "discovery-news-content-468",
+      "path": "news-content.php?id=468",
+      "url": "https://chen-yang.com.tw/news-content.php?id=468",
+      "title": "建案 NEWS #468",
       "existing_improvement_task": false,
       "current": {
-        "clicks": 2.0,
-        "impressions": 145.0,
-        "ctr": 0.01379,
-        "position": 8.18
+        "clicks": 1.0,
+        "impressions": 133.0,
+        "ctr": 0.00752,
+        "position": 8.71
       },
       "previous": {
-        "clicks": 6.0,
-        "impressions": 130.0,
-        "ctr": 0.04615,
-        "position": 8.84
+        "clicks": 12.0,
+        "impressions": 520.0,
+        "ctr": 0.02308,
+        "position": 9.17
       },
-      "status": "檢查流量下滑原因",
-      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
+      "status": "檢查搜尋結果呈現",
+      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
       "needs_article_review": true,
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
     },
     {
-      "id": "discovery-news-content-420",
-      "path": "news-content.php?id=420",
-      "url": "https://chen-yang.com.tw/news-content.php?id=420",
-      "title": "建案 NEWS #420",
+      "id": "discovery-news-content-175",
+      "path": "news-content.php?id=175",
+      "url": "https://chen-yang.com.tw/news-content.php?id=175",
+      "title": "建案 NEWS #175",
       "existing_improvement_task": false,
       "current": {
-        "clicks": 0.0,
-        "impressions": 144.0,
-        "ctr": 0.0,
-        "position": 9.58
+        "clicks": 1.0,
+        "impressions": 132.0,
+        "ctr": 0.00758,
+        "position": 9.5
       },
       "previous": {
-        "clicks": 6.0,
-        "impressions": 155.0,
-        "ctr": 0.03871,
-        "position": 9.15
+        "clicks": 3.0,
+        "impressions": 296.0,
+        "ctr": 0.01014,
+        "position": 8.55
       },
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
@@ -670,15 +762,15 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 0.0,
-        "impressions": 143.0,
+        "impressions": 132.0,
         "ctr": 0.0,
-        "position": 7.9
+        "position": 7.55
       },
       "previous": {
-        "clicks": 5.0,
-        "impressions": 204.0,
-        "ctr": 0.02451,
-        "position": 7.89
+        "clicks": 4.0,
+        "impressions": 180.0,
+        "ctr": 0.02222,
+        "position": 7.94
       },
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
@@ -686,45 +778,45 @@
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
     },
     {
-      "id": "discovery-news-content-43",
-      "path": "news-content.php?id=43",
-      "url": "https://chen-yang.com.tw/news-content.php?id=43",
-      "title": "建案 NEWS #43",
+      "id": "discovery-news-content-173",
+      "path": "news-content.php?id=173",
+      "url": "https://chen-yang.com.tw/news-content.php?id=173",
+      "title": "建案 NEWS #173",
       "existing_improvement_task": false,
       "current": {
-        "clicks": 1.0,
-        "impressions": 140.0,
-        "ctr": 0.00714,
-        "position": 6.74
+        "clicks": 2.0,
+        "impressions": 131.0,
+        "ctr": 0.01527,
+        "position": 8.53
       },
       "previous": {
-        "clicks": 3.0,
-        "impressions": 154.0,
-        "ctr": 0.01948,
-        "position": 6.98
+        "clicks": 7.0,
+        "impressions": 318.0,
+        "ctr": 0.02201,
+        "position": 8.14
       },
-      "status": "檢查搜尋結果呈現",
-      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
+      "status": "檢查流量下滑原因",
+      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
       "needs_article_review": true,
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
     },
     {
-      "id": "discovery-news-content-254",
-      "path": "news-content.php?id=254",
-      "url": "https://chen-yang.com.tw/news-content.php?id=254",
-      "title": "建案 NEWS #254",
+      "id": "discovery-news-content-343",
+      "path": "news-content.php?id=343",
+      "url": "https://chen-yang.com.tw/news-content.php?id=343",
+      "title": "建案 NEWS #343",
       "existing_improvement_task": false,
       "current": {
-        "clicks": 1.0,
-        "impressions": 136.0,
-        "ctr": 0.00735,
-        "position": 9.28
-      },
-      "previous": {
         "clicks": 0.0,
-        "impressions": 153.0,
+        "impressions": 129.0,
         "ctr": 0.0,
-        "position": 8.84
+        "position": 8.49
+      },
+      "previous": {
+        "clicks": 4.0,
+        "impressions": 206.0,
+        "ctr": 0.01942,
+        "position": 9.78
       },
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
@@ -739,15 +831,15 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 0.0,
-        "impressions": 127.0,
+        "impressions": 128.0,
         "ctr": 0.0,
-        "position": 7.74
+        "position": 7.84
       },
       "previous": {
-        "clicks": 2.0,
-        "impressions": 40.0,
-        "ctr": 0.05,
-        "position": 6.92
+        "clicks": 1.0,
+        "impressions": 38.0,
+        "ctr": 0.02632,
+        "position": 6.32
       },
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
@@ -755,22 +847,22 @@
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
     },
     {
-      "id": "discovery-news-content-343",
-      "path": "news-content.php?id=343",
-      "url": "https://chen-yang.com.tw/news-content.php?id=343",
-      "title": "建案 NEWS #343",
+      "id": "discovery-news-content-285",
+      "path": "news-content.php?id=285",
+      "url": "https://chen-yang.com.tw/news-content.php?id=285",
+      "title": "建案 NEWS #285",
       "existing_improvement_task": false,
       "current": {
         "clicks": 0.0,
-        "impressions": 125.0,
+        "impressions": 127.0,
         "ctr": 0.0,
-        "position": 8.42
+        "position": 9.22
       },
       "previous": {
-        "clicks": 5.0,
-        "impressions": 234.0,
-        "ctr": 0.02137,
-        "position": 9.92
+        "clicks": 3.0,
+        "impressions": 509.0,
+        "ctr": 0.00589,
+        "position": 9.18
       },
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
@@ -784,39 +876,16 @@
       "title": "建案 NEWS #104",
       "existing_improvement_task": false,
       "current": {
-        "clicks": 3.0,
-        "impressions": 124.0,
-        "ctr": 0.02419,
-        "position": 9.43
-      },
-      "previous": {
-        "clicks": 5.0,
-        "impressions": 236.0,
-        "ctr": 0.02119,
-        "position": 8.88
-      },
-      "status": "檢查流量下滑原因",
-      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
-      "needs_article_review": true,
-      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
-    },
-    {
-      "id": "discovery-news-content-466",
-      "path": "news-content.php?id=466",
-      "url": "https://chen-yang.com.tw/news-content.php?id=466",
-      "title": "建案 NEWS #466",
-      "existing_improvement_task": false,
-      "current": {
         "clicks": 1.0,
-        "impressions": 124.0,
-        "ctr": 0.00806,
-        "position": 9.48
+        "impressions": 126.0,
+        "ctr": 0.00794,
+        "position": 9.54
       },
       "previous": {
         "clicks": 6.0,
-        "impressions": 123.0,
-        "ctr": 0.04878,
-        "position": 9.24
+        "impressions": 233.0,
+        "ctr": 0.02575,
+        "position": 8.8
       },
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
@@ -824,117 +893,43 @@
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
     },
     {
-      "id": "discovery-news-content-584",
-      "path": "news-content.php?id=584",
-      "url": "https://chen-yang.com.tw/news-content.php?id=584",
-      "title": "建案 NEWS #584",
-      "existing_improvement_task": false,
-      "current": {
-        "clicks": 2.0,
-        "impressions": 123.0,
-        "ctr": 0.01626,
-        "position": 7.89
-      },
-      "previous": {
-        "clicks": 15.0,
-        "impressions": 505.0,
-        "ctr": 0.0297,
-        "position": 8.08
-      },
-      "status": "檢查流量下滑原因",
-      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
-      "needs_article_review": true,
-      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
-    },
-    {
-      "id": "discovery-news-content-84",
-      "path": "news-content.php?id=84",
-      "url": "https://chen-yang.com.tw/news-content.php?id=84",
-      "title": "建案 NEWS #84",
-      "existing_improvement_task": false,
-      "current": {
-        "clicks": 0.0,
-        "impressions": 122.0,
-        "ctr": 0.0,
-        "position": 9.02
-      },
-      "previous": {
-        "clicks": 0.0,
-        "impressions": 150.0,
-        "ctr": 0.0,
-        "position": 9.7
-      },
-      "status": "檢查搜尋結果呈現",
-      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
-      "needs_article_review": true,
-      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
-    },
-    {
-      "id": "discovery-news-content-125",
-      "path": "news-content.php?id=125",
-      "url": "https://chen-yang.com.tw/news-content.php?id=125",
-      "title": "建案 NEWS #125",
+      "id": "discovery-news-content-340",
+      "path": "news-content.php?id=340",
+      "url": "https://chen-yang.com.tw/news-content.php?id=340",
+      "title": "建案 NEWS #340",
       "existing_improvement_task": false,
       "current": {
         "clicks": 1.0,
-        "impressions": 119.0,
-        "ctr": 0.0084,
-        "position": 7.79
+        "impressions": 125.0,
+        "ctr": 0.008,
+        "position": 9.5
       },
-      "previous": {
-        "clicks": 4.0,
-        "impressions": 262.0,
-        "ctr": 0.01527,
-        "position": 7.98
-      },
+      "previous": null,
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
       "needs_article_review": true,
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
     },
     {
-      "id": "discovery-news-content-164",
-      "path": "news-content.php?id=164",
-      "url": "https://chen-yang.com.tw/news-content.php?id=164",
-      "title": "建案 NEWS #164",
+      "id": "discovery-news-content-469",
+      "path": "news-content.php?id=469",
+      "url": "https://chen-yang.com.tw/news-content.php?id=469",
+      "title": "建案 NEWS #469",
       "existing_improvement_task": false,
       "current": {
-        "clicks": 0.0,
-        "impressions": 119.0,
-        "ctr": 0.0,
-        "position": 7.82
+        "clicks": 1.0,
+        "impressions": 125.0,
+        "ctr": 0.008,
+        "position": 9.41
       },
       "previous": {
         "clicks": 4.0,
-        "impressions": 141.0,
-        "ctr": 0.02837,
-        "position": 9.47
+        "impressions": 227.0,
+        "ctr": 0.01762,
+        "position": 9.41
       },
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
-      "needs_article_review": true,
-      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
-    },
-    {
-      "id": "discovery-news-content-520",
-      "path": "news-content.php?id=520",
-      "url": "https://chen-yang.com.tw/news-content.php?id=520",
-      "title": "建案 NEWS #520",
-      "existing_improvement_task": false,
-      "current": {
-        "clicks": 4.0,
-        "impressions": 117.0,
-        "ctr": 0.03419,
-        "position": 8.44
-      },
-      "previous": {
-        "clicks": 8.0,
-        "impressions": 164.0,
-        "ctr": 0.04878,
-        "position": 7.83
-      },
-      "status": "檢查流量下滑原因",
-      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
       "needs_article_review": true,
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容"
     }
