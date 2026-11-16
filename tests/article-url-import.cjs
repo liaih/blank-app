@@ -122,24 +122,48 @@ test('new URL loads audit into existing editor, preserves original and isolates 
 
  }finally{dom.window.close();}
 });
-test('丹佛花都 standalone preview and HTML copy preserve original body size and use gold for H2',async()=>{
+test('all eight articles share the corrected preview and HTML copy formatting',async()=>{
  const dom=await setup();try{
   const d=dom.window.document;
   const chooser=d.querySelector('#action-article');
-  chooser.value='seo-danfo-234';chooser.dispatchEvent(new dom.window.Event('change'));
+  const ids=[...chooser.options].map(option=>option.value);
+  assert.equal(ids.length,8);
   let copied='';
   Object.defineProperty(dom.window.navigator,'clipboard',{value:{writeText:async html=>{copied=html;}}});
   const panel=d.querySelector('#seo-article-actions');
-  [...panel.querySelectorAll('button')].find(b=>b.textContent==='複製這篇完整 HTML').click();
-  await new Promise(r=>setTimeout(r,20));
-  assert.equal(copied,panel.querySelector('textarea').value);
-  for(const html of [copied,panel.querySelector('iframe').srcdoc]){
-   const article=new JSDOM(html).window.document;
-   const bodyText=[...article.querySelectorAll('p span')].find(node=>node.textContent.startsWith('丹佛花都位於林口'));
-   assert.equal(bodyText.style.fontSize,'18px');
-   assert.equal(bodyText.style.color,'');
-   assert.equal(article.querySelector('h2 span').style.color,'rgb(197, 164, 126)');
-   assert.doesNotMatch(html,/#add8e6|rgb\(173, 216, 230\)|3D\s*建模示意圖/i);
+  const media=JSON.parse(fs.readFileSync('docs/seo-media-rewrites.json','utf8')).articles;
+  const sourceAssets=(article,selector,attribute)=>[...article.querySelectorAll(selector)].map(node=>node.getAttribute(attribute));
+  for(const id of ids){
+   chooser.value=id;chooser.dispatchEvent(new dom.window.Event('change'));
+   copied='';
+   [...panel.querySelectorAll('button')].find(b=>b.textContent==='複製這篇完整 HTML').click();
+   assert.equal(copied,panel.querySelector('textarea').value,id);
+   const original=new JSDOM(media.find(entry=>entry.id===id).html_with_media).window.document;
+   for(const html of [copied,panel.querySelector('iframe').srcdoc]){
+    const article=new JSDOM(html).window.document;
+    assert.equal(article.querySelector('h2 span').style.color,'rgb(197, 164, 126)',id);
+    assert.doesNotMatch(html,/#add8e6|rgb\(173, 216, 230\)|3D\s*建模示意圖/i,id);
+    assert.deepEqual(sourceAssets(article,'img','src'),sourceAssets(original,'img','src'),id);
+    assert.deepEqual(sourceAssets(article,'a','href'),sourceAssets(original,'a','href'),id);
+    assert.deepEqual(sourceAssets(article,'iframe,video','src'),sourceAssets(original,'iframe,video','src'),id);
+    const expectedBody={
+     'seo-danfo-234':['丹佛花都位於林口'],
+     'ai-kaohsiung-536':['位於高雄市仁武區北屋北街','準備裝修新家','任職於台積電的客戶'],
+     'seo-fumei-503':['準備裝修新家','任職於台積電的客戶']
+    };
+    for(const lead of expectedBody[id]||[]){
+     const bodyText=[...article.querySelectorAll('p span')].find(node=>node.textContent.startsWith(lead));
+     assert.ok(bodyText,id+' '+lead);
+     assert.equal(bodyText.style.fontSize,'18px');
+     assert.equal(bodyText.style.color,'');
+     assert.equal(bodyText.closest('h2'),null);
+    }
+    if(id==='ai-kaohsiung-536'||id==='seo-fumei-503'){
+     const retainedHeading=[...article.querySelectorAll('h2')].find(node=>node.textContent.trim()==='放樣驗收為何是保障權益的第一步？');
+     assert.equal(retainedHeading.style.color,'rgb(197, 164, 126)',id);
+     assert.equal(retainedHeading.nextElementSibling.tagName,'P',id);
+    }
+   }
   }
  }finally{dom.window.close();}
 });
