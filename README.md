@@ -87,3 +87,13 @@
 **尚未完成：** AI 即時搜尋回答自動採樣、競爭品牌比較、Google AI 成效報表自動同步與公開網站自動更新。
 
 本儲存庫原本是公開的空白應用範本，原有根目錄 Streamlit 程式不屬於本靜態網站，也不參與 GitHub Pages 的 `/docs` 發布。
+
+## 貼網址檢核文章＋新增 3D 圖（2026-11-16）
+
+在 `monitor.html#actions` 的新入口貼入晨陽 `news-content.php`、`knowledge-content.php` 或 `case-content.php?id=…` 網址，讀取官網當次 HTML，檢查 Title、Description、H1、H2、Canonical、圖片 ALT。這是 HTML 結構檢核，不是排名評分或建案事實查證；尚不執行來源頁面的 JavaScript。
+
+因晨陽官網未開放跨站讀取，電腦須先下載頁面「首次使用」的 `article_reader.py` 與 `start_article_reader.bat` 至同一資料夾，安裝 Python 3.10+ 後執行啟動檔。首次安裝 BeautifulSoup；服務只綁定 `127.0.0.1:8765`，只接受指定來源與晨陽文章網址，重新導向也重新驗證。關閉視窗即停止。瀏覽器需允許本機網路存取。手機的 loopback 不會連到電腦；此版本尚不支援手機直接抓取文章。
+
+讀取成功後沿用新增圖、LM Studio 讀圖、ALT、圖文配對及原有正式上稿檢查。匯入不會自動核准原文或更新官網；新圖片須取得官網網址。全新網址在重新開頁後須再讀取，離開前請匯出案件草稿 JSON，重新讀取後可匯入備份。不同版型無法辨識 `.col-row .l-edit` 時明確拒絕，不拿整頁導覽列或舊快照冒充新正文。
+
+驗證：`python -m unittest discover -s tests -p test_article_reader.py`、`node --test tests/article-url-import.cjs tests/seo-editor-regression.mjs`（需要 BeautifulSoup 與 jsdom）。曾實際讀取 news-content.php?id=331，取得 10 張原圖；使用者 Windows、本機網路權限及 LM Studio 的完整端到端流程仍待實機驗收。

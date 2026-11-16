@@ -1706,6 +1706,65 @@ async function importDraft(file){
  $("cyexp-confirm-base").checked=false;$("cyexp-confirm-urls").checked=false;$("cyexp-confirm-floorplan").checked=false;
  renderItems();message("草稿已讀取。重新選取相同原圖後會透過 SHA-256 恢復已確認圖片配對；描述與 ALT 保留，正式上稿仍需核對。");
 }
+// URL imports reuse the existing case editor, AI and all publishing gates.
+const urlPanel=document.createElement("section");
+urlPanel.className="cyexp-draft-panel";
+urlPanel.style.cssText="padding:16px;border:1px solid #bed4ed;border-radius:12px;margin-bottom:18px";
+urlPanel.innerHTML=`<h3>貼網址檢核文章＋新增 3D 圖</h3>
+<label>晨陽官網文章網址<input id="cyexp-source-url" type="url" placeholder="https://www.chen-yang.com.tw/news-content.php?id=…" style="width:100%"></label>
+<div class="cyexp-actions"><button id="cyexp-fetch-article" type="button">讀取最新文章並檢核 SEO</button></div>
+<p id="cyexp-url-status" role="status">讀取成功後，直接在下方加入新的 3D 圖並使用原有 AI 讀圖。新網址重新開頁後需再讀取，新網址的草稿請另行匯出 JSON 備份。</p>
+<details><summary>首次使用｜啟動本機文章讀取服務</summary>
+<p>官網不允許網頁直接跨站抓取文章。請在有 Python 的電腦下載下列兩個檔案到同一資料夾，執行啟動檔；首次會安裝 HTML 解析套件。之後保留服務視窗，貼網址即可檢核。此服務只讀官網，不會上稿。手機無法連接電腦的 127.0.0.1。</p>
+<a href="./downloads/article_reader.py" download>下載文章讀取程式</a> · <a href="./downloads/start_article_reader.bat" download>下載 Windows 啟動檔</a>
+</details><div id="cyexp-url-audit"></div>`;
+host.prepend(urlPanel);
+let urlReading=false;
+$("cyexp-fetch-article").addEventListener("click",async()=>{
+ if(urlReading||S.modelBusy||S.matchRunning||S.fileImportBusy||S.aiStarting){message("目前操作尚未完成，請稍後再讀取網址",true);return;}
+ const status=$("cyexp-url-status"),button=$("cyexp-fetch-article");
+ let url;
+ try{
+  url=new URL($("cyexp-source-url").value.trim());
+  if(url.protocol!=="https:"||!["chen-yang.com.tw","www.chen-yang.com.tw"].includes(url.hostname)||
+    url.username||url.password||(url.port&&url.port!=="443")||
+    !/^\/(knowledge|news|case)-content\.php$/.test(url.pathname)||!/^\d{1,10}$/.test(url.searchParams.get("id")||""))throw Error();
+ }catch(_){status.textContent="請貼上晨陽官網完整文章網址，包含 ?id=文章編號。";return;}
+ if(!S.base.length||typeof window.registerSeoUrlArticle!=="function"){status.textContent="原文章清單仍在載入，請稍後再試。";return;}
+ urlReading=true;button.disabled=true;
+ const selectedAtStart=topSelectedArticleId();
+ status.textContent="正在讀取官網最新原文並檢核，尚未變更編輯內容……";
+ $("cyexp-url-audit").replaceChildren();
+ try{
+  const response=await fetch("http://127.0.0.1:8765/article?url="+encodeURIComponent(url.href),{signal:AbortSignal.timeout(35000),cache:"no-store",targetAddressSpace:"loopback"});
+  const result=await response.json();
+  if(!response.ok)throw Error(result.error||"文章讀取失敗");
+  if(!result.html||!result.title||!Array.isArray(result.checks))throw Error("讀取結果不完整，未套用");
+  if(topSelectedArticleId()!==selectedAtStart||S.modelBusy||S.matchRunning||S.fileImportBusy||S.aiStarting)throw Error("讀取期間已切換文章或開始讀圖，未覆寫目前內容；請重新讀取");
+  const normalized=x=>{try{const u=new URL(x);return u.pathname+"?id="+u.searchParams.get("id");}catch(_){return "";}};
+  const existing=S.base.find(x=>normalized(x.url||x.source_url)===normalized(result.url));
+  if(existing)result.id=existing.id;
+  const article={id:result.id,url:result.url,title:result.title,project_name:result.title.split("｜")[0],html_with_media:result.html,media_integrated:false,floorplan_protection_passed:false};
+  let index=S.base.findIndex(x=>x.id===article.id);
+  if(index<0){S.base.push(article);const option=document.createElement("option");option.value=article.id;option.textContent=result.title;$("cyexp-base").appendChild(option);}else S.base[index]=article;
+  index=S.drafts.findIndex(x=>x.id===article.id);
+  if(index<0)S.drafts.push({...result,project_name:article.project_name});else S.drafts[index]={...result,project_name:article.project_name};
+  window.registerSeoUrlArticle(result);
+  if(!switchToCase(article.id))throw Error("無法切換到匯入文章，請稍後再試");
+  $("cyexp-newbase").value=result.html;
+  $("cyexp-confirm-base").checked=false;
+  showActiveCaseIdentity();updateStatus();scheduleCaseAutosave();
+  const summary=document.createElement("p");
+  summary.textContent="檢核文章："+result.title+"｜原圖 "+result.imageCount+" 張｜"+new Date(result.checkedAt).toLocaleString("zh-TW",{timeZone:"Asia/Taipei"});
+  $("cyexp-url-audit").appendChild(summary);
+  const list=document.createElement("ul");
+  for(const row of result.checks){const li=document.createElement("li");li.textContent=row.status+"｜"+row.item+"："+row.detail;list.appendChild(li);}
+  $("cyexp-url-audit").appendChild(list);
+  status.textContent="已讀取最新原文與 SEO 檢核結果。接著在下方上傳新 3D 圖；原文章完整性與圖文仍需核對，尚未發布官網。";
+ }catch(error){status.textContent="未完成最新文章檢核："+(error.message||"連線失敗")+"。若服務未啟動，請展開「首次使用」；瀏覽器詢問本機網路權限時需允許。";}
+ finally{urlReading=false;button.disabled=false;}
+});
+
 async function start(){
  const out=await Promise.allSettled([
   fetch("./seo-media-rewrites.json",{cache:"no-store"}).then(r=>r.json()),

@@ -1056,6 +1056,19 @@ function renderSeoImprovementPlan(){
  source.setAttribute("aria-label",plan.title+" HTML");
  raw.appendChild(source);target.appendChild(raw);
 }
+window.registerSeoUrlArticle=function(article){
+ if(!seoImprovementPlan)throw Error("原文章清單仍在載入，請稍後再試");
+ const entry={id:article.id,url:article.url,title:article.title,priority:"P1",channels:["SEO 網址檢核"],keyword:""};
+ const idx=seoImprovementPlan.items.findIndex(x=>x.id===entry.id);
+ if(idx<0)seoImprovementPlan.items.push(entry);else seoImprovementPlan.items[idx]=entry;
+ seoRewritesById.set(entry.id,article);
+ seoMediaById.set(entry.id,{media_integrated:false});
+ saveSeoTaskState(entry.id,{status:"待修改",completedAt:null});
+ el("action-view").value="pending";
+ const option=document.createElement("option");option.value=entry.id;option.textContent=entry.title;
+ el("action-article").appendChild(option);el("action-article").value=entry.id;
+ renderSeoImprovementPlan();
+};
 function loadSeoImprovementPlan(){
  el("action-article").addEventListener("change",renderSeoImprovementPlan);
  el("action-view").addEventListener("change",renderSeoImprovementPlan);
@@ -1428,6 +1441,6 @@ fetch("./data.json",{cache:"no-store"})
 });
 })();
 </script>
-<script defer src="./seo-case-expansion.js?v=case-autosave-qa-20261113"></script>
+<script defer src="./seo-case-expansion.js?v=url-audit-20261116"></script>
 </body>
 </html>

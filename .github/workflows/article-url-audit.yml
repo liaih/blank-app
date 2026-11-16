@@ -1,0 +1,24 @@
+name: Article URL import checks
+on:
+  push:
+    paths: ['docs/seo-case-expansion.js', 'docs/monitor.html', 'docs/downloads/**', 'tests/article-url-import.cjs', 'tests/test_article_reader.py', '.github/workflows/article-url-audit.yml']
+  pull_request:
+    paths: ['docs/seo-case-expansion.js', 'docs/monitor.html', 'docs/downloads/**', 'tests/article-url-import.cjs', 'tests/test_article_reader.py', '.github/workflows/article-url-audit.yml']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm install --no-save --package-lock=false jsdom@31.0.1
+      - run: python -m pip install beautifulsoup4==4.14.3
+      - run: node --test tests/article-url-import.cjs tests/seo-editor-regression.mjs
+      - run: python -m unittest discover -s tests -p test_article_reader.py
