@@ -780,6 +780,24 @@ function mergeCaseIntoArticleBeforeClosingSections(original,caseSection){
  if(separator)offset-=separator[0].length;
  return original.slice(0,offset)+caseSection+original.slice(offset);
 }
+// CMS export contains article content only; workflow notices stay in the editor.
+function formatArticleForCms(html){
+ const template=document.createElement("template");
+ template.innerHTML=html;
+ template.content.querySelectorAll(".chenyang-seo-draft-warning").forEach(node=>node.remove());
+ for(const heading of template.content.querySelectorAll("h2,h3")){
+  heading.style.setProperty("color","#C5A47E","important");
+  for(const child of heading.querySelectorAll("span,strong,b,a")){
+   child.style.setProperty("color","#C5A47E","important");
+  }
+ }
+ // Also clean this retired sentence from recovered descriptions / older pasted drafts.
+ const walker=document.createTreeWalker(template.content,NodeFilter.SHOW_TEXT);
+ while(walker.nextNode()){
+  walker.currentNode.textContent=walker.currentNode.textContent.replaceAll("（3D 建模示意圖，非施工完成證明）","");
+ }
+ return template.innerHTML;
+}
 function generate({draft=false,preview=false}={}){
  if(!articleContextMatches())throw Error("文章選擇尚未同步，禁止跨案場產出 HTML");
  const base=baseHtml();
@@ -810,8 +828,7 @@ function generate({draft=false,preview=false}={}){
   h+="<figcaption>"+esc(project+"｜"+zone+"｜"+(a.role==="格局圖"?"平面配置圖":kind)+(draft&&!official?"｜待補正式圖片網址":""))+"</figcaption></figure>\n";
  }
  h+="</section>\n";
- const banner=draft?'<div class="chenyang-seo-draft-warning" data-publish-status="not-approved" style="padding:12px;border:1px solid #af6420;background:#fff4de"><strong>SEO 草稿｜未通過正式上稿驗收，不可直接發佈</strong><p>待補官網圖片網址的圖以標示呈現；AI 描述與格局圖需人工核對。</p></div>\n':"";
- return banner+mergeCaseIntoArticleBeforeClosingSections(base,h);
+ return formatArticleForCms(mergeCaseIntoArticleBeforeClosingSections(base,h));
 }
 function updateStatus(){
  const c=checks(),status=$("cyexp-status");
