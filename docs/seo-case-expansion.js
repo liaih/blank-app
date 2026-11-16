@@ -795,7 +795,7 @@ function generate({draft=false,preview=false}={}){
   if(a.role!==zone){zone=a.role;h+="<h3>"+esc(zone==="格局圖"?project+"｜平面配置與空間動線":zone+"｜空間設計重點")+"</h3>\n";}
   const description=String(a.description||"").trim();
   const detail=(description||"【待補 AI 讀圖描述："+(a.name||"未命名圖片")+"】")+
-   "（"+(a.role==="格局圖"?"平面配置圖，請以最終核准圖說為準":kind+"，非施工完成證明")+"）";
+   (a.role==="格局圖"?"（平面配置圖，請以最終核准圖說為準）":"");
   h+="<p>"+esc(detail)+"</p>\n";
   const official=validUrl(a.url)?a.url.trim():"";
   const localPreview=draft&&preview&&!official&&a.preview?a.preview:"";
