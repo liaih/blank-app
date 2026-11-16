@@ -29,12 +29,7 @@ test('new URL loads audit into existing editor, preserves original and isolates 
  assert.equal(d.querySelector('#cyexp-newbase').value,source);
  assert.equal(d.querySelector('#cyexp-confirm-base').checked,false);
  assert.equal(d.querySelector('#cyexp-copy').disabled,true);
- {const pair=d.querySelector('.cyexp-compare');
- if(pair){
-  assert.ok(pair.querySelector(':scope > .cyexp-thumb'));
-  assert.ok(pair.querySelector(':scope > .cyexp-inline-matcher'));
-  assert.equal(d.querySelector('.cyexp-item-fields .cyexp-inline-matcher'),null);
- }}
+
 
  const chooser=d.querySelector('#action-article');const other=[...chooser.options].find(o=>o.value!=='url-news-99999').value;
  chooser.value=other;chooser.dispatchEvent(new dom.window.Event('change'));
@@ -65,14 +60,12 @@ test('new URL loads audit into existing editor, preserves original and isolates 
  let copied='';Object.defineProperty(dom.window.navigator,'clipboard',{value:{writeText:async html=>{copied=html;}}});
  d.querySelector('#cyexp-copy-draft').click();await new Promise(r=>setTimeout(r,20));
  assert.equal(copied,draft);
+ assert.equal(d.querySelector('.cyexp-compare'),null);
+ assert.ok(d.querySelector('.cyexp-item > .cyexp-thumb'));
+ assert.ok(d.querySelector('.cyexp-item-fields > .cyexp-inline-matcher'));
  assert.match(d.querySelector('#cyexp-draft-state').textContent,/尚未通過正式上稿驗收/);
  assert.equal(d.querySelector('#cyexp-copy').disabled,true);
- {const pair=d.querySelector('.cyexp-compare');
- if(pair){
-  assert.ok(pair.querySelector(':scope > .cyexp-thumb'));
-  assert.ok(pair.querySelector(':scope > .cyexp-inline-matcher'));
-  assert.equal(d.querySelector('.cyexp-item-fields .cyexp-inline-matcher'),null);
- }}
+
 
 
  }finally{dom.window.close();}
