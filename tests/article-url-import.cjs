@@ -4,8 +4,9 @@ const fs=require('node:fs');
 const {JSDOM}=require('jsdom');
 const html=fs.readFileSync('docs/monitor.html','utf8');
 const source='<div class="chenyang-seo-draft-warning" data-publish-status="not-approved"><strong>SEO 草稿｜未通過正式上稿驗收，不可直接發佈</strong><p>AI 描述與格局圖需人工核對。</p></div><p>舊描述（3D 建模示意圖，非施工完成證明）</p><h2>新建案原文</h2><p style="margin:0 0 18px;line-height:1.9;"><span style="font-size:18px;color:#333333;">保留原文與戶型</span></p><p><a href="https://chen-yang.com.tw/news.php"><span style="color:#ADD8E6">原資料連結</span></a></p><img src="https://chen-yang.com.tw/upload/old.png" alt="原格局圖"><h2>延伸閱讀</h2><p>原連結</p>';
-async function setup(){
+async function setup(storage={}){
  const dom=new JSDOM(html,{runScripts:'outside-only',url:'https://liaih.github.io/blank-app/monitor.html#actions'});
+ for(const [key,value] of Object.entries(storage))dom.window.localStorage.setItem(key,value);
  dom.window.fetch=async url=>{
   if(String(url).startsWith('http://127.0.0.1:8765/'))return {ok:true,json:async()=>({id:'url-news-99999',url:'https://www.chen-yang.com.tw/news-content.php?id=99999',title:'測試建案',html:source,metaTitle:'測試建案',metaDescription:'原摘要',checkedAt:new Date().toISOString(),imageCount:1,checks:[{status:'待改善',item:'ALT',detail:'需讀圖'}]})};
   const path='docs/'+String(url).replace(/^\.\//,'').split('?')[0];
@@ -17,6 +18,18 @@ async function setup(){
   else if(!script.type||script.type==='text/javascript')dom.window.eval(script.textContent);
  }
  await new Promise(r=>setTimeout(r,100));return dom;
+}
+const taskKey='chenyang-geo-tasks-v1';
+const draftKey='chenyang-seo-case-drafts-v2';
+function choose(d,id,value){
+ const field=d.querySelector('#'+id);
+ field.value=value;
+ field.dispatchEvent(new d.defaultView.Event('change'));
+}
+function action(d,label){
+ const button=[...d.querySelectorAll('#seo-article-actions button')].find(b=>b.textContent===label);
+ assert.ok(button,label);
+ button.click();
 }
 test('new URL loads audit into existing editor, preserves original and isolates case switches',async()=>{
  const dom=await setup();try{
@@ -119,7 +132,68 @@ test('new URL loads audit into existing editor, preserves original and isolates 
   assert.equal(formal.querySelector('.chenyang-case-addition p span').style.fontSize,'18px');
   assert.match(formal.querySelector('img[src$="new-plan.png"]').alt,/住宅平面配置圖與空間動線/);
  }
+ action(d,'標記完成並移至歷史紀錄');
+ assert.equal(d.querySelector('#action-view').value,'archive');
+ assert.equal(d.querySelector('#seo-article-actions textarea').value,copied);
+ const reloaded=await setup({[taskKey]:dom.window.localStorage.getItem(taskKey)});
+ try{
+  const rd=reloaded.window.document;
+  rd.querySelector('#action-history-toggle').click();
+  assert.equal(rd.querySelector('#action-article').value,'url-news-99999');
+  assert.equal(rd.querySelector('#seo-article-actions textarea').value,copied);
+  assert.match(rd.querySelector('#seo-article-actions').textContent,/完成紀錄/);
+  const completedAt=JSON.parse(reloaded.window.localStorage.getItem(taskKey))['url-news-99999'].completedAt;
+  rd.querySelector('#cyexp-source-url').value='https://www.chen-yang.com.tw/news-content.php?id=99999';
+  rd.querySelector('#cyexp-fetch-article').click();
+  await new Promise(r=>setTimeout(r,60));
+  assert.match(rd.querySelector('#cyexp-url-status').textContent,/已讀取最新/);
+  assert.equal(rd.querySelector('#action-view').value,'archive');
+  assert.equal(rd.querySelector('#seo-article-actions textarea').value,copied);
+  assert.equal(JSON.parse(reloaded.window.localStorage.getItem(taskKey))['url-news-99999'].completedAt,completedAt);
+  action(rd,'恢復待修改');
+  assert.equal(rd.querySelector('#action-view').value,'pending');
+  assert.equal(JSON.parse(reloaded.window.localStorage.getItem(taskKey))['url-news-99999'].status,'待修改');
+ }finally{reloaded.window.close();}
 
+ }finally{dom.window.close();}
+});
+test('earlier completion states and saved article drafts are recovered without inventing a completion',async()=>{
+ const date='2026-11-16T06:00:00.000Z';
+ const state={'seo-danfo-234':{status:'已驗證',completedAt:date},'url-news-777':{status:'已完成',completedAt:date}};
+ const autosave={schema:2,cases:{'url-news-777':{newbase:source,intro:'先前保存的修改'},'url-news-888':{newbase:source,intro:'只有草稿'}}};
+ const dom=await setup({[taskKey]:JSON.stringify(state),[draftKey]:JSON.stringify(autosave)});
+ try{
+  const d=dom.window.document;
+  const chooser=d.querySelector('#action-article');
+  assert.match(d.querySelector('#action-history-toggle').textContent,/（2）/);
+  assert.ok([...chooser.options].some(option=>option.value==='url-news-888'));
+  d.querySelector('#action-history-toggle').click();
+  assert.deepEqual([...chooser.options].map(option=>option.value),['seo-danfo-234','url-news-777']);
+  choose(d,'action-article','url-news-777');
+  assert.equal(d.querySelector('#cyexp-newbase').value,source);
+  assert.equal(d.querySelector('#cyexp-intro').value,'先前保存的修改');
+  assert.match(d.querySelector('#seo-article-actions').textContent,/未保存改稿 HTML/);
+  assert.equal(d.querySelector('#seo-article-actions a').href,'https://www.chen-yang.com.tw/news-content.php?id=777');
+  d.querySelector('#action-history-toggle').click();
+  choose(d,'action-article','url-news-888');
+  assert.equal(d.querySelector('#cyexp-intro').value,'只有草稿');
+  assert.equal(dom.window.localStorage.getItem(taskKey),JSON.stringify(state));
+ }finally{dom.window.close();}
+});
+test('saving a previously loaded AI SEO task preserves newer article completion history',async()=>{
+ const dom=await setup();
+ try{
+  const d=dom.window.document;
+  const owner=[...d.querySelectorAll('#geo-task-rows tr')].find(row=>row.textContent.includes('核對 Perplexity 擷取驗證失敗原因'))?.querySelector('input');
+  assert.ok(owner);
+  choose(d,'action-article','seo-danfo-234');
+  action(d,'標記完成並移至歷史紀錄');
+  owner.value='編輯';
+  owner.dispatchEvent(new dom.window.Event('change'));
+  const records=JSON.parse(dom.window.localStorage.getItem(taskKey));
+  assert.equal(records['capture-perplexity'].owner,'編輯');
+  assert.equal(records['seo-danfo-234'].status,'已完成');
+  assert.match(records['seo-danfo-234'].completedHtml,/丹佛花都/);
  }finally{dom.window.close();}
 });
 test('all eight articles share the corrected preview and HTML copy formatting',async()=>{
