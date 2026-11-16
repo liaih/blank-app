@@ -4,9 +4,9 @@
   "not_chatgpt": true,
   "not_perplexity": true,
   "search_verified_by": "原生 Gemini: groundingMetadata；自建 RAG: 外部網頁搜尋來源與 AI 回答明確引用網址",
-  "window_start": "2026-10-17",
-  "window_end": "2026-11-15",
-  "last_responded_date": "2026-11-15",
+  "window_start": "2026-10-18",
+  "window_end": "2026-11-16",
+  "last_responded_date": "2026-11-16",
   "model": "gemini-2.5-flash-lite / gemini-3.8-flash / gemini-3.5-flash-lite + external retrieval (by cohort)",
   "source_types": {
     "native_gemini_google_grounding": {
@@ -15,17 +15,22 @@
       "direct_domain_citations": 0
     },
     "custom_live_web_rag": {
-      "samples": 9,
+      "samples": 12,
       "mentions": 0,
       "direct_domain_citations": 0
     }
   },
-  "sample_count": 9,
+  "sample_count": 12,
   "brand_mentioned": 0,
   "own_domain_direct_cited": 0,
   "competitor_candidates": [
     {
       "name": "築岳空間設計",
+      "occurrences": 3,
+      "verification": "需人工核對是否為推薦，可能只是列入比較"
+    },
+    {
+      "name": "大棠室內設計",
       "occurrences": 1,
       "verification": "需人工核對是否為推薦，可能只是列入比較"
     },
@@ -69,8 +74,14 @@
       "direct_domain_citations": 0
     },
     {
-      "id": "renovation-process",
+      "id": "renovation-cost",
       "samples": 1,
+      "mentions": 0,
+      "direct_domain_citations": 0
+    },
+    {
+      "id": "renovation-process",
+      "samples": 2,
       "mentions": 0,
       "direct_domain_citations": 0
     },
@@ -88,6 +99,12 @@
     },
     {
       "id": "tainan-renovation",
+      "samples": 1,
+      "mentions": 0,
+      "direct_domain_citations": 0
+    },
+    {
+      "id": "taoyuan-small-home",
       "samples": 1,
       "mentions": 0,
       "direct_domain_citations": 0
