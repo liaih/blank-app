@@ -443,7 +443,7 @@ function makeAlt(a){
  const kind=$("cyexp-type").value;
  const detail=String(a.altSuffix||a.description||a.role||"室內空間")
   .replace(/[\r\n]+/g," ").replace(/[｜|]+/g,"、").trim();
- return project+"｜"+where+detail.slice(0,40)+"｜"+kind+"｜晨陽設計";
+ return project+"｜"+where+detail.slice(0,40)+"｜晨陽設計";
 }
 function hammingHex(a,b){
  if(!/^[a-f0-9]{16}$/i.test(a||"")||!/^[a-f0-9]{16}$/i.test(b||""))return 65;
@@ -516,7 +516,7 @@ function selectOfficialPicture(item,index,url){
 function inlineCmsMatcher(item,index){
  const panel=document.createElement("section");panel.className="cyexp-inline-matcher";
  const header=document.createElement("div");header.className="cyexp-inline-match-head";
- const title=document.createElement("strong");title.textContent="選擇對應的官網圖片";
+ const title=document.createElement("strong");title.textContent="右側｜官網圖片";
  const count=document.createElement("span");count.className="cyexp-muted";
  count.textContent=S.cmsUrls.length?"可選 "+S.cmsUrls.length+" 張":"尚未取得官網圖片";
  header.append(title,count);panel.appendChild(header);
@@ -609,9 +609,11 @@ function itemBox(a,i){
  if(a.preview){const img=document.createElement("img");img.src=a.preview;img.alt="僅供編輯者預覽的新圖片";side.appendChild(img);}
  else{const missing=document.createElement("div");missing.textContent="尚未重新選圖，可用正式圖片網址上稿";side.appendChild(missing);}
  const name=document.createElement("div");name.className="cyexp-muted";name.textContent=(i+1)+". "+(a.name||"已匯入圖片資料");side.appendChild(name);
- card.appendChild(side);
+ const compare=document.createElement("div");compare.className="cyexp-compare";
+ const originalLabel=document.createElement("strong");originalLabel.className="cyexp-original-label";originalLabel.textContent="左側｜上傳原圖";side.prepend(originalLabel);
+ compare.append(side,inlineCmsMatcher(a,i));card.appendChild(compare);
  const right=document.createElement("div");right.className="cyexp-item-fields";
- right.appendChild(inlineCmsMatcher(a,i));
+
  const role=document.createElement("label");role.textContent="圖片類型／空間";
  const sel=document.createElement("select");sel.dataset.attr="role";
  for(const z of zones){const op=document.createElement("option");op.value=z;op.textContent=z;sel.appendChild(op);}
@@ -781,21 +783,50 @@ function mergeCaseIntoArticleBeforeClosingSections(original,caseSection){
  return original.slice(0,offset)+caseSection+original.slice(offset);
 }
 // CMS export contains article content only; workflow notices stay in the editor.
+function cleanArticleLabel(text){
+ return String(text||"")
+  .replace(/本專區使用(?:3D\s*建模示意圖|實景照片)說明設計方向，實際尺寸、材質及工程成果仍須以核准圖說與現場確認為準。/g,"")
+  .replace(/（(?:3D\s*建模示意圖，非施工完成證明|平面配置圖，請以最終核准圖說為準)）/g,"")
+  .replace(/；房間名稱、尺寸與實際配置應以原始核准圖面為準。/g,"。")
+  .replace(/[｜|]\s*3D\s*建模示意圖/g,"")
+  .replace(/3D\s*建模示意圖/g,"")
+  .replace(/可見\s*。/g,"。");
+}
 function formatArticleForCms(html){
- const template=document.createElement("template");
- template.innerHTML=html;
+ const template=document.createElement("template");template.innerHTML=html;
  template.content.querySelectorAll(".chenyang-seo-draft-warning").forEach(node=>node.remove());
- for(const heading of template.content.querySelectorAll("h2,h3")){
-  heading.style.setProperty("color","#C5A47E","important");
-  for(const child of heading.querySelectorAll("span,strong,b,a")){
-   child.style.setProperty("color","#C5A47E","important");
+ for(const node of template.content.querySelectorAll("p,li,span,strong,b,a,div,section")){
+  node.style.setProperty("color","#C5A47E","important");
+ }
+ for(const node of template.content.querySelectorAll("p,li")){
+  node.style.setProperty("font-size","18px","important");
+  node.style.setProperty("line-height","1.9","important");
+  node.style.setProperty("margin","0 0 18px","important");
+  for(const child of node.querySelectorAll("span,strong,b,a")){
+   child.style.setProperty("font-size","inherit","important");
+   child.style.setProperty("line-height","inherit","important");
   }
  }
- // Also clean this retired sentence from recovered descriptions / older pasted drafts.
- const walker=document.createTreeWalker(template.content,NodeFilter.SHOW_TEXT);
- while(walker.nextNode()){
-  walker.currentNode.textContent=walker.currentNode.textContent.replaceAll("（3D 建模示意圖，非施工完成證明）","");
+ for(const heading of template.content.querySelectorAll("h2,h3")){
+  const size=heading.tagName==="H2"?"20px":"18px";
+  heading.style.cssText="color:#C5A47E !important;font-size:"+size+" !important;line-height:1.9 !important;font-weight:700 !important;margin:28px 0 12px !important";
+  for(const child of heading.querySelectorAll("span,strong,b,a")){
+   child.style.setProperty("color","#C5A47E","important");
+   child.style.setProperty("font-size","inherit","important");
+  }
  }
+ for(const caption of template.content.querySelectorAll("figcaption")){
+  caption.style.cssText="color:#C5A47E !important;font-size:15px !important;line-height:1.7 !important;text-align:center;margin:8px 0 20px";
+  for(const child of caption.querySelectorAll("*"))child.style.setProperty("color","#C5A47E","important");
+ }
+ for(const figure of template.content.querySelectorAll("figure"))figure.style.cssText="margin:20px 0;max-width:100%";
+ for(const img of template.content.querySelectorAll("img")){
+  img.style.setProperty("max-width","100%","important");img.style.setProperty("height","auto","important");
+  img.style.setProperty("display","block");img.style.setProperty("margin","12px auto");
+  img.setAttribute("alt",cleanArticleLabel(img.getAttribute("alt")));
+ }
+ const walker=document.createTreeWalker(template.content,NodeFilter.SHOW_TEXT);
+ while(walker.nextNode())walker.currentNode.textContent=cleanArticleLabel(walker.currentNode.textContent);
  return template.innerHTML;
 }
 function generate({draft=false,preview=false}={}){
@@ -812,8 +843,7 @@ function generate({draft=false,preview=false}={}){
  for(const a of list){
   if(a.role!==zone){zone=a.role;h+="<h3>"+esc(zone==="格局圖"?project+"｜平面配置與空間動線":zone+"｜空間設計重點")+"</h3>\n";}
   const description=String(a.description||"").trim();
-  const detail=(description||"【待補 AI 讀圖描述："+(a.name||"未命名圖片")+"】")+
-   (a.role==="格局圖"?"（平面配置圖，請以最終核准圖說為準）":"");
+  const detail=description||"【待補 AI 讀圖描述："+(a.name||"未命名圖片")+"】";
   h+="<p>"+esc(detail)+"</p>\n";
   const official=validUrl(a.url)?a.url.trim():"";
   const localPreview=draft&&preview&&!official&&a.preview?a.preview:"";
@@ -825,7 +855,7 @@ function generate({draft=false,preview=false}={}){
     h+="<p class=\"chenyang-draft-missing-image\" data-image-url-status=\"pending\">"+
       esc("【待補官網圖片網址："+(a.name||"未命名圖片")+"；草稿不可直接上稿】")+"</p>";
   }
-  h+="<figcaption>"+esc(project+"｜"+zone+"｜"+(a.role==="格局圖"?"平面配置圖":kind)+(draft&&!official?"｜待補正式圖片網址":""))+"</figcaption></figure>\n";
+  h+="<figcaption>"+esc(project+"｜"+zone)+"</figcaption></figure>\n";
  }
  h+="</section>\n";
  return formatArticleForCms(mergeCaseIntoArticleBeforeClosingSections(base,h));
@@ -1667,7 +1697,7 @@ function generateSummary(){
  const project=chooseTitle(),kind=$("cyexp-type").value;
  const unique=[...new Set(S.files.filter(x=>x.role!=="格局圖").map(x=>x.role).filter(x=>x!=="其他"))];
  const highlights=unique.length?unique.slice(0,6).join("、"):"空間規劃";
- $("cyexp-intro").value=project+"新增室內設計提案，以"+highlights+"的空間配置呈現生活動線與收納規劃。本專區使用"+kind+"說明設計方向，實際尺寸、材質及工程成果仍須以核准圖說與現場確認為準。";
+ $("cyexp-intro").value=project+"新增室內設計提案，以"+highlights+"的空間配置呈現生活動線與收納規劃。";
  updateStatus();
 }
 function exportDraft(){
