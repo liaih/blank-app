@@ -4,16 +4,16 @@
   "not_first_party_analytics": true,
   "not_real_consumer_query_volume": true,
   "not_own_tavily_rag": true,
-  "window_start": "2026-10-18",
-  "window_end": "2026-11-16",
-  "generated_at": "2026-11-16T21:26:23+08:00",
+  "window_start": "2026-10-19",
+  "window_end": "2026-11-17",
+  "generated_at": "2026-11-17T05:19:40+08:00",
   "total_samples": 10,
   "platforms": [
     {
       "platform": "ChatGPT",
       "samples": 5,
       "existing_jobs": {
-        "pending": 0,
+        "pending": 1,
         "stored": 5,
         "failed": 0,
         "no-evidence": 0
@@ -97,7 +97,7 @@
       "platform": "Gemini",
       "samples": 5,
       "existing_jobs": {
-        "pending": 0,
+        "pending": 1,
         "stored": 5,
         "failed": 0,
         "no-evidence": 0
@@ -181,7 +181,7 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 0,
+        "pending": 1,
         "stored": 0,
         "failed": 0,
         "no-evidence": 5
@@ -395,19 +395,19 @@
   ],
   "existing_job_status": {
     "ChatGPT": {
-      "pending": 0,
+      "pending": 1,
       "stored": 5,
       "failed": 0,
       "no-evidence": 0
     },
     "Gemini": {
-      "pending": 0,
+      "pending": 1,
       "stored": 5,
       "failed": 0,
       "no-evidence": 0
     },
     "Perplexity": {
-      "pending": 0,
+      "pending": 1,
       "stored": 0,
       "failed": 0,
       "no-evidence": 5
@@ -415,19 +415,19 @@
   },
   "latest_job_status": {
     "ChatGPT": {
-      "day": "2026-11-16",
-      "status": "stored",
-      "reason": ""
+      "day": "2026-11-17",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     },
     "Gemini": {
-      "day": "2026-11-16",
-      "status": "stored",
-      "reason": ""
+      "day": "2026-11-17",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     },
     "Perplexity": {
-      "day": "2026-11-16",
-      "status": "no-evidence",
-      "reason": "vendor_wait_element_timeout"
+      "day": "2026-11-17",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     }
   },
   "intent_analysis": {
