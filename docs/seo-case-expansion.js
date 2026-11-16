@@ -516,7 +516,7 @@ function selectOfficialPicture(item,index,url){
 function inlineCmsMatcher(item,index){
  const panel=document.createElement("section");panel.className="cyexp-inline-matcher";
  const header=document.createElement("div");header.className="cyexp-inline-match-head";
- const title=document.createElement("strong");title.textContent="右側｜官網圖片";
+ const title=document.createElement("strong");title.textContent="選擇對應的官網圖片";
  const count=document.createElement("span");count.className="cyexp-muted";
  count.textContent=S.cmsUrls.length?"可選 "+S.cmsUrls.length+" 張":"尚未取得官網圖片";
  header.append(title,count);panel.appendChild(header);
@@ -609,11 +609,9 @@ function itemBox(a,i){
  if(a.preview){const img=document.createElement("img");img.src=a.preview;img.alt="僅供編輯者預覽的新圖片";side.appendChild(img);}
  else{const missing=document.createElement("div");missing.textContent="尚未重新選圖，可用正式圖片網址上稿";side.appendChild(missing);}
  const name=document.createElement("div");name.className="cyexp-muted";name.textContent=(i+1)+". "+(a.name||"已匯入圖片資料");side.appendChild(name);
- const compare=document.createElement("div");compare.className="cyexp-compare";
- const originalLabel=document.createElement("strong");originalLabel.className="cyexp-original-label";originalLabel.textContent="左側｜上傳原圖";side.prepend(originalLabel);
- compare.append(side,inlineCmsMatcher(a,i));card.appendChild(compare);
+ card.appendChild(side);
  const right=document.createElement("div");right.className="cyexp-item-fields";
-
+ right.appendChild(inlineCmsMatcher(a,i));
  const role=document.createElement("label");role.textContent="圖片類型／空間";
  const sel=document.createElement("select");sel.dataset.attr="role";
  for(const z of zones){const op=document.createElement("option");op.value=z;op.textContent=z;sel.appendChild(op);}
