@@ -60,10 +60,19 @@ test('new URL loads audit into existing editor, preserves original and isolates 
  let copied='';Object.defineProperty(dom.window.navigator,'clipboard',{value:{writeText:async html=>{copied=html;}}});
  d.querySelector('#cyexp-copy-draft').click();await new Promise(r=>setTimeout(r,20));
  assert.equal(copied,draft);
- assert.equal(d.querySelector('.cyexp-compare'),null);
- assert.ok(d.querySelector('.cyexp-item > .cyexp-thumb'));
- assert.ok(d.querySelector('.cyexp-item-fields > .cyexp-inline-matcher'));
- assert.match(d.querySelector('#cyexp-draft-state').textContent,/尚未通過正式上稿驗收/);
+ const compare=d.querySelector('.cyexp-item > .cyexp-compare');
+ assert.deepEqual([...compare.querySelectorAll('strong')].map(label=>label.textContent),['本機原圖','官網圖片']);
+ assert.equal(compare.querySelector('.cyexp-photo img').getAttribute('src'),'blob:preview');
+ assert.equal(compare.querySelector('.cyexp-thumb + .cyexp-thumb .cyexp-photo').textContent,'尚未配對');
+ const url=d.querySelector('.cyexp-item-fields [data-attr="url"]');
+ url.value='https://chen-yang.com.tw/upload/new-3d.png';
+ url.dispatchEvent(new dom.window.Event('change',{bubbles:true}));
+ const pair=d.querySelectorAll('.cyexp-compare .cyexp-photo img');
+ assert.deepEqual([...pair].map(img=>img.getAttribute('src')),['blob:preview',url.value]);
+ assert.ok(d.querySelector('.cyexp-item-fields > .cyexp-inline-matcher input[type="checkbox"]'));
+ const preview=d.querySelector('#cyexp-draft-preview .cyexp-article-frame');
+ assert.equal(preview.closest('details').open,false);
+ assert.match(d.querySelector('#cyexp-draft-state').textContent,/草稿不是正式上稿核准/);
  assert.equal(d.querySelector('#cyexp-copy').disabled,true);
 
 

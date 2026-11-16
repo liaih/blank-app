@@ -70,7 +70,7 @@ draftPanel.innerHTML=[
  '<h4 style="margin:0 0 6px">SEO 草稿｜AI 讀圖後立即整合</h4>',
  '<p class="cyexp-muted" id="cyexp-draft-state" role="status">選擇建案及圖片後，立即產生文章與圖片 ALT 草稿，不必先上傳官網圖片。</p>',
  '<div class="cyexp-actions"><button type="button" id="cyexp-copy-draft" disabled>複製 SEO 草稿 HTML（不可直接上稿）</button></div>',
- '<details class="cyexp-advanced" open><summary>草稿文章預覽與完整 HTML</summary><div id="cyexp-draft-preview"></div><textarea id="cyexp-draft-html" readonly rows="7"></textarea></details>'
+ '<details class="cyexp-advanced"><summary>草稿文章預覽與完整 HTML</summary><div id="cyexp-draft-preview"></div><textarea id="cyexp-draft-html" readonly rows="7"></textarea></details>'
 ].join("");
 host.appendChild(draftPanel);
 const matchHud=document.createElement("aside");
@@ -161,7 +161,7 @@ function buildBeginnerLayout(){
  one.append(currentProject,saveStatus,fields,actions,aiInfo,localPanel);
  two.append(cms,images,reviewed,reviewedHelp,intro,summaryActions,imageStatus,draftPanel);
  const cmsTitle=cms.querySelector("summary");
- cmsTitle.textContent="匯入官網圖片 HTML｜每張原圖下方直接選圖";
+ cmsTitle.textContent="匯入官網圖片 HTML｜在各圖片卡片選圖";
  const cmsHelp=cms.querySelector("p.cyexp-muted");
  if(cmsHelp)cmsHelp.textContent="一次貼入官網批次圖片 HTML → 按自動配對 → 直接在下方每張原圖旁點選官網縮圖。AI 無法確認的才需要你選擇；不用來回捲動或手動輸入網址。";
  three.append(matchHud,baseCheck,urlCheck,planCheck,status,copyGroup,preview);
@@ -513,18 +513,14 @@ function selectOfficialPicture(item,index,url){
  renderItems();
  renderCmsPairingReview();
 }
-function inlineCmsMatcher(item,index){
+function inlineCmsMatcher(item,index,official){
  const panel=document.createElement("section");panel.className="cyexp-inline-matcher";
  const header=document.createElement("div");header.className="cyexp-inline-match-head";
  const title=document.createElement("strong");title.textContent="選擇對應的官網圖片";
  const count=document.createElement("span");count.className="cyexp-muted";
  count.textContent=S.cmsUrls.length?"可選 "+S.cmsUrls.length+" 張":"尚未取得官網圖片";
  header.append(title,count);panel.appendChild(header);
- const official=validUrl(item.url)?item.url:"";
  if(official){
-  const selected=document.createElement("div");selected.className="cyexp-inline-selected";
-  const picture=document.createElement("img");picture.src=official;
-  picture.alt="目前對應官網圖片，請與左側本機原圖比較";picture.loading="lazy";
   const info=document.createElement("div");info.className="cyexp-inline-selected-info";
   const suffix=cmsImageUrlSuffix(official);
   const idx=S.cmsUrls.indexOf(official);
@@ -550,7 +546,7 @@ function inlineCmsMatcher(item,index){
   clear.className="cyexp-clear-pair";clear.textContent="清除配對";
   clear.addEventListener("click",()=>selectOfficialPicture(item,index,""));
   actions.append(check,clear);info.append(heading,digits,status,actions);
-  selected.append(picture,info);panel.append(selected);
+  panel.append(info);
  }
  if(S.cmsUrls.length){
   const choices=document.createElement("details");choices.className="cyexp-image-choice";
@@ -603,15 +599,30 @@ function inlineCmsMatcher(item,index){
  }
  return panel;
 }
+function comparisonPhoto(label,src,fallback){
+ const photo=document.createElement("div");photo.className="cyexp-thumb";
+ const heading=document.createElement("strong");heading.textContent=label;
+ const frame=document.createElement("div");frame.className="cyexp-photo";
+ if(src){
+  const img=document.createElement("img");
+  img.src=src;img.alt=label;img.loading="lazy";
+  frame.append(img);
+ }else{
+  frame.textContent=fallback;
+ }
+ photo.append(heading,frame);
+ return photo;
+}
 function itemBox(a,i){
  const card=document.createElement("article");card.className="cyexp-item";card.id="cyexp-image-card-"+i;
- const side=document.createElement("div");side.className="cyexp-thumb";
- if(a.preview){const img=document.createElement("img");img.src=a.preview;img.alt="僅供編輯者預覽的新圖片";side.appendChild(img);}
- else{const missing=document.createElement("div");missing.textContent="尚未重新選圖，可用正式圖片網址上稿";side.appendChild(missing);}
- const name=document.createElement("div");name.className="cyexp-muted";name.textContent=(i+1)+". "+(a.name||"已匯入圖片資料");side.appendChild(name);
- card.appendChild(side);
+ const official=validUrl(a.url)?a.url.trim():"";
+ const compare=document.createElement("div");compare.className="cyexp-compare";
+ const original=comparisonPhoto("本機原圖",a.preview,"請重新選取原圖");
+ const name=document.createElement("div");name.className="cyexp-muted";name.textContent=(i+1)+". "+(a.name||"已匯入圖片資料");original.append(name);
+ compare.append(original,comparisonPhoto("官網圖片",official,"尚未配對"));
+ card.append(compare);
  const right=document.createElement("div");right.className="cyexp-item-fields";
- right.appendChild(inlineCmsMatcher(a,i));
+ right.appendChild(inlineCmsMatcher(a,i,official));
  const role=document.createElement("label");role.textContent="圖片類型／空間";
  const sel=document.createElement("select");sel.dataset.attr="role";
  for(const z of zones){const op=document.createElement("option");op.value=z;op.textContent=z;sel.appendChild(op);}
@@ -858,6 +869,19 @@ function generate({draft=false,preview=false}={}){
  h+="</section>\n";
  return formatArticleForCms(mergeCaseIntoArticleBeforeClosingSections(base,h));
 }
+function articlePreview(title,html){
+ const frame=document.createElement("iframe");
+ frame.setAttribute("sandbox","");
+ frame.className="cyexp-article-frame";
+ frame.title=title;frame.loading="lazy";
+ frame.srcdoc='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">'+
+  '<meta name="viewport" content="width=device-width,initial-scale=1">'+
+  '<style>html,body{max-width:100%;overflow-x:hidden;font:16px/1.8 sans-serif}body{padding:12px;margin:0}'+
+  'img{display:block;width:auto!important;height:auto!important;max-width:100%!important;max-height:240px!important;object-fit:contain;margin:10px auto}'+
+  'figure{margin:12px 0}p,h2,h3,figcaption{overflow-wrap:anywhere}</style></head><body>'+
+  html+'</body></html>';
+ return frame;
+}
 function updateStatus(){
  const c=checks(),status=$("cyexp-status");
  status.className="cyexp-status "+(c.pass?"ready":"blocked");
@@ -905,28 +929,13 @@ function updateStatus(){
   "草稿已即時更新｜新圖 "+S.files.length+" 張，待補官網網址 "+pendingUrls+" 張，待補 AI 描述或 ALT "+pendingText+" 張。草稿不是正式上稿核准。":
   "選擇建案及圖片後即自動產生草稿；不須先取得官網圖片網址。";
  const draftPreview=$("cyexp-draft-preview");draftPreview.replaceChildren();
- if(canDraft){
-  const frame=document.createElement("iframe");
-  frame.setAttribute("sandbox","");
-  frame.title="SEO 草稿全文預覽（含尚未公開的本機圖片）";
-  frame.style.cssText="width:100%;max-width:100%;height:440px;border:1px solid #d6dfe8;border-radius:10px;background:white";
-  frame.srcdoc='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">'+
-   '<style>html,body{max-width:100%;overflow-x:hidden;font:16px/1.8 sans-serif}body{padding:12px;margin:0}img{max-width:100%;height:auto;display:block;margin:10px auto}figure{margin:12px 0}figcaption{font-size:13px;color:#64748b}</style></head><body>'+
-   generate({draft:true,preview:true})+'</body></html>';
-  draftPreview.appendChild(frame);
- }
+ if(canDraft)draftPreview.append(articlePreview("SEO 草稿全文預覽（含尚未公開的本機圖片）",generate({draft:true,preview:true})));
  $("cyexp-copy").disabled=!c.pass;
  $("cyexp-html").value=c.pass?generate():"正式上稿驗收尚未完成；SEO 草稿可在第二步預覽及複製。";
  $("cyexp-preview").replaceChildren();
  if(c.pass){
   const tag=document.createElement("p");tag.className="cyexp-muted";tag.textContent="新增 "+c.newImageCount+" 張圖片、其中新格局圖 "+c.newFloorplanCount+" 張；原文保留，新增案例排列於 FAQ 與延伸閱讀之前。";$("cyexp-preview").appendChild(tag);
-  const frame=document.createElement("iframe");
-  frame.setAttribute("sandbox","");frame.title="原文及新增案件完整 HTML 預覽";
-  frame.style.cssText="width:100%;max-width:100%;height:480px;border:1px solid #d6dfe8;border-radius:10px;background:white";
-  frame.srcdoc='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'+
-    '<style>html,body{max-width:100%;overflow-x:hidden;font:16px/1.8 sans-serif;color:#293645}body{padding:12px;margin:0}img{max-width:100%;height:auto;display:block;margin:10px auto}h2{font-size:22px}h3{font-size:18px}figure{margin:14px 0}figcaption{text-align:center;font-size:13px;color:#64748b}</style></head><body>'+
-    generate()+'</body></html>';
-  $("cyexp-preview").appendChild(frame);
+  $("cyexp-preview").append(articlePreview("原文及新增案件完整 HTML 預覽",$("cyexp-html").value));
  }
  scheduleCaseAutosave();
 }

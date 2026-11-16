@@ -102,7 +102,7 @@ tbody tr:last-child td{border-bottom:0}
 #seo-today table,#seo-history table{min-width:690px}
 @media(max-width:530px){#seo-history .flexhead{display:block}#seo-history .switch{margin-top:12px}}
 </style>
-<link rel="stylesheet" href="./seo-case-expansion.css?v=compact-restored-20261116">
+<link rel="stylesheet" href="./seo-case-expansion.css?v=compact-pair-20261116">
 </head>
 <body>
 <div class="shell">
@@ -1035,7 +1035,7 @@ function renderSeoImprovementPlan(){
  const previewLabel=document.createElement("summary");previewLabel.textContent="預覽整篇文章排版";
  preview.appendChild(previewLabel);
  const frame=document.createElement("iframe");frame.title="文章排版預覽："+plan.title;
- frame.setAttribute("sandbox","");frame.style.width="100%";frame.style.maxWidth="100%";frame.style.height="min(64vh,460px)";
+ frame.setAttribute("sandbox","");frame.style.width="100%";frame.style.maxWidth="100%";frame.style.height="min(320px,50vh)";
  frame.style.marginTop="12px";frame.style.border="1px solid #dfe7f0";
  frame.style.borderRadius="10px";frame.loading="lazy";
  const previewCmsTitle=String(draft.title||plan.title).replace(/[&<>"]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
@@ -1441,6 +1441,6 @@ fetch("./data.json",{cache:"no-store"})
 });
 })();
 </script>
-<script defer src="./seo-case-expansion.js?v=compact-restored-20261116"></script>
+<script defer src="./seo-case-expansion.js?v=compact-pair-20261116"></script>
 </body>
 </html>
