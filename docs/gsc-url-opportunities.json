@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-12T21:48:31+08:00",
+  "generated_at": "2026-11-16T15:43:14+08:00",
   "source": "Google Search Console Search Analytics API；僅使用原有唯讀 GSC 授權",
   "property": "https://chen-yang.com.tw/",
   "site_id": "chen-yang-site",
@@ -19,33 +19,33 @@
       "reason": "目前缺少足以直接要求修改的證據；可持續追蹤與測試。",
       "current": {
         "period": {
-          "from": "2026-10-12",
-          "to": "2026-11-08"
+          "from": "2026-10-16",
+          "to": "2026-11-12"
         },
         "page_metrics": {
-          "clicks": 37.0,
-          "impressions": 1279.0,
-          "ctr": 0.02893,
-          "position": 9.29
+          "clicks": 34.0,
+          "impressions": 1043.0,
+          "ctr": 0.0326,
+          "position": 9.3
         },
         "devices": {
           "DESKTOP": {
-            "clicks": 16.0,
-            "impressions": 387.0,
-            "ctr": 0.04134,
-            "position": 8.03
+            "clicks": 15.0,
+            "impressions": 293.0,
+            "ctr": 0.05119,
+            "position": 8.09
           },
           "MOBILE": {
-            "clicks": 21.0,
-            "impressions": 883.0,
-            "ctr": 0.02378,
-            "position": 9.82
+            "clicks": 19.0,
+            "impressions": 742.0,
+            "ctr": 0.02561,
+            "position": 9.75
           },
           "TABLET": {
             "clicks": 0.0,
-            "impressions": 9.0,
+            "impressions": 8.0,
             "ctr": 0.0,
-            "position": 11.78
+            "position": 12.12
           }
         },
         "query_rows_partial": false,
@@ -53,29 +53,29 @@
           {
             "query": "允將大聚",
             "metrics": {
-              "clicks": 28.0,
-              "impressions": 1126.0,
-              "ctr": 0.02487,
-              "position": 9.7
+              "clicks": 25.0,
+              "impressions": 905.0,
+              "ctr": 0.02762,
+              "position": 9.81
             },
             "devices": {
               "DESKTOP": {
-                "clicks": 13.0,
-                "impressions": 347.0,
-                "ctr": 0.03746,
-                "position": 8.21
+                "clicks": 11.0,
+                "impressions": 251.0,
+                "ctr": 0.04382,
+                "position": 8.41
               },
               "MOBILE": {
-                "clicks": 15.0,
-                "impressions": 771.0,
-                "ctr": 0.01946,
-                "position": 10.35
+                "clicks": 14.0,
+                "impressions": 647.0,
+                "ctr": 0.02164,
+                "position": 10.32
               },
               "TABLET": {
                 "clicks": 0.0,
-                "impressions": 8.0,
+                "impressions": 7.0,
                 "ctr": 0.0,
-                "position": 11.62
+                "position": 12.0
               }
             }
           },
@@ -83,22 +83,22 @@
             "query": "允將大聚格局圖",
             "metrics": {
               "clicks": 9.0,
-              "impressions": 71.0,
-              "ctr": 0.12676,
-              "position": 2.46
+              "impressions": 66.0,
+              "ctr": 0.13636,
+              "position": 2.33
             },
             "devices": {
               "DESKTOP": {
-                "clicks": 3.0,
-                "impressions": 17.0,
-                "ctr": 0.17647,
-                "position": 1.18
+                "clicks": 4.0,
+                "impressions": 19.0,
+                "ctr": 0.21053,
+                "position": 1.16
               },
               "MOBILE": {
-                "clicks": 6.0,
-                "impressions": 54.0,
-                "ctr": 0.11111,
-                "position": 2.87
+                "clicks": 5.0,
+                "impressions": 47.0,
+                "ctr": 0.10638,
+                "position": 2.81
               }
             }
           },
@@ -106,45 +106,22 @@
             "query": "允將大聚 格局圖",
             "metrics": {
               "clicks": 0.0,
-              "impressions": 18.0,
+              "impressions": 19.0,
               "ctr": 0.0,
-              "position": 5.39
+              "position": 5.16
             },
             "devices": {
               "DESKTOP": {
                 "clicks": 0.0,
-                "impressions": 10.0,
+                "impressions": 11.0,
                 "ctr": 0.0,
-                "position": 8.3
+                "position": 7.64
               },
               "MOBILE": {
                 "clicks": 0.0,
                 "impressions": 8.0,
                 "ctr": 0.0,
                 "position": 1.75
-              }
-            }
-          },
-          {
-            "query": "允將大聚進度",
-            "metrics": {
-              "clicks": 0.0,
-              "impressions": 11.0,
-              "ctr": 0.0,
-              "position": 11.36
-            },
-            "devices": {
-              "DESKTOP": {
-                "clicks": 0.0,
-                "impressions": 2.0,
-                "ctr": 0.0,
-                "position": 14.5
-              },
-              "MOBILE": {
-                "clicks": 0.0,
-                "impressions": 9.0,
-                "ctr": 0.0,
-                "position": 10.67
               }
             }
           },
@@ -172,25 +149,25 @@
             }
           },
           {
-            "query": "允將大聚的評論",
+            "query": "允將大聚進度",
             "metrics": {
               "clicks": 0.0,
-              "impressions": 9.0,
+              "impressions": 10.0,
               "ctr": 0.0,
-              "position": 9.67
+              "position": 11.4
             },
             "devices": {
               "DESKTOP": {
                 "clicks": 0.0,
                 "impressions": 2.0,
                 "ctr": 0.0,
-                "position": 5.0
+                "position": 14.5
               },
               "MOBILE": {
                 "clicks": 0.0,
-                "impressions": 7.0,
+                "impressions": 8.0,
                 "ctr": 0.0,
-                "position": 11.0
+                "position": 10.62
               }
             }
           },
@@ -221,16 +198,16 @@
             "query": "允將大聚 樂居",
             "metrics": {
               "clicks": 0.0,
-              "impressions": 7.0,
+              "impressions": 6.0,
               "ctr": 0.0,
-              "position": 10.86
+              "position": 11.5
             },
             "devices": {
               "MOBILE": {
                 "clicks": 0.0,
-                "impressions": 6.0,
+                "impressions": 5.0,
                 "ctr": 0.0,
-                "position": 10.5
+                "position": 11.2
               },
               "TABLET": {
                 "clicks": 0.0,
@@ -241,25 +218,25 @@
             }
           },
           {
-            "query": "允將大聚停工",
+            "query": "允將大聚的評論",
             "metrics": {
               "clicks": 0.0,
-              "impressions": 6.0,
+              "impressions": 5.0,
               "ctr": 0.0,
-              "position": 9.33
+              "position": 10.6
             },
             "devices": {
               "DESKTOP": {
                 "clicks": 0.0,
                 "impressions": 1.0,
                 "ctr": 0.0,
-                "position": 10.0
+                "position": 9.0
               },
               "MOBILE": {
                 "clicks": 0.0,
-                "impressions": 5.0,
+                "impressions": 4.0,
                 "ctr": 0.0,
-                "position": 9.2
+                "position": 11.0
               }
             }
           }
@@ -267,40 +244,40 @@
       },
       "previous": {
         "period": {
-          "from": "2026-09-14",
-          "to": "2026-10-11"
+          "from": "2026-09-18",
+          "to": "2026-10-15"
         },
         "page_metrics": {
-          "clicks": 35.0,
-          "impressions": 966.0,
-          "ctr": 0.03623,
-          "position": 8.89
+          "clicks": 39.0,
+          "impressions": 1111.0,
+          "ctr": 0.0351,
+          "position": 8.9
         },
         "devices": {
           "DESKTOP": {
-            "clicks": 17.0,
-            "impressions": 411.0,
-            "ctr": 0.04136,
-            "position": 7.45
+            "clicks": 19.0,
+            "impressions": 464.0,
+            "ctr": 0.04095,
+            "position": 7.42
           },
           "MOBILE": {
-            "clicks": 17.0,
-            "impressions": 551.0,
-            "ctr": 0.03085,
+            "clicks": 19.0,
+            "impressions": 644.0,
+            "ctr": 0.0295,
             "position": 9.98
           },
           "TABLET": {
             "clicks": 1.0,
-            "impressions": 4.0,
-            "ctr": 0.25,
-            "position": 7.0
+            "impressions": 3.0,
+            "ctr": 0.33333,
+            "position": 7.33
           }
         },
         "query_rows_partial": false
       },
       "comparison": {
-        "ctr_change_percentage_points": -0.73,
-        "click_change": 2.0
+        "ctr_change_percentage_points": -0.25,
+        "click_change": -5.0
       }
     },
     {
@@ -311,33 +288,33 @@
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
       "current": {
         "period": {
-          "from": "2026-10-12",
-          "to": "2026-11-08"
+          "from": "2026-10-16",
+          "to": "2026-11-12"
         },
         "page_metrics": {
-          "clicks": 11.0,
-          "impressions": 1357.0,
-          "ctr": 0.00811,
-          "position": 7.98
+          "clicks": 8.0,
+          "impressions": 1162.0,
+          "ctr": 0.00688,
+          "position": 8.07
         },
         "devices": {
           "DESKTOP": {
-            "clicks": 6.0,
-            "impressions": 581.0,
-            "ctr": 0.01033,
-            "position": 7.05
+            "clicks": 3.0,
+            "impressions": 497.0,
+            "ctr": 0.00604,
+            "position": 7.31
           },
           "MOBILE": {
             "clicks": 5.0,
-            "impressions": 769.0,
-            "ctr": 0.0065,
-            "position": 8.66
+            "impressions": 657.0,
+            "ctr": 0.00761,
+            "position": 8.63
           },
           "TABLET": {
             "clicks": 0.0,
-            "impressions": 7.0,
+            "impressions": 8.0,
             "ctr": 0.0,
-            "position": 10.0
+            "position": 9.75
           }
         },
         "query_rows_partial": false,
@@ -345,29 +322,29 @@
           {
             "query": "丹佛花都",
             "metrics": {
-              "clicks": 6.0,
-              "impressions": 977.0,
-              "ctr": 0.00614,
-              "position": 8.9
+              "clicks": 5.0,
+              "impressions": 834.0,
+              "ctr": 0.006,
+              "position": 9.21
             },
             "devices": {
               "DESKTOP": {
-                "clicks": 4.0,
-                "impressions": 467.0,
-                "ctr": 0.00857,
-                "position": 7.79
+                "clicks": 2.0,
+                "impressions": 391.0,
+                "ctr": 0.00512,
+                "position": 8.25
               },
               "MOBILE": {
-                "clicks": 2.0,
-                "impressions": 506.0,
-                "ctr": 0.00395,
-                "position": 9.92
+                "clicks": 3.0,
+                "impressions": 438.0,
+                "ctr": 0.00685,
+                "position": 10.04
               },
               "TABLET": {
                 "clicks": 0.0,
-                "impressions": 4.0,
+                "impressions": 5.0,
                 "ctr": 0.0,
-                "position": 11.25
+                "position": 10.6
               }
             }
           },
@@ -375,9 +352,9 @@
             "query": "丹佛花都格局圖",
             "metrics": {
               "clicks": 2.0,
-              "impressions": 113.0,
-              "ctr": 0.0177,
-              "position": 1.04
+              "impressions": 111.0,
+              "ctr": 0.01802,
+              "position": 1.05
             },
             "devices": {
               "DESKTOP": {
@@ -388,8 +365,8 @@
               },
               "MOBILE": {
                 "clicks": 2.0,
-                "impressions": 71.0,
-                "ctr": 0.02817,
+                "impressions": 69.0,
+                "ctr": 0.02899,
                 "position": 1.0
               }
             }
@@ -397,23 +374,23 @@
           {
             "query": "丹佛花都 建商",
             "metrics": {
-              "clicks": 1.0,
+              "clicks": 0.0,
               "impressions": 40.0,
-              "ctr": 0.025,
-              "position": 7.8
+              "ctr": 0.0,
+              "position": 7.12
             },
             "devices": {
               "DESKTOP": {
                 "clicks": 0.0,
                 "impressions": 12.0,
                 "ctr": 0.0,
-                "position": 7.08
+                "position": 6.25
               },
               "MOBILE": {
-                "clicks": 1.0,
+                "clicks": 0.0,
                 "impressions": 27.0,
-                "ctr": 0.03704,
-                "position": 8.11
+                "ctr": 0.0,
+                "position": 7.48
               },
               "TABLET": {
                 "clicks": 0.0,
@@ -429,66 +406,43 @@
               "clicks": 0.0,
               "impressions": 38.0,
               "ctr": 0.0,
-              "position": 7.26
+              "position": 6.82
             },
             "devices": {
               "DESKTOP": {
                 "clicks": 0.0,
-                "impressions": 14.0,
+                "impressions": 13.0,
                 "ctr": 0.0,
-                "position": 5.71
+                "position": 4.92
               },
               "MOBILE": {
                 "clicks": 0.0,
-                "impressions": 24.0,
+                "impressions": 25.0,
                 "ctr": 0.0,
-                "position": 8.17
-              }
-            }
-          },
-          {
-            "query": "丹佛花都平面圖",
-            "metrics": {
-              "clicks": 0.0,
-              "impressions": 18.0,
-              "ctr": 0.0,
-              "position": 1.0
-            },
-            "devices": {
-              "DESKTOP": {
-                "clicks": 0.0,
-                "impressions": 7.0,
-                "ctr": 0.0,
-                "position": 1.0
-              },
-              "MOBILE": {
-                "clicks": 0.0,
-                "impressions": 11.0,
-                "ctr": 0.0,
-                "position": 1.0
+                "position": 7.8
               }
             }
           },
           {
             "query": "丹佛花都 格局",
             "metrics": {
-              "clicks": 2.0,
+              "clicks": 1.0,
               "impressions": 16.0,
-              "ctr": 0.125,
-              "position": 5.31
+              "ctr": 0.0625,
+              "position": 5.38
             },
             "devices": {
               "DESKTOP": {
-                "clicks": 2.0,
-                "impressions": 9.0,
-                "ctr": 0.22222,
-                "position": 5.0
+                "clicks": 1.0,
+                "impressions": 8.0,
+                "ctr": 0.125,
+                "position": 4.88
               },
               "MOBILE": {
                 "clicks": 0.0,
-                "impressions": 7.0,
+                "impressions": 8.0,
                 "ctr": 0.0,
-                "position": 5.71
+                "position": 5.88
               }
             }
           },
@@ -496,22 +450,45 @@
             "query": "a7丹佛花都",
             "metrics": {
               "clicks": 0.0,
-              "impressions": 15.0,
+              "impressions": 12.0,
               "ctr": 0.0,
-              "position": 7.87
+              "position": 7.92
             },
             "devices": {
               "DESKTOP": {
                 "clicks": 0.0,
                 "impressions": 4.0,
                 "ctr": 0.0,
-                "position": 7.5
+                "position": 7.0
               },
               "MOBILE": {
                 "clicks": 0.0,
-                "impressions": 11.0,
+                "impressions": 8.0,
                 "ctr": 0.0,
-                "position": 8.0
+                "position": 8.38
+              }
+            }
+          },
+          {
+            "query": "丹佛花都平面圖",
+            "metrics": {
+              "clicks": 0.0,
+              "impressions": 12.0,
+              "ctr": 0.0,
+              "position": 1.0
+            },
+            "devices": {
+              "DESKTOP": {
+                "clicks": 0.0,
+                "impressions": 5.0,
+                "ctr": 0.0,
+                "position": 1.0
+              },
+              "MOBILE": {
+                "clicks": 0.0,
+                "impressions": 7.0,
+                "ctr": 0.0,
+                "position": 1.0
               }
             }
           },
@@ -519,9 +496,9 @@
             "query": "龜山丹佛花都",
             "metrics": {
               "clicks": 0.0,
-              "impressions": 9.0,
+              "impressions": 10.0,
               "ctr": 0.0,
-              "position": 9.0
+              "position": 9.2
             },
             "devices": {
               "DESKTOP": {
@@ -532,32 +509,9 @@
               },
               "MOBILE": {
                 "clicks": 0.0,
-                "impressions": 2.0,
+                "impressions": 3.0,
                 "ctr": 0.0,
-                "position": 11.5
-              }
-            }
-          },
-          {
-            "query": "丹佛花都地址",
-            "metrics": {
-              "clicks": 0.0,
-              "impressions": 7.0,
-              "ctr": 0.0,
-              "position": 7.0
-            },
-            "devices": {
-              "DESKTOP": {
-                "clicks": 0.0,
-                "impressions": 1.0,
-                "ctr": 0.0,
-                "position": 7.0
-              },
-              "MOBILE": {
-                "clicks": 0.0,
-                "impressions": 6.0,
-                "ctr": 0.0,
-                "position": 7.0
+                "position": 11.33
               }
             }
           }
@@ -565,27 +519,27 @@
       },
       "previous": {
         "period": {
-          "from": "2026-09-14",
-          "to": "2026-10-11"
+          "from": "2026-09-18",
+          "to": "2026-10-15"
         },
         "page_metrics": {
           "clicks": 22.0,
-          "impressions": 1969.0,
-          "ctr": 0.01117,
-          "position": 8.65
+          "impressions": 2044.0,
+          "ctr": 0.01076,
+          "position": 8.7
         },
         "devices": {
           "DESKTOP": {
-            "clicks": 15.0,
-            "impressions": 840.0,
-            "ctr": 0.01786,
-            "position": 7.38
+            "clicks": 17.0,
+            "impressions": 851.0,
+            "ctr": 0.01998,
+            "position": 7.4
           },
           "MOBILE": {
-            "clicks": 7.0,
-            "impressions": 1124.0,
-            "ctr": 0.00623,
-            "position": 9.59
+            "clicks": 5.0,
+            "impressions": 1188.0,
+            "ctr": 0.00421,
+            "position": 9.62
           },
           "TABLET": {
             "clicks": 0.0,
@@ -597,8 +551,8 @@
         "query_rows_partial": false
       },
       "comparison": {
-        "ctr_change_percentage_points": -0.31,
-        "click_change": -11.0
+        "ctr_change_percentage_points": -0.39,
+        "click_change": -14.0
       }
     },
     {
@@ -609,27 +563,27 @@
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
       "current": {
         "period": {
-          "from": "2026-10-12",
-          "to": "2026-11-08"
+          "from": "2026-10-16",
+          "to": "2026-11-12"
         },
         "page_metrics": {
           "clicks": 4.0,
-          "impressions": 557.0,
-          "ctr": 0.00718,
-          "position": 9.54
+          "impressions": 553.0,
+          "ctr": 0.00723,
+          "position": 9.37
         },
         "devices": {
           "DESKTOP": {
             "clicks": 1.0,
-            "impressions": 123.0,
-            "ctr": 0.00813,
-            "position": 8.06
+            "impressions": 125.0,
+            "ctr": 0.008,
+            "position": 8.02
           },
           "MOBILE": {
             "clicks": 3.0,
-            "impressions": 432.0,
-            "ctr": 0.00694,
-            "position": 9.96
+            "impressions": 426.0,
+            "ctr": 0.00704,
+            "position": 9.76
           },
           "TABLET": {
             "clicks": 0.0,
@@ -644,22 +598,22 @@
             "query": "鴻廣繪青",
             "metrics": {
               "clicks": 2.0,
-              "impressions": 396.0,
-              "ctr": 0.00505,
-              "position": 9.48
+              "impressions": 384.0,
+              "ctr": 0.00521,
+              "position": 9.3
             },
             "devices": {
               "DESKTOP": {
                 "clicks": 0.0,
-                "impressions": 75.0,
+                "impressions": 73.0,
                 "ctr": 0.0,
-                "position": 7.61
+                "position": 7.6
               },
               "MOBILE": {
                 "clicks": 2.0,
-                "impressions": 320.0,
-                "ctr": 0.00625,
-                "position": 9.92
+                "impressions": 310.0,
+                "ctr": 0.00645,
+                "position": 9.7
               },
               "TABLET": {
                 "clicks": 0.0,
@@ -673,22 +627,22 @@
             "query": "鴻廣絵青",
             "metrics": {
               "clicks": 1.0,
-              "impressions": 67.0,
-              "ctr": 0.01493,
-              "position": 10.12
+              "impressions": 62.0,
+              "ctr": 0.01613,
+              "position": 9.92
             },
             "devices": {
               "DESKTOP": {
                 "clicks": 1.0,
-                "impressions": 31.0,
-                "ctr": 0.03226,
-                "position": 8.87
+                "impressions": 32.0,
+                "ctr": 0.03125,
+                "position": 8.66
               },
               "MOBILE": {
                 "clicks": 0.0,
-                "impressions": 36.0,
+                "impressions": 30.0,
                 "ctr": 0.0,
-                "position": 11.19
+                "position": 11.27
               }
             }
           },
@@ -696,16 +650,16 @@
             "query": "a7鴻廣繪青",
             "metrics": {
               "clicks": 0.0,
-              "impressions": 22.0,
+              "impressions": 23.0,
               "ctr": 0.0,
-              "position": 7.68
+              "position": 7.61
             },
             "devices": {
               "DESKTOP": {
                 "clicks": 0.0,
-                "impressions": 3.0,
+                "impressions": 4.0,
                 "ctr": 0.0,
-                "position": 8.0
+                "position": 7.5
               },
               "MOBILE": {
                 "clicks": 0.0,
@@ -719,9 +673,9 @@
             "query": "鴻廣絵青評價",
             "metrics": {
               "clicks": 0.0,
-              "impressions": 13.0,
+              "impressions": 16.0,
               "ctr": 0.0,
-              "position": 10.46
+              "position": 10.12
             },
             "devices": {
               "DESKTOP": {
@@ -732,9 +686,9 @@
               },
               "MOBILE": {
                 "clicks": 0.0,
-                "impressions": 11.0,
+                "impressions": 14.0,
                 "ctr": 0.0,
-                "position": 10.55
+                "position": 10.14
               }
             }
           },
@@ -742,16 +696,16 @@
             "query": "鴻廣絵青的評論",
             "metrics": {
               "clicks": 0.0,
-              "impressions": 7.0,
+              "impressions": 6.0,
               "ctr": 0.0,
-              "position": 11.57
+              "position": 11.5
             },
             "devices": {
               "MOBILE": {
                 "clicks": 0.0,
-                "impressions": 6.0,
+                "impressions": 5.0,
                 "ctr": 0.0,
-                "position": 11.83
+                "position": 11.8
               },
               "TABLET": {
                 "clicks": 0.0,
@@ -765,39 +719,39 @@
       },
       "previous": {
         "period": {
-          "from": "2026-09-14",
-          "to": "2026-10-11"
+          "from": "2026-09-18",
+          "to": "2026-10-15"
         },
         "page_metrics": {
           "clicks": 1.0,
-          "impressions": 404.0,
-          "ctr": 0.00248,
-          "position": 9.76
+          "impressions": 359.0,
+          "ctr": 0.00279,
+          "position": 10.01
         },
         "devices": {
           "DESKTOP": {
             "clicks": 1.0,
-            "impressions": 168.0,
-            "ctr": 0.00595,
-            "position": 8.49
+            "impressions": 135.0,
+            "ctr": 0.00741,
+            "position": 8.64
           },
           "MOBILE": {
             "clicks": 0.0,
-            "impressions": 232.0,
+            "impressions": 222.0,
             "ctr": 0.0,
-            "position": 10.69
+            "position": 10.84
           },
           "TABLET": {
             "clicks": 0.0,
-            "impressions": 4.0,
+            "impressions": 2.0,
             "ctr": 0.0,
-            "position": 9.0
+            "position": 10.0
           }
         },
         "query_rows_partial": false
       },
       "comparison": {
-        "ctr_change_percentage_points": 0.47,
+        "ctr_change_percentage_points": 0.44,
         "click_change": 3.0
       }
     },
@@ -809,33 +763,33 @@
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
       "current": {
         "period": {
-          "from": "2026-10-12",
-          "to": "2026-11-08"
+          "from": "2026-10-16",
+          "to": "2026-11-12"
         },
         "page_metrics": {
           "clicks": 3.0,
-          "impressions": 311.0,
-          "ctr": 0.00965,
-          "position": 8.85
+          "impressions": 305.0,
+          "ctr": 0.00984,
+          "position": 8.96
         },
         "devices": {
           "DESKTOP": {
             "clicks": 1.0,
-            "impressions": 140.0,
-            "ctr": 0.00714,
-            "position": 8.54
+            "impressions": 136.0,
+            "ctr": 0.00735,
+            "position": 8.78
           },
           "MOBILE": {
             "clicks": 2.0,
-            "impressions": 168.0,
-            "ctr": 0.0119,
-            "position": 9.1
+            "impressions": 167.0,
+            "ctr": 0.01198,
+            "position": 9.11
           },
           "TABLET": {
             "clicks": 0.0,
-            "impressions": 3.0,
+            "impressions": 2.0,
             "ctr": 0.0,
-            "position": 9.33
+            "position": 9.0
           }
         },
         "query_rows_partial": false,
@@ -844,28 +798,28 @@
             "query": "福美富琚",
             "metrics": {
               "clicks": 3.0,
-              "impressions": 291.0,
-              "ctr": 0.01031,
-              "position": 8.89
+              "impressions": 282.0,
+              "ctr": 0.01064,
+              "position": 9.03
             },
             "devices": {
               "DESKTOP": {
                 "clicks": 1.0,
-                "impressions": 130.0,
-                "ctr": 0.00769,
-                "position": 8.62
+                "impressions": 125.0,
+                "ctr": 0.008,
+                "position": 8.9
               },
               "MOBILE": {
                 "clicks": 2.0,
-                "impressions": 158.0,
-                "ctr": 0.01266,
-                "position": 9.11
+                "impressions": 155.0,
+                "ctr": 0.0129,
+                "position": 9.14
               },
               "TABLET": {
                 "clicks": 0.0,
-                "impressions": 3.0,
+                "impressions": 2.0,
                 "ctr": 0.0,
-                "position": 9.33
+                "position": 9.0
               }
             }
           }
@@ -873,39 +827,39 @@
       },
       "previous": {
         "period": {
-          "from": "2026-09-14",
-          "to": "2026-10-11"
+          "from": "2026-09-18",
+          "to": "2026-10-15"
         },
         "page_metrics": {
           "clicks": 3.0,
-          "impressions": 460.0,
-          "ctr": 0.00652,
-          "position": 7.97
+          "impressions": 424.0,
+          "ctr": 0.00708,
+          "position": 8.12
         },
         "devices": {
           "DESKTOP": {
             "clicks": 1.0,
-            "impressions": 223.0,
-            "ctr": 0.00448,
-            "position": 7.98
+            "impressions": 207.0,
+            "ctr": 0.00483,
+            "position": 8.16
           },
           "MOBILE": {
             "clicks": 2.0,
-            "impressions": 220.0,
-            "ctr": 0.00909,
-            "position": 7.93
+            "impressions": 207.0,
+            "ctr": 0.00966,
+            "position": 8.04
           },
           "TABLET": {
             "clicks": 0.0,
-            "impressions": 17.0,
+            "impressions": 10.0,
             "ctr": 0.0,
-            "position": 8.24
+            "position": 8.8
           }
         },
         "query_rows_partial": false
       },
       "comparison": {
-        "ctr_change_percentage_points": 0.31,
+        "ctr_change_percentage_points": 0.28,
         "click_change": 0.0
       }
     },
@@ -917,33 +871,33 @@
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
       "current": {
         "period": {
-          "from": "2026-10-12",
-          "to": "2026-11-08"
+          "from": "2026-10-16",
+          "to": "2026-11-12"
         },
         "page_metrics": {
-          "clicks": 0.0,
-          "impressions": 253.0,
-          "ctr": 0.0,
-          "position": 9.14
+          "clicks": 1.0,
+          "impressions": 266.0,
+          "ctr": 0.00376,
+          "position": 9.2
         },
         "devices": {
           "DESKTOP": {
             "clicks": 0.0,
-            "impressions": 73.0,
+            "impressions": 76.0,
             "ctr": 0.0,
-            "position": 6.64
+            "position": 7.07
           },
           "MOBILE": {
-            "clicks": 0.0,
-            "impressions": 177.0,
-            "ctr": 0.0,
-            "position": 10.11
+            "clicks": 1.0,
+            "impressions": 184.0,
+            "ctr": 0.00543,
+            "position": 10.05
           },
           "TABLET": {
             "clicks": 0.0,
-            "impressions": 3.0,
+            "impressions": 6.0,
             "ctr": 0.0,
-            "position": 13.0
+            "position": 10.33
           }
         },
         "query_rows_partial": false,
@@ -951,29 +905,29 @@
           {
             "query": "立軒天諾",
             "metrics": {
-              "clicks": 0.0,
-              "impressions": 227.0,
-              "ctr": 0.0,
-              "position": 9.18
+              "clicks": 1.0,
+              "impressions": 235.0,
+              "ctr": 0.00426,
+              "position": 9.26
             },
             "devices": {
               "DESKTOP": {
                 "clicks": 0.0,
-                "impressions": 65.0,
+                "impressions": 63.0,
                 "ctr": 0.0,
-                "position": 6.68
+                "position": 7.03
               },
               "MOBILE": {
-                "clicks": 0.0,
-                "impressions": 159.0,
-                "ctr": 0.0,
-                "position": 10.13
+                "clicks": 1.0,
+                "impressions": 166.0,
+                "ctr": 0.00602,
+                "position": 10.06
               },
               "TABLET": {
                 "clicks": 0.0,
-                "impressions": 3.0,
+                "impressions": 6.0,
                 "ctr": 0.0,
-                "position": 13.0
+                "position": 10.33
               }
             }
           }
@@ -981,27 +935,27 @@
       },
       "previous": {
         "period": {
-          "from": "2026-09-14",
-          "to": "2026-10-11"
+          "from": "2026-09-18",
+          "to": "2026-10-15"
         },
         "page_metrics": {
           "clicks": 2.0,
-          "impressions": 222.0,
-          "ctr": 0.00901,
-          "position": 8.79
+          "impressions": 239.0,
+          "ctr": 0.00837,
+          "position": 8.56
         },
         "devices": {
           "DESKTOP": {
             "clicks": 0.0,
-            "impressions": 69.0,
+            "impressions": 76.0,
             "ctr": 0.0,
-            "position": 7.26
+            "position": 6.71
           },
           "MOBILE": {
             "clicks": 2.0,
-            "impressions": 147.0,
-            "ctr": 0.01361,
-            "position": 9.46
+            "impressions": 157.0,
+            "ctr": 0.01274,
+            "position": 9.4
           },
           "TABLET": {
             "clicks": 0.0,
@@ -1013,8 +967,8 @@
         "query_rows_partial": false
       },
       "comparison": {
-        "ctr_change_percentage_points": -0.9,
-        "click_change": -2.0
+        "ctr_change_percentage_points": -0.46,
+        "click_change": -1.0
       }
     },
     {
@@ -1025,27 +979,27 @@
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
       "current": {
         "period": {
-          "from": "2026-10-12",
-          "to": "2026-11-08"
+          "from": "2026-10-16",
+          "to": "2026-11-12"
         },
         "page_metrics": {
           "clicks": 1.0,
-          "impressions": 219.0,
-          "ctr": 0.00457,
-          "position": 9.79
+          "impressions": 209.0,
+          "ctr": 0.00478,
+          "position": 9.68
         },
         "devices": {
           "DESKTOP": {
             "clicks": 0.0,
-            "impressions": 77.0,
+            "impressions": 71.0,
             "ctr": 0.0,
-            "position": 9.87
+            "position": 9.93
           },
           "MOBILE": {
             "clicks": 1.0,
-            "impressions": 142.0,
-            "ctr": 0.00704,
-            "position": 9.74
+            "impressions": 138.0,
+            "ctr": 0.00725,
+            "position": 9.55
           }
         },
         "query_rows_partial": false,
@@ -1054,22 +1008,22 @@
             "query": "厚陞晴",
             "metrics": {
               "clicks": 1.0,
-              "impressions": 216.0,
-              "ctr": 0.00463,
-              "position": 9.69
+              "impressions": 207.0,
+              "ctr": 0.00483,
+              "position": 9.66
             },
             "devices": {
               "DESKTOP": {
                 "clicks": 0.0,
-                "impressions": 75.0,
+                "impressions": 69.0,
                 "ctr": 0.0,
-                "position": 9.81
+                "position": 9.87
               },
               "MOBILE": {
                 "clicks": 1.0,
-                "impressions": 141.0,
-                "ctr": 0.00709,
-                "position": 9.63
+                "impressions": 138.0,
+                "ctr": 0.00725,
+                "position": 9.55
               }
             }
           }
@@ -1077,34 +1031,34 @@
       },
       "previous": {
         "period": {
-          "from": "2026-09-14",
-          "to": "2026-10-11"
+          "from": "2026-09-18",
+          "to": "2026-10-15"
         },
         "page_metrics": {
-          "clicks": 3.0,
-          "impressions": 215.0,
-          "ctr": 0.01395,
-          "position": 10.29
+          "clicks": 2.0,
+          "impressions": 216.0,
+          "ctr": 0.00926,
+          "position": 10.36
         },
         "devices": {
           "DESKTOP": {
-            "clicks": 2.0,
+            "clicks": 1.0,
             "impressions": 77.0,
-            "ctr": 0.02597,
-            "position": 10.82
+            "ctr": 0.01299,
+            "position": 11.01
           },
           "MOBILE": {
             "clicks": 1.0,
-            "impressions": 138.0,
-            "ctr": 0.00725,
-            "position": 9.99
+            "impressions": 139.0,
+            "ctr": 0.00719,
+            "position": 10.0
           }
         },
         "query_rows_partial": false
       },
       "comparison": {
-        "ctr_change_percentage_points": -0.94,
-        "click_change": -2.0
+        "ctr_change_percentage_points": -0.45,
+        "click_change": -1.0
       }
     },
     {
@@ -1115,27 +1069,27 @@
       "reason": "本頁過去 28 天曝光未達 100；不可由少量曝光判斷 CTR。",
       "current": {
         "period": {
-          "from": "2026-10-12",
-          "to": "2026-11-08"
+          "from": "2026-10-16",
+          "to": "2026-11-12"
         },
         "page_metrics": {
           "clicks": 0.0,
-          "impressions": 8.0,
+          "impressions": 5.0,
           "ctr": 0.0,
-          "position": 10.25
+          "position": 10.8
         },
         "devices": {
           "DESKTOP": {
             "clicks": 0.0,
-            "impressions": 4.0,
+            "impressions": 2.0,
             "ctr": 0.0,
-            "position": 9.25
+            "position": 10.5
           },
           "MOBILE": {
             "clicks": 0.0,
-            "impressions": 4.0,
+            "impressions": 3.0,
             "ctr": 0.0,
-            "position": 11.25
+            "position": 11.0
           }
         },
         "query_rows_partial": false,
@@ -1144,22 +1098,22 @@
             "query": "星河畔",
             "metrics": {
               "clicks": 0.0,
-              "impressions": 8.0,
+              "impressions": 5.0,
               "ctr": 0.0,
-              "position": 10.25
+              "position": 10.8
             },
             "devices": {
               "DESKTOP": {
                 "clicks": 0.0,
-                "impressions": 4.0,
+                "impressions": 2.0,
                 "ctr": 0.0,
-                "position": 9.25
+                "position": 10.5
               },
               "MOBILE": {
                 "clicks": 0.0,
-                "impressions": 4.0,
+                "impressions": 3.0,
                 "ctr": 0.0,
-                "position": 11.25
+                "position": 11.0
               }
             }
           }
@@ -1167,27 +1121,27 @@
       },
       "previous": {
         "period": {
-          "from": "2026-09-14",
-          "to": "2026-10-11"
+          "from": "2026-09-18",
+          "to": "2026-10-15"
         },
         "page_metrics": {
           "clicks": 0.0,
-          "impressions": 15.0,
+          "impressions": 16.0,
           "ctr": 0.0,
-          "position": 10.53
+          "position": 10.56
         },
         "devices": {
           "DESKTOP": {
             "clicks": 0.0,
             "impressions": 9.0,
             "ctr": 0.0,
-            "position": 9.44
+            "position": 9.33
           },
           "MOBILE": {
             "clicks": 0.0,
-            "impressions": 6.0,
+            "impressions": 7.0,
             "ctr": 0.0,
-            "position": 12.17
+            "position": 12.14
           }
         },
         "query_rows_partial": false
@@ -1205,8 +1159,8 @@
       "reason": "GSC 本次沒有回傳這個 URL 的資料；可能是資料稀疏、Google canonical URL 或 Property 範圍不同，不代表沒有搜尋曝光。",
       "current": {
         "period": {
-          "from": "2026-10-12",
-          "to": "2026-11-08"
+          "from": "2026-10-16",
+          "to": "2026-11-12"
         },
         "page_metrics": null,
         "devices": {},
@@ -1215,8 +1169,8 @@
       },
       "previous": {
         "period": {
-          "from": "2026-09-14",
-          "to": "2026-10-11"
+          "from": "2026-09-18",
+          "to": "2026-10-15"
         },
         "page_metrics": null,
         "devices": {},
