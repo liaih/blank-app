@@ -6,27 +6,27 @@
   "not_own_tavily_rag": true,
   "window_start": "2026-10-20",
   "window_end": "2026-11-18",
-  "generated_at": "2026-11-18T04:05:01+08:00",
-  "total_samples": 13,
+  "generated_at": "2026-11-18T04:48:28+08:00",
+  "total_samples": 14,
   "platforms": [
     {
       "platform": "ChatGPT",
-      "samples": 6,
+      "samples": 7,
       "existing_jobs": {
-        "pending": 1,
-        "stored": 6,
+        "pending": 0,
+        "stored": 7,
         "failed": 0,
         "no-evidence": 0
       },
       "mentions": 0,
       "direct_domain_citations": 0,
-      "answers_with_sources": 5,
-      "last_sample_date": "2026-11-17",
+      "answers_with_sources": 6,
+      "last_sample_date": "2026-11-18",
       "competitor_candidates": [],
       "cited_domains": [
         {
           "domain": "www.100.com.tw",
-          "occurrences": 6
+          "occurrences": 12
         },
         {
           "domain": "www.moi.gov.tw",
@@ -39,6 +39,10 @@
         {
           "domain": "www.shengt.com.tw",
           "occurrences": 2
+        },
+        {
+          "domain": "takuma.tw",
+          "occurrences": 1
         },
         {
           "domain": "ycid.com.tw",
@@ -79,16 +83,13 @@
         {
           "domain": "cent.com.tw",
           "occurrences": 1
-        },
-        {
-          "domain": "www.dongsendesign.com",
-          "occurrences": 1
         }
       ],
       "tested_prompt_ids": [
         "kaohsiung-condo",
         "renovation-cost",
         "renovation-process",
+        "taichung-condo",
         "tainan-renovation",
         "taoyuan-renovation",
         "zhubei-engineer"
@@ -184,10 +185,10 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 1,
+        "pending": 0,
         "stored": 0,
         "failed": 0,
-        "no-evidence": 6
+        "no-evidence": 7
       },
       "mentions": 0,
       "direct_domain_citations": 0,
@@ -199,6 +200,24 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "d0a83bfcacf1eafe",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "ChatGPT",
+      "prompt_id": "taichung-condo",
+      "prompt": "台中25坪新成屋裝潢，推薦值得比較的室內設計公司與其擅長的風格。",
+      "answered_at": "2026-11-18T04:48:25+08:00",
+      "answer_excerpt": "以台中市 25坪新成屋 來說，我會建議不要只挑裝潢照片漂亮的設計公司，而是優先比較「有沒有做過20～30坪新成屋」、「收納與動線規劃能力」、「預算控制」及「實際施工品質」。 25坪通常是2房或2+1房格局，裝潢最重要的是讓空間看起來寬敞，同時保有足夠收納，不要因為過度木作、天花板或裝飾牆而犧牲空間。 以下整理幾間台中值得列入第一輪比較的設計公司，並依照作品風格及25坪住宅的適合程度分類。 一、推薦比較的室內設計公司 以下依公開作品、服務介紹及新成屋案例整理，不代表實際施工品質排名；建議預約時確認目前接案狀況。 1. TAKUMA 宅間制作 日系簡約首選 擅長：日系無印、木質簡約、小宅、輕奢。 特色：重視材質、收納及生活機能，設計施工由同一團隊負責。 適合：喜歡溫潤木質、留白、簡潔耐看的住宅。 地址：台中市南屯區大墩十四街190-1號7樓。 官網： TAKUMA宅間制作 。 參考：官方作品與服務介紹。 TAKUMA宅間制作 2. 長寬高空間設計 25坪案例參考度高 擅長：現代風、北歐風、日式及混搭風。 特色：公開作品有23～27坪新成屋案例，包含現代、北歐與混搭設計。 適合：希望比較不同風格，也重視空間配置的屋主。 地址：台中市北屯區敦化三街73號。 參考： 作品及費用資訊 。 公開平台列出新成屋裝潢約8.5萬元/坪起，實際依工程內容報價。 100室內設計 3. 伊果室內設計 現代混搭值得比較 擅長：現代風、日式、混搭風。 特色：有20～25坪新成屋及預售屋相關案例，也有國際設計獎項作品。 適合：希望空間有設計特色，又不想失去實用性的屋主。 地址：台中市西屯區西屯路二段256巷6號19樓之8。 參考： 作品及費用資訊 。 公開平台列出新成屋約4萬元/坪起，屬平台參考資訊，不能直接視為全室總價。 100室內設計 4. 綻緣空間設計 擅長：北歐風、日式、現代簡約。 特色：有21～28坪新成屋作品，風格涵蓋北歐及日式。 適合：喜歡明亮、溫馨、清爽的居家氛圍。 地址：台中市南區德富路362號。 參考： 作品及費用資訊 。 公開平台列出新成屋約10萬元/坪起。 100室內設計 5. 杉宅室內設計 擅長：日式簡約、木質溫馨、現代簡約。 特色：公開作品包含25坪日式簡約宅，另有小坪數住宅規劃。 適合：希望以實用為主，預算不想全部花在造型設計上。 地址：台中市東區進化路165號1樓。 參考： 作品及費用資訊 。 公開平台列出新成屋約6萬元/坪起，另有兩年內保固資訊，仍應以正式合約為準。 100室內設計 二、設計公司位置 以下標示上述5間公司的位置，方便安排實際拜訪及諮詢。 重設檢視 展開地圖 地圖資料目前無法使用 🏠 TAKUMA宅間制作 ★ 5 · Interior designer 🏠 長寬高空間設計 ★ 4.6 · Interior designer 已關閉 🏠 伊果室內設計 ★ 4.9 · Interior designer 已關閉 🏠 綻緣空間設計 ★ 5 · Interior designer 已關閉 🏠 杉宅室內設計 ★ 5 · Interior designer 已關閉 三、25坪新成屋，建議裝潢預算 以一般住宅全室裝潢來看，可以先用以下金額規劃初步預算。 裝潢項目 預估費用 設計及工程規劃 8～15萬 木作及系統櫃 35～65萬 天花板及燈光 10～20萬 油漆及牆面 5～10萬 地板及其他工程 8～15萬 空調、窗簾及其他 10～20萬 初步預算 76～145萬 以上是初步抓預算的估算，不是各公司的報價。家具、家電、廚具、衛浴設備及冷氣是否納入",
+      "excerpt_truncated": true,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "takuma.tw",
+        "www.100.com.tw"
+      ]
+    },
     {
       "evidence_id": "04b75173c80e9e5f",
       "recommendation_status": "未提及晨陽",
@@ -457,8 +476,8 @@
   ],
   "existing_job_status": {
     "ChatGPT": {
-      "pending": 1,
-      "stored": 6,
+      "pending": 0,
+      "stored": 7,
       "failed": 0,
       "no-evidence": 0
     },
@@ -469,17 +488,17 @@
       "no-evidence": 0
     },
     "Perplexity": {
-      "pending": 1,
+      "pending": 0,
       "stored": 0,
       "failed": 0,
-      "no-evidence": 6
+      "no-evidence": 7
     }
   },
   "latest_job_status": {
     "ChatGPT": {
       "day": "2026-11-18",
-      "status": "pending",
-      "reason": "vendor_still_processing"
+      "status": "stored",
+      "reason": ""
     },
     "Gemini": {
       "day": "2026-11-18",
@@ -488,8 +507,8 @@
     },
     "Perplexity": {
       "day": "2026-11-18",
-      "status": "pending",
-      "reason": "vendor_still_processing"
+      "status": "no-evidence",
+      "reason": "vendor_record_error"
     }
   },
   "intent_analysis": {
@@ -629,7 +648,7 @@
         ],
         "platforms": {
           "ChatGPT": {
-            "samples": 0,
+            "samples": 1,
             "mentions": 0,
             "direct_citations": 0
           },
