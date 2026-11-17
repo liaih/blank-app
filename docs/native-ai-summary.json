@@ -6,22 +6,22 @@
   "not_own_tavily_rag": true,
   "window_start": "2026-10-19",
   "window_end": "2026-11-17",
-  "generated_at": "2026-11-17T05:19:40+08:00",
-  "total_samples": 10,
+  "generated_at": "2026-11-17T10:53:31+08:00",
+  "total_samples": 12,
   "platforms": [
     {
       "platform": "ChatGPT",
-      "samples": 5,
+      "samples": 6,
       "existing_jobs": {
-        "pending": 1,
-        "stored": 5,
+        "pending": 0,
+        "stored": 6,
         "failed": 0,
         "no-evidence": 0
       },
       "mentions": 0,
       "direct_domain_citations": 0,
-      "answers_with_sources": 4,
-      "last_sample_date": "2026-11-16",
+      "answers_with_sources": 5,
+      "last_sample_date": "2026-11-17",
       "competitor_candidates": [],
       "cited_domains": [
         {
@@ -39,6 +39,26 @@
         {
           "domain": "www.shengt.com.tw",
           "occurrences": 2
+        },
+        {
+          "domain": "ycid.com.tw",
+          "occurrences": 1
+        },
+        {
+          "domain": "www.hunterdesign.com.tw",
+          "occurrences": 1
+        },
+        {
+          "domain": "grdesign.com.tw",
+          "occurrences": 1
+        },
+        {
+          "domain": "www.loveidsign.com",
+          "occurrences": 1
+        },
+        {
+          "domain": "livinglife.com.tw",
+          "occurrences": 1
         },
         {
           "domain": "cloudbm.nlma.gov.tw",
@@ -63,26 +83,6 @@
         {
           "domain": "www.dongsendesign.com",
           "occurrences": 1
-        },
-        {
-          "domain": "tanxin.space",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.ideas-design.com.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "wowhouse1115.com",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.yingcasaonline.com",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.openworld.tv",
-          "occurrences": 1
         }
       ],
       "tested_prompt_ids": [
@@ -90,22 +90,23 @@
         "renovation-cost",
         "renovation-process",
         "tainan-renovation",
+        "taoyuan-renovation",
         "zhubei-engineer"
       ]
     },
     {
       "platform": "Gemini",
-      "samples": 5,
+      "samples": 6,
       "existing_jobs": {
-        "pending": 1,
-        "stored": 5,
+        "pending": 0,
+        "stored": 6,
         "failed": 0,
         "no-evidence": 0
       },
-      "mentions": 0,
+      "mentions": 1,
       "direct_domain_citations": 0,
       "answers_with_sources": 4,
-      "last_sample_date": "2026-11-16",
+      "last_sample_date": "2026-11-17",
       "competitor_candidates": [],
       "cited_domains": [
         {
@@ -174,6 +175,7 @@
         "renovation-cost",
         "renovation-process",
         "tainan-renovation",
+        "taoyuan-renovation",
         "zhubei-engineer"
       ]
     },
@@ -181,10 +183,10 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 1,
+        "pending": 0,
         "stored": 0,
         "failed": 0,
-        "no-evidence": 5
+        "no-evidence": 6
       },
       "mentions": 0,
       "direct_domain_citations": 0,
@@ -196,6 +198,42 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "b5c43675da536d28",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "ChatGPT",
+      "prompt_id": "taoyuan-renovation",
+      "prompt": "桃園30年老屋翻新，如何選擇有工程管理與售後服務的室內設計公司？請列出公司與來源。",
+      "answered_at": "2026-11-17T10:53:28+08:00",
+      "answer_excerpt": "桃園 30 年老屋翻新，我會建議不要只找「設計風格漂亮」的室內設計公司，而是優先找具備 老屋翻修經驗、完整工程管理、施工品質驗收及保固售後制度 的公司。 30 年屋齡的房子，通常需要特別注意水電管線、防水、浴室排水、窗框滲水、壁癌、結構安全及電力容量。這類工程如果前期沒有做好勘查與工程管理，入住後才發現問題，往往會增加不少修繕費用。 以下整理桃園可優先接洽的公司方向，以及實際篩選時應要求對方提供的資料。 一、桃園值得優先比較的室內設計公司 以下不是單純依網路評分排名，而是依照公開資料中能否找到「老屋翻新、工程管理、保固及售後服務」資訊整理。公司自行公布的服務內容，仍需在簽約前確認。 1. 燕居室內設計 老屋翻新與售後服務資訊完整 燕居室內設計 地址：桃園市中壢區榮民路241巷40弄21衖20號 電話：03-460-4033 官方網站： 燕居室內設計 官方資料：強調售後服務及保固，並說明老屋翻新需要評估水電、防水與結構安全。 值得詢問的原因： 有明確說明老屋翻新注意事項。 官網表示設計師會定期到場監工。 提供售後服務與保固。 建議確認： 保固究竟是幾年？水電、防水、泥作是否分項保固？是否提供施工照片及驗收紀錄？ 來源： 燕居官方網站－關於我們及常見問題 。【turn255920search1】 2. 亨特室內設計 工程保固條款明確 亨特室內設計 地址：桃園市桃園區正光二街261巷3號 官方網站： 服務流程與收費標準 服務範圍：桃園、雙北、新竹及竹北。 值得詢問的原因： 有明確的完工驗收流程。 系統櫃工程保固6年。 其他工程項目保固1年，或依產品原廠保固。 提供永久專業諮詢。 工程管理費公開列為總工程款8%。 預算參考： 官網列出20年以上舊屋翻新每坪10萬元起，工程最低接案金額80萬元起，實際依圖面與工程項目估價。 對於30年老屋，這家公司值得列入比較，特別是可以先了解它如何處理水電全面更新、防水及隱蔽工程。 來源： 亨特官方網站－服務流程 。【turn255920search2】 3. 格爾空間設計 具室內裝修工程管理證照資訊 格爾空間設計 桃園據點：中壢店、平鎮店 中壢店地址：桃園市中壢區中央西路一段1號4樓 官方網站： 桃園室內設計及老屋翻新 值得詢問的原因： 官網列出建築物室內設計乙級證照。 官網列出室內裝修工程管理乙級證照。 老屋翻新服務涵蓋管線更新、漏水處理、格局調整。 公開表示提供完工保固及透明報價。 這家公司值得特別詢問工程管理由誰負責，以及是否由持證人員實際參與工程管理。 來源： 格爾官方網站 。【turn255920search8】 4. 愛設計空間規劃 愛設計空間規劃 官方網站： loveidsign.com 服務內容：住宅設計、舊屋翻新、空間規劃。 值得詢問的原因： 公開施工流程包含丈量、設計提案、施工圖、工程施作及完工驗收。 明確列出售後保固。 系統工程保固5年，其他工程1年。 保固期後仍可聯絡協助處理問題。 這家公司可作為比較售後服務制度的對象，尤其應確認保固範圍是否涵蓋老屋的水電、防水及泥作工程。 來源： 愛設計官方網站－接案流程 。【turn255920search10】 5. 京彩室內裝修設計有限公司 京彩室內裝修設計有限公司 地址：桃園市桃園區民有十三街10號1樓 電話：03-316-0358 參考介紹： 信義居家公司介紹 值得詢問的原因： 公開作品中有桃園30年老屋翻新案例。 公開介紹有住宅及商業空間設計經驗。 公司介紹展示建築物室內裝修業登記證及專業技術人員登記證。 建議確認： 工程管理制度、保固年限、售後維",
+      "excerpt_truncated": true,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "grdesign.com.tw",
+        "livinglife.com.tw",
+        "www.hunterdesign.com.tw",
+        "www.loveidsign.com",
+        "ycid.com.tw"
+      ]
+    },
+    {
+      "evidence_id": "5c3380b3089a76f7",
+      "recommendation_status": "有提及但未確認推薦",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "桃園30年以上的老屋翻新， 因為涉及水電管線重拉、 壁癌漏水處理、 結構安全與法規申請（如室內裝修許可）， 「工程管理」與「售後保固」是比單純美感更重要的核心指標。 以下為您整理挑選具備完整工程與售後體系的設計公司準則， 以及桃園在地口碑與具代表性的室內設計公司名單與資訊來源： 一、 挑選「強工程管理＋完善售後」設計公司的 4 大關鍵 雙證照與合法登記（基本門檻） 確認公司是否具備經濟部登記， 以及設計師或工班負責人是否持有「建築物室內裝修專業技術人員登記證」（含設計與施工雙",
+      "platform": "Gemini",
+      "prompt_id": "taoyuan-renovation",
+      "prompt": "桃園30年老屋翻新，如何選擇有工程管理與售後服務的室內設計公司？請列出公司與來源。",
+      "answered_at": "2026-11-17T10:53:26+08:00",
+      "answer_excerpt": "桃園30年以上的老屋翻新， 因為涉及水電管線重拉、 壁癌漏水處理、 結構安全與法規申請（如室內裝修許可）， 「工程管理」與「售後保固」是比單純美感更重要的核心指標。 以下為您整理挑選具備完整工程與售後體系的設計公司準則， 以及桃園在地口碑與具代表性的室內設計公司名單與資訊來源： 一、 挑選「強工程管理＋完善售後」設計公司的 4 大關鍵 雙證照與合法登記（基本門檻） 確認公司是否具備經濟部登記， 以及設計師或工班負責人是否持有「建築物室內裝修專業技術人員登記證」（含設計與施工雙證）。 桃園30年老屋若涉及隔間變更或集合住宅裝修， 依法需申請室內裝修審查， 具合法牌照的公司才能直接代辦並對工程負法律責任。 「統包式一條龍」或「自有/固定班底工班」 優先選擇設計與工程合一的公司。 老屋拆除後常會發現隱藏問題（如樑柱鋼筋外露、 樓上漏水）， 若設計與工班配合度高， 能即時變更設計與追加減預算， 避免設計端與施工端互踢皮球。 透明的工程管理機制 階段性驗收與報表： 詢問是否提供每日或每週施工進度回報（如 LINE 群組照片/影片紀錄）、 隱蔽工程（水電配管、 防水試水）的驗收簽名確認單。 分段付款制度： 依「簽約、 拆除泥作、 水電木作、 油漆完工、 驗收交屋」分 4～5 期付款， 尾款保留至少 5%～10% 作為驗收保障。 白紙黑字的售後保固條款 基礎工程保固（關鍵）： 老屋翻新最重要的防水、 水電管線、 泥作結構， 業界優質標準通常提供 1～3 年（甚至部分防水達 5 年） 保固。 裝修與五金保固： 一般櫃體、 油漆、 門片五金通常為 1 年 保固。 務必確認保固書是否明載「報修回應時間」與「保固範圍」。 二、 桃園具備工程管理與售後口碑的室內設計公司參考 以下名單綜合各大設計平台評鑑、 老屋翻新案例數及公司公開制度整理（建議挑選 2～3 家進行現場丈量與初步提案比較）： 公司名稱 區域位置 服務特色與工程/售後亮點 資訊來源與查詢管道 三宅一秀空間創藝 桃園區（藝文特區周邊） 深耕桃園多年，擅長老屋與中古屋大改造，具備完整設計與工程團隊，提供制度化工程進度回報與明確保固合約。 100室內設計、幸福空間、公司官網 晨陽共好機構（晨陽室內設計） 蘆竹區（南崁） 桃園大型規模設計公司，強調「標準化工程管理（SOP）」、透明化報價系統，設有專職工務部門與客服售後團隊，保固機制完整。 晨陽設計官網、100室內設計、Mobile01 居家版討論 大久空間設計 桃園區 注重老屋基礎工程（水電、防水、格局重塑），以細膩的木作與系統櫃整合著稱，工地管理嚴謹，在桃園在地社群評價穩定。 設計家 Searchome、100室內設計 芽米空間設計 桃園區（設有桃園服務處） 擅長老屋翻新與空間機能重整，強調工程透明化與分階段驗收，官網明確列出設計流程與售後保固服務。 芽米設計官網、幸福空間 歐德傢俱連鎖事業（桃園各門市/設計團隊） 桃園區、中壢區、八德區等 大型連鎖品牌，除系統家具外亦承接老屋全室裝修；優勢在於合約制式化、履約保證與全國統一的長期售後保固體系。 歐德官網、PTT Interior 版 知域設計 NorWe 桃園/雙北服務 擅長處理高屋齡老屋的採光、通風與管線重整，重視施工細節與屋主溝通，工程階段紀錄詳盡。 100室內設計、設計家 Searchome 三、 建議查詢與驗證的公開來源管道 在正式簽約前， 建議透過以下平台交叉比對設計公司的真實評價與案例細節： 專業室內設計媒合平台（看完整老屋案例與認證） 100室內設計（100.com.tw）： 可直接篩選「桃園市」",
+      "excerpt_truncated": true,
+      "mentions_brand": true,
+      "has_citations": false,
+      "cited_domains": []
+    },
     {
       "evidence_id": "6d9f32a122009a3f",
       "recommendation_status": "未提及晨陽",
@@ -395,39 +433,39 @@
   ],
   "existing_job_status": {
     "ChatGPT": {
-      "pending": 1,
-      "stored": 5,
+      "pending": 0,
+      "stored": 6,
       "failed": 0,
       "no-evidence": 0
     },
     "Gemini": {
-      "pending": 1,
-      "stored": 5,
+      "pending": 0,
+      "stored": 6,
       "failed": 0,
       "no-evidence": 0
     },
     "Perplexity": {
-      "pending": 1,
+      "pending": 0,
       "stored": 0,
       "failed": 0,
-      "no-evidence": 5
+      "no-evidence": 6
     }
   },
   "latest_job_status": {
     "ChatGPT": {
       "day": "2026-11-17",
-      "status": "pending",
-      "reason": "vendor_still_processing"
+      "status": "stored",
+      "reason": ""
     },
     "Gemini": {
       "day": "2026-11-17",
-      "status": "pending",
-      "reason": "vendor_still_processing"
+      "status": "stored",
+      "reason": ""
     },
     "Perplexity": {
       "day": "2026-11-17",
-      "status": "pending",
-      "reason": "vendor_still_processing"
+      "status": "no-evidence",
+      "reason": "vendor_wait_element_timeout"
     }
   },
   "intent_analysis": {
@@ -478,13 +516,13 @@
         ],
         "platforms": {
           "ChatGPT": {
-            "samples": 0,
+            "samples": 1,
             "mentions": 0,
             "direct_citations": 0
           },
           "Gemini": {
-            "samples": 0,
-            "mentions": 0,
+            "samples": 1,
+            "mentions": 1,
             "direct_citations": 0
           },
           "Perplexity": {
