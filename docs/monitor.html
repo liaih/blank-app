@@ -715,6 +715,7 @@ function render(d){
 if(window.MarketOpportunity)window.MarketOpportunity.init();
 
 const geoTaskStorageKey="chenyang-geo-tasks-v1";
+const seoCompletionStorageKey="chenyang-seo-completion-v1";
 
 let seoImprovementPlan=null;
 
@@ -738,20 +739,56 @@ function cmsCopyButton(label,content,feedback){
  };
  return btn;
 }
-function readSeoTaskStates(){
+function readTaskStorage(key){
  try{
-  const saved=JSON.parse(localStorage.getItem(geoTaskStorageKey)||"{}");
+  const saved=JSON.parse(localStorage.getItem(key)||"{}");
   return saved&&typeof saved==="object"&&!Array.isArray(saved)?saved:{};
  }catch(_){return{};}
 }
 function isSeoTaskArchived(record){
  return !!record&&["已完成","已驗證"].includes(record.status);
 }
+function readSeoTaskStates(){
+ const records=readTaskStorage(geoTaskStorageKey);
+ const completion=readTaskStorage(seoCompletionStorageKey);
+ const publications=seoImprovementPlan?.verified_publications;
+ for(const [id,evidence] of Object.entries(publications?.evidence||{})){
+  if(isSeoTaskArchived(records[id])||Object.hasOwn(completion,id))continue;
+  records[id]={...records[id],status:"已完成",completedAt:null,officialPublication:{checkedOn:publications.checked_on,evidence}};
+ }
+ for(const [id,record] of Object.entries(completion))records[id]={...records[id],...record};
+ return records;
+}
 function saveSeoTaskState(id,fields){
- const state=readSeoTaskStates();
+ const state=readTaskStorage(geoTaskStorageKey);
  state[id]={...(state[id]||{}),...fields};
  try{localStorage.setItem(geoTaskStorageKey,JSON.stringify(state));return true;}
  catch(_){return false;}
+}
+function saveSeoCompletion(id,fields){
+ const state=readTaskStorage(seoCompletionStorageKey);
+ const previous=readSeoTaskStates()[id]||{};
+ state[id]={article:previous.article,completedHtml:previous.completedHtml,...state[id],...fields};
+ try{localStorage.setItem(seoCompletionStorageKey,JSON.stringify(state));return true;}
+ catch(_){return false;}
+}
+function preserveLegacySeoCompletions(planIds){
+ const stored=readTaskStorage(seoCompletionStorageKey);
+ const legacy=readTaskStorage(geoTaskStorageKey);
+ let changed=false;
+ for(const [id,record] of Object.entries(legacy)){
+  if(Object.hasOwn(stored,id)||!isSeoTaskArchived(record))continue;
+  if(!planIds.has(id)&&!savedSeoArticleEntry(id,record))continue;
+  const {status,completedAt,completedHtml,article}=record;
+  stored[id]={status,completedAt,completedHtml,article:article||record.importedArticle&&{
+   title:record.importedArticle.title,url:record.importedArticle.url
+  }};
+  changed=true;
+ }
+ if(changed){
+  try{localStorage.setItem(seoCompletionStorageKey,JSON.stringify(stored));}
+  catch(_){}
+ }
 }
 function savedSeoArticleEntry(id,record){
  const saved=record?.importedArticle||record?.article;
@@ -916,7 +953,7 @@ function renderSeoImprovementPlan(){
  const pending=items.filter(item=>!isSeoTaskArchived(records[item.id]));
  const statusText=el("action-state-summary");
  statusText.textContent="待修改 "+pending.length+" 篇｜已完成 "+completed.length+
-   " 篇。紀錄保存在目前的瀏覽器。";
+   " 篇。歷史紀錄會顯示完成時間或官網刊登依據。";
  const historyButton=el("action-history-toggle");
  historyButton.disabled=false;
  historyButton.textContent=mode==="archive"?"返回待修改文章":"查看已完成紀錄（"+completed.length+"）";
@@ -934,7 +971,9 @@ function renderSeoImprovementPlan(){
  chooser.replaceChildren();
  for(const item of ordered){
    const option=document.createElement("option");option.value=item.id;
-   option.textContent=item.priority+"｜"+item.title;chooser.appendChild(option);
+   const recovered=mode==="archive"&&records[item.id]?.officialPublication;
+   option.textContent=item.priority+"｜"+item.title+(recovered?"｜官網找回":"");
+   chooser.appendChild(option);
  }
  chooser.value=ordered.some(x=>x.id===previous)?previous:(ordered[0]?.id||"");
  // Keep the embedded case editor tied to the top-level article selector.
@@ -977,9 +1016,12 @@ function renderSeoImprovementPlan(){
  if(mode==="archive"){
    action.textContent="恢復待修改";
    const date=record?.completedAt;
-   messageState.textContent="完成紀錄："+(Number.isFinite(Date.parse(date))?new Date(date).toLocaleString("zh-TW",{timeZone:"Asia/Taipei"}):"先前已標記完成，未記錄日期");
+   const publication=record?.officialPublication;
+   messageState.textContent=publication?
+     "從官網找回｜查核日 "+publication.checkedOn+"。"+publication.evidence+"原本的完成時間未留存。":
+     "完成紀錄："+(Number.isFinite(Date.parse(date))?new Date(date).toLocaleString("zh-TW",{timeZone:"Asia/Taipei"}):"先前已標記完成，未記錄日期");
    action.onclick=()=>{
-     if(!saveSeoTaskState(plan.id,{status:"待修改",completedAt:null})){
+     if(!saveSeoCompletion(plan.id,{status:"待修改",completedAt:null})){
        messageState.textContent="此瀏覽器無法儲存變更；請檢查隱私模式或儲存空間。";return;
      }
      el("action-view").value="pending";
@@ -991,7 +1033,7 @@ function renderSeoImprovementPlan(){
    action.onclick=()=>{
      const approvedCase=el("cyexp-base")?.value===plan.id&&el("cyexp-copy")?.disabled===false?el("cyexp-html")?.value:"";
      const completedHtml=approvedCase||record?.completedHtml||(seoOriginalMediaReady(media)?window.formatChenyangArticleForCms(media.html_with_media):null);
-     if(!saveSeoTaskState(plan.id,{status:"已完成",completedAt:new Date().toISOString(),article:{title:plan.title,url:plan.url},completedHtml})){
+     if(!saveSeoCompletion(plan.id,{status:"已完成",completedAt:new Date().toISOString(),article:{title:plan.title,url:plan.url},completedHtml})){
        messageState.textContent="此瀏覽器無法儲存變更；未標記完成。";return;
      }
      el("action-view").value="archive";
@@ -1067,7 +1109,7 @@ function renderSeoImprovementPlan(){
    const headingInfo=document.createElement("p");headingInfo.className="detail";
    headingInfo.textContent="內文真正的 H2 抬頭："+(integrity.opening_h2_text||"待重新產生標題驗證");
    target.appendChild(headingInfo);
-   note.textContent=mode==="archive"?"這筆舊紀錄沒有當時的 HTML 快照，以下顯示目前的文章版本。":
+   note.textContent=mode==="archive"?"這筆紀錄沒有當時的 HTML 快照。下方顯示工具目前的改稿，官網刊登內容可由上方原文連結查看。":
     "已通過防錯驗收：原文、圖片、影片、連結及原格局圖順序保留。保護的格局／平面圖："+integrity.floorplan_count+" 張。仍需編輯核對房型、交屋年份、圖片畫面及 CMS 實際上稿效果。";
  }
  target.appendChild(note);
@@ -1126,7 +1168,7 @@ function loadSeoImprovementPlan(){
    renderSeoImprovementPlan();
  });
  window.addEventListener("storage",event=>{
-   if(event.key===geoTaskStorageKey||event.key===null)renderSeoImprovementPlan();
+   if(event.key===geoTaskStorageKey||event.key===seoCompletionStorageKey||event.key===null)renderSeoImprovementPlan();
  });
  Promise.all(["./seo-improvement-plan.json","./seo-rewrites.json","./seo-media-rewrites.json"]
    .map(url=>fetch(url,{cache:"no-store"})
@@ -1138,6 +1180,7 @@ function loadSeoImprovementPlan(){
    seoRewritesById=new Map(rewrites.articles.map(x=>[x.id,x]));
    seoMediaById=new Map(media.articles.map(x=>[x.id,x]));
    const planIds=new Set(plan.items.map(x=>x.id));
+   preserveLegacySeoCompletions(planIds);
    for(const saved of window.savedSeoUrlArticles()){
     if(!planIds.has(saved.id))plan.items.push(savedSeoArticleEntry(saved.id,{article:saved}));
     if(saved.html){
@@ -1165,7 +1208,7 @@ function renderGeoTasks(report){
   tbody.replaceChildren();
   const questions=report.intent_analysis&&Array.isArray(report.intent_analysis.questions)
     ?report.intent_analysis.questions:[];
-  const saved=readSeoTaskStates();
+  const saved=readTaskStorage(geoTaskStorageKey);
   const tasks=[];
   for(const question of questions){
     const entries=Object.values(question.platforms||{});

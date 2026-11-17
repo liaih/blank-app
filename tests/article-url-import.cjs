@@ -20,6 +20,7 @@ async function setup(storage={}){
  await new Promise(r=>setTimeout(r,100));return dom;
 }
 const taskKey='chenyang-geo-tasks-v1';
+const completionKey='chenyang-seo-completion-v1';
 const draftKey='chenyang-seo-case-drafts-v2';
 function choose(d,id,value){
  const field=d.querySelector('#'+id);
@@ -135,24 +136,27 @@ test('new URL loads audit into existing editor, preserves original and isolates 
  action(d,'標記完成並移至歷史紀錄');
  assert.equal(d.querySelector('#action-view').value,'archive');
  assert.equal(d.querySelector('#seo-article-actions textarea').value,copied);
- const reloaded=await setup({[taskKey]:dom.window.localStorage.getItem(taskKey)});
+ const reloaded=await setup({
+  [taskKey]:dom.window.localStorage.getItem(taskKey),
+  [completionKey]:dom.window.localStorage.getItem(completionKey)
+ });
  try{
   const rd=reloaded.window.document;
   rd.querySelector('#action-history-toggle').click();
   assert.equal(rd.querySelector('#action-article').value,'url-news-99999');
   assert.equal(rd.querySelector('#seo-article-actions textarea').value,copied);
   assert.match(rd.querySelector('#seo-article-actions').textContent,/完成紀錄/);
-  const completedAt=JSON.parse(reloaded.window.localStorage.getItem(taskKey))['url-news-99999'].completedAt;
+  const completedAt=JSON.parse(reloaded.window.localStorage.getItem(completionKey))['url-news-99999'].completedAt;
   rd.querySelector('#cyexp-source-url').value='https://www.chen-yang.com.tw/news-content.php?id=99999';
   rd.querySelector('#cyexp-fetch-article').click();
   await new Promise(r=>setTimeout(r,60));
   assert.match(rd.querySelector('#cyexp-url-status').textContent,/已讀取最新/);
   assert.equal(rd.querySelector('#action-view').value,'archive');
   assert.equal(rd.querySelector('#seo-article-actions textarea').value,copied);
-  assert.equal(JSON.parse(reloaded.window.localStorage.getItem(taskKey))['url-news-99999'].completedAt,completedAt);
+  assert.equal(JSON.parse(reloaded.window.localStorage.getItem(completionKey))['url-news-99999'].completedAt,completedAt);
   action(rd,'恢復待修改');
   assert.equal(rd.querySelector('#action-view').value,'pending');
-  assert.equal(JSON.parse(reloaded.window.localStorage.getItem(taskKey))['url-news-99999'].status,'待修改');
+  assert.equal(JSON.parse(reloaded.window.localStorage.getItem(completionKey))['url-news-99999'].status,'待修改');
  }finally{reloaded.window.close();}
 
  }finally{dom.window.close();}
@@ -165,10 +169,10 @@ test('earlier completion states and saved article drafts are recovered without i
  try{
   const d=dom.window.document;
   const chooser=d.querySelector('#action-article');
-  assert.match(d.querySelector('#action-history-toggle').textContent,/（2）/);
+  assert.match(d.querySelector('#action-history-toggle').textContent,/（6）/);
   assert.ok([...chooser.options].some(option=>option.value==='url-news-888'));
   d.querySelector('#action-history-toggle').click();
-  assert.deepEqual([...chooser.options].map(option=>option.value),['seo-danfo-234','url-news-777']);
+  assert.deepEqual([...chooser.options].slice(0,2).map(option=>option.value),['seo-danfo-234','url-news-777']);
   choose(d,'action-article','url-news-777');
   assert.equal(d.querySelector('#cyexp-newbase').value,source);
   assert.equal(d.querySelector('#cyexp-intro').value,'先前保存的修改');
@@ -178,6 +182,7 @@ test('earlier completion states and saved article drafts are recovered without i
   choose(d,'action-article','url-news-888');
   assert.equal(d.querySelector('#cyexp-intro').value,'只有草稿');
   assert.equal(dom.window.localStorage.getItem(taskKey),JSON.stringify(state));
+  assert.equal(JSON.parse(dom.window.localStorage.getItem(completionKey))['url-news-777'].completedAt,date);
  }finally{dom.window.close();}
 });
 test('saving a previously loaded AI SEO task preserves newer article completion history',async()=>{
@@ -186,21 +191,46 @@ test('saving a previously loaded AI SEO task preserves newer article completion 
   const d=dom.window.document;
   const owner=[...d.querySelectorAll('#geo-task-rows tr')].find(row=>row.textContent.includes('核對 Perplexity 擷取驗證失敗原因'))?.querySelector('input');
   assert.ok(owner);
-  choose(d,'action-article','seo-danfo-234');
+  choose(d,'action-article','seo-fumei-503');
   action(d,'標記完成並移至歷史紀錄');
   owner.value='編輯';
   owner.dispatchEvent(new dom.window.Event('change'));
   const records=JSON.parse(dom.window.localStorage.getItem(taskKey));
   assert.equal(records['capture-perplexity'].owner,'編輯');
-  assert.equal(records['seo-danfo-234'].status,'已完成');
-  assert.match(records['seo-danfo-234'].completedHtml,/丹佛花都/);
+  const completed=JSON.parse(dom.window.localStorage.getItem(completionKey))['seo-fumei-503'];
+  assert.equal(completed.status,'已完成');
+  assert.match(completed.completedHtml,/福美富琚/);
+ }finally{dom.window.close();}
+});
+test('verified live publications recover five archive entries even with empty local storage',async()=>{
+ const dom=await setup();
+ try{
+  const d=dom.window.document;
+  const browserStorage=dom.window.localStorage;
+  const chooser=d.querySelector('#action-article');
+  d.querySelector('#action-history-toggle').click();
+  assert.deepEqual(new Set([...chooser.options].map(option=>option.value)),new Set([
+   'seo-danfo-234','seo-yunjiang-331','seo-hongguang-253','seo-housheng-451','ai-kaohsiung-536'
+  ]));
+  choose(d,'action-article','seo-danfo-234');
+  assert.match(d.querySelector('#seo-article-actions').textContent,/從官網找回.*原本的完成時間未留存/);
+  assert.equal(d.querySelector('#seo-article-actions a').href,'https://www.chen-yang.com.tw/news-content.php?id=234');
+  assert.equal(browserStorage.getItem(completionKey),null);
+  action(d,'恢復待修改');
+  assert.ok([...chooser.options].some(option=>option.value==='seo-danfo-234'));
+  browserStorage.setItem(taskKey,JSON.stringify({'seo-danfo-234':{status:'已完成'}}));
+  d.querySelector('#action-history-toggle').click();
+  assert.ok(![...chooser.options].some(option=>option.value==='seo-danfo-234'));
  }finally{dom.window.close();}
 });
 test('all eight articles share the corrected preview and HTML copy formatting',async()=>{
  const dom=await setup();try{
   const d=dom.window.document;
   const chooser=d.querySelector('#action-article');
-  const ids=[...chooser.options].map(option=>option.value);
+  const modes=new Map([...chooser.options].map(option=>[option.value,'pending']));
+  d.querySelector('#action-history-toggle').click();
+  for(const option of chooser.options)modes.set(option.value,'archive');
+  const ids=[...modes.keys()];
   assert.equal(ids.length,8);
   let copied='';
   Object.defineProperty(dom.window.navigator,'clipboard',{value:{writeText:async html=>{copied=html;}}});
@@ -208,6 +238,7 @@ test('all eight articles share the corrected preview and HTML copy formatting',a
   const media=JSON.parse(fs.readFileSync('docs/seo-media-rewrites.json','utf8')).articles;
   const sourceAssets=(article,selector,attribute)=>[...article.querySelectorAll(selector)].map(node=>node.getAttribute(attribute));
   for(const id of ids){
+   choose(d,'action-view',modes.get(id));
    chooser.value=id;chooser.dispatchEvent(new dom.window.Event('change'));
    copied='';
    [...panel.querySelectorAll('button')].find(b=>b.textContent==='複製這篇完整 HTML').click();
