@@ -4,16 +4,16 @@
   "not_first_party_analytics": true,
   "not_real_consumer_query_volume": true,
   "not_own_tavily_rag": true,
-  "window_start": "2026-10-19",
-  "window_end": "2026-11-17",
-  "generated_at": "2026-11-17T22:12:27+08:00",
-  "total_samples": 12,
+  "window_start": "2026-10-20",
+  "window_end": "2026-11-18",
+  "generated_at": "2026-11-18T04:05:01+08:00",
+  "total_samples": 13,
   "platforms": [
     {
       "platform": "ChatGPT",
       "samples": 6,
       "existing_jobs": {
-        "pending": 0,
+        "pending": 1,
         "stored": 6,
         "failed": 0,
         "no-evidence": 0
@@ -96,19 +96,23 @@
     },
     {
       "platform": "Gemini",
-      "samples": 6,
+      "samples": 7,
       "existing_jobs": {
         "pending": 0,
-        "stored": 6,
+        "stored": 7,
         "failed": 0,
         "no-evidence": 0
       },
       "mentions": 1,
       "direct_domain_citations": 0,
-      "answers_with_sources": 4,
-      "last_sample_date": "2026-11-17",
+      "answers_with_sources": 5,
+      "last_sample_date": "2026-11-18",
       "competitor_candidates": [],
       "cited_domains": [
+        {
+          "domain": "www.100.com.tw",
+          "occurrences": 6
+        },
         {
           "domain": "www.yixin.studio",
           "occurrences": 5
@@ -116,10 +120,6 @@
         {
           "domain": "www.lihaocreator.com",
           "occurrences": 3
-        },
-        {
-          "domain": "www.100.com.tw",
-          "occurrences": 2
         },
         {
           "domain": "www.pro360.com.tw",
@@ -134,6 +134,30 @@
           "occurrences": 2
         },
         {
+          "domain": "www.order.com.tw",
+          "occurrences": 1
+        },
+        {
+          "domain": "gentleliving-design.com",
+          "occurrences": 1
+        },
+        {
+          "domain": "home.housetube.tw",
+          "occurrences": 1
+        },
+        {
+          "domain": "www.wabisabidesign.com.tw",
+          "occurrences": 1
+        },
+        {
+          "domain": "www.puloapp.com",
+          "occurrences": 1
+        },
+        {
+          "domain": "www.risingsundesign.com.tw",
+          "occurrences": 1
+        },
+        {
           "domain": "www.ciaosyuan.com",
           "occurrences": 1
         },
@@ -144,36 +168,13 @@
         {
           "domain": "ewa.com.tw",
           "occurrences": 1
-        },
-        {
-          "domain": "www.decorations.com.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.moi.gov.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.genedicsdesign.com.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.clinteriordesign.com.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.dongsendesign.com",
-          "occurrences": 1
-        },
-        {
-          "domain": "showdesign.com.tw",
-          "occurrences": 1
         }
       ],
       "tested_prompt_ids": [
         "kaohsiung-condo",
         "renovation-cost",
         "renovation-process",
+        "taichung-condo",
         "tainan-renovation",
         "taoyuan-renovation",
         "zhubei-engineer"
@@ -183,7 +184,7 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 0,
+        "pending": 1,
         "stored": 0,
         "failed": 0,
         "no-evidence": 6
@@ -198,6 +199,29 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "04b75173c80e9e5f",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "Gemini",
+      "prompt_id": "taichung-condo",
+      "prompt": "台中25坪新成屋裝潢，推薦值得比較的室內設計公司與其擅長的風格。",
+      "answered_at": "2026-11-18T04:02:47+08:00",
+      "answer_excerpt": "針對台中 25 坪新成屋 的空間尺度（通常為舒適的 2 房 2 衛或實用的 3 坪格局），這個坪數在裝潢上最大的核心在於「放大視覺空間」 與 「兼顧收納機能與流暢動線」。 以下為您推薦幾家在台中備受好評、 且在 25 坪新成屋規劃上表現出色的室內設計公司， 以及它們各自擅長的風格與設計特色： 1. 伊果設計（Yigo Design） 擅長風格： 現代風、混搭風、輕奢簡約 25坪規劃優勢： 擅長運用溫潤的木質、俐落的線條與系統櫃整合，精準掌握預算與空間坪效。例如在其台中的 25 坪三房案例中，能透過良好的格局重整與收納分配，讓小空間保有寬敞的視覺感，不顯壓迫。 適合族群： 希望在預算內兼顧質感與實用收納的小家庭或首購族。 2. 歐威室內設計 擅長風格： 溫潤北歐風、日系無印風、現代簡約 25坪規劃優勢： 非常擅長處理中小坪數的動線與畸零空間。針對 25 坪新成屋，常利用 弧形設計 來柔化空間樑柱與視覺、運用無接縫地坪串聯公領域，並透過系統櫃與木作的結合，打造如居家咖啡館般清新、開闊的氛圍。 適合族群： 喜歡木質調、採光好、重視生活情調與療癒感的頂客族或年輕夫妻。 3. 侘宅空間設計 擅長風格： 現代智能美學風、現代沉穩風、侘寂風 25坪規劃優勢： 擅長將現代科技（如智能家居系統）與空間美學完美融合。在 25 坪的空間中，他們能透過精準的照明設計（層次光影）、特殊塗料或材質工藝，讓空間雖不大卻極具精緻的高級感。 適合族群： 科技新貴、對生活品味與智慧家電整合有高要求的屋主。 4. 有隅空間規劃所 擅長風格： 現代留白美學、溫馨北歐風、輕優雅風 25坪規劃優勢： 強調「以留白安放日常」，擅長利用大片白淨色調、自然採光與減法設計，讓 25 坪新成屋展現超乎實際坪數的寬敞感與呼吸感，動線規劃流暢。 適合族群： 喜歡簡約、不喜歡過度裝飾、追求耐看與舒適度的一家三口。 💡 25坪新成屋裝潢比較與挑選建議 確認建商客變與基礎工程： 25坪新成屋通常格局已定， 若能在交屋前的「客變期」就讓設計公司介入（調整插座、 開關、 退掉不合用的地磚或廚具）， 能為後續裝潢省下一筆不小的拆除與修改費用。 收納與視覺的拿捏： 25坪要做滿三房或大兩房，系統櫃的比例很重要。建議多參考設計公司對於「懸浮櫃體」、「隱藏式收納」 及 「玻璃材質（如長虹玻璃、鋁框拉門）」的運用案例，這能有效減輕量體壓迫感。 想了解 25 坪新成屋大約需要準備多少裝潢預算嗎？ Yes",
+      "excerpt_truncated": false,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "gentleliving-design.com",
+        "home.housetube.tw",
+        "www.100.com.tw",
+        "www.order.com.tw",
+        "www.puloapp.com",
+        "www.risingsundesign.com.tw",
+        "www.wabisabidesign.com.tw"
+      ]
+    },
     {
       "evidence_id": "b5c43675da536d28",
       "recommendation_status": "未提及晨陽",
@@ -433,19 +457,19 @@
   ],
   "existing_job_status": {
     "ChatGPT": {
-      "pending": 0,
+      "pending": 1,
       "stored": 6,
       "failed": 0,
       "no-evidence": 0
     },
     "Gemini": {
       "pending": 0,
-      "stored": 6,
+      "stored": 7,
       "failed": 0,
       "no-evidence": 0
     },
     "Perplexity": {
-      "pending": 0,
+      "pending": 1,
       "stored": 0,
       "failed": 0,
       "no-evidence": 6
@@ -453,19 +477,19 @@
   },
   "latest_job_status": {
     "ChatGPT": {
-      "day": "2026-11-17",
-      "status": "stored",
-      "reason": ""
+      "day": "2026-11-18",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     },
     "Gemini": {
-      "day": "2026-11-17",
+      "day": "2026-11-18",
       "status": "stored",
       "reason": ""
     },
     "Perplexity": {
-      "day": "2026-11-17",
-      "status": "no-evidence",
-      "reason": "vendor_wait_element_timeout"
+      "day": "2026-11-18",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     }
   },
   "intent_analysis": {
@@ -610,7 +634,7 @@
             "direct_citations": 0
           },
           "Gemini": {
-            "samples": 0,
+            "samples": 1,
             "mentions": 0,
             "direct_citations": 0
           },
