@@ -332,6 +332,7 @@ tbody tr:last-child td{border-bottom:0}
       </label>
     </div>
     <p class="detail" id="action-state-summary">正在讀取文章狀態。</p>
+    <p class="detail" id="action-daily-update" role="status">每日補稿｜讀取更新紀錄中</p>
     <button type="button" class="ai-action secondary" id="action-history-toggle" disabled>查看已完成紀錄</button>
     <div id="case-expansion" aria-label="同建案新增案件與圖像判讀">正在載入新增案件功能。</div>
     <div id="seo-article-actions" aria-live="polite">正在載入單篇圖文影音 HTML。</div>
@@ -340,7 +341,7 @@ tbody tr:last-child td{border-bottom:0}
   <details class="ai-manual-panel" id="action-discovery-panel">
     <summary>本週全站 GSC 新發現｜待稽核文章 <span id="site-discovery-count">（資料同步中）</span></summary>
     <div id="site-discovery-results">正在讀取真實 GSC 網頁層級資料。</div>
-    <p class="detail">這裡只是新發現的候選頁，不會自動產生完整 HTML；正式改稿必須先核對原文、格局圖、圖片 Alt 與實際 query × page 證據。</p>
+    <p class="detail">每日 18:45（台灣時間）從候選中挑選最多 3 篇。已通過正文與圖片保留檢查的完整改稿，會出現在上方「待修改文章」供編輯核對。</p>
   </details>
   <details class="ai-manual-panel">
     <summary>進階｜AI SEO 監測改善任務（非文章改稿）</summary>
@@ -718,6 +719,23 @@ const geoTaskStorageKey="chenyang-geo-tasks-v1";
 const seoCompletionStorageKey="chenyang-seo-completion-v1";
 
 let seoImprovementPlan=null;
+let dailySeoArticlesRequest;
+window.loadDailySeoArticles=function(){
+ if(!dailySeoArticlesRequest){
+  const local="./seo-daily-articles.json";
+  const source=location.hostname==="liaih.github.io"?
+   "https://raw.githubusercontent.com/liaih/blank-app/main/docs/seo-daily-articles.json":local;
+  const read=async url=>{
+   const response=await fetch(url,{cache:"no-store",signal:AbortSignal.timeout(5000)});
+   if(!response.ok)throw Error("無法載入每日改稿");
+   const feed=await response.json();
+   if(feed.schema!==1||!Array.isArray(feed.articles))throw Error("每日改稿格式不符");
+   return feed;
+  };
+  dailySeoArticlesRequest=read(source).catch(()=>source===local?null:read(local).catch(()=>null));
+ }
+ return dailySeoArticlesRequest;
+};
 
 let seoRewritesById=new Map();
 let seoMediaById=new Map();
@@ -823,6 +841,13 @@ function seoOriginalMediaReady(media){
 function showGscUrlDiagnosis(target,plan){
  const panel=document.createElement("section");panel.className="panel soft";panel.style.marginTop="16px";
  const title=document.createElement("h3");title.textContent="實際 GSC｜這篇文章的曝光與點擊";panel.appendChild(title);
+ if(plan.gsc?.current){
+  const metric=plan.gsc.current;
+  const note=document.createElement("p");note.className="detail";
+  note.textContent="GSC 網頁維度｜截止 "+plan.gsc.last_day+"｜近 28 天 "+
+   metric.impressions+" 次曝光、"+metric.clicks+" 次點擊。"+(plan.gsc.reason||"");
+  panel.appendChild(note);target.appendChild(panel);return;
+ }
  const report=gscUrlDiagnosis;
  if(!report){
   const no=document.createElement("p");no.className="detail";
@@ -901,7 +926,8 @@ function renderSitewideDiscovery(){
    panel.textContent="首次每週全站檢核尚未完成公開同步。未取得資料不代表沒有需要改善的文章。";
    return;
  }
- const newPages=(gscSiteDiscovery.pages||[]).filter(x=>!x.existing_improvement_task);
+ const articleKeys=new Set((seoImprovementPlan?.items||[]).map(x=>seoArticleUrlKey(x.url)));
+ const newPages=(gscSiteDiscovery.pages||[]).filter(x=>!x.existing_improvement_task&&!articleKeys.has(seoArticleUrlKey(x.url)));
  const summary=el("site-discovery-count");summary.textContent="（新增 "+newPages.length+" 篇候選）";
  const blurb=document.createElement("p");blurb.className="detail";
  blurb.textContent="GSC 截止："+(gscSiteDiscovery.last_gsc_day||"未知")+
@@ -910,7 +936,7 @@ function renderSitewideDiscovery(){
    (gscSiteDiscovery.daily_page_rows_truncated?"每日網頁資料可能已達 GSC 取樣上限。":"");
  panel.appendChild(blurb);
  if(!newPages.length){
-   const none=document.createElement("p");none.textContent="目前未找到既有 8 篇以外、足夠曝光的新候選頁。";panel.appendChild(none);return;
+   const none=document.createElement("p");none.textContent="目前沒有尚未列入改稿清單的新候選頁。";panel.appendChild(none);return;
  }
  const table=document.createElement("table"),head=document.createElement("tr");
  for(const name of ["新候選官網文章","28 天曝光","點擊","CTR","需做的檢查"]){
@@ -964,7 +990,8 @@ function renderSeoImprovementPlan(){
      const bt=Date.parse(records[b.id]?.completedAt||"")||0;
      return bt-at;
    }
-   return (a.priority==="P1"?0:1)-(b.priority==="P1"?0:1) ||
+   return (b.added_on||"").localeCompare(a.added_on||"") ||
+     (a.priority==="P1"?0:1)-(b.priority==="P1"?0:1) ||
      Number(rank.get(b.keyword)?.impressions||0)-Number(rank.get(a.keyword)?.impressions||0);
  });
  const chooser=el("action-article"),previous=chooser.value;
@@ -1003,7 +1030,7 @@ function renderSeoImprovementPlan(){
  const archivedHtml=mode==="archive"&&typeof record?.completedHtml==="string"?record.completedHtml:"";
  const h=document.createElement("h3");h.textContent=plan.title;target.appendChild(h);
  const meta=document.createElement("p");meta.className="small";
- meta.textContent=plan.priority+"｜"+plan.channels.join("＋")+"｜改稿版：2026/11/12";
+ meta.textContent=plan.priority+"｜"+plan.channels.join("＋")+"｜改稿版："+(plan.added_on||draft?.reviewedAt||"2026/11/12");
  target.appendChild(meta);
  const link=document.createElement("a");link.href=plan.url;link.target="_blank";
  link.rel="noopener noreferrer";link.textContent="檢視晨陽官網原文章";target.appendChild(link);
@@ -1149,9 +1176,11 @@ window.registerSeoUrlArticle=function(article){
  if(!seoImprovementPlan)throw Error("原文章清單仍在載入，請稍後再試");
  const entry=savedSeoArticleEntry(article.id,{importedArticle:article});
  const idx=seoImprovementPlan.items.findIndex(x=>x.id===entry.id);
- if(idx<0)seoImprovementPlan.items.push(entry);else seoImprovementPlan.items[idx]=entry;
- seoRewritesById.set(entry.id,article);
- seoMediaById.set(entry.id,{media_integrated:false});
+ if(!seoMediaById.get(entry.id)?.media_integrated){
+  if(idx<0)seoImprovementPlan.items.push(entry);else seoImprovementPlan.items[idx]=entry;
+  seoRewritesById.set(entry.id,article);
+  seoMediaById.set(entry.id,{media_integrated:false});
+ }
  const persisted=saveSeoTaskState(entry.id,{importedArticle:article});
  el("action-view").value=isSeoTaskArchived(readSeoTaskStates()[entry.id])?"archive":"pending";
  const option=document.createElement("option");option.value=entry.id;option.textContent=entry.title;
@@ -1172,29 +1201,45 @@ function loadSeoImprovementPlan(){
  });
  Promise.all(["./seo-improvement-plan.json","./seo-rewrites.json","./seo-media-rewrites.json"]
    .map(url=>fetch(url,{cache:"no-store"})
-     .then(resp=>{if(!resp.ok)throw Error("資料未完成同步："+url);return resp.json();})))
-  .then(([plan,rewrites,media])=>{
+     .then(resp=>{if(!resp.ok)throw Error("資料未完成同步："+url);return resp.json();})).concat(window.loadDailySeoArticles()))
+  .then(([plan,rewrites,media,daily])=>{
    if(!Array.isArray(plan.items)||!Array.isArray(rewrites.articles)||
       !Array.isArray(media.articles))throw Error("文章資料格式錯誤");
    seoImprovementPlan=plan;
    seoRewritesById=new Map(rewrites.articles.map(x=>[x.id,x]));
    seoMediaById=new Map(media.articles.map(x=>[x.id,x]));
    const planIds=new Set(plan.items.map(x=>x.id));
+   for(const entry of daily?.articles||[]){
+    if(planIds.has(entry.plan.id)||!seoOriginalMediaReady(entry.media))continue;
+    plan.items.push(entry.plan);planIds.add(entry.plan.id);
+    seoRewritesById.set(entry.plan.id,entry.draft);
+    seoMediaById.set(entry.plan.id,entry.media);
+   }
    preserveLegacySeoCompletions(planIds);
    for(const saved of window.savedSeoUrlArticles()){
     if(!planIds.has(saved.id))plan.items.push(savedSeoArticleEntry(saved.id,{article:saved}));
-    if(saved.html){
+    if(saved.html&&!seoMediaById.get(saved.id)?.media_integrated){
      seoRewritesById.set(saved.id,saved);
      seoMediaById.set(saved.id,{media_integrated:false});
     }
    }
+   el("action-daily-update").textContent=daily?.checked_on?
+    "每日補稿 18:45｜最近 "+daily.checked_on+" 新增 "+daily.added_count+" / 3 篇"+
+      (daily.added_count<3?"｜可通過檢查的新文章不足":""):
+    "每日補稿 18:45｜尚未取得更新紀錄";
    renderSeoImprovementPlan();
+   renderSitewideDiscovery();
   })
   .catch(()=>{
    el("seo-article-actions").textContent="尚未能載入完整的單篇 HTML，請確認 GitHub Pages 同步狀態。";
   });
 }
 loadSeoImprovementPlan();
+
+function seoArticleUrlKey(value){
+ try{const url=new URL(value);return url.pathname+"?id="+Number(url.searchParams.get("id"));}
+ catch(_){return "";}
+}
 
 function taskInput(value,placeholder,change,type="text"){
   const input=document.createElement("input");
@@ -1546,6 +1591,6 @@ fetch("./data.json",{cache:"no-store"})
 });
 })();
 </script>
-<script defer src="./seo-case-expansion.js?v=article-history-20261116"></script>
+<script defer src="./seo-case-expansion.js?v=daily-article-20261118"></script>
 </body>
 </html>

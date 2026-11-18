@@ -4,10 +4,11 @@ const fs=require('node:fs');
 const {JSDOM}=require('jsdom');
 const html=fs.readFileSync('docs/monitor.html','utf8');
 const source='<div class="chenyang-seo-draft-warning" data-publish-status="not-approved"><strong>SEO 草稿｜未通過正式上稿驗收，不可直接發佈</strong><p>AI 描述與格局圖需人工核對。</p></div><p>舊描述（3D 建模示意圖，非施工完成證明）</p><h2>新建案原文</h2><p style="margin:0 0 18px;line-height:1.9;"><span style="font-size:18px;color:#333333;">保留原文與戶型</span></p><p><a href="https://chen-yang.com.tw/news.php"><span style="color:#ADD8E6">原資料連結</span></a></p><img src="https://chen-yang.com.tw/upload/old.png" alt="原格局圖"><h2>延伸閱讀</h2><p>原連結</p>';
-async function setup(storage={}){
+async function setup(storage={},daily={schema:1,articles:[]}){
  const dom=new JSDOM(html,{runScripts:'outside-only',url:'https://liaih.github.io/blank-app/monitor.html#actions'});
  for(const [key,value] of Object.entries(storage))dom.window.localStorage.setItem(key,value);
  dom.window.fetch=async url=>{
+  if(String(url).endsWith('/seo-daily-articles.json'))return {ok:true,json:async()=>daily};
   if(String(url).startsWith('http://127.0.0.1:8765/'))return {ok:true,json:async()=>({id:'url-news-99999',url:'https://www.chen-yang.com.tw/news-content.php?id=99999',title:'測試建案',html:source,metaTitle:'測試建案',metaDescription:'原摘要',checkedAt:new Date().toISOString(),imageCount:1,checks:[{status:'待改善',item:'ALT',detail:'需讀圖'}]})};
   const path='docs/'+String(url).replace(/^\.\//,'').split('?')[0];
   return {ok:fs.existsSync(path),json:async()=>JSON.parse(fs.readFileSync(path,'utf8'))};
@@ -19,6 +20,25 @@ async function setup(storage={}){
  }
  await new Promise(r=>setTimeout(r,100));return dom;
 }
+test('daily drafts appear in the editor with copyable HTML and preserve completion history',async()=>{
+ const published=JSON.parse(fs.readFileSync('docs/seo-daily-articles.json','utf8'));
+ const feed={...published,added_count:3,articles:published.articles.slice(0,3)};
+ const first=feed.articles[0];
+ const dom=await setup({},feed);
+ try{
+  const d=dom.window.document;
+  assert.match(d.getElementById('action-daily-update').textContent,/新增 3 \/ 3 篇/);
+  assert.match(d.getElementById('action-state-summary').textContent,/待修改 6 篇｜已完成 5 篇/);
+  choose(d,'action-article',first.plan.id);
+  assert.equal(d.getElementById('cyexp-base').value,first.plan.id);
+  const text=d.querySelector('#seo-article-actions textarea').value;
+  assert.ok(text.includes(first.draft.sections[1][0]));
+  assert.match(text,/格局圖與空間配置/);
+  action(d,'標記完成並移至歷史紀錄');
+  assert.equal(d.getElementById('action-view').value,'archive');
+  assert.match(d.getElementById('action-state-summary').textContent,/待修改 5 篇｜已完成 6 篇/);
+ }finally{dom.window.close();}
+});
 const taskKey='chenyang-geo-tasks-v1';
 const completionKey='chenyang-seo-completion-v1';
 const draftKey='chenyang-seo-case-drafts-v2';

@@ -1785,16 +1785,22 @@ async function start(){
  const out=await Promise.allSettled([
   fetch("./seo-media-rewrites.json",{cache:"no-store"}).then(r=>r.json()),
   fetch("./seo-rewrites.json",{cache:"no-store"}).then(r=>r.json()),
-  loadKnown()
+  loadKnown(),
+  window.loadDailySeoArticles?.()
  ]);
  if(out[0].status!=="fulfilled"||out[1].status!=="fulfilled"){
   message("無法載入舊文章與改稿；禁止以空原文產生可上稿 HTML。",true);return;
  }
  S.base=(out[0].value.articles||[]).filter(x=>x.html_with_media);
  S.drafts=out[1].value.articles||[];
+ for(const entry of out[3]?.value?.articles||[]){
+  if(!entry.media.media_integrated)continue;
+  if(S.base.some(row=>row.id===entry.plan.id))continue;
+  S.base.push(entry.media);S.drafts.push(entry.draft);
+ }
  for(const saved of window.savedSeoUrlArticles?.()||[]){
   const baseIndex=S.base.findIndex(x=>x.id===saved.id);
-  if(baseIndex>=0&&!saved.html)continue;
+  if(baseIndex>=0&&(!saved.html||S.base[baseIndex].media_integrated))continue;
   const base={id:saved.id,url:saved.url,html_with_media:saved.html||"",media_integrated:false,floorplan_protection_passed:false};
   if(baseIndex<0)S.base.push(base);else S.base[baseIndex]=base;
   const draft={...saved,project_name:saved.title?.split("｜")[0]};
