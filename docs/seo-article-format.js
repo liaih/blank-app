@@ -3,6 +3,22 @@
 "use strict";
 const headingGold="#C5A47E";
 const contactUrl="https://www.chen-yang.com.tw/contact.php";
+const articleSourceCorrections={
+ "url-news-473":{
+  heading:"台中北屯浩瀚創立方｜格局圖與北歐風空間規劃",
+  title:"浩瀚創立方格局圖｜台中北屯挑高空間規劃｜晨陽設計",
+  description:"看浩瀚創立方的 B1 戶 1F 配置圖，對照入口、餐廳、廚房和樓梯位置。附北歐風設計提案與戶別用途核對重點。",
+  sourceLabel:"浩瀚開發｜浩瀚創立方建案資料",
+  sourceUrl:"https://www.hundredfold.com.tw/cases/show/19",
+ },
+ "url-news-170":{
+  heading:"新竹新埔王喬光知樹｜雙天井透天格局與室內規劃",
+  title:"王喬光知樹格局圖｜新竹新埔雙天井透天｜晨陽設計",
+  description:"王喬光知樹位於新竹縣新埔鎮自強重劃區。從晨陽 1、2 樓平面規劃看雙天井透天的採光、樓層動線及收納安排。",
+  sourceLabel:"崇志建設・王喬建設｜王喬光知樹建案資料",
+  sourceUrl:"https://wj-building.com/classic/%E7%8E%8B%E5%96%AC%E5%85%89%E7%9F%A5%E6%A8%B9/",
+ },
+};
 // Editorial summaries of the corresponding article and its existing draft.
 // Proposal images, known measurements and completed works are described separately.
 const caseBriefs={
@@ -17,8 +33,8 @@ const caseBriefs={
  "url-news-182":["土城金城舞兩房怎麼比？先看餐桌和走道能否共用","同樣是兩房配置，玄關開門、冰箱位置與餐桌拉椅後的距離，會影響每天的通行。","原文列有 D6、D2、C10 三組平面圖，可以用同一套家具尺寸做對照。","將平面圖轉至相同方向，標出玄關、冰箱、餐桌及椅子拉開的範圍。","餐桌兼工作桌時，同時確認用電位置與用餐時的通行空間。"],
  "url-news-564":["台南豪棋 MOMA18 怎麼做無主燈？客廳與臥室要看哪些條件？","看電視、閱讀與夜間起身需要的光線不同。白天的窗邊眩光也會影響座位及電視的位置。","原文以客廳無主燈及臥室遮光，說明不同空間的用光方向。","按照家具位置安排日光與分區照明，依使用情境分配亮度。","定案前先核對天花高度、燈具維修方式、迴路及用電位置。"],
  "url-news-83":["桃園青和寬逸三面採光，家具和收納怎麼放才不擋光？","窗多的住宅仍需要收納與隱私。可先看什麼時段會在客廳、書桌或餐桌停留。","原文記載建案採三面採光，頁面也附有格局配置資料供對照。","平面圖上先標窗面、開窗方向及窗簾，再為高櫃找出與窗戶錯開的位置。","書桌、餐桌和沙發定案前，核對窗扇、房門及椅子移動時的空間。"],
- "url-news-473":["北屯浩瀚創立方挑高空間怎麼規劃？先核對用途、收納與動線","看到挑高格局時，可以先釐清實際使用用途，並確認樓高、家具和固定櫃體的關係。","原文提到全案包含一般事務所及店面規劃，也附有平面資料。用途及施工限制需依自家戶別的正式文件確認。","先畫入口、辦公或使用區與收納的走道，依實際動線配置家具。","使用用途、淨高與固定設備位置，應在丈量及確認圖說後定案。"],
- "url-news-170":["竹北王喬光知樹透天裝潢，如何安排樓層動線與採光？","三代同住時，樓層分配、家庭活動及日常上下樓的習慣，都會影響每層需要的機能。","原文介紹雙天井設計，並提供不同樓層的平面規劃圖供對照。","分樓層畫出日常動線，優先保留天井周邊的採光、通行與清潔空間。","若涉及設備或管線變更，需確認圖面、現場位置與可調整範圍。"],
+ "url-news-473":["浩瀚創立方格局圖怎麼看？B1 戶 1F 配置與動線","先找到圖右側的入口，再對照入口到沙發、餐桌與樓梯的動線。","原圖的①是入口玄關，②是客廳，③是廚房，④是餐廳，⑤是公衛浴，⑥是樓梯間。建案原文記載全案規劃為一般事務所及店面。","看圖時可確認餐桌、廚房與樓梯在同一側的相對位置，並核對拉開餐椅後通往樓梯的空間。","圖上的配置可供規劃參考。個別戶別的使用用途、樓梯及夾層配置，請依該戶核准資料確認。"],
+ "url-news-170":["新竹新埔王喬光知樹透天裝潢，如何安排樓層動線與採光？","三代同住時，可先記下家人每天上下樓的路線、常用的公共空間，以及需要就近取物的位置。","建商公布基地位於新埔自強重劃區的文山路與褒忠路口，規劃雙天井透天。晨陽原案例提供 1、2 樓的平面圖。","分樓層畫出日常動線，優先保留天井周邊的採光、通行與清潔空間。","若涉及設備或管線變更，需確認圖面、現場位置與可調整範圍。"],
  "url-news-423":["泰山碧瑤一品雋想做工業風，家具、收納和動線要先定什麼？","先列出客餐廳的日常活動，才能決定哪些家具要保留、哪裡需要集中收納。","原文保留 C 戶格局與工業風設計提案，可對照圖片中的空間分區及家具位置。","把沙發、餐桌與櫃體畫到原平面圖上，再依通行和收納需求決定風格細節。","下單前依戶別尺寸確認開門、拉椅、取物時能否順利通過。"],
 };
 
@@ -63,6 +79,23 @@ function normalizeBodyHeadings(article){
   const heading=document.createElement("h2");
   for(const attr of old.attributes)heading.setAttribute(attr.name,attr.value);
   heading.append(...old.childNodes);old.replaceWith(heading);
+ }
+}
+
+function removeRepeatedArticleHeading(body,title){
+ const norm=value=>value.replace(/[\s\u200b]/g,"");
+ if(!title)return;
+ const expected=norm(title);
+ for(const node of body.querySelectorAll("h1,h2")){
+  if(norm(node.textContent)===expected&&!node.id&&!node.querySelector("a,[id],img,iframe,video")){
+   node.remove();
+  }
+ }
+ const opening=body.querySelector(":scope > p");
+ const lead=opening?.firstChild;
+ if(lead?.nodeType===Node.TEXT_NODE&&norm(lead.textContent)===expected&&lead.nextSibling?.nodeName==="BR"){
+  lead.nextSibling.remove();
+  lead.remove();
  }
 }
 
@@ -114,6 +147,11 @@ function addEditorialSections(article,draft,media){
   appendText(intro,"h3","本案圖面與設計資料");
   appendText(intro,"p",evidence);
  }
+ const reference=articleSourceCorrections[draft?.id];
+ if(reference){
+  const link=appendText(appendText(intro,"p",""),"a",reference.sourceLabel);
+  link.setAttribute("href",reference.sourceUrl);
+ }
  appendText(intro,"h3","晨陽的規劃與核對方式");
  appendText(intro,"p",solution+" "+verify);
  intro.appendChild(document.createElement("hr"));
@@ -149,6 +187,30 @@ function addEditorialSections(article,draft,media){
  if(opening)opening.after(intro);else article.prepend(intro);
 }
 
+function addVerifiedCaseDetails(body,id,media){
+ if(id==="url-news-473"&&!body.querySelector("[data-chenyang-plan-guide]")){
+  const plan=media?.preservation_audit?.floorplan_images?.find(row=>row.url.endsWith("/1F-01(3).jpg"));
+  const image=[...body.querySelectorAll("img")].find(img=>plan&&img.getAttribute("src")===plan.url);
+  if(image){
+   const guide=document.createElement("section");
+   guide.setAttribute("data-chenyang-plan-guide","");
+   appendText(guide,"h2","浩瀚創立方格局圖｜B1 戶 1F 平面配置");
+   appendText(guide,"p","下圖從右側入口玄關進入客廳。餐區在客廳左側，廚房沿圖下方配置，公衛浴靠圖上方，樓梯在右下方。安排餐桌時，可先確認椅子拉開後往樓梯與廚房的路線是否順暢。");
+   (image.closest("p,h2,h3,figure")||image).before(guide);
+  }
+ }
+ if(id==="url-news-182"&&!body.querySelector("[data-chenyang-project-facts]")){
+  const firstPlan=[...body.querySelectorAll("h2,h3")].find(node=>/金城舞格局規劃/.test(node.textContent));
+  if(firstPlan){
+   const facts=document.createElement("section");
+   facts.setAttribute("data-chenyang-project-facts","");
+   appendText(facts,"h2","土城金城舞 NO2 都心花園｜建案基本資料");
+   appendText(facts,"p","金城舞 NO2 都心花園位於新北市土城區。建案資料列出的建設業者為精業建設、茂德機構。下方收錄晨陽的 D6、D2 與 C10 兩房平面規劃，可依自家戶別對照。");
+   firstPlan.before(facts);
+  }
+ }
+}
+
 window.formatChenyangArticleForCms=function(html,{draft,media}={}){
  const template=document.createElement("template");
  template.innerHTML=html;
@@ -162,8 +224,10 @@ window.formatChenyangArticleForCms=function(html,{draft,media}={}){
  }
  body.style.cssText="color:#333333;font-size:18px;line-height:1.9";
  article.querySelectorAll(".chenyang-seo-draft-warning,script,style,link[rel=stylesheet]").forEach(node=>node.remove());
+ removeRepeatedArticleHeading(body,draft?.originalSeo?.heading);
  normalizeBodyHeadings(article);
  restoreHeadingParagraphs(article);
+ addVerifiedCaseDetails(body,draft?.id,media);
  if(!body.querySelector("[data-chenyang-aeo]"))addEditorialSections(body,draft,media);
  for(const node of article.querySelectorAll("p,li,dt,dd")){
   if(node.closest("figure,figcaption,h2,h3,h4,h5,h6"))continue;
@@ -200,6 +264,16 @@ window.formatChenyangArticleForCms=function(html,{draft,media}={}){
   if(draft?.id==="seo-danfo-234"&&node.parentElement?.closest("h2,h3")&&node.textContent.trim()==="新北丹佛花都的生活區位"){
    node.textContent=node.textContent.replace("新北丹佛花都","桃園龜山 A7 丹佛花都");
   }
+  if(draft?.id==="url-news-473"){
+   node.textContent=node.textContent
+    .replace("北屯機捷特區挑高寓所 —— 創新彈性空間的商務宅邸","北屯機捷特區的挑高商務空間")
+    .replace("，靈活運用可作為辦公、居住或展示用途。","。全案規劃為一般事務所及店面，個別戶別的使用用途請依核准資料確認。");
+  }
+  if(draft?.id==="url-news-170"){
+   node.textContent=node.textContent
+    .replace(/「王喬光知樹\s*」位在新竹竹北[^。]*。/,"王喬光知樹位於新竹縣新埔鎮自強重劃區，基地在文山路與褒忠路口。建商公布產品規劃為地坪 42 坪、74–76 坪四房透天，採雙天井配置。")
+    .replace(/王喬光知樹\s+透天\s*\|\s*8\s*房\s*3\s*廳/,"王喬光知樹｜透天室內規劃提案");
+  }
   if(!node.parentElement?.closest("style,script"))node.textContent=cleanArticleLabel(node.textContent);
  }
  for(const heading of article.querySelectorAll("h2,h3,h4,h5,h6")){
@@ -210,5 +284,8 @@ window.formatChenyangArticleForCms=function(html,{draft,media}={}){
 
 window.chenyangArticleTitle=function(draft){
  return draft?.originalSeo?.heading||draft?.title;
+};
+window.chenyangArticleSeoCorrection=function(draft){
+ return articleSourceCorrections[draft?.id];
 };
 })();
