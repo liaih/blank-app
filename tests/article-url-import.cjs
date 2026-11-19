@@ -377,6 +377,12 @@ test('older articles use the source-backed AEO structure in both preview and cop
     assert.ok([...body.querySelectorAll('h2,h3')].every(heading=>heading.style.color==='rgb(197, 164, 126)'),id);
     assert.equal(body.querySelector('h1'),null,id);
     assert.deepEqual(sourceAssets(article,'iframe,video','src'),sourceAssets(original,'iframe,video','src'),id);
+    if(id==='seo-danfo-234'){
+     const location=[...body.querySelectorAll('h2,h3')].find(heading=>heading.textContent.trim()==='桃園龜山 A7 丹佛花都的生活區位');
+     assert.ok(location?.querySelector('span'),id);
+     assert.doesNotMatch(body.textContent,/新北丹佛花都的生活區位/,id);
+     assert.match(body.textContent,/桃園市龜山區樂善一路、牛角坡路口/,id);
+    }
     const expectedBody={
      'seo-danfo-234':['丹佛花都位於林口'],
      'ai-kaohsiung-536':['位於高雄市仁武區北屋北街','準備裝修新家','任職於台積電的客戶'],
