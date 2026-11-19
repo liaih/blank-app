@@ -46,6 +46,7 @@ test('daily drafts appear in the editor with copyable HTML and preserve completi
    assert.match(exported.querySelector('[data-chenyang-aeo]').textContent,/重點先看.*屋主會遇到的問題.*晨陽的規劃與核對方式/s);
    const preview=new JSDOM(d.querySelector('#seo-article-actions iframe').srcdoc).window.document;
    assert.equal(preview.querySelectorAll('h1').length,1);
+   if(entry.draft.originalSeo?.heading)assert.equal(preview.querySelector('h1').textContent,entry.draft.originalSeo.heading);
    assert.equal(exported.querySelector('h1'),null);
    action(d,'複製這篇完整 HTML');
    assert.equal(copied,htmlOutput,`${entry.plan.id} copied the wrong HTML`);
@@ -340,6 +341,7 @@ test('older articles use the source-backed AEO structure in both preview and cop
   Object.defineProperty(dom.window.navigator,'clipboard',{value:{writeText:async html=>{copied=html;}}});
   const panel=d.querySelector('#seo-article-actions');
   const media=JSON.parse(fs.readFileSync('docs/seo-media-rewrites.json','utf8')).articles;
+  const drafts=new Map(JSON.parse(fs.readFileSync('docs/seo-rewrites.json','utf8')).articles.map(draft=>[draft.id,draft]));
   const sourceAssets=(article,selector,attribute)=>[...article.querySelectorAll(selector)].map(node=>node.getAttribute(attribute));
   for(const id of ids){
    choose(d,'action-view',modes.get(id));
@@ -348,6 +350,12 @@ test('older articles use the source-backed AEO structure in both preview and cop
    [...panel.querySelectorAll('button')].find(b=>b.textContent==='複製這篇完整 HTML').click();
    assert.equal(copied,panel.querySelector('textarea').value,id);
    const original=new JSDOM(media.find(entry=>entry.id===id).html_with_media).window.document;
+   const preview=new JSDOM(panel.querySelector('iframe').srcdoc).window.document;
+   const metadata=drafts.get(id).originalSeo;
+   assert.equal(preview.querySelector('h1').textContent,metadata.heading,id);
+   assert.ok(panel.textContent.includes(metadata.title),id);
+   assert.ok(panel.textContent.includes(metadata.canonical),id);
+   assert.match(panel.textContent,/更新正文 HTML，沿用官網文章標題與 SEO 設定/);
    for(const html of [copied,panel.querySelector('iframe').srcdoc]){
     const article=new JSDOM(html).window.document;
     assert.equal(article.querySelector('h2 span').style.color,'rgb(197, 164, 126)',id);
@@ -362,6 +370,7 @@ test('older articles use the source-backed AEO structure in both preview and cop
     assert.equal(body.style.fontSize,'18px',id);
     assert.equal(body.style.lineHeight,'1.9',id);
     assert.equal(body.querySelectorAll('[data-chenyang-aeo] li').length,3,id);
+    assert.notEqual(body.firstElementChild,body.querySelector('[data-chenyang-aeo]'),id+' retains its original opening');
     assert.match(body.querySelector('[data-chenyang-aeo]').textContent,/屋主會遇到的問題.*本案圖面與設計資料.*晨陽的規劃與核對方式/s,id);
     assert.match(body.textContent,/FAQ|常見問題|Q\s*\d*\s*[：:]/i,id);
     assert.match(body.textContent,/延伸閱讀|相關頁面/,id);
@@ -393,12 +402,13 @@ test('a future daily article uses its own source and FAQ in the AEO structure',a
  const dom=await setup();
  try{
   const format=dom.window.formatChenyangArticleForCms;
-  const draft={id:'url-news-99998',project_name:'新測試案',sections:[['原標題',''],['玄關收納規劃','先量門片開啟的範圍。'],['常見問題 FAQ','玄關門邊適合做櫃子嗎？<BR>先把門片開啟範圍和所需通道標在平面圖上。']]};
+  const draft={id:'url-news-99998',project_name:'新測試案',originalSeo:{heading:'原始建案名稱及格局資訊'},sections:[['原標題',''],['玄關收納規劃','先量門片開啟的範圍。'],['常見問題 FAQ','玄關門邊適合做櫃子嗎？<BR>先把門片開啟範圍和所需通道標在平面圖上。']]};
   const source='<h1>原標題</h1><p><span style="color:red">建案基本資料</span></p><p>原文記錄這間住宅的入口連接開放式客餐廳，玄關的既有平面檔可以看到門片和走道方向。</p><img src="https://www.chen-yang.com.tw/upload/test-plan.png" alt="原格局圖">';
   const media={preservation_audit:{floorplan_count:1}};
   const html=format(source,{draft,media});
   const d=new JSDOM(html).window.document;
-  assert.equal(dom.window.chenyangArticleTitle(draft),'新測試案｜玄關門邊適合做櫃子嗎？');
+  assert.equal(dom.window.chenyangArticleTitle(draft),'原始建案名稱及格局資訊');
+  assert.equal(d.querySelector('[data-chenyang-aeo] h2').textContent,'新測試案｜玄關門邊適合做櫃子嗎？');
   assert.equal(d.querySelectorAll('[data-chenyang-aeo] li').length,3);
   assert.match(d.querySelector('[data-chenyang-aeo]').textContent,/原文記錄這間住宅/);
   assert.match(d.querySelector('[data-chenyang-aeo]').textContent,/原文附有格局或平面配置圖/);

@@ -555,7 +555,7 @@ tbody tr:last-child td{border-bottom:0}
 <script src="./market-opportunity.js"></script>
 <script src="./ai-seo-evidence.js"></script>
 <script src="./seo-daily-ui.js?v=gsc-history-20261115" defer></script>
-<script src="./seo-article-format.js?v=aeo-article-20261119"></script>
+<script src="./seo-article-format.js?v=seo-preserve-original-20261119"></script>
 <script>
 (function(){
 "use strict";
@@ -1090,18 +1090,16 @@ function renderSeoImprovementPlan(selectedId){
    target.appendChild(notice);return;
  }
  if(draft){
- const cmsTitle=document.createElement("p");cmsTitle.style.marginTop="14px";
- const cmsTitleLabel=document.createElement("strong");
- cmsTitleLabel.textContent="建議文章標題（官網後台的文章標題欄；由 CMS 輸出 H1，尚未改動）：";
- cmsTitle.appendChild(cmsTitleLabel);
- cmsTitle.appendChild(document.createTextNode(articleTitle));
- target.appendChild(cmsTitle);
- const title=document.createElement("p");title.style.marginTop="14px";
- const label=document.createElement("strong");label.textContent="SEO Title（搜尋結果標題備選稿，需在後台 SEO 標題欄另外設定）：";
- title.appendChild(label);title.appendChild(document.createTextNode(draft.metaTitle));
- target.appendChild(title);
- const desc=document.createElement("p");desc.className="small";
- desc.textContent="Meta Description 備選稿（未套用）："+draft.metaDescription;target.appendChild(desc);
+ const seoFields=document.createElement("details");seoFields.style.marginTop="14px";
+ const seoSummary=document.createElement("summary");seoSummary.textContent="上稿範圍：更新正文 HTML，沿用官網文章標題與 SEO 設定";
+ seoFields.appendChild(seoSummary);
+ const original=draft.originalSeo;
+ for(const [name,value] of [["官網文章標題 H1",original?.heading],["官網 SEO Title",original?.title],
+   ["官網 Meta Description",original?.description],["官網 Canonical",original?.canonical]]){
+  const field=document.createElement("p");field.className="detail";
+  field.textContent=name+"｜"+(value||(original?"原頁未提供":"請以目前官網後台欄位為準"));seoFields.appendChild(field);
+ }
+ target.appendChild(seoFields);
  const difference=document.createElement("details");difference.style.marginTop="18px";
  const diffSummary=document.createElement("summary");
  diffSummary.textContent="這次實際改變什麼／為什麼／SEO 的效益與風險";difference.appendChild(diffSummary);
@@ -1175,7 +1173,7 @@ function renderSeoImprovementPlan(selectedId){
   '<meta name="viewport" content="width=device-width,initial-scale=1">'+
   '<style>*,*::before,*::after{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{font-size:16px;line-height:1.8}img,video,iframe,figure,svg{max-width:100%!important}img{display:block;width:auto!important;height:auto!important;max-height:300px!important;object-fit:contain;margin:12px auto}@media(max-width:600px){img{max-height:220px!important}}iframe{width:100%!important;aspect-ratio:16/9;height:auto!important}p,h2,h3{overflow-wrap:anywhere}table{display:block;max-width:100%;overflow:auto}</style></head>'+
   '<body style="padding:12px;margin:0;font:18px/1.9 system-ui,sans-serif;color:#333333;">'+
-  '<div style="font-size:12px;color:#64748b;">以下 H1 為 CMS 文章標題欄的預覽示意，不在複製的內文 HTML 內</div>'+
+  '<div style="font-size:12px;color:#64748b;">官網文章標題 H1｜複製正文後，請沿用後台現有標題</div>'+
   '<h1 style="color:#C5A47E;font-size:24px;line-height:1.4;margin:8px 0 20px;">'+previewCmsTitle+'</h1>'+
   content+'</body></html>';
  preview.appendChild(frame);target.appendChild(preview);
@@ -1619,6 +1617,6 @@ fetch("./data.json",{cache:"no-store"})
 });
 })();
 </script>
-<script defer src="./seo-case-expansion.js?v=aeo-article-20261119"></script>
+<script defer src="./seo-case-expansion.js?v=seo-preserve-original-20261119"></script>
 </body>
 </html>

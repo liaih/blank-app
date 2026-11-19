@@ -85,8 +85,9 @@ def alt_for(draft,asset,section):
              or re.fullmatch(r"(?:圖片|image|晨陽設計|CHEN YANG)[\s\d]*",original,re.I))
     # Keep original useful ALT, especially descriptive room details in
     # the original old-house and newer image filename/caption assets.
-    if not generic and len(original)>=16 and (
-        any(term in original for term in ("玄關","客廳","臥室","主臥","書房","展示","櫃","格局","平面","設計"))
+    if not generic and (
+        (any(term in original for term in ("玄關","客廳","臥室","主臥","書房","餐廚","衛浴","展示","櫃","格局","平面"))
+         or (len(original)>=16 and "設計" in original))
         and (not original.startswith("林口A7、A8捷運正核心"))
         and not re.search(r"(建築圖|平面|平配|配置圖|格局圖|^平\d)",basename,re.I)
     ):
@@ -96,24 +97,18 @@ def alt_for(draft,asset,section):
     # floorplans, 3D renders and building illustrations.
     if re.search(r"(建築圖|建案圖|外觀)",basename):
         subject="建案建築外觀示意圖"
-        unit=""
     elif re.search(r"(平面|平配|配置圖|格局圖|^平\d)",basename,re.I):
         subject="戶型平面格局示意圖"
-        unit=""
     elif re.search(r"(?:3d|模擬|透視)",basename,re.I):
         subject="3D 空間設計示意圖"
-        unit=""
     elif "line_album" in basename:
         subject=("現代輕奢空間設計示意圖" if "現代輕奢" in basename else
                  "北歐風空間設計示意圖" if "北歐風" in basename else
-                 "現代風空間設計示意圖")
-        unit=""
+                 "空間設計示意圖")
     elif re.search(r"(平面模擬|平面示意|格局平面)",ctx.split("｜",1)[0]):
         subject="平面格局示意圖"
-        unit=""
     elif asset["order"]==1 and not re.search(r"(設計案例|平面|格局|空間)",ctx.split("｜",1)[0]):
         subject="建案介紹圖片"
-        unit=""
     else:
         subject=""
         for pattern,label in [
@@ -127,19 +122,8 @@ def alt_for(draft,asset,section):
         ]:
             if re.search(pattern,ctx,re.I):subject=label;break
         if not subject:subject="老屋翻新案例圖片" if "老屋" in title else "室內空間設計圖片"
-        unit=""
-    if draft["id"]=="seo-yunjiang-331":
-        unit=" L 戶" if section<=1 else " A 戶"
-    elif "A6" in draft["title"]:unit=" A6 戶"
-    elif "D11" in draft["title"]:unit=" D11 戶"
-    elif "C3" in draft["title"]:unit=" C3 戶"
-    elif "B1" in draft["title"]:unit=" B1 戶"
-    elif "A1" in draft["title"]:unit=" A1 戶"
-    elif "C 戶" in draft["title"]:unit=" C 戶"
-    # Don't append a unit to a project-wide building illustration.
-    if "建案建築外觀" in subject:unit=""
     asset["alt_provenance"]="依原檔名及文章段落編寫，需以圖片畫面核對"
-    return f"{title}{unit}｜{subject}（圖{asset['order']}）"[:110]
+    return f"{title}｜{subject}（圖{asset['order']}）"[:110]
 
 def extract(html,page):
     soup=BeautifulSoup(html,"html.parser")
