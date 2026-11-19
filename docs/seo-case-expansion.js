@@ -827,19 +827,23 @@ function generate({draft=false,preview=false}={}){
    esc(project+"｜"+zone)+'</figcaption></figure>\n';
  }
  h+="</section>\n";
- return window.formatChenyangArticleForCms(mergeCaseIntoArticleBeforeClosingSections(base,h));
+ const media=pickBase();
+ const rewrite=S.drafts.find(item=>item.id===media?.id);
+ return window.formatChenyangArticleForCms(mergeCaseIntoArticleBeforeClosingSections(base,h),{draft:rewrite,media});
 }
 function articlePreview(title,html){
  const frame=document.createElement("iframe");
  frame.setAttribute("sandbox","");
  frame.className="cyexp-article-frame";
  frame.title=title;frame.loading="lazy";
+ const draft=S.drafts.find(item=>item.id===pickBase()?.id);
+ const articleTitle=window.chenyangArticleTitle(draft)||chooseTitle();
  frame.srcdoc='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">'+
   '<meta name="viewport" content="width=device-width,initial-scale=1">'+
   '<style>html,body{max-width:100%;overflow-x:hidden;font:18px/1.9 sans-serif}body{padding:12px;margin:0;color:#333333}'+
   'img{display:block;width:auto!important;height:auto!important;max-width:100%!important;max-height:240px!important;object-fit:contain;margin:10px auto}'+
   'figure{margin:12px 0}p,h2,h3,figcaption{overflow-wrap:anywhere}</style></head><body>'+
-  html+'</body></html>';
+  '<h1 style="color:#C5A47E;font-size:24px;line-height:1.4;margin:8px 0 20px;">'+esc(articleTitle)+'</h1>'+html+'</body></html>';
  return frame;
 }
 function updateStatus(){

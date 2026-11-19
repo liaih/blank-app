@@ -555,7 +555,7 @@ tbody tr:last-child td{border-bottom:0}
 <script src="./market-opportunity.js"></script>
 <script src="./ai-seo-evidence.js"></script>
 <script src="./seo-daily-ui.js?v=gsc-history-20261115" defer></script>
-<script src="./seo-article-format.js?v=article-body-20261116"></script>
+<script src="./seo-article-format.js?v=aeo-article-20261119"></script>
 <script>
 (function(){
 "use strict";
@@ -1037,6 +1037,7 @@ function renderSeoImprovementPlan(selectedId){
  }
  const draft=seoRewritesById.get(plan.id),media=seoMediaById.get(plan.id),record=records[plan.id];
  const archivedHtml=mode==="archive"&&typeof record?.completedHtml==="string"?record.completedHtml:"";
+ const articleTitle=window.chenyangArticleTitle(draft)||plan.title;
  const h=document.createElement("h3");h.textContent=plan.title;target.appendChild(h);
  const meta=document.createElement("p");meta.className="small";
  meta.textContent=plan.priority+"｜"+plan.channels.join("＋")+"｜改稿版："+(plan.added_on||draft?.reviewedAt||"2026/11/12");
@@ -1069,7 +1070,7 @@ function renderSeoImprovementPlan(selectedId){
    messageState.textContent="只更新改善任務狀態，不會自動發布或修改晨陽正式官網。";
    action.onclick=()=>{
      const approvedCase=el("cyexp-base")?.value===plan.id&&el("cyexp-copy")?.disabled===false?el("cyexp-html")?.value:"";
-     const completedHtml=approvedCase||record?.completedHtml||(seoOriginalMediaReady(media)?window.formatChenyangArticleForCms(media.html_with_media):null);
+     const completedHtml=approvedCase||(seoOriginalMediaReady(media)?window.formatChenyangArticleForCms(media.html_with_media,{draft,media}):record?.completedHtml||null);
      if(!saveSeoCompletion(plan.id,{status:"已完成",completedAt:new Date().toISOString(),article:{title:plan.title,url:plan.url},completedHtml})){
        showSeoCompletionFeedback("瀏覽器儲存失敗。「"+plan.title+"」仍在待修改文章。",true);return;
      }
@@ -1093,7 +1094,7 @@ function renderSeoImprovementPlan(selectedId){
  const cmsTitleLabel=document.createElement("strong");
  cmsTitleLabel.textContent="建議文章標題（官網後台的文章標題欄；由 CMS 輸出 H1，尚未改動）：";
  cmsTitle.appendChild(cmsTitleLabel);
- cmsTitle.appendChild(document.createTextNode(draft.title||plan.title));
+ cmsTitle.appendChild(document.createTextNode(articleTitle));
  target.appendChild(cmsTitle);
  const title=document.createElement("p");title.style.marginTop="14px";
  const label=document.createElement("strong");label.textContent="SEO Title（搜尋結果標題備選稿，需在後台 SEO 標題欄另外設定）：";
@@ -1144,7 +1145,7 @@ function renderSeoImprovementPlan(selectedId){
    target.appendChild(note);
    return;
  }
- const content=archivedHtml||window.formatChenyangArticleForCms(media.html_with_media);
+ const content=archivedHtml||window.formatChenyangArticleForCms(media.html_with_media,{draft,media});
  if(archivedHtml){
    note.textContent="以下為標記完成當時保存的 HTML。";
  }else{
@@ -1169,7 +1170,7 @@ function renderSeoImprovementPlan(selectedId){
  frame.setAttribute("sandbox","");frame.style.width="100%";frame.style.maxWidth="100%";frame.style.height="min(320px,50vh)";
  frame.style.marginTop="12px";frame.style.border="1px solid #dfe7f0";
  frame.style.borderRadius="10px";frame.loading="lazy";
- const previewCmsTitle=String(draft?.title||plan.title).replace(/[&<>"]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
+ const previewCmsTitle=articleTitle.replace(/[&<>"]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
  frame.srcdoc='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">'+
   '<meta name="viewport" content="width=device-width,initial-scale=1">'+
   '<style>*,*::before,*::after{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{font-size:16px;line-height:1.8}img,video,iframe,figure,svg{max-width:100%!important}img{display:block;width:auto!important;height:auto!important;max-height:300px!important;object-fit:contain;margin:12px auto}@media(max-width:600px){img{max-height:220px!important}}iframe{width:100%!important;aspect-ratio:16/9;height:auto!important}p,h2,h3{overflow-wrap:anywhere}table{display:block;max-width:100%;overflow:auto}</style></head>'+
@@ -1618,6 +1619,6 @@ fetch("./data.json",{cache:"no-store"})
 });
 })();
 </script>
-<script defer src="./seo-case-expansion.js?v=completion-20261119"></script>
+<script defer src="./seo-case-expansion.js?v=aeo-article-20261119"></script>
 </body>
 </html>
