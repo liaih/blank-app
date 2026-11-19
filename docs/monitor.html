@@ -332,6 +332,8 @@ tbody tr:last-child td{border-bottom:0}
       </label>
     </div>
     <p class="detail" id="action-state-summary">正在讀取文章狀態。</p>
+    <div class="ai-buttons" id="action-completion-controls"></div>
+    <p class="detail" id="action-completion-feedback" role="status" tabindex="-1" hidden></p>
     <p class="detail" id="action-daily-update" role="status">每日補稿｜讀取更新紀錄中</p>
     <button type="button" class="ai-action secondary" id="action-history-toggle" disabled>查看已完成紀錄</button>
     <div id="case-expansion" aria-label="同建案新增案件與圖像判讀">正在載入新增案件功能。</div>
@@ -971,7 +973,13 @@ function loadSitewideDiscovery(){
 }
 loadSitewideDiscovery();
 
-function renderSeoImprovementPlan(){
+function showSeoCompletionFeedback(message, focus=false){
+ const feedback=el("action-completion-feedback");
+ feedback.hidden=!message;
+ feedback.textContent=message;
+ if(focus)feedback.focus();
+}
+function renderSeoImprovementPlan(selectedId){
  if(!seoImprovementPlan)return;
  const items=seoImprovementPlan.items,records=readSeoTaskStates();
  const mode=el("action-view").value;
@@ -994,7 +1002,7 @@ function renderSeoImprovementPlan(){
      (a.priority==="P1"?0:1)-(b.priority==="P1"?0:1) ||
      Number(rank.get(b.keyword)?.impressions||0)-Number(rank.get(a.keyword)?.impressions||0);
  });
- const chooser=el("action-article"),previous=chooser.value;
+ const chooser=el("action-article"),previous=typeof selectedId==="string"?selectedId:chooser.value;
  chooser.replaceChildren();
  for(const item of ordered){
    const option=document.createElement("option");option.value=item.id;
@@ -1019,6 +1027,7 @@ function renderSeoImprovementPlan(){
     caseChange.detail.revertTo:previous;
  }
  const plan=ordered.find(x=>x.id===chooser.value);
+ const completionControls=el("action-completion-controls");completionControls.replaceChildren();
  const target=el("seo-article-actions");target.replaceChildren();
  if(!plan){
    target.textContent=mode==="archive"?
@@ -1049,10 +1058,11 @@ function renderSeoImprovementPlan(){
      "完成紀錄："+(Number.isFinite(Date.parse(date))?new Date(date).toLocaleString("zh-TW",{timeZone:"Asia/Taipei"}):"先前已標記完成，未記錄日期");
    action.onclick=()=>{
      if(!saveSeoCompletion(plan.id,{status:"待修改",completedAt:null})){
-       messageState.textContent="此瀏覽器無法儲存變更；請檢查隱私模式或儲存空間。";return;
+       showSeoCompletionFeedback("瀏覽器儲存失敗。「"+plan.title+"」仍在已完成紀錄。",true);return;
      }
      el("action-view").value="pending";
-     renderSeoImprovementPlan();
+     renderSeoImprovementPlan(plan.id);
+     showSeoCompletionFeedback("已將「"+plan.title+"」移回待修改文章。",true);
    };
  }else{
    action.textContent="標記完成並移至歷史紀錄";
@@ -1061,12 +1071,17 @@ function renderSeoImprovementPlan(){
      const approvedCase=el("cyexp-base")?.value===plan.id&&el("cyexp-copy")?.disabled===false?el("cyexp-html")?.value:"";
      const completedHtml=approvedCase||record?.completedHtml||(seoOriginalMediaReady(media)?window.formatChenyangArticleForCms(media.html_with_media):null);
      if(!saveSeoCompletion(plan.id,{status:"已完成",completedAt:new Date().toISOString(),article:{title:plan.title,url:plan.url},completedHtml})){
-       messageState.textContent="此瀏覽器無法儲存變更；未標記完成。";return;
+       showSeoCompletionFeedback("瀏覽器儲存失敗。「"+plan.title+"」仍在待修改文章。",true);return;
      }
      el("action-view").value="archive";
-     renderSeoImprovementPlan();
+     renderSeoImprovementPlan(plan.id);
+     showSeoCompletionFeedback("已標記完成：「"+plan.title+"」。可在已完成紀錄查看。",true);
    };
  }
+ const primaryAction=action.cloneNode(true);
+ primaryAction.classList.remove("secondary");
+ primaryAction.onclick=action.onclick;
+ completionControls.appendChild(primaryAction);
  controlsState.appendChild(action);target.appendChild(controlsState);target.appendChild(messageState);
  if(!draft&&!archivedHtml){
    const notice=document.createElement("p");notice.className="message";
@@ -1189,32 +1204,28 @@ window.registerSeoUrlArticle=function(article){
  return persisted;
 };
 function loadSeoImprovementPlan(){
- el("action-article").addEventListener("change",renderSeoImprovementPlan);
- el("action-view").addEventListener("change",renderSeoImprovementPlan);
+ const changeSelection=()=>{showSeoCompletionFeedback("");renderSeoImprovementPlan();};
+ el("action-article").addEventListener("change",changeSelection);
+ el("action-view").addEventListener("change",changeSelection);
  el("action-history-toggle").addEventListener("click",()=>{
    const view=el("action-view");
    view.value=view.value==="archive"?"pending":"archive";
-   renderSeoImprovementPlan();
+   changeSelection();
  });
  window.addEventListener("storage",event=>{
    if(event.key===geoTaskStorageKey||event.key===seoCompletionStorageKey||event.key===null)renderSeoImprovementPlan();
  });
+ const dailyRequest=window.loadDailySeoArticles();
  Promise.all(["./seo-improvement-plan.json","./seo-rewrites.json","./seo-media-rewrites.json"]
    .map(url=>fetch(url,{cache:"no-store"})
-     .then(resp=>{if(!resp.ok)throw Error("資料未完成同步："+url);return resp.json();})).concat(window.loadDailySeoArticles()))
-  .then(([plan,rewrites,media,daily])=>{
+     .then(resp=>{if(!resp.ok)throw Error("資料未完成同步："+url);return resp.json();})))
+  .then(([plan,rewrites,media])=>{
    if(!Array.isArray(plan.items)||!Array.isArray(rewrites.articles)||
       !Array.isArray(media.articles))throw Error("文章資料格式錯誤");
    seoImprovementPlan=plan;
    seoRewritesById=new Map(rewrites.articles.map(x=>[x.id,x]));
    seoMediaById=new Map(media.articles.map(x=>[x.id,x]));
    const planIds=new Set(plan.items.map(x=>x.id));
-   for(const entry of daily?.articles||[]){
-    if(planIds.has(entry.plan.id)||!seoOriginalMediaReady(entry.media))continue;
-    plan.items.push(entry.plan);planIds.add(entry.plan.id);
-    seoRewritesById.set(entry.plan.id,entry.draft);
-    seoMediaById.set(entry.plan.id,entry.media);
-   }
    preserveLegacySeoCompletions(planIds);
    for(const saved of window.savedSeoUrlArticles()){
     if(!planIds.has(saved.id))plan.items.push(savedSeoArticleEntry(saved.id,{article:saved}));
@@ -1222,6 +1233,22 @@ function loadSeoImprovementPlan(){
      seoRewritesById.set(saved.id,saved);
      seoMediaById.set(saved.id,{media_integrated:false});
     }
+   }
+   renderSeoImprovementPlan();
+   renderSitewideDiscovery();
+   return dailyRequest;
+  })
+  .then(daily=>{
+   const items=seoImprovementPlan.items;
+   for(const entry of daily?.articles||[]){
+    const plan=entry?.plan;
+    if(!plan?.id||!Array.isArray(plan.channels)||!entry.draft||!seoOriginalMediaReady(entry.media))continue;
+    const index=items.findIndex(item=>item.id===plan.id);
+    if(index<0)items.push(plan);
+    else if(!seoOriginalMediaReady(seoMediaById.get(plan.id)))items[index]=plan;
+    else continue;
+    seoRewritesById.set(plan.id,entry.draft);
+    seoMediaById.set(plan.id,entry.media);
    }
    el("action-daily-update").textContent=daily?.checked_on?
     "每日補稿 18:45｜最近 "+daily.checked_on+" 新增 "+daily.added_count+" / 3 篇"+
@@ -1591,6 +1618,6 @@ fetch("./data.json",{cache:"no-store"})
 });
 })();
 </script>
-<script defer src="./seo-case-expansion.js?v=daily-article-20261118"></script>
+<script defer src="./seo-case-expansion.js?v=completion-20261119"></script>
 </body>
 </html>

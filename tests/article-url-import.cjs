@@ -8,7 +8,7 @@ async function setup(storage={},daily={schema:1,articles:[]}){
  const dom=new JSDOM(html,{runScripts:'outside-only',url:'https://liaih.github.io/blank-app/monitor.html#actions'});
  for(const [key,value] of Object.entries(storage))dom.window.localStorage.setItem(key,value);
  dom.window.fetch=async url=>{
-  if(String(url).endsWith('/seo-daily-articles.json'))return {ok:true,json:async()=>daily};
+  if(String(url).endsWith('/seo-daily-articles.json'))return {ok:true,json:async()=>await daily};
   if(String(url).startsWith('http://127.0.0.1:8765/'))return {ok:true,json:async()=>({id:'url-news-99999',url:'https://www.chen-yang.com.tw/news-content.php?id=99999',title:'測試建案',html:source,metaTitle:'測試建案',metaDescription:'原摘要',checkedAt:new Date().toISOString(),imageCount:1,checks:[{status:'待改善',item:'ALT',detail:'需讀圖'}]})};
   const path='docs/'+String(url).replace(/^\.\//,'').split('?')[0];
   return {ok:fs.existsSync(path),json:async()=>JSON.parse(fs.readFileSync(path,'utf8'))};
@@ -34,10 +34,73 @@ test('daily drafts appear in the editor with copyable HTML and preserve completi
   const text=d.querySelector('#seo-article-actions textarea').value;
   assert.ok(text.includes(first.draft.sections[1][0]));
   assert.match(text,/格局圖與空間配置/);
-  action(d,'標記完成並移至歷史紀錄');
+  const originalHtml=text;
+  d.querySelector('#action-completion-controls button').click();
   assert.equal(d.getElementById('action-view').value,'archive');
   assert.match(d.getElementById('action-state-summary').textContent,/待修改 5 篇｜已完成 6 篇/);
+  const saved=dom.window.localStorage.getItem(completionKey);
+  const reopened=await setup({[completionKey]:saved},feed);
+  try{
+   const rd=reopened.window.document;
+   rd.getElementById('action-history-toggle').click();
+   assert.equal(rd.getElementById('action-article').value,first.plan.id);
+   assert.equal(rd.getElementById('cyexp-base').value,first.plan.id);
+   assert.equal(rd.querySelector('#seo-article-actions textarea').value,originalHtml);
+  }finally{reopened.window.close();}
  }finally{dom.window.close();}
+});
+test('a blocked completion write leaves the article pending and reports the error by the selector',async()=>{
+ const dom=await setup();
+ try{
+  const d=dom.window.document,id='seo-fumei-503';
+  const storage=dom.window.Storage.prototype;
+  const setItem=storage.setItem;
+  storage.setItem=function(key,value){
+   if(key===completionKey)throw new dom.window.DOMException('Storage quota reached','QuotaExceededError');
+   return setItem.call(this,key,value);
+  };
+  choose(d,'action-article',id);
+  d.querySelector('#action-completion-controls button').click();
+  assert.match(d.getElementById('action-completion-feedback').textContent,/瀏覽器儲存失敗/);
+  assert.equal(d.getElementById('action-view').value,'pending');
+  assert.equal(d.getElementById('action-article').value,id);
+  assert.equal(dom.window.localStorage.getItem(completionKey),null);
+ }finally{dom.window.close();}
+});
+test('existing article completion is available before the daily feed and survives its arrival and reload',async()=>{
+ let releaseDaily;
+ const delayedDaily=new Promise(resolve=>{releaseDaily=resolve;});
+ const dom=await setup({},delayedDaily);
+ const id='seo-fumei-503';
+ try{
+  const d=dom.window.document;
+  choose(d,'action-article',id);
+  assert.equal(d.getElementById('action-article').value,id,'the old queue must work while the new feed waits');
+  const controls=d.getElementById('action-completion-controls');
+  assert.ok(controls.compareDocumentPosition(d.getElementById('case-expansion'))&dom.window.Node.DOCUMENT_POSITION_FOLLOWING);
+  controls.querySelector('button').click();
+  assert.match(d.getElementById('action-completion-feedback').textContent,/已標記完成/);
+  assert.equal(d.getElementById('action-view').value,'archive');
+  assert.equal(d.getElementById('action-article').value,id);
+  const feed=JSON.parse(fs.readFileSync('docs/seo-daily-articles.json','utf8'));
+  releaseDaily(feed);
+  await new Promise(resolve=>setTimeout(resolve,100));
+  assert.equal(d.getElementById('action-view').value,'archive');
+  assert.equal(d.getElementById('action-article').value,id);
+  const saved=dom.window.localStorage.getItem(completionKey);
+  assert.ok(JSON.parse(saved)[id].completedHtml);
+  const reopened=await setup({[completionKey]:saved},feed);
+  try{
+   const rd=reopened.window.document;
+   assert.ok(![...rd.getElementById('action-article').options].some(option=>option.value===id));
+   rd.getElementById('action-history-toggle').click();
+   assert.equal(rd.getElementById('action-article').value,id);
+   assert.equal(rd.querySelector('#seo-article-actions textarea').value,JSON.parse(saved)[id].completedHtml);
+   rd.querySelector('#action-completion-controls button').click();
+   assert.equal(rd.getElementById('action-view').value,'pending');
+   assert.equal(rd.getElementById('action-article').value,id);
+  }finally{reopened.window.close();}
+ }finally{releaseDaily({schema:1,articles:[]});dom.window.close();}
 });
 const taskKey='chenyang-geo-tasks-v1';
 const completionKey='chenyang-seo-completion-v1';

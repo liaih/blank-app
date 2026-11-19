@@ -242,18 +242,18 @@ function readSavedCases(){
  const data=JSON.parse(localStorage.getItem(CASE_AUTOSAVE_KEY)||"null");
  return data?.schema===2&&data.cases&&typeof data.cases==="object"&&!Array.isArray(data.cases)?data.cases:{};
 }
-function restoreCaseAutosave(){
+function restoreCaseAutosave(projectIds=S.base.map(x=>x.id)){
  let recovered=0;
  try{
-  const allowed=new Set(S.base.map(x=>x.id));
+  const allowed=new Set(projectIds);
   for(const [id,snapshot]of Object.entries(readSavedCases())){
    if(!allowed.has(id)||!snapshot||typeof snapshot!=="object")continue;
    S.caseStates.set(id,restoredCase(snapshot));
    recovered++;
   }
-  S.recoveredProjects=recovered;
-  if(recovered){
-   autosaveLabel("已從此瀏覽器恢復 "+recovered+" 篇文章草稿（描述／ALT／官網網址）。原始照片需重新選取核對；僅本機保存，非團隊同步。");
+  S.recoveredProjects+=recovered;
+  if(S.recoveredProjects){
+   autosaveLabel("已從此瀏覽器恢復 "+S.recoveredProjects+" 篇文章草稿（描述／ALT／官網網址）。原始照片需重新選取核對；僅本機保存，非團隊同步。");
   }else{
    autosaveLabel("本機草稿自動儲存已啟用。文字、ALT 與圖片網址在重新整理後可恢復；照片原檔需重新選取。");
   }
@@ -1781,23 +1781,24 @@ $("cyexp-fetch-article").addEventListener("click",async()=>{
  finally{urlReading=false;button.disabled=false;}
 });
 
+function appendBaseOption(item){
+ const draft=S.drafts.find(x=>x.id===item.id);
+ const option=document.createElement("option");option.value=item.id;
+ option.textContent=(draft?.project_name||draft?.title||item.id).split("｜",1)[0];
+ $("cyexp-base").appendChild(option);
+}
 async function start(){
+ const dailyRequest=window.loadDailySeoArticles?.();
  const out=await Promise.allSettled([
   fetch("./seo-media-rewrites.json",{cache:"no-store"}).then(r=>r.json()),
   fetch("./seo-rewrites.json",{cache:"no-store"}).then(r=>r.json()),
-  loadKnown(),
-  window.loadDailySeoArticles?.()
+  loadKnown()
  ]);
  if(out[0].status!=="fulfilled"||out[1].status!=="fulfilled"){
   message("無法載入舊文章與改稿；禁止以空原文產生可上稿 HTML。",true);return;
  }
  S.base=(out[0].value.articles||[]).filter(x=>x.html_with_media);
  S.drafts=out[1].value.articles||[];
- for(const entry of out[3]?.value?.articles||[]){
-  if(!entry.media.media_integrated)continue;
-  if(S.base.some(row=>row.id===entry.plan.id))continue;
-  S.base.push(entry.media);S.drafts.push(entry.draft);
- }
  for(const saved of window.savedSeoUrlArticles?.()||[]){
   const baseIndex=S.base.findIndex(x=>x.id===saved.id);
   if(baseIndex>=0&&(!saved.html||S.base[baseIndex].media_integrated))continue;
@@ -1808,16 +1809,36 @@ async function start(){
   if(draftIndex<0)S.drafts.push(draft);else S.drafts[draftIndex]=draft;
  }
  restoreCaseAutosave();
- const sel=$("cyexp-base");sel.replaceChildren();
- for(const item of S.base){
-  const dr=S.drafts.find(x=>x.id===item.id);
-  const op=document.createElement("option");op.value=item.id;
-  op.textContent=(dr?.project_name||dr?.title||item.id).split("｜",1)[0];sel.appendChild(op);
- }
+ $("cyexp-base").replaceChildren();
+ for(const item of S.base)appendBaseOption(item);
  const topId=topSelectedArticleId();
  // No hard-coded default case; use exactly the selected task.
  switchToCase(topId);
  if(!topId)message("已載入 "+S.base.length+" 篇原文章，請從上方「選擇文章」選取要編輯的案場。");
+ const daily=await dailyRequest;
+ const newIds=[];
+ let activeSourceUpdated=false;
+ for(const entry of daily?.articles||[]){
+  const id=entry?.plan?.id;
+  if(!id||!entry.media?.media_integrated||!entry.draft)continue;
+  const baseIndex=S.base.findIndex(row=>row.id===id);
+  if(baseIndex>=0&&S.base[baseIndex].media_integrated)continue;
+  const draftIndex=S.drafts.findIndex(row=>row.id===id);
+  if(draftIndex<0)S.drafts.push(entry.draft);else S.drafts[draftIndex]=entry.draft;
+  if(baseIndex<0){
+   S.base.push(entry.media);appendBaseOption(entry.media);newIds.push(id);
+  }else{
+   S.base[baseIndex]=entry.media;
+   activeSourceUpdated||=S.activeProjectId===id;
+  }
+ }
+ if(newIds.length)restoreCaseAutosave(newIds);
+ const selected=topSelectedArticleId();
+ if(newIds.includes(selected)){
+  // The main list can select a recovered article before its daily source arrives.
+  if(S.activeProjectId===selected&&$("cyexp-base").value!==selected)S.activeProjectId="";
+  switchToCase(selected);
+ }else if(activeSourceUpdated){showActiveCaseIdentity();updateStatus();}
 }
 $("cyexp-files").addEventListener("change",ev=>{addFiles(ev.target.files||[]);ev.target.value="";});
 $("cyexp-read").addEventListener("click",readImages);
