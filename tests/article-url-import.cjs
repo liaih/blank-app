@@ -4,11 +4,12 @@ const fs=require('node:fs');
 const {JSDOM}=require('jsdom');
 const html=fs.readFileSync('docs/monitor.html','utf8');
 const source='<div class="chenyang-seo-draft-warning" data-publish-status="not-approved"><strong>SEO 草稿｜未通過正式上稿驗收，不可直接發佈</strong><p>AI 描述與格局圖需人工核對。</p></div><p>舊描述（3D 建模示意圖，非施工完成證明）</p><h2>新建案原文</h2><p style="margin:0 0 18px;line-height:1.9;"><span style="font-size:18px;color:#333333;">保留原文與戶型</span></p><p><a href="https://chen-yang.com.tw/news.php"><span style="color:#ADD8E6">原資料連結</span></a></p><img src="https://chen-yang.com.tw/upload/old.png" alt="原格局圖"><h2>延伸閱讀</h2><p>原連結</p>';
-async function setup(storage={},daily={schema:1,articles:[]}){
+async function setup(storage={},daily={schema:1,articles:[]},siteDiscovery){
  const dom=new JSDOM(html,{runScripts:'outside-only',url:'https://liaih.github.io/blank-app/monitor.html#actions'});
  for(const [key,value] of Object.entries(storage))dom.window.localStorage.setItem(key,value);
  dom.window.fetch=async url=>{
   if(String(url).endsWith('/seo-daily-articles.json'))return {ok:true,json:async()=>await daily};
+  if(siteDiscovery&&String(url).endsWith('/gsc-site-discovery.json'))return {ok:true,json:async()=>siteDiscovery};
   if(String(url).startsWith('http://127.0.0.1:8765/'))return {ok:true,json:async()=>({id:'url-news-99999',url:'https://www.chen-yang.com.tw/news-content.php?id=99999',title:'測試建案',html:source,metaTitle:'測試建案',metaDescription:'原摘要',checkedAt:new Date().toISOString(),imageCount:1,checks:[{status:'待改善',item:'ALT',detail:'需讀圖'}]})};
   const path='docs/'+String(url).replace(/^\.\//,'').split('?')[0];
   return {ok:fs.existsSync(path),json:async()=>JSON.parse(fs.readFileSync(path,'utf8'))};
@@ -20,6 +21,25 @@ async function setup(storage={},daily={schema:1,articles:[]}){
  }
  await new Promise(r=>setTimeout(r,100));return dom;
 }
+test('sitewide GSC candidates show the official title, real data date and visible row count',async()=>{
+ const url=id=>'https://www.chen-yang.com.tw/news-content.php?id='+id;
+ const dom=await setup({},undefined,{
+  generated_at:'2026-11-19T18:20:00+08:00',last_gsc_day:'2026-11-15',total_candidate_pages:256,
+  not_article_quality_proof:true,not_query_page_confirmation:true,pages:[
+   {url:url(410),title:'新北蘆洲「崇利華漾」公設設計',current:{impressions:391}},
+   {url:url(87),title:'建案 NEWS #87',current:{impressions:209}},
+   {url:url(234),title:'丹佛花都',current:{impressions:200}}
+  ]
+ });
+ try{
+  const d=dom.window.document,panel=d.querySelector('#site-discovery-results');
+  assert.deepEqual([...panel.querySelectorAll('tr a')].map(a=>[a.textContent,a.href]),[
+   ['新北蘆洲「崇利華漾」公設設計',url(410)],['官網標題暫未取得',url(87)]
+  ]);
+  assert.match(panel.textContent,/候選文章 GSC 資料截至：2026-11-15｜清單更新：2026-11-19/);
+  assert.match(panel.textContent,/本表顯示 2 篇待稽核文章/);
+ }finally{dom.window.close();}
+});
 test('daily drafts appear in the editor with copyable HTML and preserve completion history',async()=>{
  const feed=JSON.parse(fs.readFileSync('docs/seo-daily-articles.json','utf8'));
  const latest=feed.articles.filter(row=>row.plan.added_on===feed.checked_on);
