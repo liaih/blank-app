@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-19T14:42:49+08:00",
+  "generated_at": "2026-11-19T14:56:35+08:00",
   "source": "Google Search Console Search Analytics API；僅使用原有唯讀 GSC 授權",
   "property": "https://chen-yang.com.tw/",
   "site_id": "chen-yang-site",
@@ -1036,5 +1036,600 @@
         "click_change": null
       }
     }
-  ]
+  ],
+  "candidate_queries": {
+    "period": {
+      "from": "2026-10-19",
+      "to": "2026-11-15"
+    },
+    "pages": {
+      "news-content.php?id=234": [
+        {
+          "query": "丹佛花都",
+          "metrics": {
+            "clicks": 4.0,
+            "impressions": 800.0,
+            "ctr": 0.005,
+            "position": 9.35
+          }
+        },
+        {
+          "query": "丹佛花都格局圖",
+          "metrics": {
+            "clicks": 2.0,
+            "impressions": 97.0,
+            "ctr": 0.02062,
+            "position": 1.0
+          }
+        },
+        {
+          "query": "丹佛花都 建商",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 36.0,
+            "ctr": 0.0,
+            "position": 6.81
+          }
+        },
+        {
+          "query": "丹佛花都建商",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 35.0,
+            "ctr": 0.0,
+            "position": 6.63
+          }
+        },
+        {
+          "query": "丹佛 花 都",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 20.0,
+            "ctr": 0.0,
+            "position": 10.65
+          }
+        }
+      ],
+      "news-content.php?id=331": [
+        {
+          "query": "允將大聚",
+          "metrics": {
+            "clicks": 15.0,
+            "impressions": 382.0,
+            "ctr": 0.03927,
+            "position": 9.6
+          }
+        },
+        {
+          "query": "允將大聚格局圖",
+          "metrics": {
+            "clicks": 5.0,
+            "impressions": 48.0,
+            "ctr": 0.10417,
+            "position": 1.77
+          }
+        },
+        {
+          "query": "允將大聚 格局圖",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 12.0,
+            "ctr": 0.0,
+            "position": 1.25
+          }
+        }
+      ],
+      "news-content.php?id=253": [
+        {
+          "query": "鴻廣繪青",
+          "metrics": {
+            "clicks": 1.0,
+            "impressions": 375.0,
+            "ctr": 0.00267,
+            "position": 9.17
+          }
+        }
+      ],
+      "news-content.php?id=182": [
+        {
+          "query": "金城舞建商",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 22.0,
+            "ctr": 0.0,
+            "position": 3.77
+          }
+        },
+        {
+          "query": "金城舞",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 11.0,
+            "ctr": 0.0,
+            "position": 9.55
+          }
+        }
+      ],
+      "news-content.php?id=503": [
+        {
+          "query": "福美富琚",
+          "metrics": {
+            "clicks": 3.0,
+            "impressions": 264.0,
+            "ctr": 0.01136,
+            "position": 9.12
+          }
+        }
+      ],
+      "news-content.php?id=410": [
+        {
+          "query": "崇利華漾",
+          "metrics": {
+            "clicks": 1.0,
+            "impressions": 156.0,
+            "ctr": 0.00641,
+            "position": 9.67
+          }
+        }
+      ],
+      "news-content.php?id=217": [
+        {
+          "query": "立軒天諾",
+          "metrics": {
+            "clicks": 2.0,
+            "impressions": 242.0,
+            "ctr": 0.00826,
+            "position": 9.16
+          }
+        }
+      ],
+      "news-content.php?id=451": [
+        {
+          "query": "厚陞晴",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 217.0,
+            "ctr": 0.0,
+            "position": 9.53
+          }
+        }
+      ],
+      "news-content.php?id=594": [
+        {
+          "query": "崑庭敦品",
+          "metrics": {
+            "clicks": 1.0,
+            "impressions": 24.0,
+            "ctr": 0.04167,
+            "position": 14.5
+          }
+        },
+        {
+          "query": "崑庭敦品格局圖",
+          "metrics": {
+            "clicks": 2.0,
+            "impressions": 16.0,
+            "ctr": 0.125,
+            "position": 1.0
+          }
+        },
+        {
+          "query": "崑庭敦品評價",
+          "metrics": {
+            "clicks": 1.0,
+            "impressions": 15.0,
+            "ctr": 0.06667,
+            "position": 10.13
+          }
+        }
+      ],
+      "news-content.php?id=83": [
+        {
+          "query": "青和寬逸",
+          "metrics": {
+            "clicks": 2.0,
+            "impressions": 111.0,
+            "ctr": 0.01802,
+            "position": 9.32
+          }
+        }
+      ],
+      "news-content.php?id=473": [
+        {
+          "query": "浩瀚創立方格局圖",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 9.0,
+            "ctr": 0.0,
+            "position": 5.89
+          }
+        }
+      ],
+      "news-content.php?id=87": [
+        {
+          "query": "鴻苑",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 90.0,
+            "ctr": 0.0,
+            "position": 8.69
+          }
+        }
+      ],
+      "news-content.php?id=636": [
+        {
+          "query": "立川琚",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 13.0,
+            "ctr": 0.0,
+            "position": 12.85
+          }
+        }
+      ],
+      "news-content.php?id=423": [
+        {
+          "query": "碧瑤一品雋",
+          "metrics": {
+            "clicks": 1.0,
+            "impressions": 49.0,
+            "ctr": 0.02041,
+            "position": 8.88
+          }
+        }
+      ],
+      "news-content.php?id=365": [
+        {
+          "query": "石門湯旅",
+          "metrics": {
+            "clicks": 1.0,
+            "impressions": 27.0,
+            "ctr": 0.03704,
+            "position": 10.22
+          }
+        },
+        {
+          "query": "石門湯旅評價",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 11.0,
+            "ctr": 0.0,
+            "position": 8.64
+          }
+        }
+      ],
+      "news-content.php?id=126": [
+        {
+          "query": "長春首席",
+          "metrics": {
+            "clicks": 1.0,
+            "impressions": 46.0,
+            "ctr": 0.02174,
+            "position": 8.8
+          }
+        }
+      ],
+      "news-content.php?id=55": [
+        {
+          "query": "微笑海悅",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 92.0,
+            "ctr": 0.0,
+            "position": 9.84
+          }
+        }
+      ],
+      "news-content.php?id=397": [
+        {
+          "query": "新潤花路",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 66.0,
+            "ctr": 0.0,
+            "position": 10.17
+          }
+        }
+      ],
+      "news-content.php?id=256": [
+        {
+          "query": "雅典大地",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 8.0,
+            "ctr": 0.0,
+            "position": 12.88
+          }
+        }
+      ],
+      "news-content.php?id=438": [
+        {
+          "query": "鉅陞one格局圖",
+          "metrics": {
+            "clicks": 3.0,
+            "impressions": 68.0,
+            "ctr": 0.04412,
+            "position": 1.18
+          }
+        },
+        {
+          "query": "鉅陞one",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 5.0,
+            "ctr": 0.0,
+            "position": 27.4
+          }
+        }
+      ],
+      "news-content.php?id=581": [
+        {
+          "query": "安美大望",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 27.0,
+            "ctr": 0.0,
+            "position": 14.93
+          }
+        },
+        {
+          "query": "安美大望 建商",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 8.0,
+            "ctr": 0.0,
+            "position": 11.12
+          }
+        }
+      ],
+      "news-content.php?id=620": [
+        {
+          "query": "紅布朗花園格局",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 23.0,
+            "ctr": 0.0,
+            "position": 7.61
+          }
+        },
+        {
+          "query": "紅布朗花園",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 15.0,
+            "ctr": 0.0,
+            "position": 17.13
+          }
+        },
+        {
+          "query": "紅布朗花園格局圖",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 12.0,
+            "ctr": 0.0,
+            "position": 7.08
+          }
+        }
+      ],
+      "news-content.php?id=411": [
+        {
+          "query": "潤隆vvs1",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 9.0,
+            "ctr": 0.0,
+            "position": 17.56
+          }
+        }
+      ],
+      "news-content.php?id=439": [
+        {
+          "query": "有富富玉",
+          "metrics": {
+            "clicks": 2.0,
+            "impressions": 59.0,
+            "ctr": 0.0339,
+            "position": 11.1
+          }
+        }
+      ],
+      "news-content.php?id=104": [
+        {
+          "query": "三松mpark",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 65.0,
+            "ctr": 0.0,
+            "position": 10.17
+          }
+        },
+        {
+          "query": "三松 mpark",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 10.0,
+            "ctr": 0.0,
+            "position": 10.6
+          }
+        }
+      ],
+      "news-content.php?id=43": [
+        {
+          "query": "麗晶花園廣場",
+          "metrics": {
+            "clicks": 1.0,
+            "impressions": 22.0,
+            "ctr": 0.04545,
+            "position": 11.68
+          }
+        }
+      ],
+      "news-content.php?id=340": [
+        {
+          "query": "大觀雲滙",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 8.0,
+            "ctr": 0.0,
+            "position": 9.5
+          }
+        }
+      ],
+      "news-content.php?id=56": [
+        {
+          "query": "新潤捷韻a10",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 22.0,
+            "ctr": 0.0,
+            "position": 9.68
+          }
+        }
+      ],
+      "news-content.php?id=343": [
+        {
+          "query": "悅峰we時代",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 17.0,
+            "ctr": 0.0,
+            "position": 8.47
+          }
+        }
+      ],
+      "news-content.php?id=36": [
+        {
+          "query": "新森活",
+          "metrics": {
+            "clicks": 2.0,
+            "impressions": 35.0,
+            "ctr": 0.05714,
+            "position": 9.37
+          }
+        },
+        {
+          "query": "新 森活",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 7.0,
+            "ctr": 0.0,
+            "position": 8.29
+          }
+        }
+      ],
+      "news-content.php?id=245": [],
+      "news-content.php?id=63": [
+        {
+          "query": "新潤捷韻a10二期",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 58.0,
+            "ctr": 0.0,
+            "position": 9.26
+          }
+        }
+      ],
+      "news-content.php?id=342": [
+        {
+          "query": "凱風快晴-久年快晴",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 5.0,
+            "ctr": 0.0,
+            "position": 8.4
+          }
+        }
+      ],
+      "news-content.php?id=164": [
+        {
+          "query": "文心愛悅平面圖",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 10.0,
+            "ctr": 0.0,
+            "position": 1.0
+          }
+        },
+        {
+          "query": "文心愛悅",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 8.0,
+            "ctr": 0.0,
+            "position": 15.0
+          }
+        }
+      ],
+      "news-content.php?id=84": [
+        {
+          "query": "昆旺青茵悦",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 9.0,
+            "ctr": 0.0,
+            "position": 8.11
+          }
+        }
+      ],
+      "news-content.php?id=589": [],
+      "news-content.php?id=65": [
+        {
+          "query": "竹城甲子園",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 20.0,
+            "ctr": 0.0,
+            "position": 11.6
+          }
+        }
+      ],
+      "news-content.php?id=285": [
+        {
+          "query": "昕暉日初",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 9.0,
+            "ctr": 0.0,
+            "position": 12.78
+          }
+        }
+      ],
+      "news-content.php?id=420": [
+        {
+          "query": "漢皇欽禾",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 42.0,
+            "ctr": 0.0,
+            "position": 10.62
+          }
+        }
+      ],
+      "news-content.php?id=173": [
+        {
+          "query": "華悅城",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 53.0,
+            "ctr": 0.0,
+            "position": 10.68
+          }
+        }
+      ],
+      "news-content.php?id=564": [
+        {
+          "query": "豪棋moma18",
+          "metrics": {
+            "clicks": 0.0,
+            "impressions": 13.0,
+            "ctr": 0.0,
+            "position": 6.15
+          }
+        }
+      ],
+      "news-content.php?id=170": []
+    },
+    "status": "ok",
+    "rows_may_be_partial": false
+  }
 }
