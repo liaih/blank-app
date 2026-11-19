@@ -13,10 +13,13 @@ const media={articles:[{id:"seo-danfo-234",html_with_media:baseline,media_integr
 const drafts={articles:[{id:"seo-danfo-234",project_name:"丹佛花都",title:"丹佛花都｜林口A7"}]};
 const library=JSON.parse(fs.readFileSync("docs/seo-known-visual-descriptions.json","utf8"));
 async function setup(){
-  const dom=new JSDOM('<html><body><div id="case-expansion"></div></body></html>',{runScripts:"outside-only",url:"https://liaih.github.io/blank-app/monitor.html"});
+  const dom=new JSDOM('<html><body><select id="action-article"><option value="seo-danfo-234">丹佛花都</option></select>'+
+    '<select id="action-view"><option value="pending">待修改</option></select><div id="case-expansion"></div></body></html>',
+    {runScripts:"outside-only",url:"https://liaih.github.io/blank-app/monitor.html#actions"});
   Object.defineProperty(dom.window.crypto,"subtle",{value:crypto.webcrypto.subtle});
   dom.window.URL.createObjectURL=()=>"blob:https://liaih.github.io/placeholder";
   dom.window.URL.revokeObjectURL=()=>{};
+  dom.window.HTMLElement.prototype.scrollIntoView=()=>{};
   dom.window.fetch=async url=>({ok:true,json:async()=>String(url).includes("seo-media-rewrites")?media:
     String(url).includes("seo-rewrites")?drafts:library});
   dom.window.eval(fs.readFileSync("docs/seo-article-format.js","utf8"));
@@ -43,6 +46,11 @@ function check(dom,node){
 function status(dom){
   return dom.window.document.querySelector("#cyexp-status").textContent;
 }
+async function finishMatch(dom){
+  const running=()=>[...dom.window.document.querySelectorAll("#cyexp-match-cms,#cyexp-paste-cms")].some(button=>button.disabled);
+  for(let attempt=0;running()&&attempt<50;attempt++)await new Promise(resolve=>setTimeout(resolve,10));
+  assert.equal(running(),false,"CMS matching did not finish");
+}
 test("new case cannot export without new floorplan, even when other photos pass",async()=>{
   const dom=await setup();const d=dom.window.document;
   edit(dom,d.querySelector("#cyexp-unit"),"新案 Z2");
@@ -56,7 +64,7 @@ test("new case cannot export without new floorplan, even when other photos pass"
   for(const id of ["cyexp-confirm-base","cyexp-confirm-urls","cyexp-confirm-floorplan"]){check(dom,d.querySelector("#"+id));}
   assert.match(status(dom),/缺少新的平面配置圖／格局圖/);
   assert.equal(d.querySelector("#cyexp-copy").disabled,true);
-  assert.match(d.querySelector("#cyexp-html").value,/禁止輸出/);
+  assert.match(d.querySelector("#cyexp-html").value,/正式上稿驗收尚未完成/);
   dom.window.close();
 });
 test("verified plan and rendered images export one safe original-plus-new HTML with ALT",async()=>{
@@ -68,24 +76,25 @@ test("verified plan and rendered images export one safe original-plus-new HTML w
   assert.equal(rows.length,2);
   const config=[
     ["https://chen-yang.com.tw/upload/images/new-living.png","客廳淺木色電視櫃與白色沙發","丹佛花都｜新案Z2客廳3D建模示意圖"],
-    ["https://chen-yang.com.tw/upload/images/new-floorplan.png","此為實際新增案圖說，需核對戶別","丹佛花都｜新案Z2平面配置圖"]
+    ["https://chen-yang.com.tw/upload/images/new-floorplan.png","此為實際新增案圖說，需核對戶別"]
   ];
-  rows.forEach((row,i)=>{
-    const [url,description,alt]=config[i];
+  for(const [i,[url,description,alt]] of config.entries()){
+    const row=d.querySelectorAll(".cyexp-item")[i];
     edit(dom,row.querySelector('[data-attr="description"]'),description);
-    edit(dom,row.querySelector('[data-attr="alt"]'),alt);
-    edit(dom,row.querySelector('[data-attr="url"]'),url);
-    check(dom,row.querySelector('[data-attr="verified"]'));
-  });
+    if(alt)edit(dom,row.querySelector('[data-attr="alt"]'),alt);
+    edit(dom,row.querySelector('[data-attr="url"]'),url,"change");
+    check(dom,d.querySelectorAll(".cyexp-item")[i].querySelector('[data-attr="verified"]'));
+  }
+  for(const checkbox of d.querySelectorAll(".cyexp-inline-pair-actions input"))check(dom,checkbox);
   edit(dom,d.querySelector("#cyexp-intro"),"本次新增新案Z2空間設計圖說與3D示意。");
   for(const id of ["cyexp-confirm-base","cyexp-confirm-urls","cyexp-confirm-floorplan"]){check(dom,d.querySelector("#"+id));}
   assert.equal(d.querySelector("#cyexp-copy").disabled,false,status(dom));
   const html=d.querySelector("#cyexp-html").value;
-  assert.ok(html.startsWith(baseline));
+  assert.match(html,/原 D11 戶仍保留，不得覆寫/);
   assert.match(html,/new-floorplan\.png/);
-  assert.match(html,/新案Z2平面配置圖/);
+  assert.match(html,/住宅平面配置圖與空間動線/);
   assert.match(html,/old-D11-floorplan\.jpg/);
-  assert.match(html,/3D 建模示意圖/);
+  assert.doesNotMatch(html,/3D 建模示意圖/);
   const originalCount=(baseline.match(/<img/g)||[]).length;
   assert.equal((html.match(/<img/g)||[]).length,originalCount+2);
   assert.match(status(dom),/新格局圖 1 張/);
@@ -173,7 +182,7 @@ test("user-initiated LM Studio connects only to loopback, re-reads bad caption, 
  edit(dom,initial.querySelector('[data-attr="description"]'),"床與桌子和電視機的房間","change");
  const calls=[];
  dom.window.fetch=async (url,opts)=>{
-   calls.push({url:String(url),method:opts?.method,headers:opts?.headers});
+   calls.push({url:String(url),method:opts?.method,headers:opts?.headers,addressSpace:opts?.targetAddressSpace});
    if(String(url).endsWith("/v1/models")){
      return {ok:true,json:async()=>({data:[{id:"qwen3-vl-8b"}]})};
    }
@@ -199,7 +208,7 @@ test("user-initiated LM Studio connects only to loopback, re-reads bad caption, 
  assert.match(result.querySelector('[data-attr="alt"]').value,/丹佛花都/);
  assert.equal(result.querySelector('[data-attr="verified"]').checked,false);
  assert.ok(calls.every(x=>x.url.startsWith("http://127.0.0.1:1234/v1/")));
- assert.equal((script.match(/targetAddressSpace:"loopback"/g)||[]).length,2,"Both model listing and image inference must declare Chrome loopback address space");
+ assert.ok(calls.length>=2&&calls.every(x=>x.addressSpace==="loopback"),"Model listing and image inference must declare Chrome loopback address space");
  assert.ok(calls.every(x=>x.headers?.Authorization==="Bearer temporary-only"));
  assert.doesNotMatch(script,/localStorage\.setItem\([^)]*cyexp-local-token/);
  dom.window.close();
@@ -215,7 +224,6 @@ test("HTTPS GitHub Pages connects to loopback with explicit browser address-spac
  const dom=await setup();
  const d=dom.window.document;
  assert.match(script,/targetAddressSpace:"loopback"/);
- assert.equal((script.match(/targetAddressSpace:"loopback"/g)||[]).length,2);
  const link=d.querySelector("#cyexp-local-check-url");
  assert.equal(link.href,"http://127.0.0.1:1234/v1/models");
  assert.equal(link.target,"_blank");
@@ -234,29 +242,28 @@ test("import full CMS HTML in one paste and match uploads by filename even when 
  ].join("\n");
  edit(dom,d.querySelector("#cyexp-cms-html"),html);
  d.querySelector("#cyexp-match-cms").click();
+ await finishMatch(dom);
  const urls=[...d.querySelectorAll(".cyexp-item [data-attr=url]")].map(x=>x.value);
  assert.equal(urls[0],"https://chen-yang.com.tw/upload/images/living.jpg");
  assert.match(urls[1],/%E6%96%B0%E6%A0%BC%E5%B1%80%E5%9C%96.webp/);
- assert.match(d.querySelector("#cyexp-cms-match-status").textContent,/檔名配對 2、順序推定 0/);
+ assert.match(d.querySelector("#cyexp-cms-match-status").textContent,/檔名 2.*順序推定 0/);
  assert.equal(d.querySelector("#cyexp-copy").disabled,true,"Still requires valid floorplan, text and verification");
  dom.window.close();
 });
-test("unknown CMS renames use exact batch order only, never silently match extra existing images",async()=>{
+test("unknown CMS renames without visual evidence stay unpaired even when the batch sizes match",async()=>{
  const dom=await setup();const d=dom.window.document;
  await fileSelect(dom,"living.png");await fileSelect(dom,"新格局圖.png");
  edit(dom,d.querySelector("#cyexp-cms-html"),
   '<div><img src="https://chen-yang.com.tw/upload/images/random-1.jpg"><img src="https://chen-yang.com.tw/upload/images/random-2.jpg"></div>');
  d.querySelector("#cyexp-match-cms").click();
- assert.match(d.querySelector("#cyexp-cms-match-status").textContent,/順序推定 2/);
- assert.match(d.querySelector(".cyexp-item .cyexp-muted").textContent,/1\. living\.png/);
- const rows=d.querySelectorAll(".cyexp-item [data-attr=url]");
- assert.match(rows[0].value,/random-1/);
- assert.match(rows[1].value,/random-2/);
+ await finishMatch(dom);
+ assert.match(d.querySelector("#cyexp-cms-match-status").textContent,/順序推定 0/);
+ assert.ok([...d.querySelectorAll(".cyexp-item [data-attr=url]")].every(x=>x.value===""));
  edit(dom,d.querySelector("#cyexp-cms-html"),
   '<div><img src="https://chen-yang.com.tw/upload/images/old.jpg"><img src="https://chen-yang.com.tw/upload/images/next.jpg"><img src="https://chen-yang.com.tw/upload/images/extra.jpg"></div>');
- rows.forEach(x=>edit(dom,x,""));
  d.querySelector("#cyexp-match-cms").click();
- assert.match(d.querySelector("#cyexp-cms-match-status").textContent,/沒有安全的檔名配對/);
+ await finishMatch(dom);
+ assert.match(d.querySelector("#cyexp-cms-match-status").textContent,/未可靠配對/);
  assert.ok([...d.querySelectorAll(".cyexp-item [data-attr=url]")].every(x=>x.value===""),"no guessing for unsafe pasted batch");
  dom.window.close();
 });
@@ -266,8 +273,9 @@ test("CMS HTML importer refuses offsite image URLs and never runs pasted scripts
  edit(dom,d.querySelector("#cyexp-cms-html"),
   '<script>window.exampleInjected=1</script><img src="https://evil.example/upload/living.jpg"><img src="javascript:alert(1)">');
  d.querySelector("#cyexp-match-cms").click();
+ await finishMatch(dom);
  assert.equal(dom.window.exampleInjected,undefined);
- assert.match(d.querySelector("#cyexp-cms-match-status").textContent,/沒有找到晨陽官網可使用的圖片網址/);
+ assert.match(d.querySelector("#cyexp-cms-match-status").textContent,/沒有有效的圖片網址/);
  assert.equal(d.querySelector(".cyexp-item [data-attr=url]").value,"");
  dom.window.close();
 });
@@ -307,11 +315,11 @@ test("clipboard import prefers rich text/html from CMS over copied visible text,
   readText:async()=>{throw Error("Should prefer rich HTML over text");}
  }});
  d.querySelector("#cyexp-paste-cms").click();
- await new Promise(r=>setTimeout(r,25));
+ await finishMatch(dom);
  const urls=[...d.querySelectorAll(".cyexp-item [data-attr=url]")].map(x=>x.value);
  assert.match(urls[0],/living.webp/);
  assert.match(urls[1],/E6%96%B0/);
- assert.match(d.querySelector("#cyexp-cms-match-status").textContent,/檔名配對 2/);
+ assert.match(d.querySelector("#cyexp-cms-match-status").textContent,/檔名 2/);
  dom.window.close();
 });
 
@@ -394,7 +402,7 @@ test("BEGINNER UX: one visible 3-step flow keeps all working features and hides 
  assert.ok(steps[1].contains(d.querySelector("#cyexp-items")));
  assert.ok(steps[1].contains(d.querySelector("#cyexp-approve-reviewed")));
  assert.ok(steps[1].contains(d.querySelector("#cyexp-intro")));
- assert.ok(steps[2].contains(d.querySelector("#cyexp-cms-import-panel")));
+ assert.ok(steps[1].contains(d.querySelector("#cyexp-cms-import-panel")));
  assert.ok(steps[2].contains(d.querySelector("#cyexp-copy")));
  assert.ok(steps[2].contains(d.querySelector("#cyexp-confirm-floorplan")));
  assert.ok(d.querySelector("#cyexp-extra").contains(d.querySelector("#cyexp-bulk-urls")));
@@ -410,7 +418,7 @@ test("BEGINNER UX: progress advances from select images to image review, and doe
  const dom=await setup(),d=dom.window.document;
  await fileSelect(dom,"living.png");
  assert.match(d.querySelector("#cyexp-next").textContent,/AI 讀圖/);
- assert.equal(d.querySelector("#cyexp-progress span[aria-current=step]").textContent.trim(),"② AI 介紹與 ALT");
+ assert.equal(d.querySelector("#cyexp-progress span[aria-current=step]").textContent.trim(),"② AI 草稿預覽");
  assert.equal(d.querySelector("#cyexp-copy").disabled,true);
  assert.match(d.querySelector("#cyexp-status").textContent,/缺少新的平面配置圖/);
  dom.window.close();

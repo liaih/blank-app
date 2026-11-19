@@ -26,12 +26,19 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
       - name: Install and verify article checks
         run: |
           python -m pip install beautifulsoup4==4.14.3 pytest
           python -m pytest -q tests/test_daily_seo_articles.py tests/test_floorplan_protection.py
       - name: Update public draft queue
         run: python -m scripts.replenish_seo_articles
+      - name: Verify the generated feed and existing editor flows
+        run: |
+          npm install --no-save --package-lock=false --no-audit --no-fund jsdom@31.0.1
+          node --test tests/article-url-import.cjs tests/test-case-expansion.cjs tests/seo-editor-regression.mjs tests/native-ai-answer-ux.mjs tests/seo-gsc-daily-ui.mjs
       - name: Publish draft feed
         run: |
           git config user.name "seo-visibility-bot"
