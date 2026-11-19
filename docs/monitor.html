@@ -112,9 +112,9 @@ tbody tr:last-child td{border-bottom:0}
   <span class="chip" id="date-chip">正在讀取資料</span>
  </header>
  <nav class="tabs" role="tablist" aria-label="主要分析模組">
-  <button id="tab-ai" class="tab" role="tab" type="button" data-tab="ai" aria-selected="true" aria-controls="view-ai">AI SEO｜推薦與引用</button>
+  <button id="tab-ai" class="tab" role="tab" type="button" data-tab="ai" aria-selected="true" aria-controls="view-ai">GEO｜AI 關鍵詞與推薦</button>
   <button id="tab-actions" class="tab" role="tab" type="button" data-tab="actions" aria-selected="false" aria-controls="view-actions" tabindex="-1">SEO 改善中心｜文章待修</button>
-  <button id="tab-seo" class="tab" role="tab" type="button" data-tab="seo" aria-selected="false" aria-controls="view-seo" tabindex="-1">SEO 搜尋優化監測</button>
+  <button id="tab-seo" class="tab" role="tab" type="button" data-tab="seo" aria-selected="false" aria-controls="view-seo" tabindex="-1">SEO｜Google 關鍵字</button>
   <button id="tab-opps" class="tab" role="tab" type="button" data-tab="opps" aria-selected="false" aria-controls="view-opps" tabindex="-1">搜尋字詞／頁面機會</button>
   <button id="tab-quality" class="tab" role="tab" type="button" data-tab="quality" aria-selected="false" aria-controls="view-quality" tabindex="-1">資料品質</button>
  </nav>
@@ -154,9 +154,12 @@ tbody tr:last-child td{border-bottom:0}
     </table></div>
     <p class="detail">數字代表已取得的原平台回答筆數，不是這個問題被多少真實使用者搜尋。題庫若缺少對應原文，會標記待核對，不自行編造問題。</p>
     <section class="panel" aria-label="AI 消費者提問意圖分析" style="margin-top:20px">
-      <h3>AI 消費者提問意圖分析｜地區 × 需求 × 決策</h3>
-      <p class="muted">將我們的 10 組屋主測試題目按地區、屋況、預算、選公司和比較決策分類，對照三大 AI 平台實測的晨陽提及及官網引用。這是「模擬消費者問法」的受控監測，不是消費者實際聊天資料或市場搜尋量。</p>
+      <h3>GEO 測試關鍵詞與 AI 提問</h3>
+      <p class="muted">關鍵詞整理自固定測試題庫，對照每題在各平台取得的真實回答、品牌提及與網站引用。</p>
       <div class="ai-fields">
+        <label>搜尋關鍵詞或問題
+          <input id="ai-intent-search" type="search" placeholder="例如：老屋翻新、竹北、預算">
+        </label>
         <label>分類維度
           <select id="ai-intent-dimension"><option value="all">全部題目</option><option value="region">依地區</option><option value="housing">依屋況／住宅類型</option><option value="intents">依決策意圖</option></select>
         </label>
@@ -170,7 +173,7 @@ tbody tr:last-child td{border-bottom:0}
         <div class="metric"><div class="name">晨陽被提及</div><div class="number" id="ai-intent-mentions">—</div></div>
         <div class="metric"><div class="name">晨陽官網被引用</div><div class="number" id="ai-intent-citations">—</div></div>
       </div>
-      <div class="tablebox"><table><thead><tr><th>測試問題／意圖標籤</th><th>ChatGPT</th><th>Gemini</th><th>Perplexity</th><th>SEO 內容機會</th></tr></thead><tbody id="ai-intent-rows"><tr><td colspan="5">正在讀取實測意圖資料。</td></tr></tbody></table></div>
+      <div class="tablebox"><table><thead><tr><th>GEO 測試關鍵詞</th><th>完整測試問題</th><th>ChatGPT</th><th>Gemini</th><th>Perplexity</th><th>內容機會</th></tr></thead><tbody id="ai-intent-rows"><tr><td colspan="6">正在讀取實測意圖資料。</td></tr></tbody></table></div>
       <p class="detail">各平台欄位顯示「回答筆數／提及晨陽次數」。0 筆代表尚未測試到有效回答，不能視為 AI 不推薦。品牌提及和引用皆不是「明確推薦」；推薦需人工核對回答全文。</p>
     </section>
     <p class="detail" id="native-perplexity-progress">Perplexity 既有任務：正在讀取。</p>
@@ -840,6 +843,27 @@ function seoOriginalMediaReady(media){
  const audit=media?.preservation_audit;
  return !!(media?.media_integrated&&media.floorplan_protection_passed&&audit?.original_main_content_preserved&&audit.floorplan_protection_passed);
 }
+function candidateGscQueries(url){
+ const path=seoArticleUrlKey(url).replace(/^\//,"");
+ return gscUrlDiagnosis?.candidate_queries?.pages?.[path]||[];
+}
+function appendGscQueries(panel,queries,period){
+ const line=document.createElement("p");line.className="detail";
+ line.textContent="Google 實際搜尋詞"+(period?"（"+period.from+" ～ "+period.to+"）":"");
+ panel.appendChild(line);
+ if(!queries.length){
+  const note=document.createElement("p");note.className="small";note.textContent="本篇暫無可公開的 Google 搜尋詞。";
+  panel.appendChild(note);return;
+ }
+ const list=document.createElement("ul");list.className="small";
+ for(const {query,metrics} of queries){
+  const item=document.createElement("li");
+  item.textContent=query+"｜曝光 "+metrics.impressions+"、點擊 "+metrics.clicks+
+   "、CTR "+(metrics.ctr==null?"—":(100*metrics.ctr).toFixed(2)+"%")+"、平均排名 "+(metrics.position??"—");
+  list.appendChild(item);
+ }
+ panel.appendChild(list);
+}
 function showGscUrlDiagnosis(target,plan){
  const panel=document.createElement("section");panel.className="panel soft";panel.style.marginTop="16px";
  const title=document.createElement("h3");title.textContent="實際 GSC｜這篇文章的曝光與點擊";panel.appendChild(title);
@@ -848,7 +872,9 @@ function showGscUrlDiagnosis(target,plan){
   const note=document.createElement("p");note.className="detail";
   note.textContent="GSC 網頁維度｜截止 "+plan.gsc.last_day+"｜近 28 天 "+
    metric.impressions+" 次曝光、"+metric.clicks+" 次點擊。"+(plan.gsc.reason||"");
-  panel.appendChild(note);target.appendChild(panel);return;
+  panel.appendChild(note);
+  appendGscQueries(panel,candidateGscQueries(plan.url),gscUrlDiagnosis?.candidate_queries?.period);
+  target.appendChild(panel);return;
  }
  const report=gscUrlDiagnosis;
  if(!report){
@@ -856,8 +882,12 @@ function showGscUrlDiagnosis(target,plan){
   no.textContent="正在等待每週 GSC「搜尋字詞 × 網頁 × 裝置」首次驗證與公開同步；目前不可將搜尋字詞的整站數據當成這篇文章的成效。";
   panel.appendChild(no);target.appendChild(panel);return;
  }
- const page=(report.pages||[]).find(p=>p.id===plan.id);
- if(!page){const no=document.createElement("p");no.className="detail";no.textContent="這篇文章尚未被納入已驗證 URL 清單。";panel.appendChild(no);target.appendChild(panel);return;}
+ const page=(report.pages||[]).find(p=>p.id===plan.id||p.path===seoArticleUrlKey(plan.url).replace(/^\//,""));
+ if(!page){
+  appendGscQueries(panel,candidateGscQueries(plan.url),report.candidate_queries?.period);
+  target.appendChild(panel);return;
+ }
+ appendGscQueries(panel,page.current?.search_queries||[],page.current?.period);
  const meta=document.createElement("p");meta.className="small";
  meta.textContent="資料產生："+(report.generated_at||"未註明")+"｜最近 28 天 vs. 前 28 天｜Google 網頁搜尋";
  panel.appendChild(meta);
@@ -892,18 +922,6 @@ function showGscUrlDiagnosis(target,plan){
    device+" "+m.impressions+" 曝光／"+m.clicks+" 點擊／"+(100*(m.ctr||0)).toFixed(2)+"% CTR").join("；");
   panel.appendChild(p);
  }
- const qs=page.current?.search_queries||[];
- if(qs.length){
-  const details=document.createElement("details");const summary=document.createElement("summary");
-  summary.textContent="查看這篇實際出現的搜尋字詞（"+qs.length+" 組，非全部查詢）";details.appendChild(summary);
-  const ul=document.createElement("ul");
-  for(const q of qs){
-   const li=document.createElement("li");li.textContent=q.query+"｜曝光 "+q.metrics.impressions+
-     "、點擊 "+q.metrics.clicks+"、CTR "+(100*(q.metrics.ctr||0)).toFixed(2)+"%";
-   ul.appendChild(li);
-  }
-  details.appendChild(ul);panel.appendChild(details);
- }
  const warn=document.createElement("p");warn.className="detail";
  warn.textContent="GSC 可能隱藏低流量或匿名查詢；排名是歷史平均值，不是即時 Google 排名。無法由此判定內容品質或保證改稿能增加點擊。";
  panel.appendChild(warn);target.appendChild(panel);
@@ -915,6 +933,7 @@ function loadGscUrlDiagnosis(){
   if(!Array.isArray(report.pages)||report.not_article_quality_proof!==true)throw Error("invalid");
   gscUrlDiagnosis=report;
   if(seoImprovementPlan)renderSeoImprovementPlan();
+  renderSitewideDiscovery();
  })
  .catch(()=>{gscUrlDiagnosis=null;});
 }
@@ -942,7 +961,13 @@ function renderSitewideDiscovery(){
    const none=document.createElement("p");none.textContent="目前沒有尚未列入改稿清單的新候選頁。";panel.appendChild(none);return;
  }
  const table=document.createElement("table"),head=document.createElement("tr");
- for(const name of ["新候選官網文章","28 天曝光","點擊","CTR","需做的檢查"]){
+ const queryPeriod=gscUrlDiagnosis?.candidate_queries?.period;
+ if(queryPeriod){
+  const source=document.createElement("p");source.className="small";
+  source.textContent="Google 實際搜尋詞期間 "+queryPeriod.from+" ～ "+queryPeriod.to+"，僅列與此官網網址相符且達公開門檻的搜尋詞。";
+  panel.appendChild(source);
+ }
+ for(const name of ["新候選官網文章","Google 實際搜尋詞","28 天曝光","點擊","CTR","需做的檢查"]){
    const th=document.createElement("th");th.textContent=name;head.appendChild(th);
  }
  table.appendChild(head);
@@ -956,6 +981,10 @@ function renderSitewideDiscovery(){
    link.textContent=name&&!/^(?:建案\s*NEWS|完工案例)\s*#\d+$/i.test(name)?name:"官網標題暫未取得";
    if(link.href)link.title=link.href;
    title.appendChild(link);tr.appendChild(title);
+   const terms=document.createElement("td");
+   const queries=candidateGscQueries(page.url);
+   terms.textContent=queries.length?queries.map(x=>x.query+"（"+x.metrics.impressions+" 曝光）").join("、"):"暫無可公開搜尋詞";
+   tr.appendChild(terms);
    const m=page.current||{};
    for(const txt of [m.impressions??"資料不足",m.clicks??"資料不足",m.ctr==null?"資料不足":(100*m.ctr).toFixed(2)+"%",page.status||"待稽核"]){
      const td=document.createElement("td");td.textContent=String(txt);tr.appendChild(td);
@@ -1349,6 +1378,19 @@ function renderGeoTasks(report){
   };
 }
 
+const geoTestKeywords={
+ "taoyuan-small-home":"桃園新成屋裝潢、20 坪小宅設計",
+ "taoyuan-renovation":"桃園老屋翻新、裝修工程管理、售後服務",
+ "zhubei-engineer":"竹北新成屋裝修、竹北室內設計推薦、預算透明度",
+ "a7-new-home":"林口 A7 新成屋裝潢、林口 A7 室內設計推薦",
+ "taichung-condo":"台中新成屋裝潢、25 坪室內設計、台中室內設計推薦",
+ "tainan-renovation":"台南老屋翻新、住宅翻修案例",
+ "kaohsiung-condo":"高雄首購裝潢、高雄室內設計公司比較",
+ "small-home-budget":"20 坪小宅裝潢、80 萬裝潢預算、裝修工程管理",
+ "renovation-process":"室內設計公司怎麼選、施工品質、裝修保固",
+ "renovation-cost":"老屋翻新每坪價格、老屋翻新預算",
+};
+const geoPlatforms=["ChatGPT","Gemini","Perplexity"];
 let lastNativeResultVersion="";
 function renderNativePlatformAnswers(){
   const status=el("native-ai-status");
@@ -1381,34 +1423,24 @@ function renderNativePlatformAnswers(){
           platform.direct_domain_citations+" 次",platform.answers_with_sources+" 筆",
           others,platform.last_sample_date||"尚無回答"],[1,2,3,4]);
       }
+      const intent=(data.intent_analysis&&Array.isArray(data.intent_analysis.questions))?data.intent_analysis.questions:[];
       const promptRows=el("native-question-rows");
-      const promptById={
-        "kaohsiung-condo":"高雄首購族規劃室內裝潢，怎麼挑選設計公司？有哪幾家公司值得比較？"
-      };
-      const counted=new Map();
-      for(const platform of data.platforms){
-        for(const id of (platform.tested_prompt_ids||[])){
-          if(!counted.has(id))counted.set(id,{"ChatGPT":0,"Gemini":0,"Perplexity":0});
-          counted.get(id)[platform.platform]=Number(platform.samples||0);
-        }
-      }
+      const tested=intent.filter(q=>geoPlatforms.some(p=>Number(q.platforms?.[p]?.samples||0)>0));
       promptRows.replaceChildren();
-      if(!counted.size){
+      if(!tested.length){
         const tr=document.createElement("tr");const td=document.createElement("td");
-        td.colSpan=5;td.textContent="尚無已完成的原平台測試問題。";
+        td.colSpan=5;td.textContent="本次報表暫無可按題目核對的回答筆數。";
         tr.appendChild(td);promptRows.appendChild(tr);
       }else{
-        for(const [id,counts] of counted){
-          const known=Object.prototype.hasOwnProperty.call(promptById,id);
-          tableRow(promptRows,[known?promptById[id]:"題目原文待核對（"+id+"）",
-            counts.ChatGPT+" 筆",counts.Gemini+" 筆",counts.Perplexity+" 筆",
-            known?"已對照固定題庫":"需對照原始提問"],[1,2,3]);
+        for(const q of tested){
+          tableRow(promptRows,[q.question||"題目原文待核對",
+            ...geoPlatforms.map(p=>(q.platforms?.[p]?.samples||0)+" 筆"),
+            "已對照固定題庫"],[1,2,3]);
         }
       }
       renderGeoTasks(data);
-      const intent=(data.intent_analysis&&Array.isArray(data.intent_analysis.questions))?data.intent_analysis.questions:[];
       const dimensionSelect=el("ai-intent-dimension"),categorySelect=el("ai-intent-value");
-      const detailLabels={region:"地區",housing:"屋況",intents:"決策"};
+      const keywordSearch=el("ai-intent-search");
       function renderIntentFilters(){
         const dimension=dimensionSelect.value, current=categorySelect.value;
         const values=new Set();
@@ -1425,12 +1457,14 @@ function renderNativePlatformAnswers(){
       }
       function renderIntentTable(){
         const d=dimensionSelect.value,v=categorySelect.value, tbody=el("ai-intent-rows");
-        const filtered=intent.filter(q=>v==="all"|| (Array.isArray(q[d])?q[d].includes(v):q[d]===v));
+        const search=keywordSearch.value.trim().toLowerCase();
+        const filtered=intent.filter(q=>(v==="all"|| (Array.isArray(q[d])?q[d].includes(v):q[d]===v))&&
+          (!search||((geoTestKeywords[q.id]||"")+" "+(q.question||"")).toLowerCase().includes(search)));
         let samples=0,mentions=0,citations=0;
         tbody.replaceChildren();
         for(const q of filtered){
           const stats=q.platforms||{}, cells=[];
-          for(const p of ["ChatGPT","Gemini","Perplexity"]){
+          for(const p of geoPlatforms){
             const s=stats[p]||{};samples+=Number(s.samples||0);mentions+=Number(s.mentions||0);
             citations+=Number(s.direct_citations||0);
             cells.push((s.samples||0)+" 筆／"+(s.mentions||0)+" 提及");
@@ -1439,11 +1473,11 @@ function renderNativePlatformAnswers(){
           const opportunity=!(Object.values(stats).some(x=>Number(x.samples||0)>0))?
             "未有實測回答，待採樣":(Object.values(stats).some(x=>Number(x.mentions||0)>0)?
             "檢查 AI 描述與引用來源":"先補強對應需求的案例、FAQ 與服務佐證");
-          tableRow(tbody,[(q.question||"")+(labels.length?"【"+labels.join("／")+"】":""),...cells,opportunity]);
+          tableRow(tbody,[geoTestKeywords[q.id]||labels.join("、")||"待整理",q.question||"",...cells,opportunity]);
         }
         if(!filtered.length){
-          const row=document.createElement("tr"),cell=document.createElement("td");cell.colSpan=5;
-          cell.textContent="此分類沒有對應的固定測試題目。";row.appendChild(cell);tbody.appendChild(row);
+          const row=document.createElement("tr"),cell=document.createElement("td");cell.colSpan=6;
+          cell.textContent="沒有符合目前篩選的測試題目。";row.appendChild(cell);tbody.appendChild(row);
         }
         put("ai-intent-questions",filtered.length+" 題");
         put("ai-intent-samples",samples+" 筆");
@@ -1453,10 +1487,11 @@ function renderNativePlatformAnswers(){
       if(intent.length){
         dimensionSelect.onchange=renderIntentFilters;
         categorySelect.onchange=renderIntentTable;
+        keywordSearch.oninput=renderIntentTable;
         renderIntentFilters();
       }else{
         const tbody=el("ai-intent-rows");tbody.replaceChildren();
-        const row=document.createElement("tr"),cell=document.createElement("td");cell.colSpan=5;
+        const row=document.createElement("tr"),cell=document.createElement("td");cell.colSpan=6;
         cell.textContent="分類功能已建立，等待私人資料庫下一次同步產生意圖彙總。";
         row.appendChild(cell);tbody.appendChild(row);
         put("ai-intent-questions","待同步");put("ai-intent-samples","待同步");
