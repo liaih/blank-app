@@ -4,12 +4,13 @@ const fs=require('node:fs');
 const {JSDOM}=require('jsdom');
 const html=fs.readFileSync('docs/monitor.html','utf8');
 const source='<div class="chenyang-seo-draft-warning" data-publish-status="not-approved"><strong>SEO 草稿｜未通過正式上稿驗收，不可直接發佈</strong><p>AI 描述與格局圖需人工核對。</p></div><p>舊描述（3D 建模示意圖，非施工完成證明）</p><h2>新建案原文</h2><p style="margin:0 0 18px;line-height:1.9;"><span style="font-size:18px;color:#333333;">保留原文與戶型</span></p><p><a href="https://chen-yang.com.tw/news.php"><span style="color:#ADD8E6">原資料連結</span></a></p><img src="https://chen-yang.com.tw/upload/old.png" alt="原格局圖"><h2>延伸閱讀</h2><p>原連結</p>';
-async function setup(storage={},daily={schema:1,articles:[]},siteDiscovery){
+async function setup(storage={},daily={schema:1,articles:[]},siteDiscovery,urlDiagnosis){
  const dom=new JSDOM(html,{runScripts:'outside-only',url:'https://liaih.github.io/blank-app/monitor.html#actions'});
  for(const [key,value] of Object.entries(storage))dom.window.localStorage.setItem(key,value);
  dom.window.fetch=async url=>{
   if(String(url).endsWith('/seo-daily-articles.json'))return {ok:true,json:async()=>await daily};
   if(siteDiscovery&&String(url).endsWith('/gsc-site-discovery.json'))return {ok:true,json:async()=>siteDiscovery};
+  if(urlDiagnosis&&String(url).endsWith('/gsc-url-opportunities.json'))return {ok:true,json:async()=>urlDiagnosis};
   if(String(url).startsWith('http://127.0.0.1:8765/'))return {ok:true,json:async()=>({id:'url-news-99999',url:'https://www.chen-yang.com.tw/news-content.php?id=99999',title:'測試建案',html:source,metaTitle:'測試建案',metaDescription:'原摘要',checkedAt:new Date().toISOString(),imageCount:1,checks:[{status:'待改善',item:'ALT',detail:'需讀圖'}]})};
   const path='docs/'+String(url).replace(/^\.\//,'').split('?')[0];
   return {ok:fs.existsSync(path),json:async()=>JSON.parse(fs.readFileSync(path,'utf8'))};
@@ -30,7 +31,10 @@ test('sitewide GSC candidates show the official title, real data date and visibl
    {url:url(87),title:'建案 NEWS #87',current:{impressions:209}},
    {url:url(234),title:'丹佛花都',current:{impressions:200}}
   ]
- });
+ },{not_article_quality_proof:true,pages:[],candidate_queries:{status:'ok',period:{from:'2026-10-19',to:'2026-11-15'},pages:{
+  'news-content.php?id=410':[{query:'崇利華漾格局圖',metrics:{impressions:30,clicks:1}}],
+  'unboxing-content.php?id=87':[{query:'不應出現在新聞文章',metrics:{impressions:50,clicks:5}}]
+ }}});
  try{
   const d=dom.window.document,panel=d.querySelector('#site-discovery-results');
   assert.deepEqual([...panel.querySelectorAll('tr a')].map(a=>[a.textContent,a.href]),[
@@ -38,6 +42,30 @@ test('sitewide GSC candidates show the official title, real data date and visibl
   ]);
   assert.match(panel.textContent,/候選文章 GSC 資料截至：2026-11-15｜清單更新：2026-11-19/);
   assert.match(panel.textContent,/本表顯示 2 篇待稽核文章/);
+  assert.deepEqual([...panel.querySelectorAll('tr')].slice(1).map(row=>row.cells[1].textContent),[
+   '崇利華漾格局圖（30 曝光）','暫無可公開搜尋詞'
+  ]);
+ }finally{dom.window.close();}
+});
+test('GEO shows searchable test keywords and per-question platform counts',async()=>{
+ const dom=await setup();
+ try{
+  const d=dom.window.document;
+  const rows=d.querySelector('#ai-intent-rows');
+  const data=JSON.parse(fs.readFileSync('docs/native-ai-summary.json','utf8')).intent_analysis.questions;
+  const countFor=(q,p)=>(q.platforms?.[p]?.samples||0);
+  assert.equal(rows.children.length,data.length);
+  assert.ok([...rows.children].every(row=>row.cells[0].textContent.trim()&&row.cells[1].textContent.trim()));
+  const input=d.querySelector('#ai-intent-search');
+  input.value='高雄室內設計公司比較';input.dispatchEvent(new dom.window.Event('input'));
+  assert.equal(rows.children.length,1);
+  const question=data.find(q=>q.id==='kaohsiung-condo');
+  assert.equal(rows.rows[0].cells[1].textContent,question.question);
+  const measured=[...d.querySelectorAll('#native-question-rows tr')].find(row=>row.cells[0].textContent===question.question);
+  if(['ChatGPT','Gemini','Perplexity'].some(p=>countFor(question,p)>0)){
+   assert.deepEqual([...measured.cells].slice(1,4).map(c=>Number.parseInt(c.textContent)),
+    ['ChatGPT','Gemini','Perplexity'].map(p=>countFor(question,p)));
+  }
  }finally{dom.window.close();}
 });
 test('daily drafts appear in the editor with copyable HTML and preserve completion history',async()=>{
