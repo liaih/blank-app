@@ -41,6 +41,12 @@ test('daily drafts appear in the editor with copyable HTML and preserve completi
    assert.equal(d.getElementById('cyexp-base').value,entry.plan.id);
    const htmlOutput=d.querySelector('#seo-article-actions textarea')?.value;
    assert.ok(htmlOutput?.includes(entry.draft.sections[1][0]),`${entry.plan.id} is missing its own updated HTML`);
+   const exported=new JSDOM(htmlOutput).window.document;
+   assert.equal(exported.querySelectorAll('[data-chenyang-aeo] li').length,3,entry.plan.id);
+   assert.match(exported.querySelector('[data-chenyang-aeo]').textContent,/重點先看.*屋主會遇到的問題.*晨陽的規劃與核對方式/s);
+   const preview=new JSDOM(d.querySelector('#seo-article-actions iframe').srcdoc).window.document;
+   assert.equal(preview.querySelectorAll('h1').length,1);
+   assert.equal(exported.querySelector('h1'),null);
    action(d,'複製這篇完整 HTML');
    assert.equal(copied,htmlOutput,`${entry.plan.id} copied the wrong HTML`);
   }
@@ -169,7 +175,7 @@ test('new URL loads audit into existing editor, preserves original and isolates 
  assert.equal(originalParagraph.querySelector('span').style.color,'rgb(51, 51, 51)');
  assert.equal(rendered.querySelector('.chenyang-case-addition p span').style.fontSize,'18px');
  assert.equal(rendered.querySelector('.chenyang-case-addition p span').style.color,'');
- assert.equal(rendered.querySelector('h3').style.color,'');
+ assert.equal(rendered.querySelector('h3').style.color,'rgb(197, 164, 126)');
  assert.equal(rendered.querySelector('figcaption').style.color,'rgb(102, 102, 102)');
  assert.equal(rendered.querySelector('a span').style.color,'');
  assert.equal(rendered.querySelector('a').style.color,'inherit');
@@ -321,7 +327,7 @@ test('verified live publications recover five archive entries even with empty lo
   assert.ok(![...chooser.options].some(option=>option.value==='seo-danfo-234'));
  }finally{dom.window.close();}
 });
-test('all eight articles share the corrected preview and HTML copy formatting',async()=>{
+test('older articles use the source-backed AEO structure in both preview and copied HTML',async()=>{
  const dom=await setup();try{
   const d=dom.window.document;
   const chooser=d.querySelector('#action-article');
@@ -347,7 +353,20 @@ test('all eight articles share the corrected preview and HTML copy formatting',a
     assert.equal(article.querySelector('h2 span').style.color,'rgb(197, 164, 126)',id);
     assert.doesNotMatch(html,/#add8e6|rgb\(173, 216, 230\)|3D\s*建模示意圖/i,id);
     assert.deepEqual(sourceAssets(article,'img','src'),sourceAssets(original,'img','src'),id);
-    assert.deepEqual(sourceAssets(article,'a','href'),sourceAssets(original,'a','href'),id);
+    const originalLinks=sourceAssets(original,'a','href');
+    const allLinks=sourceAssets(article,'a','href');
+    assert.deepEqual(allLinks.slice(0,originalLinks.length),originalLinks,id);
+    assert.ok(allLinks.includes('https://www.chen-yang.com.tw/contact.php'),id);
+    const body=article.querySelector('[data-chenyang-article-format="2"]');
+    assert.equal(body.style.color,'rgb(51, 51, 51)',id);
+    assert.equal(body.style.fontSize,'18px',id);
+    assert.equal(body.style.lineHeight,'1.9',id);
+    assert.equal(body.querySelectorAll('[data-chenyang-aeo] li').length,3,id);
+    assert.match(body.querySelector('[data-chenyang-aeo]').textContent,/屋主會遇到的問題.*本案圖面與設計資料.*晨陽的規劃與核對方式/s,id);
+    assert.match(body.textContent,/FAQ|常見問題|Q\s*\d*\s*[：:]/i,id);
+    assert.match(body.textContent,/延伸閱讀|相關頁面/,id);
+    assert.ok([...body.querySelectorAll('h2,h3')].every(heading=>heading.style.color==='rgb(197, 164, 126)'),id);
+    assert.equal(body.querySelector('h1'),null,id);
     assert.deepEqual(sourceAssets(article,'iframe,video','src'),sourceAssets(original,'iframe,video','src'),id);
     const expectedBody={
      'seo-danfo-234':['丹佛花都位於林口'],
@@ -368,6 +387,25 @@ test('all eight articles share the corrected preview and HTML copy formatting',a
     }
    }
   }
+ }finally{dom.window.close();}
+});
+test('a future daily article uses its own source and FAQ in the AEO structure',async()=>{
+ const dom=await setup();
+ try{
+  const format=dom.window.formatChenyangArticleForCms;
+  const draft={id:'url-news-99998',project_name:'新測試案',sections:[['原標題',''],['玄關收納規劃','先量門片開啟的範圍。'],['常見問題 FAQ','玄關門邊適合做櫃子嗎？<BR>先把門片開啟範圍和所需通道標在平面圖上。']]};
+  const source='<h1>原標題</h1><p><span style="color:red">建案基本資料</span></p><p>原文記錄這間住宅的入口連接開放式客餐廳，玄關的既有平面檔可以看到門片和走道方向。</p><img src="https://www.chen-yang.com.tw/upload/test-plan.png" alt="原格局圖">';
+  const media={preservation_audit:{floorplan_count:1}};
+  const html=format(source,{draft,media});
+  const d=new JSDOM(html).window.document;
+  assert.equal(dom.window.chenyangArticleTitle(draft),'新測試案｜玄關門邊適合做櫃子嗎？');
+  assert.equal(d.querySelectorAll('[data-chenyang-aeo] li').length,3);
+  assert.match(d.querySelector('[data-chenyang-aeo]').textContent,/原文記錄這間住宅/);
+  assert.match(d.querySelector('[data-chenyang-aeo]').textContent,/原文附有格局或平面配置圖/);
+  assert.equal(d.querySelector('h1'),null);
+  assert.ok([...d.querySelectorAll('h2')].some(x=>x.textContent==='建案基本資料'));
+  assert.equal(d.querySelector('img').getAttribute('alt'),'原格局圖');
+  assert.equal(format(html,{draft,media}),html);
  }finally{dom.window.close();}
 });
 test('invalid URL and reader failure leave existing source untouched',async()=>{
