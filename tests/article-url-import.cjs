@@ -94,7 +94,11 @@ test('daily drafts appear in the editor with copyable HTML and preserve completi
    assert.match(exported.querySelector('[data-chenyang-aeo]').textContent,/重點先看.*屋主會遇到的問題.*晨陽的規劃與核對方式/s);
    const preview=new JSDOM(d.querySelector('#seo-article-actions iframe').srcdoc).window.document;
    assert.equal(preview.querySelectorAll('h1').length,1);
-   if(entry.draft.originalSeo?.heading)assert.equal(preview.querySelector('h1').textContent,entry.draft.originalSeo.heading);
+   const proposed={
+    'url-news-473':'台中北屯浩瀚創立方｜格局圖與北歐風空間規劃',
+    'url-news-170':'新竹新埔王喬光知樹｜雙天井透天格局與室內規劃',
+   }[entry.plan.id];
+   if(entry.draft.originalSeo?.heading)assert.equal(preview.querySelector('h1').textContent,proposed||entry.draft.originalSeo.heading);
    assert.equal(exported.querySelector('h1'),null);
    action(d,'複製這篇完整 HTML');
    assert.equal(copied,htmlOutput,`${entry.plan.id} copied the wrong HTML`);
@@ -104,6 +108,7 @@ test('daily drafts appear in the editor with copyable HTML and preserve completi
   choose(d,'action-article',first.plan.id);
   assert.equal(d.getElementById('cyexp-base').value,first.plan.id);
   const originalHtml=d.querySelector('#seo-article-actions textarea').value;
+  const originalPreviewH1=new JSDOM(d.querySelector('#seo-article-actions iframe').srcdoc).window.document.querySelector('h1').textContent;
   if(first.media.preservation_audit.floorplan_count>0)assert.match(originalHtml,/格局圖與空間配置/);
   d.querySelector('#action-completion-controls button').click();
   assert.equal(d.getElementById('action-view').value,'archive');
@@ -116,7 +121,41 @@ test('daily drafts appear in the editor with copyable HTML and preserve completi
    assert.equal(rd.getElementById('action-article').value,first.plan.id);
    assert.equal(rd.getElementById('cyexp-base').value,first.plan.id);
    assert.equal(rd.querySelector('#seo-article-actions textarea').value,originalHtml);
+   assert.equal(new JSDOM(rd.querySelector('#seo-article-actions iframe').srcdoc).window.document.querySelector('h1').textContent,originalPreviewH1);
   }finally{reopened.window.close();}
+ }finally{dom.window.close();}
+});
+test('verified project facts reach the article copy without changing the floorplan order',async()=>{
+ const feed=JSON.parse(fs.readFileSync('docs/seo-daily-articles.json','utf8'));
+ const dom=await setup({},feed);
+ try{
+  const d=dom.window.document,panel=d.querySelector('#seo-article-actions');
+  for(const id of ['url-news-473','url-news-170','url-news-182']){
+   choose(d,'action-article',id);
+   const entry=feed.articles.find(item=>item.plan.id===id);
+   const output=panel.querySelector('textarea').value;
+   const body=new JSDOM(output).window.document;
+   const source=new JSDOM(entry.media.html_with_media).window.document;
+   const imageUrls=doc=>[...doc.querySelectorAll('img')].map(img=>img.getAttribute('src'));
+   assert.deepEqual(imageUrls(body),imageUrls(source),id);
+   assert.ok([...body.querySelectorAll('h2')].every(h=>h.textContent.trim()!==entry.draft.originalSeo.heading),id);
+   if(id==='url-news-473'){
+    assert.doesNotMatch(body.body.textContent,/居住或展示用途|商務宅邸/);
+    assert.match(body.body.textContent,/全案規劃為一般事務所及店面/);
+    const guide=body.querySelector('[data-chenyang-plan-guide]');
+    assert.match(guide.textContent,/浩瀚創立方格局圖.*B1 戶 1F.*右側入口玄關/s);
+    assert.equal(guide.nextElementSibling.querySelector('img').getAttribute('src'),entry.media.preservation_audit.floorplan_images[0].url);
+    assert.match(panel.textContent,/建議 SEO Title｜浩瀚創立方格局圖/);
+   }else if(id==='url-news-170'){
+    assert.match(body.body.textContent,/新竹縣新埔鎮自強重劃區.*地坪 42 坪、74–76 坪四房透天/s);
+    assert.doesNotMatch(body.body.textContent,/位在新竹竹北|7 2 建坪|8\s*房\s*3\s*廳/);
+    assert.ok(body.querySelector('a[href^="https://wj-building.com/classic/"]'));
+    assert.match(panel.textContent,/建議文章標題 H1｜新竹新埔王喬光知樹/);
+   }else{
+    assert.match(body.querySelector('[data-chenyang-project-facts]').textContent,/精業建設、茂德機構/);
+    assert.match(body.body.textContent,/D6.*D2.*C10/s);
+   }
+  }
  }finally{dom.window.close();}
 });
 test('a blocked completion write leaves the article pending and reports the error by the selector',async()=>{

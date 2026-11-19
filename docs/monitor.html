@@ -558,7 +558,7 @@ tbody tr:last-child td{border-bottom:0}
 <script src="./market-opportunity.js"></script>
 <script src="./ai-seo-evidence.js"></script>
 <script src="./seo-daily-ui.js?v=gsc-history-20261115" defer></script>
-<script src="./seo-article-format.js?v=danfo-a7-location-20261119"></script>
+<script src="./seo-article-format.js?v=source-facts-20261119"></script>
 <script>
 (function(){
 "use strict";
@@ -1069,7 +1069,8 @@ function renderSeoImprovementPlan(selectedId){
  }
  const draft=seoRewritesById.get(plan.id),media=seoMediaById.get(plan.id),record=records[plan.id];
  const archivedHtml=mode==="archive"&&typeof record?.completedHtml==="string"?record.completedHtml:"";
- const articleTitle=window.chenyangArticleTitle(draft)||plan.title;
+ const seoCorrection=archivedHtml?record?.completedSeo:window.chenyangArticleSeoCorrection(draft);
+ const articleTitle=seoCorrection?.heading||window.chenyangArticleTitle(draft)||plan.title;
  const h=document.createElement("h3");h.textContent=plan.title;target.appendChild(h);
  const meta=document.createElement("p");meta.className="small";
  meta.textContent=plan.priority+"｜"+plan.channels.join("＋")+"｜改稿版："+(plan.added_on||draft?.reviewedAt||"2026/11/12");
@@ -1103,7 +1104,7 @@ function renderSeoImprovementPlan(selectedId){
    action.onclick=()=>{
      const approvedCase=el("cyexp-base")?.value===plan.id&&el("cyexp-copy")?.disabled===false?el("cyexp-html")?.value:"";
      const completedHtml=approvedCase||(seoOriginalMediaReady(media)?window.formatChenyangArticleForCms(media.html_with_media,{draft,media}):record?.completedHtml||null);
-     if(!saveSeoCompletion(plan.id,{status:"已完成",completedAt:new Date().toISOString(),article:{title:plan.title,url:plan.url},completedHtml})){
+     if(!saveSeoCompletion(plan.id,{status:"已完成",completedAt:new Date().toISOString(),article:{title:plan.title,url:plan.url},completedHtml,completedSeo:seoCorrection||null})){
        showSeoCompletionFeedback("瀏覽器儲存失敗。「"+plan.title+"」仍在待修改文章。",true);return;
      }
      el("action-view").value="archive";
@@ -1123,8 +1124,19 @@ function renderSeoImprovementPlan(selectedId){
  }
  if(draft){
  const seoFields=document.createElement("details");seoFields.style.marginTop="14px";
- const seoSummary=document.createElement("summary");seoSummary.textContent="上稿範圍：更新正文 HTML，沿用官網文章標題與 SEO 設定";
+ seoFields.open=!!seoCorrection;
+ const seoSummary=document.createElement("summary");seoSummary.textContent=seoCorrection?
+   "上稿時請在官網後台一併更新標題與 SEO 欄位":"上稿範圍：更新正文 HTML，沿用官網文章標題與 SEO 設定";
  seoFields.appendChild(seoSummary);
+ if(seoCorrection){
+  for(const [name,value] of [["建議文章標題 H1",seoCorrection.heading],["建議 SEO Title",seoCorrection.title],["建議 Meta Description",seoCorrection.description]]){
+   const field=document.createElement("p");field.className="detail";
+   field.textContent=name+"｜"+value;seoFields.appendChild(field);
+  }
+  const explanation=document.createElement("p");explanation.className="detail";
+  explanation.textContent="本頁的 SEO 欄位須在官網後台分別更新。以下為原頁資料供核對。";
+  seoFields.appendChild(explanation);
+ }
  const original=draft.originalSeo;
  for(const [name,value] of [["官網文章標題 H1",original?.heading],["官網 SEO Title",original?.title],
    ["官網 Meta Description",original?.description],["官網 Canonical",original?.canonical]]){
@@ -1143,7 +1155,7 @@ function renderSeoImprovementPlan(selectedId){
  header.appendChild(trh);table.appendChild(header);
  const audit=media?.preservation_audit||{};
  const dataRows=[
-  ["原有建案介紹完整保留","搜尋建案名稱的讀者也需要地段、坪數、格局與生活機能，不能用設計文取代。","保護原本建案資訊搜尋意圖；非保證排名。"],
+  ["保留原建案脈絡與媒體","搜尋建案名稱的讀者也需要地段、坪數、格局與生活機能。","已核對的建案資訊，放在對應介紹與圖面旁。"],
   ["新增一段裝修決策解答","讓已購屋者能進一步了解空間規劃、裝修前要注意什麼。","擴大建案＋裝潢的長尾問法及 AI 可擷取資訊。"],
   ["保留原圖片、影片與超連結","避免整篇替換造成舊資料、實景或外部來源被意外刪除。","保護原有頁面完整度及可追查來源。"],
   ["時效性建案資料仍待查證","原文可能包含交屋年份、捷運距離、學區及房型數字；原文保留不代表已經重新核實。","上稿前先校對；錯誤或過期內容可能影響使用者信任。"]
@@ -1180,10 +1192,11 @@ function renderSeoImprovementPlan(selectedId){
    note.textContent="以下為標記完成當時保存的 HTML。";
  }else{
    const headingInfo=document.createElement("p");headingInfo.className="detail";
-   headingInfo.textContent="內文真正的 H2 抬頭："+(integrity.opening_h2_text||"待重新產生標題驗證");
+   const markup=document.createElement("template");markup.innerHTML=content;
+   headingInfo.textContent="內文第一個小標："+(markup.content.querySelector("h2")?.textContent.trim()||"目前無 H2 小標");
    target.appendChild(headingInfo);
    note.textContent=mode==="archive"?"這筆紀錄沒有當時的 HTML 快照。下方顯示工具目前的改稿，官網刊登內容可由上方原文連結查看。":
-    "已通過防錯驗收：原文、圖片、影片、連結及原格局圖順序保留。保護的格局／平面圖："+integrity.floorplan_count+" 張。仍需編輯核對房型、交屋年份、圖片畫面及 CMS 實際上稿效果。";
+    "匯出保留原圖片、影片、連結及格局圖順序。格局／平面圖："+integrity.floorplan_count+" 張。上稿前請核對個案資料及 CMS 呈現。";
  }
  target.appendChild(note);
  const feedback=document.createElement("p");feedback.className="detail";
@@ -1205,7 +1218,7 @@ function renderSeoImprovementPlan(selectedId){
   '<meta name="viewport" content="width=device-width,initial-scale=1">'+
   '<style>*,*::before,*::after{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{font-size:16px;line-height:1.8}img,video,iframe,figure,svg{max-width:100%!important}img{display:block;width:auto!important;height:auto!important;max-height:300px!important;object-fit:contain;margin:12px auto}@media(max-width:600px){img{max-height:220px!important}}iframe{width:100%!important;aspect-ratio:16/9;height:auto!important}p,h2,h3{overflow-wrap:anywhere}table{display:block;max-width:100%;overflow:auto}</style></head>'+
   '<body style="padding:12px;margin:0;font:18px/1.9 system-ui,sans-serif;color:#333333;">'+
-  '<div style="font-size:12px;color:#64748b;">官網文章標題 H1｜複製正文後，請沿用後台現有標題</div>'+
+  '<div style="font-size:12px;color:#64748b;">'+(seoCorrection?"建議文章標題 H1｜請依上方建議欄位更新":"官網文章標題 H1｜複製正文後，請沿用後台現有標題")+'</div>'+
   '<h1 style="color:#C5A47E;font-size:24px;line-height:1.4;margin:8px 0 20px;">'+previewCmsTitle+'</h1>'+
   content+'</body></html>';
  preview.appendChild(frame);target.appendChild(preview);
