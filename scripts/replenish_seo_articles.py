@@ -127,7 +127,8 @@ def prepare_article(candidate, url, source, checked_on, gsc_day):
     root = document.select_one(".col-row .l-edit")
     if root is None:
         raise ValueError("找不到官網正文")
-    title_node = document.select_one(".col-row h1, main h1, h1") or document.title
+    original_heading = document.select_one(".col-row h1, main h1, h1")
+    title_node = original_heading or document.title
     title = " ".join(title_node.stripped_strings) if title_node else ""
     title = re.split(r"\s*[|｜]\s*(?:晨陽動態|晨陽開箱)\s*(?:-|$)", title, maxsplit=1)[0].strip()
     if not title or len(title) > 180:
@@ -147,6 +148,12 @@ def prepare_article(candidate, url, source, checked_on, gsc_day):
     validate_source(root, url)
     draft = {
         "id": article_id, "title": title, "project_name": project_name,
+        "originalSeo": {
+            "heading": original_heading.get_text(" ", strip=True) if original_heading else "",
+            "title": document.title.get_text(" ", strip=True) if document.title else "",
+            "description": (document.find("meta", attrs={"name": "description"}) or {}).get("content", ""),
+            "canonical": (document.select_one("link[rel=canonical]") or {}).get("href", ""),
+        },
         "metaTitle": f"{project_name}｜{label}規劃與裝修重點｜晨陽設計",
         "metaDescription": f"看{project_name}的官網原文與圖文，並用這篇的{label}延伸閱讀整理裝修前可確認的項目。",
         "sections": [[title, ""], [heading, guidance], ["常見問題 FAQ", question + "<BR>" + answer]],

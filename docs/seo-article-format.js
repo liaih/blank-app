@@ -6,8 +6,8 @@ const contactUrl="https://www.chen-yang.com.tw/contact.php";
 // Editorial summaries of the corresponding article and its existing draft.
 // Proposal images, known measurements and completed works are described separately.
 const caseBriefs={
- "seo-danfo-234":["林口 A7 丹佛花都裝潢，客餐廳動線和次臥怎麼規劃？","在有限的面積裡，餐椅拉開、冰箱開門和從玄關走進客廳，可能同時發生。次臥若要兼書房，還要先決定是否會加床。","原文有格局圖及室內設計新提案。圖文可對照一字型廚房鄰近餐桌的配置，以及次臥的書桌和收納安排。","先把餐桌、冰箱與常走的路線畫在同一張圖，再決定玄關收納深度。","次臥有工作與過夜需求時，現場量桌深、床位與開門後的淨寬。"],
- "seo-yunjiang-331":["林口 A7 允將大聚裝潢，玄關收納和毛孩動線怎麼安排？","外出用品、掃地機器人與毛孩都會使用客餐廳附近的空間。屋主可先畫出每天實際怎麼走、拿什麼。","原文保留 L 戶與 A 戶兩組平面資料。L 戶的提案有集中式玄關收納，並安排毛孩通行與清潔設備的停靠位置。","把鞋、外出物品及清潔設備集中在容易取用的位置，替人和毛孩保留各自的通行空間。","不同戶型應依櫃體深度、開門位置與插座逐一核對。"],
+ "seo-danfo-234":["林口 A7 丹佛花都格局圖怎麼看？客餐廳動線和次臥規劃","在有限的面積裡，餐椅拉開、冰箱開門和從玄關走進客廳，可能同時發生。次臥若要兼書房，還要先決定是否會加床。","原文有格局圖及室內設計新提案。圖文可對照一字型廚房鄰近餐桌的配置，以及次臥的書桌和收納安排。","先把餐桌、冰箱與常走的路線畫在同一張圖，再決定玄關收納深度。","次臥有工作與過夜需求時，現場量桌深、床位與開門後的淨寬。"],
+ "seo-yunjiang-331":["林口 A7 允將大聚格局圖怎麼看？玄關收納與毛孩動線","外出用品、掃地機器人與毛孩都會使用客餐廳附近的空間。屋主可先畫出每天實際怎麼走、拿什麼。","原文保留 L 戶與 A 戶兩組平面資料。L 戶的提案有集中式玄關收納，並安排毛孩通行與清潔設備的停靠位置。","把鞋、外出物品及清潔設備集中在容易取用的位置，替人和毛孩保留各自的通行空間。","不同戶型應依櫃體深度、開門位置與插座逐一核對。"],
  "seo-hongguang-253":["林口 A7 鴻廣繪青北歐風裝潢，旅行收藏放哪裡才整齊？","在客廳展示兩人的紀念品時，先想清楚哪些要常看、哪些要輪替，以及展示區會不會壓縮日常收納。","原文的設計提案以沙發背牆的世界地圖呼應旅行收藏，並用自然木紋與奶茶色藝術漆整理公區的視覺層次。","集中在同一面主牆展示，留出可以更換藏品的方式，其餘用品回到日常收納的位置。","丈量前先整理藏品尺寸，再核對壁面固定、展示照明與清潔需求。"],
  "seo-fumei-503":["新莊福美富琚做美式現代風，如何同時保留收納和走道？","想保留乾淨的線板與木色調時，電視櫃和衣櫃仍要能收家電、衣物，開門後也要留走道。","原文的美式現代提案有淺灰藝術漆電視牆、白色長型電視櫃，以及整合層板與抽屜的頂天衣櫃。","先以收納分類和家具尺度決定櫃體，再搭配客廳淺色牆面、木地板和臥室局部線板。","放樣時可核對櫃門開啟、插座、照明與床邊通道。"],
  "seo-lixuan-217":["林口立軒天諾三房裝潢，哪一間房該保留彈性？","孩子成長、居家工作和親友留宿都可能改變居住需求。可先找出用途最容易變動的一間房。","原文收錄 A1 戶的三房兩廳平面規劃。這張圖可用來對照房間位置與開門方向。","先安排每天都要用的床位、衣櫃與走道；用途可能變動的房間可留活動家具或兼用空間。","施工前依實際圖說及丈量核對門、櫃和家具的開啟範圍。"],
@@ -100,20 +100,21 @@ function appendText(parent,tag,content){
 function addEditorialSections(article,draft,media){
  const brief=articleBrief(draft,media,article);
  if(!brief)return;
- const [,situation,evidence,solution,verify]=brief;
+ const [question,situation,evidence,solution,verify]=brief;
  const intro=document.createElement("section");
  intro.setAttribute("data-chenyang-aeo","1");
- appendText(intro,"h2","重點先看");
+ appendText(intro,"h2",question);
+ appendText(intro,"h3","重點先看");
  const highlights=document.createElement("ul");intro.appendChild(highlights);
  for(const point of [solution,verify,evidence||situation])appendText(highlights,"li",point);
  intro.appendChild(document.createElement("hr"));
- appendText(intro,"h2","屋主會遇到的問題");
+ appendText(intro,"h3","屋主會遇到的問題");
  appendText(intro,"p",situation);
  if(evidence){
-  appendText(intro,"h2","本案圖面與設計資料");
+  appendText(intro,"h3","本案圖面與設計資料");
   appendText(intro,"p",evidence);
  }
- appendText(intro,"h2","晨陽的規劃與核對方式");
+ appendText(intro,"h3","晨陽的規劃與核對方式");
  appendText(intro,"p",solution+" "+verify);
  intro.appendChild(document.createElement("hr"));
  const hasFaq=[...article.querySelectorAll("h2,h3,h4,p,li,strong,b")]
@@ -143,7 +144,9 @@ function addEditorialSections(article,draft,media){
   const links=document.createElement("ul");article.appendChild(links);
   for(const [path,label] of related)appendText(appendText(links,"li",""),"a",label).setAttribute("href",new URL(path,contactUrl).href);
  }
- article.prepend(intro);
+ const leadingParagraph=[...article.children].find(node=>node.matches("p")&&node.textContent.trim().length>=72);
+ const opening=leadingParagraph||article.firstElementChild;
+ if(opening)opening.after(intro);else article.prepend(intro);
 }
 
 window.formatChenyangArticleForCms=function(html,{draft,media}={}){
@@ -203,10 +206,6 @@ window.formatChenyangArticleForCms=function(html,{draft,media}={}){
 };
 
 window.chenyangArticleTitle=function(draft){
- const brief=caseBriefs[draft?.id];
- if(brief)return brief[0];
- const question=faqEntries(draft)[0];
- const project=draft?.project_name||draft?.title?.split(/[｜|]/)[0]?.trim();
- return question&&project?project+"｜"+question[0]:draft?.title;
+ return draft?.originalSeo?.heading||draft?.title;
 };
 })();
