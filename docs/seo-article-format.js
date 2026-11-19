@@ -197,6 +197,9 @@ window.formatChenyangArticleForCms=function(html,{draft,media}={}){
  const walker=document.createTreeWalker(article,NodeFilter.SHOW_TEXT);
  while(walker.nextNode()){
   const node=walker.currentNode;
+  if(draft?.id==="seo-danfo-234"&&node.parentElement?.closest("h2,h3")&&node.textContent.trim()==="新北丹佛花都的生活區位"){
+   node.textContent=node.textContent.replace("新北丹佛花都","桃園龜山 A7 丹佛花都");
+  }
   if(!node.parentElement?.closest("style,script"))node.textContent=cleanArticleLabel(node.textContent);
  }
  for(const heading of article.querySelectorAll("h2,h3,h4,h5,h6")){
