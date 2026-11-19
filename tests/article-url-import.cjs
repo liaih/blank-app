@@ -21,23 +21,38 @@ async function setup(storage={},daily={schema:1,articles:[]}){
  await new Promise(r=>setTimeout(r,100));return dom;
 }
 test('daily drafts appear in the editor with copyable HTML and preserve completion history',async()=>{
- const published=JSON.parse(fs.readFileSync('docs/seo-daily-articles.json','utf8'));
- const feed={...published,added_count:3,articles:published.articles.slice(0,3)};
- const first=feed.articles[0];
+ const feed=JSON.parse(fs.readFileSync('docs/seo-daily-articles.json','utf8'));
+ const latest=feed.articles.filter(row=>row.plan.added_on===feed.checked_on);
+ assert.equal(latest.length,feed.added_count);
+ assert.ok(latest.length<=3);
+ const uniqueIds=new Set(feed.articles.map(row=>row.plan.id));
+ assert.equal(uniqueIds.size,feed.articles.length,'the published feed contains repeated articles');
  const dom=await setup({},feed);
  try{
   const d=dom.window.document;
-  assert.match(d.getElementById('action-daily-update').textContent,/新增 3 \/ 3 篇/);
-  assert.match(d.getElementById('action-state-summary').textContent,/待修改 6 篇｜已完成 5 篇/);
+  assert.ok(d.getElementById('action-daily-update').textContent.includes(`最近 ${feed.checked_on} 新增 ${latest.length} / 3 篇`));
+  const pendingOptions=[...d.getElementById('action-article').options];
+  for(const id of uniqueIds)assert.ok(pendingOptions.some(option=>option.value===id),`${id} is missing from the review queue`);
+  const originalArchiveCount=Number(d.getElementById('action-state-summary').textContent.match(/已完成 (\d+) 篇/)[1]);
+  let copied='';
+  Object.defineProperty(dom.window.navigator,'clipboard',{value:{writeText:async value=>{copied=value;}}});
+  for(const entry of latest){
+   choose(d,'action-article',entry.plan.id);
+   assert.equal(d.getElementById('cyexp-base').value,entry.plan.id);
+   const htmlOutput=d.querySelector('#seo-article-actions textarea')?.value;
+   assert.ok(htmlOutput?.includes(entry.draft.sections[1][0]),`${entry.plan.id} is missing its own updated HTML`);
+   action(d,'複製這篇完整 HTML');
+   assert.equal(copied,htmlOutput,`${entry.plan.id} copied the wrong HTML`);
+  }
+  const first=latest[0]||feed.articles.at(-1);
+  if(!first)return;
   choose(d,'action-article',first.plan.id);
   assert.equal(d.getElementById('cyexp-base').value,first.plan.id);
-  const text=d.querySelector('#seo-article-actions textarea').value;
-  assert.ok(text.includes(first.draft.sections[1][0]));
-  assert.match(text,/格局圖與空間配置/);
-  const originalHtml=text;
+  const originalHtml=d.querySelector('#seo-article-actions textarea').value;
+  if(first.media.preservation_audit.floorplan_count>0)assert.match(originalHtml,/格局圖與空間配置/);
   d.querySelector('#action-completion-controls button').click();
   assert.equal(d.getElementById('action-view').value,'archive');
-  assert.match(d.getElementById('action-state-summary').textContent,/待修改 5 篇｜已完成 6 篇/);
+  assert.ok(d.getElementById('action-state-summary').textContent.includes(`待修改 ${pendingOptions.length-1} 篇｜已完成 ${originalArchiveCount+1} 篇`));
   const saved=dom.window.localStorage.getItem(completionKey);
   const reopened=await setup({[completionKey]:saved},feed);
   try{
