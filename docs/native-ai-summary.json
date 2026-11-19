@@ -6,27 +6,27 @@
   "not_own_tavily_rag": true,
   "window_start": "2026-10-22",
   "window_end": "2026-11-20",
-  "generated_at": "2026-11-20T02:37:47+08:00",
-  "total_samples": 14,
+  "generated_at": "2026-11-20T03:42:31+08:00",
+  "total_samples": 15,
   "platforms": [
     {
       "platform": "ChatGPT",
-      "samples": 7,
+      "samples": 8,
       "existing_jobs": {
         "pending": 1,
-        "stored": 7,
+        "stored": 8,
         "failed": 0,
         "no-evidence": 0
       },
       "mentions": 0,
       "direct_domain_citations": 0,
-      "answers_with_sources": 6,
-      "last_sample_date": "2026-11-18",
+      "answers_with_sources": 7,
+      "last_sample_date": "2026-11-20",
       "competitor_candidates": [],
       "cited_domains": [
         {
           "domain": "www.100.com.tw",
-          "occurrences": 12
+          "occurrences": 17
         },
         {
           "domain": "www.moi.gov.tw",
@@ -39,6 +39,10 @@
         {
           "domain": "www.shengt.com.tw",
           "occurrences": 2
+        },
+        {
+          "domain": "www.google.com",
+          "occurrences": 1
         },
         {
           "domain": "takuma.tw",
@@ -79,10 +83,6 @@
         {
           "domain": "www.yixin.studio",
           "occurrences": 1
-        },
-        {
-          "domain": "cent.com.tw",
-          "occurrences": 1
         }
       ],
       "tested_prompt_ids": [
@@ -92,6 +92,7 @@
         "taichung-condo",
         "tainan-renovation",
         "taoyuan-renovation",
+        "taoyuan-small-home",
         "zhubei-engineer"
       ]
     },
@@ -99,7 +100,7 @@
       "platform": "Gemini",
       "samples": 7,
       "existing_jobs": {
-        "pending": 0,
+        "pending": 1,
         "stored": 7,
         "failed": 0,
         "no-evidence": 1
@@ -185,7 +186,7 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 0,
+        "pending": 1,
         "stored": 0,
         "failed": 0,
         "no-evidence": 8
@@ -200,6 +201,24 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "beb0ebbede8078df",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "ChatGPT",
+      "prompt_id": "taoyuan-small-home",
+      "prompt": "桃園20坪新成屋，請推薦適合小宅規劃的室內設計公司，並列出比較依據與來源。",
+      "answered_at": "2026-11-20T03:37:59+08:00",
+      "answer_excerpt": "以桃園市的 20坪新成屋 來看，我會優先推薦有「15～25坪住宅實際完工案例」、擅長收納整合、能處理小坪數動線的室內設計公司，而不是只看裝潢風格漂亮或得獎數量。 20坪住宅最重要的不是塞進多少櫃子，而是兼顧： 空間放大： 減少不必要的隔間，讓客廳、餐廳及廚房有連貫感。 收納整合： 玄關、電視牆、餐邊櫃、臥室衣櫃整合設計。 動線規劃： 避免櫃體過深、走道太窄，保留生活空間。 預算控制： 新成屋盡量保留原有管線、地板及衛浴設備，把預算花在真正需要的地方。 以下是我依照桃園在地服務、20坪左右的實際作品、公開裝潢價格、設計服務內容整理的推薦名單。 一、最值得優先洽談的4家公司 1. 隱城空間設計 小宅案例豐富 桃園市桃園區民光東路310巷1號 公開作品：20坪日式新成屋、18坪北歐新成屋、22坪新成屋等。 作品數：123件。 公開參考價：設計費4,000元/坪起；新成屋裝潢7.5萬元/坪起。 整屋接案門檻：100萬元起。 適合：重視空間氛圍、收納整合與整體設計質感的屋主。 來源： [1, 2] 公司作品及介紹 [3] 2. 木容空間設計 20坪新成屋案例 桃園市桃園區藝文一街86-2號7樓。 代表作品：C House現代風20坪新成屋、Yen's house 17坪新成屋。 公開參考價：新成屋裝潢7萬元/坪起。 整屋接案門檻：150萬元起。 特色：公開作品有櫃體不落地、回字型動線、收納整合等小宅規劃案例。 適合：在意實用性、現代簡約風及生活動線的屋主。 來源： [4] 公司作品及介紹 [4] 3. 天枂設計 值得詢問的預算型選項 桃園市中壢區延平路261號9樓。 代表作品：午後微光20坪新成屋、E House 20坪新成屋、15坪新成屋。 公開參考價：新成屋裝潢7萬元/坪起。 整屋接案門檻：50萬元起。 設計費：4,500元/坪起。 特色：提供到府丈量、平面配置溝通及完工保固。 適合：希望控制初期裝修預算，又希望有完整設計規劃的屋主。 來源： [5] 公司作品及介紹 [5] 4. 榳沐空間設計 適合比較預算與風格 桃園市桃園區文中三路137號1樓。 代表作品：潤·錦20坪新成屋、溫馨北歐情22坪新成屋、時光北歐風23坪新成屋。 公開參考價：設計費2,500元/坪起；新成屋裝潢5萬元/坪起。 整屋接案門檻：80萬元起。 特色：提供一對一溝通、平面配置、到府丈量及三年內保固。 適合：喜歡北歐、溫暖木質調，並希望先比較裝潢費用的屋主。 來源： [6] 公司作品及介紹 [6] 二、四家公司比較表 以下價格是業者在100室內設計平台公開的起始參考價，不代表20坪案件的最終報價。 比較項目 隱城 木容 天枂 榳沐 20坪左右案例 有 有 有 有 設計費/坪起 $4,000 面議 $4,500 $2,500 新成屋裝潢/坪起 $75,000 $70,000 $70,000 $50,000 整屋接案門檻 100萬 150萬 50萬 80萬 公開作品數 123 7 7 16 保固資訊 1年內 1年內 1年內 3年內 資料來源：各公司100室內設計公開介紹頁，查詢日期2026年11月20日。實際報價、保固範圍及施工內容需以公司合約為準。 [6, 1, 4, 5] 我的推薦排序 隱城： 如果重視設計完整度、作品數量與小宅風格變化，建議優先約談。 木容： 如果希望小宅的收納與動線做得好，值得列入第一輪比較。 天枂： 如果預算有限，希望比較不同裝修程度的方案，值得詢價。 榳沐： 如果喜歡溫暖北歐風，希望比較較低的公開單坪起價，可以優先詢問。 注意：起始價格不能直接當成20坪總預",
+      "excerpt_truncated": true,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "www.100.com.tw",
+        "www.google.com"
+      ]
+    },
     {
       "evidence_id": "d0a83bfcacf1eafe",
       "recommendation_status": "未提及晨陽",
@@ -477,18 +496,18 @@
   "existing_job_status": {
     "ChatGPT": {
       "pending": 1,
-      "stored": 7,
+      "stored": 8,
       "failed": 0,
       "no-evidence": 0
     },
     "Gemini": {
-      "pending": 0,
+      "pending": 1,
       "stored": 7,
       "failed": 0,
       "no-evidence": 1
     },
     "Perplexity": {
-      "pending": 0,
+      "pending": 1,
       "stored": 0,
       "failed": 0,
       "no-evidence": 8
@@ -496,19 +515,19 @@
   },
   "latest_job_status": {
     "ChatGPT": {
-      "day": "2026-11-19",
-      "status": "pending",
-      "reason": "vendor_snapshot_too_large"
+      "day": "2026-11-20",
+      "status": "stored",
+      "reason": ""
     },
     "Gemini": {
-      "day": "2026-11-19",
-      "status": "no-evidence",
-      "reason": "missing_or_short_answer"
+      "day": "2026-11-20",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     },
     "Perplexity": {
-      "day": "2026-11-19",
-      "status": "no-evidence",
-      "reason": "vendor_record_error"
+      "day": "2026-11-20",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     }
   },
   "intent_analysis": {
@@ -530,7 +549,7 @@
         ],
         "platforms": {
           "ChatGPT": {
-            "samples": 0,
+            "samples": 1,
             "mentions": 0,
             "direct_citations": 0
           },
