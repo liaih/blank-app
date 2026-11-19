@@ -341,7 +341,7 @@ tbody tr:last-child td{border-bottom:0}
     <p class="detail">原媒體不需重新上傳，但仍須核對原頁的媒體是否完整、圖片 ALT 是否符合實際畫面及 CMS 能否保留 HTML 格式。SEO 改善是測試假設，非保證排名提升。</p>
   </section>
   <details class="ai-manual-panel" id="action-discovery-panel">
-    <summary>本週全站 GSC 新發現｜待稽核文章 <span id="site-discovery-count">（資料同步中）</span></summary>
+    <summary>全站 GSC 新發現｜待稽核文章 <span id="site-discovery-count">（資料同步中）</span></summary>
     <div id="site-discovery-results">正在讀取真實 GSC 網頁層級資料。</div>
     <p class="detail">每日 18:45（台灣時間）從候選中挑選最多 3 篇。已通過正文與圖片保留檢查的完整改稿，會出現在上方「待修改文章」供編輯核對。</p>
   </details>
@@ -925,16 +925,17 @@ function renderSitewideDiscovery(){
  if(!panel)return;
  panel.replaceChildren();
  if(!gscSiteDiscovery){
-   panel.textContent="首次每週全站檢核尚未完成公開同步。未取得資料不代表沒有需要改善的文章。";
+   panel.textContent="目前無法載入全站 GSC 候選文章。";
    return;
  }
  const articleKeys=new Set((seoImprovementPlan?.items||[]).map(x=>seoArticleUrlKey(x.url)));
- const newPages=(gscSiteDiscovery.pages||[]).filter(x=>!x.existing_improvement_task&&!articleKeys.has(seoArticleUrlKey(x.url)));
+ const newPages=(gscSiteDiscovery.pages||[]).filter(x=>!x.existing_improvement_task&&!articleKeys.has(seoArticleUrlKey(x.url))).slice(0,40);
  const summary=el("site-discovery-count");summary.textContent="（新增 "+newPages.length+" 篇候選）";
  const blurb=document.createElement("p");blurb.className="detail";
- blurb.textContent="GSC 截止："+(gscSiteDiscovery.last_gsc_day||"未知")+
-   "｜掃描到 "+gscSiteDiscovery.total_candidate_pages+" 篇候選，顯示前 "+
-   gscSiteDiscovery.pages.length+" 篇；資料來自已保存的 GSC page 維度，尚非 query×page 定案。"+
+ blurb.textContent="候選文章 GSC 資料截至："+(gscSiteDiscovery.last_gsc_day||"未知")+
+   "｜清單更新："+(gscSiteDiscovery.generated_at?.slice(0,10)||"未知")+
+   "｜掃描到 "+gscSiteDiscovery.total_candidate_pages+" 篇候選，本表顯示 "+newPages.length+
+   " 篇待稽核文章。曝光與點擊採近 28 天 GSC 網頁資料。"+
    (gscSiteDiscovery.daily_page_rows_truncated?"每日網頁資料可能已達 GSC 取樣上限。":"");
  panel.appendChild(blurb);
  if(!newPages.length){
@@ -945,13 +946,15 @@ function renderSitewideDiscovery(){
    const th=document.createElement("th");th.textContent=name;head.appendChild(th);
  }
  table.appendChild(head);
- for(const page of newPages.slice(0,40)){
+ for(const page of newPages){
    const tr=document.createElement("tr");
    const title=document.createElement("td"),link=document.createElement("a");
    if(/^https:\/\/(?:www\.)?chen-yang\.com\.tw\/(?:news-content|unboxing-content)\.php\?id=\d+$/.test(page.url||"")){
      link.href=page.url;link.target="_blank";link.rel="noopener noreferrer";
    }
-   link.textContent=page.title||page.path;
+   const name=typeof page.title==="string"?page.title.trim():"";
+   link.textContent=name&&!/^(?:建案\s*NEWS|完工案例)\s*#\d+$/i.test(name)?name:"官網標題暫未取得";
+   if(link.href)link.title=link.href;
    title.appendChild(link);tr.appendChild(title);
    const m=page.current||{};
    for(const txt of [m.impressions??"資料不足",m.clicks??"資料不足",m.ctr==null?"資料不足":(100*m.ctr).toFixed(2)+"%",page.status||"待稽核"]){
