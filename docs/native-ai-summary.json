@@ -6,27 +6,35 @@
   "not_own_tavily_rag": true,
   "window_start": "2026-10-23",
   "window_end": "2026-11-21",
-  "generated_at": "2026-11-21T03:20:12+08:00",
-  "total_samples": 17,
+  "generated_at": "2026-11-21T07:19:28+08:00",
+  "total_samples": 18,
   "platforms": [
     {
       "platform": "ChatGPT",
-      "samples": 8,
+      "samples": 9,
       "existing_jobs": {
-        "pending": 2,
-        "stored": 8,
+        "pending": 1,
+        "stored": 9,
         "failed": 0,
         "no-evidence": 0
       },
-      "mentions": 0,
-      "direct_domain_citations": 0,
-      "answers_with_sources": 7,
-      "last_sample_date": "2026-11-20",
+      "mentions": 1,
+      "direct_domain_citations": 1,
+      "answers_with_sources": 8,
+      "last_sample_date": "2026-11-21",
       "competitor_candidates": [],
       "cited_domains": [
         {
           "domain": "www.100.com.tw",
           "occurrences": 17
+        },
+        {
+          "domain": "www.chen-yang.com.tw",
+          "occurrences": 3
+        },
+        {
+          "domain": "9wood.com.tw",
+          "occurrences": 2
         },
         {
           "domain": "www.moi.gov.tw",
@@ -39,6 +47,18 @@
         {
           "domain": "www.shengt.com.tw",
           "occurrences": 2
+        },
+        {
+          "domain": "cc-interior.com",
+          "occurrences": 1
+        },
+        {
+          "domain": "yourhome.tw",
+          "occurrences": 1
+        },
+        {
+          "domain": "www.ho-indesign.com",
+          "occurrences": 1
         },
         {
           "domain": "www.google.com",
@@ -63,29 +83,10 @@
         {
           "domain": "www.loveidsign.com",
           "occurrences": 1
-        },
-        {
-          "domain": "livinglife.com.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "cloudbm.nlma.gov.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "law.moj.gov.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "appeal.cpc.ey.gov.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.yixin.studio",
-          "occurrences": 1
         }
       ],
       "tested_prompt_ids": [
+        "a7-new-home",
         "kaohsiung-condo",
         "renovation-cost",
         "renovation-process",
@@ -188,10 +189,10 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 1,
+        "pending": 0,
         "stored": 0,
         "failed": 0,
-        "no-evidence": 9
+        "no-evidence": 10
       },
       "mentions": 0,
       "direct_domain_citations": 0,
@@ -203,6 +204,27 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "bc8b604f3ae8c3f2",
+      "recommendation_status": "有提及但未確認推薦",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "如果是林口 A7 重劃區的新成屋，交屋後才開始裝潢，我會建議不要只找「林口評價最高」的設計公司，而是優先比較 有 A7 或林口新成屋實際完工案例、熟悉小坪數收納、能掌握施工及驗收的團隊 。 我整理了幾家值得列入第一輪詢價的公司，優先考慮林口在地或有 A7 實績的業者，並附上可直接查驗的官方網站及案例。 一、優先比較的 5 家室內設計公司 以下是依照在地性、公開案例及新成屋服務資訊整理的比較名單，不是單純依網路星等排名。 1. 九木住宅設計 優先詢價 有 A7 案例 在地優勢：",
+      "platform": "ChatGPT",
+      "prompt_id": "a7-new-home",
+      "prompt": "林口A7新成屋交屋後想裝潢，應該比較哪些在地設計公司？附可驗證網站來源。",
+      "answered_at": "2026-11-21T07:19:22+08:00",
+      "answer_excerpt": "如果是林口 A7 重劃區的新成屋，交屋後才開始裝潢，我會建議不要只找「林口評價最高」的設計公司，而是優先比較 有 A7 或林口新成屋實際完工案例、熟悉小坪數收納、能掌握施工及驗收的團隊 。 我整理了幾家值得列入第一輪詢價的公司，優先考慮林口在地或有 A7 實績的業者，並附上可直接查驗的官方網站及案例。 一、優先比較的 5 家室內設計公司 以下是依照在地性、公開案例及新成屋服務資訊整理的比較名單，不是單純依網路星等排名。 1. 九木住宅設計 優先詢價 有 A7 案例 在地優勢： 有林口及 A7 周邊住宅的實際案例。 值得看的案例： 九揚華尚｜林口新成屋 26.5 坪 [1] 新潤翡麗｜A7 新建案裝潢 [2] 設計特色： 收納整合、空間隔間、廚房與客廳動線。 適合比較： 2～3 房、重視坪效、希望有完整收納的家庭。 地址：新北市林口區南勢街一帶，南勢路巷弄內。 我會特別請他們依照你的建案、格局，提供相近坪數的完整完工照，而不只是挑漂亮的客廳照片。 2. 層層室內設計 CCID 在地優先比較 hhhdesignlab.com.tw 在地優勢： 公司位於林口，公開介紹有提到服務林口多年。 服務項目： 新成屋設計、舊屋翻新、系統收納、工程統籌。 設計特色： 從生活動線、採光、收納機能著手。 適合比較： 希望設計師從生活需求出發，而不是只做風格造型的屋主。 地址：新北市林口區南勢街232-1號1樓。 電話：02-2608-6530。 官方網站： 層層室內設計 CCID [3] 值得詢問：設計費、工程監工是否分開計價，以及現場監工頻率。 3. 晨陽室內設計 A7 建案實績 這家我認為值得特別比較，因為公開資料中直接找到 A7 建案的設計規劃。 A7 案例一： 富來舞綻 A1、A3 等戶型規劃 [4] A7 案例二： 大亮．泊 B1、B3、B8 戶型規劃 [5] 服務項目： 新成屋、預售屋客變、住宅裝潢、老屋翻新。 適合比較： 想了解 A7 建案格局、坪效規劃及整體工程整合的屋主。 林口服務據點：桃園市龜山區樂善三路110號1樓。 官方網站： 晨陽共好機構 [6] 我的建議是直接拿自己的建案格局圖，請他們說明有哪些地方會採用不同的配置，而不是只看建案展示圖。 4. 寓宇宏空間設計 Your Home 有 A7 相關案例 chen-yang.com.tw 公開服務： 住宅空間規劃、老屋翻新、預售屋客變。 值得看的案例： 林口 A7 法式奶油風、韓系奶茶風 [7] 林口預售屋客變與新成屋裝潢 [7] 適合比較： 喜歡奶油風、溫潤色系、重視整體視覺一致性的屋主。 官方網站： 寓宇宏 Your Home [7] 建議詢問其 A7 案例是否為自家團隊從設計到施工完成，以及是否能安排已入住屋主的實際案例參觀。 5. 禾貳設計室內裝修 在地服務 ho-indesign.com 公開服務： 預售屋客變、舊屋翻新、成屋裝潢。 特色： 官網強調從需求訪談、設計到工程管理的一站式服務。 適合比較： 想要整體規劃、希望設計與施工由同一團隊協調的屋主。 官方網站： 禾貳設計 [8] 特別要問清楚：官網所列的案例數量、年資與滿意度是公司自述，實際施工品質仍應透過完工案例、合約及現場查驗確認。 二、位置分布 以下標出三家有明確在地據點、且有公開住宅案例的業者，方便安排現場諮詢。 重設檢視 展開地圖 地圖資料目前無法使用 三、五家公司應該怎麼比較？ 我建議不要只比較每坪多少錢，應該把下面幾個項目放進同一張比較表。 比較項目 重要程度 要確認的事 A7 實際案例 很高 是否做過相同建案或相近格",
+      "excerpt_truncated": true,
+      "mentions_brand": true,
+      "has_citations": true,
+      "cited_domains": [
+        "9wood.com.tw",
+        "cc-interior.com",
+        "www.chen-yang.com.tw",
+        "www.ho-indesign.com",
+        "yourhome.tw"
+      ]
+    },
     {
       "evidence_id": "7534fc5700f0b33c",
       "recommendation_status": "未提及晨陽",
@@ -545,8 +567,8 @@
   ],
   "existing_job_status": {
     "ChatGPT": {
-      "pending": 2,
-      "stored": 8,
+      "pending": 1,
+      "stored": 9,
       "failed": 0,
       "no-evidence": 0
     },
@@ -557,17 +579,17 @@
       "no-evidence": 1
     },
     "Perplexity": {
-      "pending": 1,
+      "pending": 0,
       "stored": 0,
       "failed": 0,
-      "no-evidence": 9
+      "no-evidence": 10
     }
   },
   "latest_job_status": {
     "ChatGPT": {
       "day": "2026-11-21",
-      "status": "pending",
-      "reason": "vendor_still_processing"
+      "status": "stored",
+      "reason": ""
     },
     "Gemini": {
       "day": "2026-11-21",
@@ -576,8 +598,8 @@
     },
     "Perplexity": {
       "day": "2026-11-21",
-      "status": "pending",
-      "reason": "vendor_still_processing"
+      "status": "no-evidence",
+      "reason": "vendor_wait_element_timeout"
     }
   },
   "intent_analysis": {
@@ -687,9 +709,9 @@
         ],
         "platforms": {
           "ChatGPT": {
-            "samples": 0,
-            "mentions": 0,
-            "direct_citations": 0
+            "samples": 1,
+            "mentions": 1,
+            "direct_citations": 1
           },
           "Gemini": {
             "samples": 1,
