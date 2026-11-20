@@ -4,9 +4,9 @@
   "not_chatgpt": true,
   "not_perplexity": true,
   "search_verified_by": "原生 Gemini: groundingMetadata；自建 RAG: 外部網頁搜尋來源與 AI 回答明確引用網址",
-  "window_start": "2026-10-21",
-  "window_end": "2026-11-19",
-  "last_responded_date": "2026-11-19",
+  "window_start": "2026-10-22",
+  "window_end": "2026-11-20",
+  "last_responded_date": "2026-11-20",
   "model": "gemini-2.5-flash-lite / gemini-3.8-flash / gemini-3.5-flash-lite + external retrieval (by cohort)",
   "source_types": {
     "native_gemini_google_grounding": {
@@ -15,22 +15,37 @@
       "direct_domain_citations": 0
     },
     "custom_live_web_rag": {
-      "samples": 21,
+      "samples": 24,
       "mentions": 1,
       "direct_domain_citations": 1
     }
   },
-  "sample_count": 21,
+  "sample_count": 24,
   "brand_mentioned": 1,
   "own_domain_direct_cited": 1,
   "competitor_candidates": [
     {
       "name": "築岳空間設計",
-      "occurrences": 4,
+      "occurrences": 5,
       "verification": "需人工核對是否為推薦，可能只是列入比較"
     },
     {
       "name": "水設室內設計",
+      "occurrences": 3,
+      "verification": "需人工核對是否為推薦，可能只是列入比較"
+    },
+    {
+      "name": "三月木室內設計",
+      "occurrences": 2,
+      "verification": "需人工核對是否為推薦，可能只是列入比較"
+    },
+    {
+      "name": "靖澐室內設計",
+      "occurrences": 2,
+      "verification": "需人工核對是否為推薦，可能只是列入比較"
+    },
+    {
+      "name": "大棠室內設計",
       "occurrences": 2,
       "verification": "需人工核對是否為推薦，可能只是列入比較"
     },
@@ -55,22 +70,7 @@
       "verification": "需人工核對是否為推薦，可能只是列入比較"
     },
     {
-      "name": "三月木室內設計",
-      "occurrences": 1,
-      "verification": "需人工核對是否為推薦，可能只是列入比較"
-    },
-    {
-      "name": "靖澐室內設計",
-      "occurrences": 1,
-      "verification": "需人工核對是否為推薦，可能只是列入比較"
-    },
-    {
       "name": "郡品室內設計",
-      "occurrences": 1,
-      "verification": "需人工核對是否為推薦，可能只是列入比較"
-    },
-    {
-      "name": "大棠室內設計",
       "occurrences": 1,
       "verification": "需人工核對是否為推薦，可能只是列入比較"
     },
@@ -140,19 +140,19 @@
     },
     {
       "id": "taoyuan-renovation",
-      "samples": 1,
+      "samples": 2,
       "mentions": 0,
       "direct_domain_citations": 0
     },
     {
       "id": "taoyuan-small-home",
-      "samples": 1,
+      "samples": 2,
       "mentions": 0,
       "direct_domain_citations": 0
     },
     {
       "id": "zhubei-engineer",
-      "samples": 2,
+      "samples": 3,
       "mentions": 0,
       "direct_domain_citations": 0
     }
