@@ -6,8 +6,8 @@
   "not_own_tavily_rag": true,
   "window_start": "2026-10-22",
   "window_end": "2026-11-20",
-  "generated_at": "2026-11-20T03:42:31+08:00",
-  "total_samples": 15,
+  "generated_at": "2026-11-20T08:54:21+08:00",
+  "total_samples": 16,
   "platforms": [
     {
       "platform": "ChatGPT",
@@ -98,22 +98,22 @@
     },
     {
       "platform": "Gemini",
-      "samples": 7,
+      "samples": 8,
       "existing_jobs": {
-        "pending": 1,
-        "stored": 7,
+        "pending": 0,
+        "stored": 8,
         "failed": 0,
         "no-evidence": 1
       },
       "mentions": 1,
       "direct_domain_citations": 0,
-      "answers_with_sources": 5,
-      "last_sample_date": "2026-11-18",
+      "answers_with_sources": 6,
+      "last_sample_date": "2026-11-20",
       "competitor_candidates": [],
       "cited_domains": [
         {
           "domain": "www.100.com.tw",
-          "occurrences": 6
+          "occurrences": 7
         },
         {
           "domain": "www.yixin.studio",
@@ -122,6 +122,10 @@
         {
           "domain": "www.lihaocreator.com",
           "occurrences": 3
+        },
+        {
+          "domain": "www.yufang-design.com.tw",
+          "occurrences": 2
         },
         {
           "domain": "www.pro360.com.tw",
@@ -136,6 +140,26 @@
           "occurrences": 2
         },
         {
+          "domain": "www.youtube.com",
+          "occurrences": 1
+        },
+        {
+          "domain": "rujundesign.com",
+          "occurrences": 1
+        },
+        {
+          "domain": "www.hoyun.work",
+          "occurrences": 1
+        },
+        {
+          "domain": "www.hch.design",
+          "occurrences": 1
+        },
+        {
+          "domain": "www.renfang.com.tw",
+          "occurrences": 1
+        },
+        {
           "domain": "www.order.com.tw",
           "occurrences": 1
         },
@@ -146,30 +170,6 @@
         {
           "domain": "home.housetube.tw",
           "occurrences": 1
-        },
-        {
-          "domain": "www.wabisabidesign.com.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.puloapp.com",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.risingsundesign.com.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.ciaosyuan.com",
-          "occurrences": 1
-        },
-        {
-          "domain": "howroom.ai",
-          "occurrences": 1
-        },
-        {
-          "domain": "ewa.com.tw",
-          "occurrences": 1
         }
       ],
       "tested_prompt_ids": [
@@ -179,6 +179,7 @@
         "taichung-condo",
         "tainan-renovation",
         "taoyuan-renovation",
+        "taoyuan-small-home",
         "zhubei-engineer"
       ]
     },
@@ -186,10 +187,10 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 1,
+        "pending": 0,
         "stored": 0,
         "failed": 0,
-        "no-evidence": 8
+        "no-evidence": 9
       },
       "mentions": 0,
       "direct_domain_citations": 0,
@@ -201,6 +202,29 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "78e3a9501f598a88",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "Gemini",
+      "prompt_id": "taoyuan-small-home",
+      "prompt": "桃園20坪新成屋，請推薦適合小宅規劃的室內設計公司，並列出比較依據與來源。",
+      "answered_at": "2026-11-20T08:54:17+08:00",
+      "answer_excerpt": "針對桃園 20 坪新成屋的小宅裝潢規劃，精選 4 家在桃園在地擁有豐富小坪數案例與良好口碑的室內設計公司，並附上比較依據與資料來源供您評估： 推薦桃園小宅室內設計公司 1. 逸硯室內設計（桃園總部） 特色與小宅優勢 ： 擅長利用多功能系統櫃與弧形設計優化空間感。曾開箱桃園 20 坪全室系統櫃作品，善於在限縮坪數中整合隱藏儲藏室、多功能書桌與餐邊櫃，極致發揮空間坪效。 低消／預算門檻 ： 工程接案門檻約 60 萬元起。 服務亮點 ： 提供樣板間參觀，並設有免丈量費服務。 2. 錡羽創意空間設計（八德區） 特色與小宅優勢 ： 在網路論壇與設計平台獲得極高評價（如 5 星滿分評價）。特別擅長溫馨北歐風、日式木質調與奶茶色系的小坪數規劃，能將寵物需求（如貓咪動線）與系統櫃完美收納整合。 低消／預算門檻 ： 工程接案門檻約 80 萬元起。 服務亮點 ： 簽約享有折扣優惠，並擁有穩定合作工班，施工進度控管良好。 3. 坊華室內裝修設計（中壢區） 特色與小宅優勢 ： 以報價透明與施工還原度高著稱（完工效果極接近 3D 圖）。擅長透過燈光與簡約線條營造現代風與輕奢感，適合 17–20 坪左右的小宅格局重組與視覺延伸。 低消／預算門檻 ： 工程接案門檻約 90 萬元起。 服務亮點 ： 專案溝通效率高，定期在 Line 提供施工進度照片與即時報告。 4. 如鈞空間設計（桃園在地） 特色與小宅優勢 ： 強調「從生活習慣出發」的設計哲學。對於龜山、八德、青埔等桃園熱門重劃區的新成屋極為熟悉，重視採光、通風與未來的收納擴充彈性。 低消／預算門檻 ： 依實際客製化範疇而定，專精新成屋空間格局微調與系統整合。 服務亮點 ： 在地工班經驗豐富，熟悉桃園各建商建案工法與管線佈局。 評估與比較依據 挑選小宅室內設計公司時，建議依照以下 5 大核心指標進行比較： 小坪數空間規劃能力（坪效放大術） ： 20 坪小宅極度考驗「採光引入」、「收納複合性」（如榻榻米、隱藏門、架高地板）與「動線流暢度」。設計師是否有成功破解大樑壓迫或狹長格局的案例是關鍵。 接案門檻與預算匹配度 ： 桃園新成屋純工程費用目前行情約每坪 6萬～10 萬元（20坪約需 120萬～200 萬元工程預算，不含家電軟裝）。各公司設有不同的起接金額（如 50萬、80萬、150萬起），需符合您的整體預算。 報價透明度與施工監管 ： 是否提供詳細的單價估價單（非粗估總價），以及施工期間是否有定時的現場進度回報（如工程日誌、Line 群組照）。 在地工班與保固服務 ： 是否有固定合作的在地施工團隊，以及後續保固期限（一般為 1 年，部分業者提供更長的結構保固）。 溝通與生活習慣深度了解 ： 優秀的小宅設計師會問及常住人數、作息習慣、家電尺寸與未來 5-10 年規劃，而非僅討論視覺風格。 參考資訊來源 100室內設計平台 ： 桃園地區設計公司實績作品、屋主真實評價與起接預算資料。 設計公司官方網站及影音開箱 ： 逸硯室內設計、錡羽創意空間設計、坊華室內裝修設計、如鈞空間設計之 20 坪小宅開箱案例與專欄報導。 市場裝潢費用行情統計（2025–2026） ： PRO360達人網、工商時報及桃園在地設計師之小坪數裝潢費用評估數據。",
+      "excerpt_truncated": false,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "rujundesign.com",
+        "www.100.com.tw",
+        "www.hch.design",
+        "www.hoyun.work",
+        "www.renfang.com.tw",
+        "www.youtube.com",
+        "www.yufang-design.com.tw"
+      ]
+    },
     {
       "evidence_id": "beb0ebbede8078df",
       "recommendation_status": "未提及晨陽",
@@ -501,16 +525,16 @@
       "no-evidence": 0
     },
     "Gemini": {
-      "pending": 1,
-      "stored": 7,
+      "pending": 0,
+      "stored": 8,
       "failed": 0,
       "no-evidence": 1
     },
     "Perplexity": {
-      "pending": 1,
+      "pending": 0,
       "stored": 0,
       "failed": 0,
-      "no-evidence": 8
+      "no-evidence": 9
     }
   },
   "latest_job_status": {
@@ -521,13 +545,13 @@
     },
     "Gemini": {
       "day": "2026-11-20",
-      "status": "pending",
-      "reason": "vendor_still_processing"
+      "status": "stored",
+      "reason": ""
     },
     "Perplexity": {
       "day": "2026-11-20",
-      "status": "pending",
-      "reason": "vendor_still_processing"
+      "status": "no-evidence",
+      "reason": "vendor_wait_element_timeout"
     }
   },
   "intent_analysis": {
@@ -554,7 +578,7 @@
             "direct_citations": 0
           },
           "Gemini": {
-            "samples": 0,
+            "samples": 1,
             "mentions": 0,
             "direct_citations": 0
           },
