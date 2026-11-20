@@ -6,14 +6,14 @@
   "not_own_tavily_rag": true,
   "window_start": "2026-10-23",
   "window_end": "2026-11-21",
-  "generated_at": "2026-11-21T01:13:41+08:00",
-  "total_samples": 16,
+  "generated_at": "2026-11-21T03:20:12+08:00",
+  "total_samples": 17,
   "platforms": [
     {
       "platform": "ChatGPT",
       "samples": 8,
       "existing_jobs": {
-        "pending": 1,
+        "pending": 2,
         "stored": 8,
         "failed": 0,
         "no-evidence": 0
@@ -98,17 +98,17 @@
     },
     {
       "platform": "Gemini",
-      "samples": 8,
+      "samples": 9,
       "existing_jobs": {
         "pending": 0,
-        "stored": 8,
+        "stored": 9,
         "failed": 0,
         "no-evidence": 1
       },
       "mentions": 1,
       "direct_domain_citations": 0,
-      "answers_with_sources": 6,
-      "last_sample_date": "2026-11-20",
+      "answers_with_sources": 7,
+      "last_sample_date": "2026-11-21",
       "competitor_candidates": [],
       "cited_domains": [
         {
@@ -122,6 +122,14 @@
         {
           "domain": "www.lihaocreator.com",
           "occurrences": 3
+        },
+        {
+          "domain": "9wood.com.tw",
+          "occurrences": 2
+        },
+        {
+          "domain": "yourhome.tw",
+          "occurrences": 2
         },
         {
           "domain": "www.yufang-design.com.tw",
@@ -140,39 +148,32 @@
           "occurrences": 2
         },
         {
-          "domain": "www.youtube.com",
+          "domain": "www.ho-indesign.com",
           "occurrences": 1
         },
         {
-          "domain": "rujundesign.com",
+          "domain": "cc-interior.com",
           "occurrences": 1
         },
         {
-          "domain": "www.hoyun.work",
+          "domain": "www.keidesign.com.tw",
           "occurrences": 1
         },
         {
-          "domain": "www.hch.design",
+          "domain": "chisun-design.com",
           "occurrences": 1
         },
         {
-          "domain": "www.renfang.com.tw",
+          "domain": "www.rtube.com.tw",
           "occurrences": 1
         },
         {
-          "domain": "www.order.com.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "gentleliving-design.com",
-          "occurrences": 1
-        },
-        {
-          "domain": "home.housetube.tw",
+          "domain": "www.mobile01.com",
           "occurrences": 1
         }
       ],
       "tested_prompt_ids": [
+        "a7-new-home",
         "kaohsiung-condo",
         "renovation-cost",
         "renovation-process",
@@ -187,7 +188,7 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 0,
+        "pending": 1,
         "stored": 0,
         "failed": 0,
         "no-evidence": 9
@@ -202,6 +203,31 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "7534fc5700f0b33c",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "Gemini",
+      "prompt_id": "a7-new-home",
+      "prompt": "林口A7新成屋交屋後想裝潢，應該比較哪些在地設計公司？附可驗證網站來源。",
+      "answered_at": "2026-11-21T03:17:57+08:00",
+      "answer_excerpt": "在林口 A7 重劃區（行政區歸屬龜山， 但緊鄰林口生活圈）交屋後規劃新成屋裝潢， 選擇 熟悉在地環境、且有該區新成屋施作經驗 的設計公司， 能大幅減少施工溝通成本。 以下整理幾家在林口及龜山 A7 重劃區具有實際交屋或新成屋設計案例的在地室內設計公司供評估比較： 一、 推薦比較的在地設計公司 1. 九木住宅設計（9WOOD） 特色 ： 深耕桃園龜山與林口地區，在 A7 重劃區（如新潤翡麗等建案）有許多新成屋及合宜住宅的裝潢案例。擅長空間收納規劃與整體工程統籌。 適合族群 ： 小坪數、首購族、有新生兒或重視系統收納機能的家庭。 可驗證網站 ： 九木住宅設計 官方網站 2. 寓宇宏空間設計（Your Home） 特色 ： 總部位於林口，專精於 A7 重劃區新成屋的空間規劃，主打韓系奶茶風、法式奶油風及北歐侘寂風等流行風格。 適合族群 ：偏好日韓系溫暖質感、 奶茶色調或奶油風美學的屋主。 可驗證網站 ： 寓宇宏空間設計 官方網站 3. 禾貳設計（Ho-In Design） 特色 ： 深耕林口地區，提供預售屋客變與新成屋一站式室內設計與裝修工程。熟悉在地建案格局與施工規範。 適合族群 ： 需要全屋整體規劃、講究空間動線與生活細節者。 可驗證網站 ： 禾貳設計 官方網站 4. 層層室內設計（CCID） 特色 ： 總部位於新北林口，專注於住宅空間設計、系統收納與工程統籌。設計風格多元且講究耐用性與居住體驗。 適合族群 ：重視現代風格、 注重空間比例與高標準工程品質者。 可驗證網站 ： 層層室內設計 官方網站 二、 林口 A7 新成屋裝潢評估重點 在與上述設計公司接洽時， 建議針對以下在地特性進行重點比對： 除濕與防潮規劃 ：林口台地冬季較為潮濕， 需討論全熱交換器、 全戶除濕系統或特定防潮建材的預留配置。 建案驗收與社區規範 ：A7 許多大型社區管委會對施工時間、 電梯防護及垃圾運棄規範較嚴格， 選擇有該社區經驗的團隊能避免施工糾紛。 收納與公領域動線 ：A7 許多建案坪數落於 20–30 坪， 重點在於公領域坪數釋放與複合式收納設計。",
+      "excerpt_truncated": false,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "9wood.com.tw",
+        "cc-interior.com",
+        "chisun-design.com",
+        "www.dream-house.com.tw",
+        "www.ho-indesign.com",
+        "www.keidesign.com.tw",
+        "www.mobile01.com",
+        "www.rtube.com.tw",
+        "yourhome.tw"
+      ]
+    },
     {
       "evidence_id": "78e3a9501f598a88",
       "recommendation_status": "未提及晨陽",
@@ -519,19 +545,19 @@
   ],
   "existing_job_status": {
     "ChatGPT": {
-      "pending": 1,
+      "pending": 2,
       "stored": 8,
       "failed": 0,
       "no-evidence": 0
     },
     "Gemini": {
       "pending": 0,
-      "stored": 8,
+      "stored": 9,
       "failed": 0,
       "no-evidence": 1
     },
     "Perplexity": {
-      "pending": 0,
+      "pending": 1,
       "stored": 0,
       "failed": 0,
       "no-evidence": 9
@@ -539,19 +565,19 @@
   },
   "latest_job_status": {
     "ChatGPT": {
-      "day": "2026-11-20",
-      "status": "stored",
-      "reason": ""
+      "day": "2026-11-21",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     },
     "Gemini": {
-      "day": "2026-11-20",
+      "day": "2026-11-21",
       "status": "stored",
       "reason": ""
     },
     "Perplexity": {
-      "day": "2026-11-20",
-      "status": "no-evidence",
-      "reason": "vendor_wait_element_timeout"
+      "day": "2026-11-21",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     }
   },
   "intent_analysis": {
@@ -666,7 +692,7 @@
             "direct_citations": 0
           },
           "Gemini": {
-            "samples": 0,
+            "samples": 1,
             "mentions": 0,
             "direct_citations": 0
           },
