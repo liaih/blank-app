@@ -4,16 +4,16 @@
   "not_first_party_analytics": true,
   "not_real_consumer_query_volume": true,
   "not_own_tavily_rag": true,
-  "window_start": "2026-10-23",
-  "window_end": "2026-11-21",
-  "generated_at": "2026-11-21T21:17:03+08:00",
-  "total_samples": 18,
+  "window_start": "2026-10-24",
+  "window_end": "2026-11-22",
+  "generated_at": "2026-11-22T02:16:40+08:00",
+  "total_samples": 19,
   "platforms": [
     {
       "platform": "ChatGPT",
       "samples": 9,
       "existing_jobs": {
-        "pending": 1,
+        "pending": 2,
         "stored": 9,
         "failed": 0,
         "no-evidence": 0
@@ -99,30 +99,38 @@
     },
     {
       "platform": "Gemini",
-      "samples": 9,
+      "samples": 10,
       "existing_jobs": {
         "pending": 0,
-        "stored": 9,
+        "stored": 10,
         "failed": 0,
         "no-evidence": 1
       },
       "mentions": 1,
       "direct_domain_citations": 0,
-      "answers_with_sources": 7,
-      "last_sample_date": "2026-11-21",
+      "answers_with_sources": 8,
+      "last_sample_date": "2026-11-22",
       "competitor_candidates": [],
       "cited_domains": [
         {
           "domain": "www.100.com.tw",
-          "occurrences": 7
+          "occurrences": 8
         },
         {
           "domain": "www.yixin.studio",
           "occurrences": 5
         },
         {
+          "domain": "www.pro360.com.tw",
+          "occurrences": 3
+        },
+        {
           "domain": "www.lihaocreator.com",
           "occurrences": 3
+        },
+        {
+          "domain": "decomyplace.com",
+          "occurrences": 2
         },
         {
           "domain": "9wood.com.tw",
@@ -137,10 +145,6 @@
           "occurrences": 2
         },
         {
-          "domain": "www.pro360.com.tw",
-          "occurrences": 2
-        },
-        {
           "domain": "hcdesign.com.tw",
           "occurrences": 2
         },
@@ -149,27 +153,23 @@
           "occurrences": 2
         },
         {
-          "domain": "www.ho-indesign.com",
+          "domain": "blog.lookoutspace.com",
           "occurrences": 1
         },
         {
-          "domain": "cc-interior.com",
+          "domain": "traveler.holiday",
           "occurrences": 1
         },
         {
-          "domain": "www.keidesign.com.tw",
+          "domain": "www.kpdesign.com.tw",
           "occurrences": 1
         },
         {
-          "domain": "chisun-design.com",
+          "domain": "sundaydesign.tw",
           "occurrences": 1
         },
         {
-          "domain": "www.rtube.com.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.mobile01.com",
+          "domain": "www.openworld.tv",
           "occurrences": 1
         }
       ],
@@ -189,7 +189,7 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 0,
+        "pending": 1,
         "stored": 0,
         "failed": 0,
         "no-evidence": 10
@@ -204,6 +204,31 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "a43d1b94b629b725",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "Gemini",
+      "prompt_id": "kaohsiung-condo",
+      "prompt": "高雄首購族規劃室內裝潢，怎麼挑選設計公司？有哪幾家公司值得比較？",
+      "answered_at": "2026-11-22T02:14:24+08:00",
+      "answer_excerpt": "高雄首購族在規劃室內裝潢時， 通常面臨「預算有限（剛付完頭期款）」、 「坪數偏小（多為2房或小3房）」以及「對流程不熟悉」三大痛點。 挑選設計公司時， 建議先釐清自身預算與需求， 再從合法登記、 報價透明度與溝通契合度三個維度進行篩選。 一、 首購族挑選室內設計公司的 5 大關鍵 1. 確認預算分配與「低消門檻」 抓準總預算： 建議將裝潢總預算控制在 房屋總價的 10%～15% 。 首購族常見的新成屋（免大規模拆改）， 每坪裝修預算約落在 5萬～8萬元 （不含家電與活動家具）；若是中古屋翻新（需重拉水電管線）， 則需抓到 8萬～12萬元/坪 。 詢問接案門檻： 高雄部分中大型設計公司設有「工程最低承攬金額」（例如 80萬 或 100萬以上）， 初步諮詢時務必先確認， 避免白跑一趟。 2. 查核合法登記與專業證照 雙證照確認： 透過經濟部「商工登記公示資料查詢」確認公司正常營業， 並詢問設計師是否具備「建築物室內設計」 或 「建築物室內裝修工程管理」乙級技術士證照。 這能確保施工法規（如消防、 結構安全）合乎標準， 且日後社區管委會要求申請「室內裝修許可證」時能順利辦理。 3. 檢視作品集的「真實性」與「空間尺度」 避開純 3D 渲染圖： 優先挑選有大量「完工實景照」的公司， 才能看出木作收邊、 油漆平整度等真實工藝。 尋找相近坪數案例： 豪宅設計與小宅設計的邏輯完全不同。 首購族應特別觀察該公司是否有豐富的 15～25 坪小宅收納與動線規劃 經驗。 4. 報價單的透明度與拆解細節 拒絕籠統報價： 合格的估價單必須詳細列出 材質品牌、規格尺寸、數量、單價與施工工法 （例如：系統櫃板材是哪家品牌？五金是 Blum 還是台製？油漆刷幾道？）， 切忌只有「客廳木作一式 XX 萬元」的寫法。 階段性付款： 簽約時確認付款方式是否為「依工程進度分期付款」（如簽約 30%、 木工進場 30%、 油漆進場 30%、 驗收 10%）， 保障自身權益。 5. 溝通契合度與售後保固 傾聽能力： 好的設計師會針對你的生活習慣（例如：是否常下廚、 有沒有養寵物、 衣物量多寡）提出動線建議， 而不是一味推銷昂貴的造型天花板或電視牆。 保固條款： 確認完工後是否有提供至少 1 年的工程保固 ， 以及後續維修的聯繫窗口。 二、 高雄值得比較的設計公司類型與代表名單 高雄在地的室內設計團隊各有強項， 首購族可依據自己的「預算高低」與「風格偏好」， 從以下幾類中各挑 1～2 家進行丈量與初步提案比較： 公司名稱 特色與設計強項 適合族群 三商美福 (高雄博愛/青年等門市) 全台連鎖系統櫃大廠，板材透明、具備完整履約保證與售後服務，溝通流程標準化。 預算精準、重視收納與保固 ，偏好現代簡約或北歐風的新成屋首購族。 歐德傢俱連鎖事業 (高雄多間門市) 德國進口環保綠建材系統櫃起家，近年積極整合全室室內設計，施工期相對短且粉塵少。 家中有幼兒或過敏體質 、希望快速入住、不想花太多心力監工的族群。 好室設計 HAO Design 高雄知名在地設計團隊，擅長色彩搭配、材質混搭與高機能小宅規劃，作品極具生活感與溫度。 重視美感與空間個性 、預算相對充裕，喜歡清新北歐、日系或輕工業風的屋主。 寓子設計 (高雄服務據點) 以「日系無印風」、「北歐療癒宅」聞名，非常擅長利用光線與木質調放大中小坪數的空間感。 偏好 乾淨、溫暖、無壓迫感 的居家氛圍，且喜歡極簡收納美學的首購族。 成舍設計 (高雄分公司) 台灣老牌大型設計公司，制度完善、設計團隊分工細膩，從客變到軟裝配置皆有標準作業流程。 購買預售屋需",
+      "excerpt_truncated": true,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "blog.lookoutspace.com",
+        "decomyplace.com",
+        "sundaydesign.tw",
+        "traveler.holiday",
+        "www.100.com.tw",
+        "www.eho-design.com.tw",
+        "www.kpdesign.com.tw",
+        "www.openworld.tv",
+        "www.pro360.com.tw"
+      ]
+    },
     {
       "evidence_id": "bc8b604f3ae8c3f2",
       "recommendation_status": "有提及但未確認推薦",
@@ -567,19 +592,19 @@
   ],
   "existing_job_status": {
     "ChatGPT": {
-      "pending": 1,
+      "pending": 2,
       "stored": 9,
       "failed": 0,
       "no-evidence": 0
     },
     "Gemini": {
       "pending": 0,
-      "stored": 9,
+      "stored": 10,
       "failed": 0,
       "no-evidence": 1
     },
     "Perplexity": {
-      "pending": 0,
+      "pending": 1,
       "stored": 0,
       "failed": 0,
       "no-evidence": 10
@@ -587,19 +612,19 @@
   },
   "latest_job_status": {
     "ChatGPT": {
-      "day": "2026-11-21",
-      "status": "stored",
-      "reason": ""
+      "day": "2026-11-22",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     },
     "Gemini": {
-      "day": "2026-11-21",
+      "day": "2026-11-22",
       "status": "stored",
       "reason": ""
     },
     "Perplexity": {
-      "day": "2026-11-21",
-      "status": "no-evidence",
-      "reason": "vendor_wait_element_timeout"
+      "day": "2026-11-22",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     }
   },
   "intent_analysis": {
@@ -802,7 +827,7 @@
             "direct_citations": 0
           },
           "Gemini": {
-            "samples": 1,
+            "samples": 2,
             "mentions": 0,
             "direct_citations": 0
           },
