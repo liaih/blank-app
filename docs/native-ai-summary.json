@@ -6,31 +6,35 @@
   "not_own_tavily_rag": true,
   "window_start": "2026-10-24",
   "window_end": "2026-11-22",
-  "generated_at": "2026-11-22T02:16:40+08:00",
-  "total_samples": 19,
+  "generated_at": "2026-11-22T04:02:27+08:00",
+  "total_samples": 20,
   "platforms": [
     {
       "platform": "ChatGPT",
-      "samples": 9,
+      "samples": 10,
       "existing_jobs": {
-        "pending": 2,
-        "stored": 9,
+        "pending": 1,
+        "stored": 10,
         "failed": 0,
         "no-evidence": 0
       },
       "mentions": 1,
       "direct_domain_citations": 1,
-      "answers_with_sources": 8,
-      "last_sample_date": "2026-11-21",
+      "answers_with_sources": 9,
+      "last_sample_date": "2026-11-22",
       "competitor_candidates": [],
       "cited_domains": [
         {
           "domain": "www.100.com.tw",
-          "occurrences": 17
+          "occurrences": 22
         },
         {
           "domain": "www.chen-yang.com.tw",
           "occurrences": 3
+        },
+        {
+          "domain": "www.city-design.com.tw",
+          "occurrences": 2
         },
         {
           "domain": "9wood.com.tw",
@@ -78,10 +82,6 @@
         },
         {
           "domain": "grdesign.com.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.loveidsign.com",
           "occurrences": 1
         }
       ],
@@ -189,10 +189,10 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 1,
+        "pending": 0,
         "stored": 0,
         "failed": 0,
-        "no-evidence": 10
+        "no-evidence": 11
       },
       "mentions": 0,
       "direct_domain_citations": 0,
@@ -204,6 +204,24 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "a01cd2b000636bcd",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "ChatGPT",
+      "prompt_id": "kaohsiung-condo",
+      "prompt": "高雄首購族規劃室內裝潢，怎麼挑選設計公司？有哪幾家公司值得比較？",
+      "answered_at": "2026-11-22T04:02:23+08:00",
+      "answer_excerpt": "高雄首購族挑選室內設計公司，我會建議不要一開始就追求「最漂亮的作品」，而是先找出 能控制預算、了解首購族需求、施工透明，而且願意把細節說清楚的設計團隊 。 尤其第一間房子，裝潢很容易遇到幾個問題： 預算抓 100 萬，最後追加到 150 萬。 3D 圖很漂亮，實際完工卻有落差。 收納做很多，卻忽略插座、動線、採光。 設計費、工程費、監工費及追加費用沒有事先說清楚。 完工後有問題，找不到人處理。 以下我會從首購族的角度，整理挑選方式，以及高雄可以列入初步比較的設計公司。 一、推薦先比較的 6 家高雄室內設計公司 我會先把公司分成不同類型比較，而不是單純按照網路評價排名。以下是根據目前查到的高雄公司資料、作品案例、公開服務資訊整理的初選名單。 1. WJ Design 維境設計 適合重視設計與溝通 地址：左營區新莊一路278號 設計費：4,000 元／坪起 新成屋：5 萬元／坪起 公開資訊有穩定合作工班、設計師一對一溝通及樣板間參觀。 有 23 坪住宅等小宅作品可參考。 參考： 作品、費用與業主評價 [1] 2. 歐印空間設計 適合預算型首購族比較 地址：苓雅區中正一路258號8樓 設計費：4,000 元／坪起 新成屋：4 萬元／坪起 公開作品有 16～25 坪住宅，案例報價約 80～150 萬。 有分階段施工檢核及收納規劃資訊。 參考： 作品、費用與11則評價 [2] 3. 木理空間美學設計 適合喜歡日式、溫潤風格 地址：苓雅區建國一路64巷59號 設計費：3,800 元／坪起 新成屋：5 萬元／坪起 公開作品包括 24 坪新成屋，案例報價約 93 萬。 提供收納規劃、階段檢核及驗收交屋。 參考： 作品、費用與業主評價 [3] 4. 日景室內設計 適合小宅、收納需求 地址：仁武區中華路85號 設計費：3,800 元／坪起 新成屋：4 萬元／坪起 公開作品有 15 坪新成屋、18.2 坪住宅。 有一則首購屋主分享，提到設計師會依照預算調整需求，而非一味增加設計項目。 參考： 作品、費用與15則評價 [4] 5. Wenjoy 葳夏設計 適合北歐、簡約風格 地址：前鎮區正勤路76號 新成屋：5 萬元／坪起 公開作品有 19、20、26 坪等住宅。 有穩定合作工班、保固及設計師一對一溝通等服務資訊。 參考： 作品及公開費用 [5] 6. 城藝空間設計 適合重視小宅空間規劃 有高雄仁武 15 坪新成屋、2 房 1 廳的實際作品。 設計重點是整合收納、保留留白及引入光線。 可以特別比較其小坪數格局規劃能力。 參考： 15坪仁武小宅完整案例 [6] 、 26坪首購住宅案例 [7] 提醒：以上是值得詢價、面談的初步名單，不代表我已經實地查核施工品質。公開的每坪價格也不等於最終總價，必須確認計價範圍、工程項目及追加費用。 二、這些公司在哪裡？ 三、首購族挑設計公司，最重要的 7 個檢查項目 我建議把下面這份清單當作面談標準，尤其要注意前四項。 比較項目 應該確認的事情 1. 預算透明 有沒有逐項工程報價？ 2. 施工品質 有沒有實際完工案可以參觀？ 3. 合約保障 是否列明工期、付款及保固？ 4. 追加費用 變更設計如何計價？ 5. 設計能力 有沒有類似坪數及格局作品？ 6. 監工制度 誰負責監工？多久回報一次？ 7. 售後服務 漏水、五金、設備故障如何處理？ 另外有一個容易被忽略的地方： 簽約前確認公司及實際承攬施工的業者，是否具備依法應有的室內裝修業資格；也要確認相關設計、施工人員資格，以及合約是否清楚列出材料品牌、型號、數量與施工方式。 四、首購族的裝潢預算",
+      "excerpt_truncated": true,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "www.100.com.tw",
+        "www.city-design.com.tw"
+      ]
+    },
     {
       "evidence_id": "a43d1b94b629b725",
       "recommendation_status": "未提及晨陽",
@@ -592,8 +610,8 @@
   ],
   "existing_job_status": {
     "ChatGPT": {
-      "pending": 2,
-      "stored": 9,
+      "pending": 1,
+      "stored": 10,
       "failed": 0,
       "no-evidence": 0
     },
@@ -604,17 +622,17 @@
       "no-evidence": 1
     },
     "Perplexity": {
-      "pending": 1,
+      "pending": 0,
       "stored": 0,
       "failed": 0,
-      "no-evidence": 10
+      "no-evidence": 11
     }
   },
   "latest_job_status": {
     "ChatGPT": {
       "day": "2026-11-22",
-      "status": "pending",
-      "reason": "vendor_still_processing"
+      "status": "stored",
+      "reason": ""
     },
     "Gemini": {
       "day": "2026-11-22",
@@ -623,8 +641,8 @@
     },
     "Perplexity": {
       "day": "2026-11-22",
-      "status": "pending",
-      "reason": "vendor_still_processing"
+      "status": "no-evidence",
+      "reason": "vendor_record_error"
     }
   },
   "intent_analysis": {
@@ -822,7 +840,7 @@
         ],
         "platforms": {
           "ChatGPT": {
-            "samples": 1,
+            "samples": 2,
             "mentions": 0,
             "direct_citations": 0
           },
