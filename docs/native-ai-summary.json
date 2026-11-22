@@ -6,8 +6,8 @@
   "not_own_tavily_rag": true,
   "window_start": "2026-10-25",
   "window_end": "2026-11-23",
-  "generated_at": "2026-11-23T02:44:52+08:00",
-  "total_samples": 21,
+  "generated_at": "2026-11-23T05:14:32+08:00",
+  "total_samples": 22,
   "platforms": [
     {
       "platform": "ChatGPT",
@@ -99,34 +99,42 @@
     },
     {
       "platform": "Gemini",
-      "samples": 10,
+      "samples": 11,
       "existing_jobs": {
-        "pending": 1,
-        "stored": 10,
+        "pending": 0,
+        "stored": 11,
         "failed": 0,
         "no-evidence": 1
       },
       "mentions": 1,
       "direct_domain_citations": 0,
-      "answers_with_sources": 8,
-      "last_sample_date": "2026-11-22",
+      "answers_with_sources": 9,
+      "last_sample_date": "2026-11-23",
       "competitor_candidates": [],
       "cited_domains": [
         {
           "domain": "www.100.com.tw",
-          "occurrences": 8
+          "occurrences": 9
+        },
+        {
+          "domain": "www.pro360.com.tw",
+          "occurrences": 5
         },
         {
           "domain": "www.yixin.studio",
           "occurrences": 5
         },
         {
-          "domain": "www.pro360.com.tw",
+          "domain": "www.lihaocreator.com",
           "occurrences": 3
         },
         {
-          "domain": "www.lihaocreator.com",
-          "occurrences": 3
+          "domain": "livinglife.com.tw",
+          "occurrences": 2
+        },
+        {
+          "domain": "www.order.com.tw",
+          "occurrences": 2
         },
         {
           "domain": "decomyplace.com",
@@ -153,23 +161,15 @@
           "occurrences": 2
         },
         {
-          "domain": "blog.lookoutspace.com",
+          "domain": "house.udn.com",
           "occurrences": 1
         },
         {
-          "domain": "traveler.holiday",
+          "domain": "www.dualcreation-design.com.tw",
           "occurrences": 1
         },
         {
-          "domain": "www.kpdesign.com.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "sundaydesign.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.openworld.tv",
+          "domain": "www.zewudesign.com",
           "occurrences": 1
         }
       ],
@@ -189,10 +189,10 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 1,
+        "pending": 0,
         "stored": 0,
         "failed": 0,
-        "no-evidence": 11
+        "no-evidence": 12
       },
       "mentions": 0,
       "direct_domain_citations": 0,
@@ -204,6 +204,31 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "6b147e9466243594",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "Gemini",
+      "prompt_id": "renovation-cost",
+      "prompt": "2026年台灣住宅老屋翻新每坪預算如何評估？請引用施工實例或業者公開資料。",
+      "answered_at": "2026-11-23T05:14:28+08:00",
+      "answer_excerpt": "2026年台灣住宅老屋翻新（屋齡20年以上）的每坪總預算， 受缺工、 營建廢棄物清運費上漲及綠色建材規範影響， 整體行情較前幾年上揚。 目前市場主流評估標準為 每坪新台幣 10 萬至 18 萬元 （不含活動家具與家電）， 若涉及結構補強或高端訂製材質， 則可能突破 20 萬元/坪 。 以下根據台灣室內設計平台（如幸福空間、 設計家 Searchome、 100室內設計）及統包業者公開的2025–2026年報價行情與施工實例， 拆解預算評估方式： 一、 2026年老屋翻新每坪預算區間表 老屋翻新的核心成本在於「基礎工程」（水電、 泥作、 防水）， 通常會佔去總預算的 50% 至 60% 。 翻新程度與屋況 每坪單價區間 (新台幣) 適用屋況與施工重點 輕度翻新（局部整修） 8萬 – 11萬 / 坪 屋齡 15–20 年，無漏水與壁癌。僅局部更新廚衛、全室電線重拉、油漆粉刷與超耐磨木地板鋪設，不動格局。 中度翻新（標準全室） 12萬 – 16萬 / 坪 市場最常見區間 。屋齡 20–35 年，需拆除重練。包含全室水電管線更新、浴室與廚房防水重作、格局微調、天花板與系統櫃體施作。 重度翻新（徹底改造） 17萬 – 22萬+ / 坪 屋齡 35–40 年以上（如老公寓、透天）。需大面積拆除隔間、外牆防水/鋁門窗全換（氣密窗）、鋼構/碳纖維結構補強，或大量使用天然石材、實木等訂製裝潢。 (註：雙北地區因廢棄物清運難度高、工資較高，每坪通常會比中南部高出約 1.5 萬至 3 萬元。) 二、 業者公開工程項目單價參考（2026行情） 根據多家設計公司與統包網公開的單項報價基準， 評估時可透過以下重點項目檢視估價單合理性： 拆除與清運工程： 全室拆除見底約 1.2萬 – 1.8萬 / 坪 。 2026年因合法土資場與廢棄物處理費調漲， 清運一車（3. 5噸）行情已達 1.2萬 – 1.6萬元 。 水電管線更新： 全室電線重拉、 配電箱（無熔絲開關）加大至 75A–100A， 以及冷熱水管（不鏽鋼壓接管）更換， 約 1.5萬 – 2.5萬 / 坪 （30坪住宅總價約 45萬–75萬）。 衛浴翻新（含防水）： 單間標準衛浴（約1. 5坪）拆除見底、 防水施作至頂（240cm以上）、 貼磚及基本衛浴設備， 約 18萬 – 28萬 / 間 。 鋁門窗更換： 氣密窗或隔音窗（含濕式或乾式施工、 5+5mm膠合玻璃）， 約 1.8萬 – 3.5萬 / 才 換算下來， 全室更換約需 15萬 – 35萬元 。 木作與系統櫃： 平釘天花板約 4,000 – 5,500元 / 坪 ；系統櫃依板材（E1/E0 V313）與五金等級， 每尺約 4,500 – 8,000元 。 三、 台灣近年公開施工實例參考 以下彙整設計平台與裝修業者公開的實際成交案例， 呈現不同坪數與屋況的預算分配邏輯： 案例 1：台北市 32 坪 / 35 年電梯華廈（中重度翻新） 總工程預算： 約 480 萬元 （平均 15 萬 / 坪 ， 不含軟裝家電） 屋況痛點： 原始管線老化跳電、 兩間衛浴滲水導致鄰居天花板壁癌、 採光不良的長型屋。 預算分配比例： 基礎工程（拆除清運、 全室水電、 兩間衛浴防水泥作、 全室氣密窗）： 約 270 萬（56%） 裝修工程（格局調整、 天花板、 超耐磨木地板、 廚房中島與系統收納櫃）： 約 165 萬（35%） 設計費與工程管理費： 約 45 萬（9%） 案例 2：台中市 24 坪 / 28 年社區大樓（中度標準翻新） 總工程預算： 約 290 萬元 （平均 12.1 萬 /",
+      "excerpt_truncated": true,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "house.udn.com",
+        "livinglife.com.tw",
+        "www.100.com.tw",
+        "www.dualcreation-design.com.tw",
+        "www.eayko.com",
+        "www.inspacelab.com",
+        "www.order.com.tw",
+        "www.pro360.com.tw",
+        "www.zewudesign.com"
+      ]
+    },
     {
       "evidence_id": "5789dc61312fb8c6",
       "recommendation_status": "未提及晨陽",
@@ -638,16 +663,16 @@
       "no-evidence": 0
     },
     "Gemini": {
-      "pending": 1,
-      "stored": 10,
+      "pending": 0,
+      "stored": 11,
       "failed": 0,
       "no-evidence": 1
     },
     "Perplexity": {
-      "pending": 1,
+      "pending": 0,
       "stored": 0,
       "failed": 0,
-      "no-evidence": 11
+      "no-evidence": 12
     }
   },
   "latest_job_status": {
@@ -658,13 +683,13 @@
     },
     "Gemini": {
       "day": "2026-11-23",
-      "status": "pending",
-      "reason": "vendor_still_processing"
+      "status": "stored",
+      "reason": ""
     },
     "Perplexity": {
       "day": "2026-11-23",
-      "status": "pending",
-      "reason": "vendor_still_processing"
+      "status": "no-evidence",
+      "reason": "vendor_wait_element_timeout"
     }
   },
   "intent_analysis": {
@@ -954,7 +979,7 @@
             "direct_citations": 0
           },
           "Gemini": {
-            "samples": 1,
+            "samples": 2,
             "mentions": 0,
             "direct_citations": 0
           },
