@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "source": "Google Search Console private real SQLite (is_mock=0)",
-  "last_check_date": "2026-11-22",
+  "last_check_date": "2026-11-23",
   "entries": [
     {
       "schema_version": 1,
@@ -585,6 +585,83 @@
           },
           "previous_30d_position": 29.38,
           "position_improvement_30d": 4.38
+        },
+        {
+          "keyword": "室內設計推薦",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0,
+            "last_observed_day": null,
+            "latest_daily_position": null
+          },
+          "previous_30d_position": null,
+          "position_improvement_30d": null
+        },
+        {
+          "keyword": "桃園室內設計",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0,
+            "last_observed_day": null,
+            "latest_daily_position": null
+          },
+          "previous_30d_position": 24.86,
+          "position_improvement_30d": null
+        }
+      ],
+      "not_live_google_serp": true,
+      "no_mock": true,
+      "note": "今日是系統執行檢查的日期，GSC 資料日依 Google 回傳日期，不是今日即時排名。",
+      "data_age_days": 5,
+      "coverage_warning": false
+    },
+    {
+      "schema_version": 1,
+      "source": "Google Search Console private real SQLite (is_mock=0)",
+      "site": "https://chen-yang.com.tw/",
+      "check_date": "2026-11-23",
+      "checked_at": "2026-11-23T01:53:32+08:00",
+      "gsc_expected_through": "2026-11-18",
+      "gsc_latest_day": "2026-11-18",
+      "status": "ok",
+      "status_text": "已檢查真實 GSC 資料（非即時排名）",
+      "periods": {
+        "30": {
+          "from": "2026-10-20",
+          "to": "2026-11-18",
+          "clicks": 1165.0,
+          "impressions": 47586.0,
+          "ctr": 0.024482,
+          "days_with_data": 30,
+          "expected_days": 30
+        },
+        "90": {
+          "from": "2026-08-21",
+          "to": "2026-11-18",
+          "clicks": 4552.0,
+          "impressions": 169064.0,
+          "ctr": 0.026925,
+          "days_with_data": 90,
+          "expected_days": 90
+        }
+      },
+      "keywords": [
+        {
+          "keyword": "室內設計",
+          "current_30d": {
+            "position": 22.14,
+            "clicks": 1.0,
+            "impressions": 7.0,
+            "days_with_impressions": 2,
+            "last_observed_day": "2026-10-21",
+            "latest_daily_position": 22.5
+          },
+          "previous_30d_position": 29.1,
+          "position_improvement_30d": 6.96
         },
         {
           "keyword": "室內設計推薦",
