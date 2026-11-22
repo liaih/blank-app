@@ -4,33 +4,41 @@
   "not_first_party_analytics": true,
   "not_real_consumer_query_volume": true,
   "not_own_tavily_rag": true,
-  "window_start": "2026-10-24",
-  "window_end": "2026-11-22",
-  "generated_at": "2026-11-22T23:38:21+08:00",
-  "total_samples": 20,
+  "window_start": "2026-10-25",
+  "window_end": "2026-11-23",
+  "generated_at": "2026-11-23T02:44:52+08:00",
+  "total_samples": 21,
   "platforms": [
     {
       "platform": "ChatGPT",
-      "samples": 10,
+      "samples": 11,
       "existing_jobs": {
         "pending": 1,
-        "stored": 10,
+        "stored": 11,
         "failed": 0,
         "no-evidence": 0
       },
       "mentions": 1,
       "direct_domain_citations": 1,
-      "answers_with_sources": 9,
-      "last_sample_date": "2026-11-22",
+      "answers_with_sources": 10,
+      "last_sample_date": "2026-11-23",
       "competitor_candidates": [],
       "cited_domains": [
         {
           "domain": "www.100.com.tw",
-          "occurrences": 22
+          "occurrences": 24
         },
         {
           "domain": "www.chen-yang.com.tw",
           "occurrences": 3
+        },
+        {
+          "domain": "buyhouse.tw",
+          "occurrences": 2
+        },
+        {
+          "domain": "www.pro360.com.tw",
+          "occurrences": 2
         },
         {
           "domain": "www.city-design.com.tw",
@@ -53,6 +61,18 @@
           "occurrences": 2
         },
         {
+          "domain": "www.money101.com.tw",
+          "occurrences": 1
+        },
+        {
+          "domain": "lanhung.gomag.com.tw",
+          "occurrences": 1
+        },
+        {
+          "domain": "woyu.medalink.ai",
+          "occurrences": 1
+        },
+        {
           "domain": "cc-interior.com",
           "occurrences": 1
         },
@@ -62,26 +82,6 @@
         },
         {
           "domain": "www.ho-indesign.com",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.google.com",
-          "occurrences": 1
-        },
-        {
-          "domain": "takuma.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "ycid.com.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.hunterdesign.com.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "grdesign.com.tw",
           "occurrences": 1
         }
       ],
@@ -101,7 +101,7 @@
       "platform": "Gemini",
       "samples": 10,
       "existing_jobs": {
-        "pending": 0,
+        "pending": 1,
         "stored": 10,
         "failed": 0,
         "no-evidence": 1
@@ -189,7 +189,7 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 0,
+        "pending": 1,
         "stored": 0,
         "failed": 0,
         "no-evidence": 11
@@ -204,6 +204,28 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "5789dc61312fb8c6",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "ChatGPT",
+      "prompt_id": "renovation-cost",
+      "prompt": "2026年台灣住宅老屋翻新每坪預算如何評估？請引用施工實例或業者公開資料。",
+      "answered_at": "2026-11-23T02:40:28+08:00",
+      "answer_excerpt": "wowhouse1115.com 2026老屋翻新一坪要花多少錢？費用表、北中南行情與預算分級一次看懂 - 窩要成設計 2026 年 8 月｜資料依據：窩要成設計自 2018 年至今累計 705 件老屋翻新工程的實際報價與施工紀錄 […] piinterior.net 2026老屋翻新完整流程與費用解析：費用行情、施工流程與預算規劃一次看懂 - 室內設計｜PIIN 品系統設計整合｜ 老屋翻新最怕的不是預算...優先聘請專業團隊進行結構與管線評估，把錢花在看不見但攸關安全的地方；第二，簽約前把隱藏成本與追加條件白紙黑字寫清楚，減少工程中的認知落差；第三，預留15%以上的彈性預算，讓設計師有空間應對突發狀況，而不是每次追加都讓你措手不及。 · 2026年市場行情約每坪10萬至25萬元，實際金額會依屋齡、施工範圍與建... buyhouse.tw 老屋翻新完整指南：流程、費用、注意事項一次看懂｜BUYHOUSE 想精確估算你的老屋翻新預算，可以使用裝潢預算試算工具，選擇「老屋翻新」模式即可得到各工程項目的費用範圍。更詳細的各項費用明細表，請參考老屋翻新價格全解析。 · 老屋翻新找設計師的費用比找統包貴30-45%。根據PTT網友實際經驗，同一案件設計公司... buyhouse.tw 裝潢費用完全攻略：2026最新一坪多少、預算怎麼抓｜BUYHOUSE 2026年台灣裝潢費用最新行情對照表，含新成屋、中古屋、老屋翻新每坪費用、預算分配比例、各工程明細與省錢技巧。 · 2026年台灣裝潢費用行情：新成屋約6-12萬/坪、中古屋12-18萬/坪、老屋全翻新15-22萬/坪。根據主計總處... www.pro360.com.tw 老屋翻新費用一坪要多少？2026最新數據大公開 - PRO360達人網 根據PRO360達人網後台數據統計，老屋翻新費用約$7萬~$20萬/坪，通常不含設計費與監工費，實際費用根據屋齡老舊程度、地區以及裝潢需求而有很大的落差。老屋通常指屋齡20年以上的老宅，涉及大量看不見的拆除、水電管... 2026 年台灣住宅老屋翻新：每坪預算評估指南 2026 年台灣住宅老屋翻新的預算，不能只用「每坪裝修多少錢」來估算，因為老屋的費用差異主要來自屋齡、管線狀況、是否需要拆除重做，以及格局變更程度。 實務上，建議先用每坪 8～15 萬元作為一般老屋翻新的初步預算區間；若涉及水電管線全面更新、浴室重做、窗戶更換及結構補強，應提高預算。 以下將預算分級、工程項目、實際案例及估價方法分開說明，並以台灣業者公開資訊作為參考。這些是初步規劃區間，不是全台統一報價。 一、2026 年老屋翻新每坪預算行情 以下綜合 2026 年裝修業者及裝修媒合平台公開資料，將工程程度分級： 翻新程度 每坪預算 主要施工內容 輕度翻新 5～8 萬 油漆、地板、局部水電、設備更新 中度翻新 8～12 萬 部分拆除、水電更新、廚衛翻修、基本收納 全室翻新 12～18 萬 全室水電、泥作、防水、地板、廚衛、木作 30年以上老屋全面翻新 15～22 萬 全室拆除、管線重拉、防水、門窗、泥作及裝修 高規格翻新 20～25 萬以上 高級建材、訂製木作、智慧設備、特殊設計 資料參考： BUYHOUSE：2026 裝潢費用完全攻略 [1] 、 Money101：老屋翻修費用分析 [2] 、 PRO360：2026 老屋翻新指南 [3] 。 [1, 2, 3] 我的建議： 20～30 年中古屋：先抓 8～15 萬元／坪。 30～40 年老公寓：先抓 12～18 萬元／坪。 40 年以上老屋：先",
+      "excerpt_truncated": true,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "buyhouse.tw",
+        "lanhung.gomag.com.tw",
+        "woyu.medalink.ai",
+        "www.100.com.tw",
+        "www.money101.com.tw",
+        "www.pro360.com.tw"
+      ]
+    },
     {
       "evidence_id": "a01cd2b000636bcd",
       "recommendation_status": "未提及晨陽",
@@ -611,18 +633,18 @@
   "existing_job_status": {
     "ChatGPT": {
       "pending": 1,
-      "stored": 10,
+      "stored": 11,
       "failed": 0,
       "no-evidence": 0
     },
     "Gemini": {
-      "pending": 0,
+      "pending": 1,
       "stored": 10,
       "failed": 0,
       "no-evidence": 1
     },
     "Perplexity": {
-      "pending": 0,
+      "pending": 1,
       "stored": 0,
       "failed": 0,
       "no-evidence": 11
@@ -630,19 +652,19 @@
   },
   "latest_job_status": {
     "ChatGPT": {
-      "day": "2026-11-22",
+      "day": "2026-11-23",
       "status": "stored",
       "reason": ""
     },
     "Gemini": {
-      "day": "2026-11-22",
-      "status": "stored",
-      "reason": ""
+      "day": "2026-11-23",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     },
     "Perplexity": {
-      "day": "2026-11-22",
-      "status": "no-evidence",
-      "reason": "vendor_record_error"
+      "day": "2026-11-23",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     }
   },
   "intent_analysis": {
@@ -927,7 +949,7 @@
         ],
         "platforms": {
           "ChatGPT": {
-            "samples": 1,
+            "samples": 2,
             "mentions": 0,
             "direct_citations": 0
           },
