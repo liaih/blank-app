@@ -6,14 +6,14 @@
   "not_own_tavily_rag": true,
   "window_start": "2026-10-26",
   "window_end": "2026-11-24",
-  "generated_at": "2026-11-24T06:14:00+08:00",
-  "total_samples": 22,
+  "generated_at": "2026-11-24T06:59:02+08:00",
+  "total_samples": 23,
   "platforms": [
     {
       "platform": "ChatGPT",
       "samples": 11,
       "existing_jobs": {
-        "pending": 1,
+        "pending": 2,
         "stored": 11,
         "failed": 0,
         "no-evidence": 0
@@ -99,17 +99,17 @@
     },
     {
       "platform": "Gemini",
-      "samples": 11,
+      "samples": 12,
       "existing_jobs": {
         "pending": 0,
-        "stored": 11,
+        "stored": 12,
         "failed": 0,
         "no-evidence": 1
       },
       "mentions": 1,
       "direct_domain_citations": 0,
-      "answers_with_sources": 9,
-      "last_sample_date": "2026-11-23",
+      "answers_with_sources": 10,
+      "last_sample_date": "2026-11-24",
       "competitor_candidates": [],
       "cited_domains": [
         {
@@ -118,7 +118,7 @@
         },
         {
           "domain": "www.pro360.com.tw",
-          "occurrences": 5
+          "occurrences": 6
         },
         {
           "domain": "www.yixin.studio",
@@ -126,7 +126,15 @@
         },
         {
           "domain": "www.lihaocreator.com",
-          "occurrences": 3
+          "occurrences": 4
+        },
+        {
+          "domain": "blog.udn.com",
+          "occurrences": 2
+        },
+        {
+          "domain": "www.nanyi-design.com",
+          "occurrences": 2
         },
         {
           "domain": "livinglife.com.tw",
@@ -161,15 +169,7 @@
           "occurrences": 2
         },
         {
-          "domain": "house.udn.com",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.dualcreation-design.com.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.zewudesign.com",
+          "domain": "www.bhouse.com.tw",
           "occurrences": 1
         }
       ],
@@ -189,7 +189,7 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 0,
+        "pending": 1,
         "stored": 0,
         "failed": 0,
         "no-evidence": 12
@@ -204,6 +204,31 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "05f9439e87862c9c",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "Gemini",
+      "prompt_id": "zhubei-engineer",
+      "prompt": "竹北工程師家庭要裝修新成屋，推薦哪些室內設計公司？比較施工溝通和預算透明度。",
+      "answered_at": "2026-11-24T06:56:44+08:00",
+      "answer_excerpt": "竹北工程師家庭在選擇新成屋設計公司時，最核心的痛點通常是 工時長沒時間盯場 ，因此高度依賴「線上同步進度（施工溝通）」與「可量化的報價明細（預算透明度）」。 以下針對竹北地區（高鐵特區、 縣治區、 台科大重劃區）受工程師族群青睞的 5 家室內設計團隊進行比較與分析： 竹北 5 大推薦室內設計公司比較表 設計公司 風格與強項 施工溝通與回報機制 預算透明度與計費特性 適合對象 小寶優居 (竹北分部) 機能系統櫃整合 模組化與客製化並重，標準化流程快。 高度系統化： 設有專屬客服、設計師與工務三方協作，關鍵節點確認即可，其餘按圖施工並主動回報。 極高（官網公開透明）： 系統櫃板材、五金與單價規格化，能精準在預算內配比，較少追加減爭議。 工作極忙、希望縮短討論與施工期、追求高 CP 值與明確規格的首購家庭。 裏好製造所 現代簡約、坪效極大化 善用採光與材質搭配，兼顧美感與收納。 視覺化溝通強： 施工前提供精細 3D 模擬圖核對細節，大幅降低理解落差；工地管理與品質穩定。 中高價位（明細制）： 設計費與工程費分開計算，報價單項次拆解清楚，前期確認後不易隨意加價。 注重生活質感、對施工收邊細節有要求、預算較充裕的新成屋家庭。 南邑室內裝修 現代質感、全室規劃 擅長竹北新成屋比例拿捏與動線配置。 一條龍嚴謹控管： 從前期客變到完工驗收由專人對接，工地現場管理嚴格，Google 在地口碑極高。 中上（依材質浮動）： 報價涵蓋完整工項，但若選用較多特殊進口材質或客製化造型，總預算會明顯拉高。 重視空間完整度、希望從客變到軟裝都有完整顧問服務的家庭。 吾他川國際設計 人文現代、收納實用 重視居住習慣與長期耐看度。 高配合度與細膩監工： 設計師傾聽需求耐心度高；工班素質佳（不菸不酒），現場監工細心。 高（合約與報價精細）： 報價單羅列細項，無做到的項目會核實扣除，在地評價常提及「不亂加價」。 第一次裝修、問題較多需要設計師耐心引導、極度在意追加預算風險的屋主。 三月木室內設計 日系木質、溫潤北歐 營造無壓、溫馨的親子居家氛圍。 圖面還原度極高： 前期討論較久且嚴謹，確立 3D 圖後現場還原度極高，施工期間會定期拍照回報且維持現場整潔。 中等（按圖施工）： 因前期圖面與材質確認得非常細，進入工程期後的變更與追加機率大幅降低。 偏好日系無印/木質調、重視親子安全與居家溫度、願意花時間在前期對齊圖面的家庭。 工程師家庭簽約前必看的 2 大檢核指標 竹北新成屋（常見 3 房約 25–35 坪）裝潢行情多落在 150 萬至 250 萬 之間（不含家電與活動家具）。 建議在第一輪諮詢時， 直接用以下標準篩選廠商： 施工溝通：確認「非同步」與「圖面化」能力 LINE 群組日報機制： 詢問團隊是否建置專屬群組， 並在每日或每週關鍵工項（如水電放樣、 木作封板、 油漆批土）主動上傳現場照片與進度表， 避免下班還要跑工地。 圖面完整度： 簽約前確認施工圖是否包含「水電迴路圖、 燈具開關配置圖、 櫃體立面尺寸圖」。 圖面越精確， 工班越不會憑經驗施工， 事後也無需重工。 預算透明度：拒絕「一式」報價 拆解「一式」項目： 檢視報價單時， 若看到「木作天花板 一式」、 「水電工程 一式」而無坪數、 才數或迴路數量， 務必要求拆解單價與數量。 載明板材與五金品牌： 系統櫃與木作需明確寫出板材等級（如 F1/E0 低甲醛）、 品牌（如 Egger、 Krono）及五金品牌（如 Blum、 Hettich）， 防止施工時被降規替換。 追加減條款： 確認合約中是否註明「非屋主主動變更設計， 廠商不得",
+      "excerpt_truncated": true,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "blog.udn.com",
+        "www.bhouse.com.tw",
+        "www.chongxdesign.com.tw",
+        "www.fertility-design.com",
+        "www.homepeace.com.tw",
+        "www.lihaocreator.com",
+        "www.nanyi-design.com",
+        "www.pro360.com.tw",
+        "www.twmdesign33.com.tw"
+      ]
+    },
     {
       "evidence_id": "6b147e9466243594",
       "recommendation_status": "未提及晨陽",
@@ -657,19 +682,19 @@
   ],
   "existing_job_status": {
     "ChatGPT": {
-      "pending": 1,
+      "pending": 2,
       "stored": 11,
       "failed": 0,
       "no-evidence": 0
     },
     "Gemini": {
       "pending": 0,
-      "stored": 11,
+      "stored": 12,
       "failed": 0,
       "no-evidence": 1
     },
     "Perplexity": {
-      "pending": 0,
+      "pending": 1,
       "stored": 0,
       "failed": 0,
       "no-evidence": 12
@@ -677,19 +702,19 @@
   },
   "latest_job_status": {
     "ChatGPT": {
-      "day": "2026-11-23",
-      "status": "stored",
-      "reason": ""
+      "day": "2026-11-24",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     },
     "Gemini": {
-      "day": "2026-11-23",
+      "day": "2026-11-24",
       "status": "stored",
       "reason": ""
     },
     "Perplexity": {
-      "day": "2026-11-23",
-      "status": "no-evidence",
-      "reason": "vendor_wait_element_timeout"
+      "day": "2026-11-24",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     }
   },
   "intent_analysis": {
@@ -775,7 +800,7 @@
             "direct_citations": 0
           },
           "Gemini": {
-            "samples": 1,
+            "samples": 2,
             "mentions": 0,
             "direct_citations": 0
           },
