@@ -4,9 +4,9 @@
   "not_first_party_analytics": true,
   "not_real_consumer_query_volume": true,
   "not_own_tavily_rag": true,
-  "window_start": "2026-10-26",
-  "window_end": "2026-11-24",
-  "generated_at": "2026-11-24T23:38:16+08:00",
+  "window_start": "2026-10-27",
+  "window_end": "2026-11-25",
+  "generated_at": "2026-11-25T02:14:42+08:00",
   "total_samples": 24,
   "platforms": [
     {
