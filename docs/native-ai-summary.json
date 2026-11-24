@@ -6,27 +6,27 @@
   "not_own_tavily_rag": true,
   "window_start": "2026-10-26",
   "window_end": "2026-11-24",
-  "generated_at": "2026-11-24T06:59:02+08:00",
-  "total_samples": 23,
+  "generated_at": "2026-11-24T14:21:04+08:00",
+  "total_samples": 24,
   "platforms": [
     {
       "platform": "ChatGPT",
-      "samples": 11,
+      "samples": 12,
       "existing_jobs": {
-        "pending": 2,
-        "stored": 11,
+        "pending": 1,
+        "stored": 12,
         "failed": 0,
         "no-evidence": 0
       },
       "mentions": 1,
       "direct_domain_citations": 1,
-      "answers_with_sources": 10,
-      "last_sample_date": "2026-11-23",
+      "answers_with_sources": 11,
+      "last_sample_date": "2026-11-24",
       "competitor_candidates": [],
       "cited_domains": [
         {
           "domain": "www.100.com.tw",
-          "occurrences": 24
+          "occurrences": 27
         },
         {
           "domain": "www.chen-yang.com.tw",
@@ -61,6 +61,14 @@
           "occurrences": 2
         },
         {
+          "domain": "ddnews.com.tw",
+          "occurrences": 1
+        },
+        {
+          "domain": "www.hozo-design.com",
+          "occurrences": 1
+        },
+        {
           "domain": "www.money101.com.tw",
           "occurrences": 1
         },
@@ -74,14 +82,6 @@
         },
         {
           "domain": "cc-interior.com",
-          "occurrences": 1
-        },
-        {
-          "domain": "yourhome.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.ho-indesign.com",
           "occurrences": 1
         }
       ],
@@ -189,10 +189,10 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 1,
+        "pending": 0,
         "stored": 0,
         "failed": 0,
-        "no-evidence": 12
+        "no-evidence": 13
       },
       "mentions": 0,
       "direct_domain_citations": 0,
@@ -204,6 +204,25 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "1650cab1c74a91ab",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "ChatGPT",
+      "prompt_id": "zhubei-engineer",
+      "prompt": "竹北工程師家庭要裝修新成屋，推薦哪些室內設計公司？比較施工溝通和預算透明度。",
+      "answered_at": "2026-11-24T14:20:59+08:00",
+      "answer_excerpt": "如果是竹北的工程師家庭，新成屋自住裝修，我會優先推薦有完整設計流程、固定施工窗口、報價明細清楚的公司，而不是單純以作品漂亮或網路星等高低來選。 尤其工程師家庭通常會在意： 施工溝通： 有沒有固定負責人？問題是否有文字紀錄？能不能每週回報進度？ 預算透明： 報價是否拆分材料、數量、單價、工資？追加工程是否事前確認？ 施工管理： 設計師是否實際參與監工？水電、木作、系統櫃是否有整合？ 生活機能： 收納、掃地機器人、網路與插座、家庭辦公空間、親子動線是否考慮周全？ 以下是我整理的竹北候選名單。 一、優先推薦的 4 家室內設計公司 評估依據：公開公司資料、平台業主評價、案例及服務項目。溝通與預算評分是初步篩選，不代表實際簽約後的保證。 1. 創境設計 預算控管優先面談 竹北市文興路一段288號1樓 公開評價：4.7／5，6則。 具備設計師一對一溝通、專人監工、分階段付款及簽約保障。 業主回饋提到每週進度回報、預算控制及流程透明。 接案整屋費用約150萬元起。 我的看法： 四家中，公開資料對溝通流程與預算管理的描述最具體，適合列入第一輪面談。 [1] 電話：0972-528-501 2. 賀澤室內設計 口碑優先面談 竹北市自強五路37號1樓 Google 商家評分：4.9／5，173則評論。 公開介紹提及成立於2005年。 設計、提案與工程分開收費。 公開資料提及提案約5,000～8,000元／次，設計費約5,000～8,000元／坪。 我的看法： 適合重視整體設計、住宅細節及長期自住品質的家庭。要特別確認工程報價是否逐項拆分，以及監工回報頻率。 [2] 電話：03-668-1222 官方設計流程 [3] 3. 南邑室內設計 重視施工細節 竹北市興隆路五段377號 Google 商家評分：5.0／5，143則評論。 100室內設計平台評分：4.8／5，23則評論。 公開資料顯示接案180萬元起。 24坪新成屋案例公開預算約201～300萬元。 我的看法： 適合重視設計細節、施工品質及完整規劃的家庭。不過預算門檻相對高，建議先確認是否符合總預算。 [4, 5] 電話：03-667-6285 4. 逸硯室內設計 預算方案比較 竹北市成功十三街32號9樓 Google 商家評分：4.7／5，147則評論。 100室內設計平台資料：4.3／5，48則評論。 接案約60萬元起。 公開新成屋案例包括17坪約55～92萬元、13坪約95萬元。 我的看法： 適合想比較不同裝修範圍、控制初期投入的家庭。要注意小坪數案例不能直接套用到較大的家庭住宅。 [4] 電話：03-658-5848 二、竹北公司位置 以下四家可安排同一天或分兩天預約諮詢。 重設檢視 展開地圖 地圖資料目前無法使用 🏠 賀澤室內設計 ★ 4.9 賀澤設計 已關閉 🏠 逸硯室內設計國際聯合事務所-新竹辦公室 ★ 4.7 逸硯設計 已關閉 🏠 南邑室內設計 ★ 5 南邑設計 已關閉 🏠 創境設計 ★ 4.9 · Interior designer 已關閉 三、施工溝通與預算透明度比較 這是依目前能查到的公開資訊所做的初步評估： 公司 施工溝通 預算透明度 初步定位 創境設計 高 高 預算及流程管理 賀澤設計 待面談 中高 設計與整體品質 南邑設計 中高 中 高完整度設計 逸硯設計 待面談 中 多種預算方案 這裡的「中、高」是我對公開資料的判讀，不是實測分數。尤其報價透明度不能只看公司有沒有公布每坪價格。 我會要求每家都提供以下資料： 水電工程：迴路、插座數量、弱電配置。 木作工程：施作尺寸、板材品牌、厚度。 ",
+      "excerpt_truncated": true,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "ddnews.com.tw",
+        "www.100.com.tw",
+        "www.hozo-design.com"
+      ]
+    },
     {
       "evidence_id": "05f9439e87862c9c",
       "recommendation_status": "未提及晨陽",
@@ -682,8 +701,8 @@
   ],
   "existing_job_status": {
     "ChatGPT": {
-      "pending": 2,
-      "stored": 11,
+      "pending": 1,
+      "stored": 12,
       "failed": 0,
       "no-evidence": 0
     },
@@ -694,17 +713,17 @@
       "no-evidence": 1
     },
     "Perplexity": {
-      "pending": 1,
+      "pending": 0,
       "stored": 0,
       "failed": 0,
-      "no-evidence": 12
+      "no-evidence": 13
     }
   },
   "latest_job_status": {
     "ChatGPT": {
       "day": "2026-11-24",
-      "status": "pending",
-      "reason": "vendor_still_processing"
+      "status": "stored",
+      "reason": ""
     },
     "Gemini": {
       "day": "2026-11-24",
@@ -713,8 +732,8 @@
     },
     "Perplexity": {
       "day": "2026-11-24",
-      "status": "pending",
-      "reason": "vendor_still_processing"
+      "status": "no-evidence",
+      "reason": "vendor_wait_element_timeout"
     }
   },
   "intent_analysis": {
@@ -795,7 +814,7 @@
         ],
         "platforms": {
           "ChatGPT": {
-            "samples": 1,
+            "samples": 2,
             "mentions": 0,
             "direct_citations": 0
           },
