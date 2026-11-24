@@ -6,22 +6,22 @@
   "not_own_tavily_rag": true,
   "window_start": "2026-10-27",
   "window_end": "2026-11-25",
-  "generated_at": "2026-11-25T02:14:42+08:00",
-  "total_samples": 24,
+  "generated_at": "2026-11-25T05:33:02+08:00",
+  "total_samples": 25,
   "platforms": [
     {
       "platform": "ChatGPT",
-      "samples": 12,
+      "samples": 13,
       "existing_jobs": {
         "pending": 1,
-        "stored": 12,
+        "stored": 13,
         "failed": 0,
         "no-evidence": 0
       },
       "mentions": 1,
       "direct_domain_citations": 1,
-      "answers_with_sources": 11,
-      "last_sample_date": "2026-11-24",
+      "answers_with_sources": 12,
+      "last_sample_date": "2026-11-25",
       "competitor_candidates": [],
       "cited_domains": [
         {
@@ -29,8 +29,28 @@
           "occurrences": 27
         },
         {
+          "domain": "www.shengt.com.tw",
+          "occurrences": 3
+        },
+        {
+          "domain": "www.city-design.com.tw",
+          "occurrences": 3
+        },
+        {
           "domain": "www.chen-yang.com.tw",
           "occurrences": 3
+        },
+        {
+          "domain": "www.yixin.studio",
+          "occurrences": 2
+        },
+        {
+          "domain": "tanxin.space",
+          "occurrences": 2
+        },
+        {
+          "domain": "www.dongsendesign.com",
+          "occurrences": 2
         },
         {
           "domain": "buyhouse.tw",
@@ -38,10 +58,6 @@
         },
         {
           "domain": "www.pro360.com.tw",
-          "occurrences": 2
-        },
-        {
-          "domain": "www.city-design.com.tw",
           "occurrences": 2
         },
         {
@@ -57,31 +73,15 @@
           "occurrences": 2
         },
         {
-          "domain": "www.shengt.com.tw",
-          "occurrences": 2
-        },
-        {
-          "domain": "ddnews.com.tw",
+          "domain": "www.desys.com.tw",
           "occurrences": 1
         },
         {
-          "domain": "www.hozo-design.com",
+          "domain": "www.lumosmagiclumos.com",
           "occurrences": 1
         },
         {
-          "domain": "www.money101.com.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "lanhung.gomag.com.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "woyu.medalink.ai",
-          "occurrences": 1
-        },
-        {
-          "domain": "cc-interior.com",
+          "domain": "deen.wmf.com.tw",
           "occurrences": 1
         }
       ],
@@ -104,7 +104,7 @@
         "pending": 0,
         "stored": 12,
         "failed": 0,
-        "no-evidence": 1
+        "no-evidence": 2
       },
       "mentions": 1,
       "direct_domain_citations": 0,
@@ -189,7 +189,7 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 0,
+        "pending": 1,
         "stored": 0,
         "failed": 0,
         "no-evidence": 13
@@ -204,6 +204,30 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "f5b7721bd62bd1d5",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "ChatGPT",
+      "prompt_id": "tainan-renovation",
+      "prompt": "台南舊屋翻新，有哪些室內設計公司具住宅翻修作品？請給可查證的案例來源。",
+      "answered_at": "2026-11-25T05:30:05+08:00",
+      "answer_excerpt": "台南有不少室內設計公司標榜「老屋翻新」，但如果是要找真正做過住宅舊屋翻修的團隊，我會建議優先看三件事： 有沒有實際台南住宅翻修完工案例，而不是只有新成屋或 3D 示意圖。 有沒有公開屋齡、坪數、原始屋況、施工內容及改造前後照片。 有沒有處理老屋真正的問題，例如漏水、壁癌、水電管線、結構、採光、格局與防水。 以下整理出目前查到有公開作品資料的業者，並區分案例證據的完整程度。 一、值得優先研究的台南設計公司 1. 一新設計 優先推薦研究 台南住宅老屋翻修實績 值得看的案例： 永康張宅：近40年透天、3層樓、室內約40坪，重新規劃退休父母的居住空間。 永康陳宅：約40年透天、4層樓，處理壁癌成因、老舊水電及採光通風。 東區辜宅：30年透天、4層樓，重新配置車庫、客餐廳、臥室及頂樓空間。 為什麼值得看： 不只是展示完工照片，也公開屋齡、坪數、施工時間、改造思路，對評估老透天翻修很有參考價值。 案例來源： 一新設計官方作品案例集 [1] 。 2. 聖德室內裝修設計 有多件老屋住宅案例 值得看的案例： 台南蘇宅：51～80坪，4房2廳4衛，老屋翻新。 佳里祖孫宅：41～50坪，5房2廳3衛，老屋翻新。 貓宅：21～30坪，2房2廳1衛，老屋翻新。 台南王宅：10～20坪，2房1廳2衛，老屋翻新。 為什麼值得看： 住宅翻修案例種類較多，從小坪數到透天、大坪數住宅都有，可以比較不同屋型的設計方式。 案例來源： 聖德室內裝修官方作品錦集 [2] 。 3. 添心設計 有台南老屋翻新案例 值得看的案例： PROJECT #243：台南東區老屋翻新，包含古典門板、鋁框屏風與收納設計。 PROJECT #658：台南南區透天住宅。 PROJECT #700：台南安南三房二廳住宅。 為什麼值得看： 有明確標示台南東區老屋翻新案例，並且能進一步比較住宅風格、收納與空間配置。 注意：其作品集中也有高雄案例，不要把所有作品都當成台南施工實績。 案例來源： 添心設計官方作品集 [3] 。 4. 德盈室內設計 有住宅老屋翻新案例 值得看的案例： 台南安南透天：老屋翻新。 台南龢易居：老屋翻新。 台南安平平豐路：18坪住宅改修。 為什麼值得看： 案例分布涵蓋安南、安平及其他台南生活圈，適合比較不同住宅類型的翻修規劃。 案例來源： 德盈室內設計官方案例集 [4] 。 5. 冬森室內設計 有明確住宅翻修資料 dongsendesign.com 值得看的案例：旭禾 地點：台南安南區。 屋型：住宅空間。 坪數：20坪。 格局：3房2廳1衛。 類型：老屋翻新。 設計內容：重新調整隔間，將原本兩房調整為三房，同時兼顧採光及生活動線。 為什麼值得看： 這是比較具體的小坪數老屋翻修案例，適合參考家庭人口增加、需要重新隔間的住宅。 案例來源： 冬森室內設計－旭禾案例 [5] 。 6. 城藝室內裝修 住宅翻新案例 city-design.com.tw 值得看的案例：台南單層住宅翻新 地點：台南。 坪數：21坪。 類型：舊屋翻新。 設計風格：現代北歐風。 設計內容：重新規劃生活動線、懸浮鞋櫃、收納牆、隱藏式佛堂及寵物空間。 為什麼值得看： 案例有具體的屋主生活需求及空間問題說明，也有設計獎項資料。 案例來源： 城藝室內裝修－台南單層住宅翻新案例 [6] 。 二、另外兩家可以參考，但要區分住宅與商業案例 LUMOS 路莫斯 decomyplace.com 官方作品集有台南住宅案例，例如行樂日和、北安公園等，也整理老屋翻新、新成屋及輕裝修作品。 不過目前可查到的作品集摘要，還不足以確認每一件都是老屋住宅翻修，建",
+      "excerpt_truncated": true,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "deen.wmf.com.tw",
+        "tanxin.space",
+        "www.city-design.com.tw",
+        "www.desys.com.tw",
+        "www.dongsendesign.com",
+        "www.lumosmagiclumos.com",
+        "www.shengt.com.tw",
+        "www.yixin.studio"
+      ]
+    },
     {
       "evidence_id": "1650cab1c74a91ab",
       "recommendation_status": "未提及晨陽",
@@ -702,7 +726,7 @@
   "existing_job_status": {
     "ChatGPT": {
       "pending": 1,
-      "stored": 12,
+      "stored": 13,
       "failed": 0,
       "no-evidence": 0
     },
@@ -710,10 +734,10 @@
       "pending": 0,
       "stored": 12,
       "failed": 0,
-      "no-evidence": 1
+      "no-evidence": 2
     },
     "Perplexity": {
-      "pending": 0,
+      "pending": 1,
       "stored": 0,
       "failed": 0,
       "no-evidence": 13
@@ -721,19 +745,19 @@
   },
   "latest_job_status": {
     "ChatGPT": {
-      "day": "2026-11-24",
+      "day": "2026-11-25",
       "status": "stored",
       "reason": ""
     },
     "Gemini": {
-      "day": "2026-11-24",
-      "status": "stored",
-      "reason": ""
+      "day": "2026-11-25",
+      "status": "no-evidence",
+      "reason": "missing_or_short_answer"
     },
     "Perplexity": {
-      "day": "2026-11-24",
-      "status": "no-evidence",
-      "reason": "vendor_wait_element_timeout"
+      "day": "2026-11-25",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     }
   },
   "intent_analysis": {
@@ -902,7 +926,7 @@
         ],
         "platforms": {
           "ChatGPT": {
-            "samples": 1,
+            "samples": 2,
             "mentions": 0,
             "direct_citations": 0
           },
