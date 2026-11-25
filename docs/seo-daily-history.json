@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "source": "Google Search Console private real SQLite (is_mock=0)",
-  "last_check_date": "2026-11-25",
+  "last_check_date": "2026-11-26",
   "entries": [
     {
       "schema_version": 1,
@@ -799,6 +799,83 @@
           "clicks": 4440.0,
           "impressions": 167155.0,
           "ctr": 0.026562,
+          "days_with_data": 90,
+          "expected_days": 90
+        }
+      },
+      "keywords": [
+        {
+          "keyword": "室內設計",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0,
+            "last_observed_day": null,
+            "latest_daily_position": null
+          },
+          "previous_30d_position": 28.43,
+          "position_improvement_30d": null
+        },
+        {
+          "keyword": "室內設計推薦",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0,
+            "last_observed_day": null,
+            "latest_daily_position": null
+          },
+          "previous_30d_position": null,
+          "position_improvement_30d": null
+        },
+        {
+          "keyword": "桃園室內設計",
+          "current_30d": {
+            "position": null,
+            "clicks": null,
+            "impressions": null,
+            "days_with_impressions": 0,
+            "last_observed_day": null,
+            "latest_daily_position": null
+          },
+          "previous_30d_position": 24.86,
+          "position_improvement_30d": null
+        }
+      ],
+      "not_live_google_serp": true,
+      "no_mock": true,
+      "note": "今日是系統執行檢查的日期，GSC 資料日依 Google 回傳日期，不是今日即時排名。",
+      "data_age_days": 4,
+      "coverage_warning": false
+    },
+    {
+      "schema_version": 1,
+      "source": "Google Search Console private real SQLite (is_mock=0)",
+      "site": "https://chen-yang.com.tw/",
+      "check_date": "2026-11-26",
+      "checked_at": "2026-11-26T03:58:40+08:00",
+      "gsc_expected_through": "2026-11-21",
+      "gsc_latest_day": "2026-11-22",
+      "status": "ok",
+      "status_text": "已檢查真實 GSC 資料（非即時排名）",
+      "periods": {
+        "30": {
+          "from": "2026-10-24",
+          "to": "2026-11-22",
+          "clicks": 1095.0,
+          "impressions": 47409.0,
+          "ctr": 0.023097,
+          "days_with_data": 30,
+          "expected_days": 30
+        },
+        "90": {
+          "from": "2026-08-25",
+          "to": "2026-11-22",
+          "clicks": 4405.0,
+          "impressions": 166735.0,
+          "ctr": 0.026419,
           "days_with_data": 90,
           "expected_days": 90
         }
