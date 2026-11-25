@@ -4,29 +4,37 @@
   "not_first_party_analytics": true,
   "not_real_consumer_query_volume": true,
   "not_own_tavily_rag": true,
-  "window_start": "2026-10-27",
-  "window_end": "2026-11-25",
-  "generated_at": "2026-11-25T23:22:50+08:00",
-  "total_samples": 25,
+  "window_start": "2026-10-28",
+  "window_end": "2026-11-26",
+  "generated_at": "2026-11-26T04:41:56+08:00",
+  "total_samples": 27,
   "platforms": [
     {
       "platform": "ChatGPT",
-      "samples": 13,
+      "samples": 14,
       "existing_jobs": {
         "pending": 1,
-        "stored": 13,
+        "stored": 14,
         "failed": 0,
         "no-evidence": 0
       },
       "mentions": 1,
       "direct_domain_citations": 1,
-      "answers_with_sources": 12,
-      "last_sample_date": "2026-11-25",
+      "answers_with_sources": 13,
+      "last_sample_date": "2026-11-26",
       "competitor_candidates": [],
       "cited_domains": [
         {
           "domain": "www.100.com.tw",
-          "occurrences": 27
+          "occurrences": 28
+        },
+        {
+          "domain": "www.nlma.gov.tw",
+          "occurrences": 6
+        },
+        {
+          "domain": "www.moi.gov.tw",
+          "occurrences": 3
         },
         {
           "domain": "www.shengt.com.tw",
@@ -39,6 +47,22 @@
         {
           "domain": "www.chen-yang.com.tw",
           "occurrences": 3
+        },
+        {
+          "domain": "cloudbm.nlma.gov.tw",
+          "occurrences": 2
+        },
+        {
+          "domain": "appeal.cpc.ey.gov.tw",
+          "occurrences": 2
+        },
+        {
+          "domain": "law.moj.gov.tw",
+          "occurrences": 2
+        },
+        {
+          "domain": "www.google.com",
+          "occurrences": 2
         },
         {
           "domain": "www.yixin.studio",
@@ -59,30 +83,6 @@
         {
           "domain": "www.pro360.com.tw",
           "occurrences": 2
-        },
-        {
-          "domain": "9wood.com.tw",
-          "occurrences": 2
-        },
-        {
-          "domain": "www.moi.gov.tw",
-          "occurrences": 2
-        },
-        {
-          "domain": "www.nlma.gov.tw",
-          "occurrences": 2
-        },
-        {
-          "domain": "www.desys.com.tw",
-          "occurrences": 1
-        },
-        {
-          "domain": "www.lumosmagiclumos.com",
-          "occurrences": 1
-        },
-        {
-          "domain": "deen.wmf.com.tw",
-          "occurrences": 1
         }
       ],
       "tested_prompt_ids": [
@@ -99,17 +99,17 @@
     },
     {
       "platform": "Gemini",
-      "samples": 12,
+      "samples": 13,
       "existing_jobs": {
         "pending": 0,
-        "stored": 12,
+        "stored": 13,
         "failed": 0,
         "no-evidence": 2
       },
       "mentions": 1,
       "direct_domain_citations": 0,
       "answers_with_sources": 10,
-      "last_sample_date": "2026-11-24",
+      "last_sample_date": "2026-11-26",
       "competitor_candidates": [],
       "cited_domains": [
         {
@@ -189,7 +189,7 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 0,
+        "pending": 1,
         "stored": 0,
         "failed": 0,
         "no-evidence": 14
@@ -204,6 +204,50 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "d91136c387aefbc9",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "Gemini",
+      "prompt_id": "renovation-process",
+      "prompt": "台灣找室內設計公司，如何驗證施工品質、保固和客戶溝通？有哪些可靠的資訊來源？",
+      "answered_at": "2026-11-26T04:39:43+08:00",
+      "answer_excerpt": "在台灣找室內設計公司， 要避開「報價單含糊、 工班素質不一、 完工變孤兒」的常見地雷， 必須在簽約前透過「證照查核、 現場直擊、 合約條款」三個層面進行交叉驗證。 以下為針對施工品質、 保固條款、 客戶溝通的具體驗證方法， 以及台灣最可靠的資訊查詢管道： 一、 施工品質：不看精修美圖，看「正在進行式」 設計師官網上的完工照通常經過打光與修圖， 無法反映基礎工程（水電、 防水、 泥作）的真實水準。 要求參觀「正在施工中」的案場： 優質的設計公司通常有 2～3 個同步進行的案場。 直接要求去水電剛進場或木工剛封板的工地， 觀察以下三點： 工地整潔與保護： 公共區域（電梯、 走廊）與室內地板是否鋪設保護板？廢料是否集中堆放？工具擺放整齊代表工班紀律嚴明。 水電管線配置： 管線是否橫平豎直、 強弱電是否分離、 配電箱內標示是否清楚。 監工機制： 詢問「工地主任或設計師多久去一次現場？」以及「如何回報進度？」（例如：每日在 LINE 群組上傳施工照片與進度日誌）。 檢視「施工圖」細膩度： 簽約前請對方展示過去案件的完整施工圖（不只是 3D 渲染圖）。 圖面若包含詳細的水電迴路圖、 天花板剖面圖、 櫃體大樣圖與材質編號， 代表設計師有能力精準指揮工班， 不易發生現場「自由發揮」做錯的狀況。 二、 保固與合法性：白紙黑字與政府登記 台灣法規對室內裝修有明確規範， 合法登記是保固兌現的最基本前提。 查核「雙證照」： 台灣合法的室內裝修業者必須具備內政部核發的「室內裝修業登記證」 ，且公司內需有具備 「建築物室內設計」或「建築物室內裝修工程管理」技術士證的專業人員。 若只有一般「工程行」或「工作室」營業登記， 不僅無法依法申請室內裝修許可（老屋翻新或大樓管委會常強制要求）， 發生糾紛時也缺乏保障。 檢視工程合約與保固條款： 務必參考內政部公告的《建築物室內裝修—工程承攬契約書範本》， 重點核對： 保固年限： 台灣業界標準通常為「一般裝修（木作、 油漆、 五金）保固 1 年， 防水工程保固 2～3 年」。 保固範圍與排除條款： 確認「人為損壞」與「自然耗損（如地震導致的油漆細微裂縫）」的界定方式。 驗收與尾款比例： 尾款建議保留總工程款的 5%～10% ， 待所有缺失改善完畢、 完成驗收後再行支付， 這是保障保固與收尾品質最強而有力的籌碼。 三、 客戶溝通：從「報價單」與「提案流程」觀察 溝通能力決定了裝潢過程的痛苦指數， 尤其在面對預算超支與追加減帳時。 檢視報價單是否「明列細項」： 專業且誠信的公司， 報價單會詳細列出 品項、品牌型號、規格尺寸、數量、單位、單價 （例如：明確寫出「日本麗仕矽酸鈣板 6mm」、 「YKK 氣密窗」）， 絕不會只寫「全室木作一式 XX 萬元」。 報價越透明， 後期惡意追加的空間就越小。 觀察前期需求訪談的深度： 好的設計師在初次洽談時， 會花大量時間詢問你的 生活習慣、收納物品清單、家電型號、家庭成員未來 5～10 年的變化 ， 而不是一味推銷流行風格。 確認變更設計（追加減）的處理流程： 詢問「如果施工中我想改設計， 流程是什麼？」標準做法是必須先提供「追加減報價單」， 經屋主簽名確認後才動工， 避免完工後才收到天價帳單。 四、 台灣可靠的資訊來源清單 在接觸設計公司前， 建議先透過以下官方與民間管道進行背景調查： 資訊類別 推薦管道與平台 查詢重點與用途 合法證照查詢 內政部國土管理署 — 全國建築管理資訊系統 （室內裝修業登記查詢） 輸入公司名稱或統編，確認是否為合法登記的室內裝修業，以及登記證是否仍在有效期限內。 司法與糾紛",
+      "excerpt_truncated": true,
+      "mentions_brand": false,
+      "has_citations": false,
+      "cited_domains": []
+    },
+    {
+      "evidence_id": "8b5eae2ff2a95a8e",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "ChatGPT",
+      "prompt_id": "renovation-process",
+      "prompt": "台灣找室內設計公司，如何驗證施工品質、保固和客戶溝通？有哪些可靠的資訊來源？",
+      "answered_at": "2026-11-26T04:38:32+08:00",
+      "answer_excerpt": "在台灣挑選室內設計公司，我會建議不要只看作品集、網路評價或設計師的口才，而是用三個核心標準來驗證： 施工品質： 公司是否真的有能力把設計圖落實成高品質工程？ 保固責任： 完工後發生漏水、壁癌、木作變形或設備故障，誰負責、如何處理？ 客戶溝通： 施工期間是否有固定窗口、進度回報、變更紀錄及問題追蹤？ 最重要的原則是： 不要只聽業者承諾，要取得可以查證的證據，並把承諾寫進合約。 以下整理一套適合台灣屋主實際使用的查核方法，以及值得信任的資訊來源。 一、如何驗證室內設計公司的施工品質？ 1. 要求看實際施工中的案場 不只看完工美照，最好看正在施工、尚未包覆的水電、泥作、防水及木作工程。 2. 檢查隱蔽工程 特別注意浴室防水、給排水管線、電線配置、接地、管線標示及防水試驗紀錄。 3. 檢查完工細節 觀察磁磚平整度、收邊、矽利康、門片縫隙、櫃體水平、油漆平整度及地板高低差。 建議向設計公司索取的證據 查核項目 應要求提供的資料 過往施工經驗 至少 2～3 個已完工案例 實際施工能力 現場施工照片、施工日誌 防水工程 防水材料規格、施作照片、試水紀錄 水電工程 水電配置圖、迴路及管線紀錄 材料品質 品牌、型號、規格、保固文件 完工驗收 缺失清單、改善紀錄、驗收文件 一個很有效的驗證方式： 請設計公司安排你參觀一個已完工至少 1～2 年的住宅，並在屋主同意下詢問： 有沒有漏水或壁癌？ 木作、櫃體有沒有變形？ 有沒有發生保固維修？ 設計公司是否真的有回來處理？ 這比只看剛完工的漂亮照片更有參考價值。 二、如何驗證保固是否可靠？ 這是非常容易被忽略的部分。 有些公司會說「我們有兩年保固」，但沒有說清楚保固範圍、除外責任、報修流程，甚至沒有明確的負責單位。 簽約前，務必確認以下六件事 項目 必須確認的內容 保固期限 從哪一天開始計算？ 防水保固 是否涵蓋浴室、陽台、窗框等部位？ 水電保固 管線、接頭、電路故障如何處理？ 木作保固 變形、脫膠、五金故障是否涵蓋？ 設備保固 是設計公司負責，還是原廠負責？ 維修時效 幾天內回覆？幾天內到場？ 特別注意：保固不等於所有問題都免費維修 建議將保固責任拆成三個層次： 施工瑕疵： 施工不良造成的問題，由承攬公司負責。 材料及設備瑕疵： 明定原廠保固與設計公司的協助責任。 使用及外力因素： 明確列出合理的除外範圍。 另外，最好要求： 保固書列出各工程項目的期限。 保固起算日以書面約定。 報修有 LINE、Email 或客服紀錄。 維修完成後有照片及處理紀錄。 公司歇業、解散或承攬關係改變時的責任安排，也要事先了解。 我的建議：不要只比較保固幾年，要比較公司是否有能力履行保固。 三、如何驗證客戶溝通能力？ 室內裝修通常需要數個月，溝通品質會直接影響施工體驗。 我建議在簽約前，直接詢問以下問題： 詢問問題 好的公司應有的回答 誰是我的主要聯絡窗口？ 有明確負責設計師或專案經理 多久回報一次工程進度？ 固定每週或依工程階段回報 施工有問題找誰？ 有明確的現場負責人 預算變更怎麼處理？ 事前報價、書面確認再施工 工期延誤怎麼處理？ 有原因說明及更新後的工期 施工品質誰負責驗收？ 有明確的檢查及驗收流程 建議建立四種書面紀錄 每週施工進度報告 本週完成項目 下週預計施工項目 目前進度及延誤原因 工程變更單 變更原因 增減金額 工期影響 雙方簽名確認 施工照片紀錄 水電、防水等隱蔽工程 材料進場 各階段施工成果 缺失改善追蹤表 缺失位置及照片 責任單位 預計改善日期 改善完成確認 有一個很好的測試方法： 在正式簽約前，提出一個具體問題，例如「",
+      "excerpt_truncated": true,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "appeal.cpc.ey.gov.tw",
+        "cloudbm.nlma.gov.tw",
+        "gazette.nat.gov.tw",
+        "law.moj.gov.tw",
+        "taid.org.tw",
+        "www.100.com.tw",
+        "www.arch.org.tw",
+        "www.dcard.tw",
+        "www.google.com",
+        "www.mobile01.com",
+        "www.moi.gov.tw",
+        "www.nlma.gov.tw",
+        "www.taidd.org.tw"
+      ]
+    },
     {
       "evidence_id": "f5b7721bd62bd1d5",
       "recommendation_status": "未提及晨陽",
@@ -726,18 +770,18 @@
   "existing_job_status": {
     "ChatGPT": {
       "pending": 1,
-      "stored": 13,
+      "stored": 14,
       "failed": 0,
       "no-evidence": 0
     },
     "Gemini": {
       "pending": 0,
-      "stored": 12,
+      "stored": 13,
       "failed": 0,
       "no-evidence": 2
     },
     "Perplexity": {
-      "pending": 0,
+      "pending": 1,
       "stored": 0,
       "failed": 0,
       "no-evidence": 14
@@ -745,19 +789,19 @@
   },
   "latest_job_status": {
     "ChatGPT": {
-      "day": "2026-11-25",
+      "day": "2026-11-26",
       "status": "stored",
       "reason": ""
     },
     "Gemini": {
-      "day": "2026-11-25",
-      "status": "no-evidence",
-      "reason": "missing_or_short_answer"
+      "day": "2026-11-26",
+      "status": "stored",
+      "reason": ""
     },
     "Perplexity": {
-      "day": "2026-11-25",
-      "status": "no-evidence",
-      "reason": "vendor_record_error"
+      "day": "2026-11-26",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     }
   },
   "intent_analysis": {
@@ -1014,12 +1058,12 @@
         ],
         "platforms": {
           "ChatGPT": {
-            "samples": 1,
+            "samples": 2,
             "mentions": 0,
             "direct_citations": 0
           },
           "Gemini": {
-            "samples": 1,
+            "samples": 2,
             "mentions": 0,
             "direct_citations": 0
           },
