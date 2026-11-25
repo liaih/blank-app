@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-11-25T04:42:28+08:00",
+  "generated_at": "2026-11-26T03:58:49+08:00",
   "source": "私人 GSC page 維度的每日已存檔資料，無新增外部 API 呼叫",
   "scope": "已授權官網的 NEWS／開箱頁面；只涵蓋 GSC 已回傳的 page 維度，非全站無限制爬取",
-  "last_gsc_day": "2026-11-21",
+  "last_gsc_day": "2026-11-22",
   "current_period": {
-    "from": "2026-10-25",
-    "to": "2026-11-21"
+    "from": "2026-10-26",
+    "to": "2026-11-22"
   },
   "previous_period": {
-    "from": "2026-09-27",
-    "to": "2026-10-24"
+    "from": "2026-09-28",
+    "to": "2026-10-25"
   },
   "days_covered": 56,
   "daily_page_rows_truncated": false,
@@ -19,30 +19,6 @@
   "total_candidate_pages": 257,
   "pages": [
     {
-      "id": "seo-danfo-234",
-      "path": "news-content.php?id=234",
-      "url": "https://chen-yang.com.tw/news-content.php?id=234",
-      "title": "林口 A7 丹佛花都：萬坪樹海首排的純粹生活，高坪效 2 房現代美學提案",
-      "existing_improvement_task": true,
-      "current": {
-        "clicks": 23.0,
-        "impressions": 1718.0,
-        "ctr": 0.01339,
-        "position": 7.65
-      },
-      "previous": {
-        "clicks": 39.0,
-        "impressions": 2512.0,
-        "ctr": 0.01553,
-        "position": 7.96
-      },
-      "status": "檢查流量下滑原因",
-      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
-      "needs_article_review": false,
-      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
-      "title_source": "official_h1"
-    },
-    {
       "id": "seo-yunjiang-331",
       "path": "news-content.php?id=331",
       "url": "https://chen-yang.com.tw/news-content.php?id=331",
@@ -50,42 +26,18 @@
       "existing_improvement_task": true,
       "current": {
         "clicks": 31.0,
-        "impressions": 650.0,
-        "ctr": 0.04769,
-        "position": 7.59
+        "impressions": 660.0,
+        "ctr": 0.04697,
+        "position": 7.66
       },
       "previous": {
-        "clicks": 87.0,
+        "clicks": 85.0,
         "impressions": 2256.0,
-        "ctr": 0.03856,
+        "ctr": 0.03768,
         "position": 8.66
       },
       "status": "檢查流量下滑原因",
       "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
-      "needs_article_review": false,
-      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
-      "title_source": "official_h1"
-    },
-    {
-      "id": "seo-hongguang-253",
-      "path": "news-content.php?id=253",
-      "url": "https://chen-yang.com.tw/news-content.php?id=253",
-      "title": "林口A7、A8捷運正核心「鴻廣繪青」菁英薈萃宅 | 鴻廣建設 | 晨陽共好機構",
-      "existing_improvement_task": true,
-      "current": {
-        "clicks": 2.0,
-        "impressions": 518.0,
-        "ctr": 0.00386,
-        "position": 8.49
-      },
-      "previous": {
-        "clicks": 5.0,
-        "impressions": 752.0,
-        "ctr": 0.00665,
-        "position": 9.47
-      },
-      "status": "檢查搜尋結果呈現",
-      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
       "needs_article_review": false,
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
       "title_source": "official_h1"
@@ -98,19 +50,43 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 4.0,
-        "impressions": 499.0,
-        "ctr": 0.00802,
-        "position": 8.48
+        "impressions": 521.0,
+        "ctr": 0.00768,
+        "position": 8.31
       },
       "previous": {
         "clicks": 3.0,
-        "impressions": 635.0,
-        "ctr": 0.00472,
-        "position": 10.87
+        "impressions": 642.0,
+        "ctr": 0.00467,
+        "position": 10.94
       },
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
       "needs_article_review": true,
+      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
+      "title_source": "official_h1"
+    },
+    {
+      "id": "seo-hongguang-253",
+      "path": "news-content.php?id=253",
+      "url": "https://chen-yang.com.tw/news-content.php?id=253",
+      "title": "林口A7、A8捷運正核心「鴻廣繪青」菁英薈萃宅 | 鴻廣建設 | 晨陽共好機構",
+      "existing_improvement_task": true,
+      "current": {
+        "clicks": 2.0,
+        "impressions": 515.0,
+        "ctr": 0.00388,
+        "position": 8.5
+      },
+      "previous": {
+        "clicks": 5.0,
+        "impressions": 742.0,
+        "ctr": 0.00674,
+        "position": 9.5
+      },
+      "status": "檢查搜尋結果呈現",
+      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
+      "needs_article_review": false,
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
       "title_source": "official_h1"
     },
@@ -122,14 +98,14 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 3.0,
-        "impressions": 462.0,
-        "ctr": 0.00649,
-        "position": 8.23
+        "impressions": 474.0,
+        "ctr": 0.00633,
+        "position": 8.22
       },
       "previous": {
-        "clicks": 3.0,
-        "impressions": 486.0,
-        "ctr": 0.00617,
+        "clicks": 2.0,
+        "impressions": 470.0,
+        "ctr": 0.00426,
         "position": 8.99
       },
       "status": "檢查搜尋結果呈現",
@@ -146,15 +122,39 @@
       "existing_improvement_task": true,
       "current": {
         "clicks": 3.0,
-        "impressions": 373.0,
-        "ctr": 0.00804,
-        "position": 8.12
+        "impressions": 385.0,
+        "ctr": 0.00779,
+        "position": 7.68
       },
       "previous": {
         "clicks": 3.0,
-        "impressions": 354.0,
-        "ctr": 0.00847,
-        "position": 8.53
+        "impressions": 356.0,
+        "ctr": 0.00843,
+        "position": 8.83
+      },
+      "status": "檢查搜尋結果呈現",
+      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
+      "needs_article_review": false,
+      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
+      "title_source": "official_h1"
+    },
+    {
+      "id": "seo-housheng-451",
+      "path": "news-content.php?id=451",
+      "url": "https://chen-yang.com.tw/news-content.php?id=451",
+      "title": "桃園中壢「厚陞晴」北歐風宅邸 | 桃園室內設計裝修 | 晨陽設計",
+      "existing_improvement_task": true,
+      "current": {
+        "clicks": 2.0,
+        "impressions": 334.0,
+        "ctr": 0.00599,
+        "position": 8.96
+      },
+      "previous": {
+        "clicks": 5.0,
+        "impressions": 337.0,
+        "ctr": 0.01484,
+        "position": 9.7
       },
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
@@ -169,67 +169,19 @@
       "title": "桃園中路特區核心建案「昭揚大和」打造極簡現代高質感正三房 | 桃園室內設計裝修 | 晨陽設計",
       "existing_improvement_task": false,
       "current": {
-        "clicks": 9.0,
-        "impressions": 331.0,
-        "ctr": 0.02719,
-        "position": 8.21
+        "clicks": 10.0,
+        "impressions": 333.0,
+        "ctr": 0.03003,
+        "position": 8.12
       },
       "previous": {
         "clicks": 18.0,
         "impressions": 685.0,
         "ctr": 0.02628,
-        "position": 7.97
+        "position": 7.98
       },
       "status": "檢查流量下滑原因",
       "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
-      "needs_article_review": true,
-      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
-      "title_source": "official_h1"
-    },
-    {
-      "id": "seo-housheng-451",
-      "path": "news-content.php?id=451",
-      "url": "https://chen-yang.com.tw/news-content.php?id=451",
-      "title": "桃園中壢「厚陞晴」北歐風宅邸 | 桃園室內設計裝修 | 晨陽設計",
-      "existing_improvement_task": true,
-      "current": {
-        "clicks": 2.0,
-        "impressions": 320.0,
-        "ctr": 0.00625,
-        "position": 9.06
-      },
-      "previous": {
-        "clicks": 5.0,
-        "impressions": 335.0,
-        "ctr": 0.01493,
-        "position": 9.66
-      },
-      "status": "檢查搜尋結果呈現",
-      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
-      "needs_article_review": false,
-      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
-      "title_source": "official_h1"
-    },
-    {
-      "id": "discovery-news-content-87",
-      "path": "news-content.php?id=87",
-      "url": "https://chen-yang.com.tw/news-content.php?id=87",
-      "title": "中路特區綠地豪邸，桃園「鴻苑」| 鴻築建設 | 晨陽共好機構",
-      "existing_improvement_task": false,
-      "current": {
-        "clicks": 1.0,
-        "impressions": 256.0,
-        "ctr": 0.00391,
-        "position": 8.17
-      },
-      "previous": {
-        "clicks": 2.0,
-        "impressions": 225.0,
-        "ctr": 0.00889,
-        "position": 9.08
-      },
-      "status": "檢查搜尋結果呈現",
-      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
       "needs_article_review": true,
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
       "title_source": "official_h1"
@@ -241,43 +193,43 @@
       "title": "桃園龍潭石門重劃區「石門湯旅」一秒入住溫泉山水度假宅｜桃園室內設計裝修｜晨陽設計",
       "existing_improvement_task": false,
       "current": {
-        "clicks": 4.0,
-        "impressions": 250.0,
-        "ctr": 0.016,
-        "position": 9.5
+        "clicks": 2.0,
+        "impressions": 253.0,
+        "ctr": 0.00791,
+        "position": 9.7
       },
       "previous": {
         "clicks": 7.0,
-        "impressions": 179.0,
-        "ctr": 0.03911,
-        "position": 10.34
+        "impressions": 185.0,
+        "ctr": 0.03784,
+        "position": 10.22
       },
-      "status": "檢查流量下滑原因",
-      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
+      "status": "檢查搜尋結果呈現",
+      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
       "needs_article_review": true,
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
       "title_source": "official_h1"
     },
     {
-      "id": "discovery-news-content-491",
-      "path": "news-content.php?id=491",
-      "url": "https://chen-yang.com.tw/news-content.php?id=491",
-      "title": "新北市新莊區「勝旺居」重劃區靜巷宅邸｜新北室內設計裝修｜晨陽設計",
+      "id": "discovery-news-content-87",
+      "path": "news-content.php?id=87",
+      "url": "https://chen-yang.com.tw/news-content.php?id=87",
+      "title": "中路特區綠地豪邸，桃園「鴻苑」| 鴻築建設 | 晨陽共好機構",
       "existing_improvement_task": false,
       "current": {
-        "clicks": 3.0,
-        "impressions": 233.0,
-        "ctr": 0.01288,
-        "position": 8.44
+        "clicks": 0.0,
+        "impressions": 247.0,
+        "ctr": 0.0,
+        "position": 8.09
       },
       "previous": {
-        "clicks": 8.0,
-        "impressions": 256.0,
-        "ctr": 0.03125,
-        "position": 8.14
+        "clicks": 3.0,
+        "impressions": 236.0,
+        "ctr": 0.01271,
+        "position": 9.08
       },
-      "status": "檢查流量下滑原因",
-      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
+      "status": "檢查搜尋結果呈現",
+      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
       "needs_article_review": true,
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
       "title_source": "official_h1"
@@ -290,15 +242,15 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 6.0,
-        "impressions": 232.0,
-        "ctr": 0.02586,
+        "impressions": 243.0,
+        "ctr": 0.02469,
         "position": 4.94
       },
       "previous": {
-        "clicks": 24.0,
-        "impressions": 409.0,
-        "ctr": 0.05868,
-        "position": 6.26
+        "clicks": 22.0,
+        "impressions": 406.0,
+        "ctr": 0.05419,
+        "position": 6.19
       },
       "status": "檢查流量下滑原因",
       "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
@@ -314,15 +266,15 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 1.0,
-        "impressions": 228.0,
-        "ctr": 0.00439,
-        "position": 7.87
+        "impressions": 241.0,
+        "ctr": 0.00415,
+        "position": 7.95
       },
       "previous": {
-        "clicks": 4.0,
-        "impressions": 163.0,
-        "ctr": 0.02454,
-        "position": 7.17
+        "clicks": 3.0,
+        "impressions": 165.0,
+        "ctr": 0.01818,
+        "position": 7.18
       },
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
@@ -331,22 +283,46 @@
       "title_source": "official_h1"
     },
     {
-      "id": "discovery-news-content-83",
-      "path": "news-content.php?id=83",
-      "url": "https://chen-yang.com.tw/news-content.php?id=83",
-      "title": "中路特區豪邸，桃園「青和寬逸」| 青和建設 | 晨陽共好機構",
+      "id": "discovery-news-content-491",
+      "path": "news-content.php?id=491",
+      "url": "https://chen-yang.com.tw/news-content.php?id=491",
+      "title": "新北市新莊區「勝旺居」重劃區靜巷宅邸｜新北室內設計裝修｜晨陽設計",
       "existing_improvement_task": false,
       "current": {
         "clicks": 3.0,
-        "impressions": 223.0,
-        "ctr": 0.01345,
-        "position": 8.87
+        "impressions": 231.0,
+        "ctr": 0.01299,
+        "position": 8.42
       },
       "previous": {
-        "clicks": 7.0,
-        "impressions": 350.0,
-        "ctr": 0.02,
-        "position": 8.39
+        "clicks": 8.0,
+        "impressions": 250.0,
+        "ctr": 0.032,
+        "position": 8.18
+      },
+      "status": "檢查流量下滑原因",
+      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
+      "needs_article_review": true,
+      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
+      "title_source": "official_h1"
+    },
+    {
+      "id": "discovery-news-content-388",
+      "path": "news-content.php?id=388",
+      "url": "https://chen-yang.com.tw/news-content.php?id=388",
+      "title": "林口地區新案「聿見美璟」一席靜墅，藏納光影與心境的慢生活 | 林口室內設計裝修 | 晨陽設計",
+      "existing_improvement_task": false,
+      "current": {
+        "clicks": 9.0,
+        "impressions": 214.0,
+        "ctr": 0.04206,
+        "position": 6.26
+      },
+      "previous": {
+        "clicks": 20.0,
+        "impressions": 254.0,
+        "ctr": 0.07874,
+        "position": 6.43
       },
       "status": "檢查流量下滑原因",
       "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
@@ -362,42 +338,18 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 2.0,
-        "impressions": 222.0,
-        "ctr": 0.00901,
-        "position": 8.0
+        "impressions": 214.0,
+        "ctr": 0.00935,
+        "position": 7.92
       },
       "previous": {
         "clicks": 6.0,
-        "impressions": 245.0,
-        "ctr": 0.02449,
-        "position": 9.07
+        "impressions": 250.0,
+        "ctr": 0.024,
+        "position": 9.2
       },
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
-      "needs_article_review": true,
-      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
-      "title_source": "official_h1"
-    },
-    {
-      "id": "discovery-news-content-246",
-      "path": "news-content.php?id=246",
-      "url": "https://chen-yang.com.tw/news-content.php?id=246",
-      "title": "「新橫濱2-夢悅城」，四鐵共構南港15分鐘 | 潤隆建設 | 白天鵝機構 | 甲山林機構 | 晨陽共好機構",
-      "existing_improvement_task": false,
-      "current": {
-        "clicks": 6.0,
-        "impressions": 212.0,
-        "ctr": 0.0283,
-        "position": 7.27
-      },
-      "previous": {
-        "clicks": 13.0,
-        "impressions": 139.0,
-        "ctr": 0.09353,
-        "position": 6.53
-      },
-      "status": "檢查流量下滑原因",
-      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
       "needs_article_review": true,
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
       "title_source": "official_h1"
@@ -410,15 +362,63 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 6.0,
-        "impressions": 212.0,
-        "ctr": 0.0283,
-        "position": 9.33
+        "impressions": 213.0,
+        "ctr": 0.02817,
+        "position": 9.35
       },
       "previous": {
         "clicks": 13.0,
-        "impressions": 225.0,
-        "ctr": 0.05778,
-        "position": 8.39
+        "impressions": 220.0,
+        "ctr": 0.05909,
+        "position": 8.47
+      },
+      "status": "檢查流量下滑原因",
+      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
+      "needs_article_review": true,
+      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
+      "title_source": "official_h1"
+    },
+    {
+      "id": "discovery-news-content-83",
+      "path": "news-content.php?id=83",
+      "url": "https://chen-yang.com.tw/news-content.php?id=83",
+      "title": "中路特區豪邸，桃園「青和寬逸」| 青和建設 | 晨陽共好機構",
+      "existing_improvement_task": false,
+      "current": {
+        "clicks": 3.0,
+        "impressions": 212.0,
+        "ctr": 0.01415,
+        "position": 8.79
+      },
+      "previous": {
+        "clicks": 7.0,
+        "impressions": 354.0,
+        "ctr": 0.01977,
+        "position": 8.44
+      },
+      "status": "檢查流量下滑原因",
+      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
+      "needs_article_review": true,
+      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
+      "title_source": "official_h1"
+    },
+    {
+      "id": "discovery-news-content-246",
+      "path": "news-content.php?id=246",
+      "url": "https://chen-yang.com.tw/news-content.php?id=246",
+      "title": "「新橫濱2-夢悅城」，四鐵共構南港15分鐘 | 潤隆建設 | 白天鵝機構 | 甲山林機構 | 晨陽共好機構",
+      "existing_improvement_task": false,
+      "current": {
+        "clicks": 5.0,
+        "impressions": 206.0,
+        "ctr": 0.02427,
+        "position": 7.18
+      },
+      "previous": {
+        "clicks": 14.0,
+        "impressions": 144.0,
+        "ctr": 0.09722,
+        "position": 6.53
       },
       "status": "檢查流量下滑原因",
       "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
@@ -434,14 +434,14 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 0.0,
-        "impressions": 205.0,
+        "impressions": 206.0,
         "ctr": 0.0,
-        "position": 7.4
+        "position": 7.47
       },
       "previous": {
         "clicks": 7.0,
-        "impressions": 333.0,
-        "ctr": 0.02102,
+        "impressions": 330.0,
+        "ctr": 0.02121,
         "position": 8.15
       },
       "status": "檢查搜尋結果呈現",
@@ -458,15 +458,15 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 0.0,
-        "impressions": 191.0,
+        "impressions": 194.0,
         "ctr": 0.0,
-        "position": 9.05
+        "position": 8.96
       },
       "previous": {
         "clicks": 0.0,
-        "impressions": 239.0,
+        "impressions": 226.0,
         "ctr": 0.0,
-        "position": 9.06
+        "position": 9.14
       },
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
@@ -484,13 +484,13 @@
         "clicks": 2.0,
         "impressions": 186.0,
         "ctr": 0.01075,
-        "position": 9.33
+        "position": 9.23
       },
       "previous": {
-        "clicks": 5.0,
-        "impressions": 200.0,
-        "ctr": 0.025,
-        "position": 8.74
+        "clicks": 4.0,
+        "impressions": 194.0,
+        "ctr": 0.02062,
+        "position": 8.8
       },
       "status": "檢查流量下滑原因",
       "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
@@ -499,25 +499,25 @@
       "title_source": "official_h1"
     },
     {
-      "id": "discovery-news-content-581",
-      "path": "news-content.php?id=581",
-      "url": "https://chen-yang.com.tw/news-content.php?id=581",
-      "title": "桃園蘆竹新建案「 安美大望 」 | 桃園室內設計裝修 | 晨陽設計",
+      "id": "discovery-news-content-228",
+      "path": "news-content.php?id=228",
+      "url": "https://chen-yang.com.tw/news-content.php?id=228",
+      "title": "龜山A7重劃區，「和發大境」台北國際村NO2 | 和發建設 | 晨陽共好機構",
       "existing_improvement_task": false,
       "current": {
-        "clicks": 2.0,
+        "clicks": 1.0,
         "impressions": 175.0,
-        "ctr": 0.01143,
-        "position": 10.55
+        "ctr": 0.00571,
+        "position": 8.52
       },
       "previous": {
-        "clicks": 5.0,
-        "impressions": 266.0,
-        "ctr": 0.0188,
-        "position": 9.45
+        "clicks": 2.0,
+        "impressions": 74.0,
+        "ctr": 0.02703,
+        "position": 7.68
       },
-      "status": "檢查流量下滑原因",
-      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
+      "status": "檢查搜尋結果呈現",
+      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
       "needs_article_review": true,
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
       "title_source": "official_h1"
@@ -530,18 +530,42 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 1.0,
-        "impressions": 168.0,
-        "ctr": 0.00595,
-        "position": 8.6
+        "impressions": 173.0,
+        "ctr": 0.00578,
+        "position": 8.57
       },
       "previous": {
         "clicks": 1.0,
-        "impressions": 29.0,
-        "ctr": 0.03448,
-        "position": 9.1
+        "impressions": 31.0,
+        "ctr": 0.03226,
+        "position": 9.19
       },
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
+      "needs_article_review": true,
+      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
+      "title_source": "official_h1"
+    },
+    {
+      "id": "discovery-news-content-581",
+      "path": "news-content.php?id=581",
+      "url": "https://chen-yang.com.tw/news-content.php?id=581",
+      "title": "桃園蘆竹新建案「 安美大望 」 | 桃園室內設計裝修 | 晨陽設計",
+      "existing_improvement_task": false,
+      "current": {
+        "clicks": 2.0,
+        "impressions": 171.0,
+        "ctr": 0.0117,
+        "position": 10.54
+      },
+      "previous": {
+        "clicks": 5.0,
+        "impressions": 265.0,
+        "ctr": 0.01887,
+        "position": 9.44
+      },
+      "status": "檢查流量下滑原因",
+      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
       "needs_article_review": true,
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
       "title_source": "official_h1"
@@ -554,15 +578,15 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 3.0,
-        "impressions": 166.0,
-        "ctr": 0.01807,
-        "position": 7.64
+        "impressions": 169.0,
+        "ctr": 0.01775,
+        "position": 7.63
       },
       "previous": {
         "clicks": 5.0,
-        "impressions": 199.0,
-        "ctr": 0.02513,
-        "position": 8.47
+        "impressions": 200.0,
+        "ctr": 0.025,
+        "position": 8.49
       },
       "status": "檢查流量下滑原因",
       "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
@@ -578,111 +602,15 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 2.0,
-        "impressions": 165.0,
-        "ctr": 0.01212,
-        "position": 9.17
+        "impressions": 167.0,
+        "ctr": 0.01198,
+        "position": 9.12
       },
       "previous": {
         "clicks": 10.0,
-        "impressions": 149.0,
-        "ctr": 0.06711,
-        "position": 10.68
-      },
-      "status": "檢查流量下滑原因",
-      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
-      "needs_article_review": true,
-      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
-      "title_source": "official_h1"
-    },
-    {
-      "id": "discovery-news-content-620",
-      "path": "news-content.php?id=620",
-      "url": "https://chen-yang.com.tw/news-content.php?id=620",
-      "title": "新北土城重劃區「紅布朗花園」：29 坪高坪效現代風格 3D 空間設計提案 | 新北市內設計裝修 | 晨陽設計",
-      "existing_improvement_task": false,
-      "current": {
-        "clicks": 0.0,
-        "impressions": 158.0,
-        "ctr": 0.0,
-        "position": 9.38
-      },
-      "previous": {
-        "clicks": 4.0,
-        "impressions": 273.0,
-        "ctr": 0.01465,
-        "position": 9.47
-      },
-      "status": "檢查搜尋結果呈現",
-      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
-      "needs_article_review": true,
-      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
-      "title_source": "official_h1"
-    },
-    {
-      "id": "discovery-news-content-228",
-      "path": "news-content.php?id=228",
-      "url": "https://chen-yang.com.tw/news-content.php?id=228",
-      "title": "龜山A7重劃區，「和發大境」台北國際村NO2 | 和發建設 | 晨陽共好機構",
-      "existing_improvement_task": false,
-      "current": {
-        "clicks": 1.0,
-        "impressions": 156.0,
-        "ctr": 0.00641,
-        "position": 8.37
-      },
-      "previous": {
-        "clicks": 2.0,
-        "impressions": 68.0,
-        "ctr": 0.02941,
-        "position": 7.54
-      },
-      "status": "檢查搜尋結果呈現",
-      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
-      "needs_article_review": true,
-      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
-      "title_source": "official_h1"
-    },
-    {
-      "id": "discovery-news-content-528",
-      "path": "news-content.php?id=528",
-      "url": "https://chen-yang.com.tw/news-content.php?id=528",
-      "title": "桃園市觀音區「益翔新天地」綠意宜居新地標｜桃園室內設計裝修｜晨陽設計",
-      "existing_improvement_task": false,
-      "current": {
-        "clicks": 1.0,
-        "impressions": 154.0,
-        "ctr": 0.00649,
-        "position": 9.33
-      },
-      "previous": {
-        "clicks": 2.0,
-        "impressions": 256.0,
-        "ctr": 0.00781,
-        "position": 8.52
-      },
-      "status": "檢查搜尋結果呈現",
-      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
-      "needs_article_review": true,
-      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
-      "title_source": "official_h1"
-    },
-    {
-      "id": "discovery-news-content-408",
-      "path": "news-content.php?id=408",
-      "url": "https://chen-yang.com.tw/news-content.php?id=408",
-      "title": "桃園小檜溪生活圈「昭揚天鋭」，打造北歐風簡約宅｜桃園室內設計裝修｜晨陽設計",
-      "existing_improvement_task": false,
-      "current": {
-        "clicks": 4.0,
-        "impressions": 153.0,
-        "ctr": 0.02614,
-        "position": 8.4
-      },
-      "previous": {
-        "clicks": 8.0,
-        "impressions": 193.0,
-        "ctr": 0.04145,
-        "position": 6.95
+        "impressions": 138.0,
+        "ctr": 0.07246,
+        "position": 10.64
       },
       "status": "檢查流量下滑原因",
       "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
@@ -698,9 +626,9 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 1.0,
-        "impressions": 152.0,
-        "ctr": 0.00658,
-        "position": 9.59
+        "impressions": 164.0,
+        "ctr": 0.0061,
+        "position": 9.67
       },
       "previous": {
         "clicks": 1.0,
@@ -715,22 +643,46 @@
       "title_source": "official_h1"
     },
     {
-      "id": "discovery-news-content-341",
-      "path": "news-content.php?id=341",
-      "url": "https://chen-yang.com.tw/news-content.php?id=341",
-      "title": "置產桃園上南崁好房「佳昕昕境」，一起入住北歐森活療癒宅 | 佳昕建設 | 晨陽共好機構",
+      "id": "discovery-news-content-528",
+      "path": "news-content.php?id=528",
+      "url": "https://chen-yang.com.tw/news-content.php?id=528",
+      "title": "桃園市觀音區「益翔新天地」綠意宜居新地標｜桃園室內設計裝修｜晨陽設計",
+      "existing_improvement_task": false,
+      "current": {
+        "clicks": 1.0,
+        "impressions": 162.0,
+        "ctr": 0.00617,
+        "position": 9.82
+      },
+      "previous": {
+        "clicks": 2.0,
+        "impressions": 249.0,
+        "ctr": 0.00803,
+        "position": 8.5
+      },
+      "status": "檢查搜尋結果呈現",
+      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
+      "needs_article_review": true,
+      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
+      "title_source": "official_h1"
+    },
+    {
+      "id": "discovery-news-content-408",
+      "path": "news-content.php?id=408",
+      "url": "https://chen-yang.com.tw/news-content.php?id=408",
+      "title": "桃園小檜溪生活圈「昭揚天鋭」，打造北歐風簡約宅｜桃園室內設計裝修｜晨陽設計",
       "existing_improvement_task": false,
       "current": {
         "clicks": 3.0,
-        "impressions": 151.0,
-        "ctr": 0.01987,
-        "position": 9.07
+        "impressions": 155.0,
+        "ctr": 0.01935,
+        "position": 8.61
       },
       "previous": {
-        "clicks": 5.0,
-        "impressions": 139.0,
-        "ctr": 0.03597,
-        "position": 10.81
+        "clicks": 9.0,
+        "impressions": 201.0,
+        "ctr": 0.04478,
+        "position": 6.89
       },
       "status": "檢查流量下滑原因",
       "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
@@ -746,9 +698,9 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 1.0,
-        "impressions": 146.0,
-        "ctr": 0.00685,
-        "position": 7.12
+        "impressions": 147.0,
+        "ctr": 0.0068,
+        "position": 7.24
       },
       "previous": {
         "clicks": 3.0,
@@ -763,22 +715,46 @@
       "title_source": "official_h1"
     },
     {
-      "id": "discovery-news-content-164",
-      "path": "news-content.php?id=164",
-      "url": "https://chen-yang.com.tw/news-content.php?id=164",
-      "title": "巴洛克新貴輕豪宅，台中西屯「 文心愛悅」｜興富發建設｜晨陽共好機構",
+      "id": "discovery-news-content-63",
+      "path": "news-content.php?id=63",
+      "url": "https://chen-yang.com.tw/news-content.php?id=63",
+      "title": "近享青埔與林口生活圈，桃園「新潤捷韻A10二期」| 新潤興業 | 海悅廣告 | 晨陽共好機構",
       "existing_improvement_task": false,
       "current": {
         "clicks": 1.0,
-        "impressions": 142.0,
-        "ctr": 0.00704,
-        "position": 7.69
+        "impressions": 145.0,
+        "ctr": 0.0069,
+        "position": 9.63
+      },
+      "previous": {
+        "clicks": 1.0,
+        "impressions": 166.0,
+        "ctr": 0.00602,
+        "position": 8.76
+      },
+      "status": "檢查搜尋結果呈現",
+      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
+      "needs_article_review": true,
+      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
+      "title_source": "official_h1"
+    },
+    {
+      "id": "discovery-news-content-620",
+      "path": "news-content.php?id=620",
+      "url": "https://chen-yang.com.tw/news-content.php?id=620",
+      "title": "新北土城重劃區「紅布朗花園」：29 坪高坪效現代風格 3D 空間設計提案 | 新北市內設計裝修 | 晨陽設計",
+      "existing_improvement_task": false,
+      "current": {
+        "clicks": 0.0,
+        "impressions": 143.0,
+        "ctr": 0.0,
+        "position": 9.13
       },
       "previous": {
         "clicks": 3.0,
-        "impressions": 125.0,
-        "ctr": 0.024,
-        "position": 9.1
+        "impressions": 279.0,
+        "ctr": 0.01075,
+        "position": 9.58
       },
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
@@ -796,109 +772,13 @@
         "clicks": 0.0,
         "impressions": 141.0,
         "ctr": 0.0,
-        "position": 9.23
+        "position": 9.43
       },
       "previous": {
         "clicks": 2.0,
-        "impressions": 155.0,
-        "ctr": 0.0129,
-        "position": 9.9
-      },
-      "status": "檢查搜尋結果呈現",
-      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
-      "needs_article_review": true,
-      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
-      "title_source": "official_h1"
-    },
-    {
-      "id": "discovery-news-content-63",
-      "path": "news-content.php?id=63",
-      "url": "https://chen-yang.com.tw/news-content.php?id=63",
-      "title": "近享青埔與林口生活圈，桃園「新潤捷韻A10二期」| 新潤興業 | 海悅廣告 | 晨陽共好機構",
-      "existing_improvement_task": false,
-      "current": {
-        "clicks": 1.0,
-        "impressions": 140.0,
-        "ctr": 0.00714,
-        "position": 9.69
-      },
-      "previous": {
-        "clicks": 1.0,
-        "impressions": 173.0,
-        "ctr": 0.00578,
-        "position": 8.55
-      },
-      "status": "檢查搜尋結果呈現",
-      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
-      "needs_article_review": true,
-      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
-      "title_source": "official_h1"
-    },
-    {
-      "id": "discovery-news-content-65",
-      "path": "news-content.php?id=65",
-      "url": "https://chen-yang.com.tw/news-content.php?id=65",
-      "title": "正A7捷運核心，龜山「竹城甲子園」| 竹城建設 | 海悅廣告 | 晨陽共好機構",
-      "existing_improvement_task": false,
-      "current": {
-        "clicks": 0.0,
-        "impressions": 139.0,
-        "ctr": 0.0,
-        "position": 7.52
-      },
-      "previous": {
-        "clicks": 1.0,
-        "impressions": 40.0,
-        "ctr": 0.025,
-        "position": 7.3
-      },
-      "status": "檢查搜尋結果呈現",
-      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
-      "needs_article_review": true,
-      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
-      "title_source": "official_h1"
-    },
-    {
-      "id": "discovery-news-content-84",
-      "path": "news-content.php?id=84",
-      "url": "https://chen-yang.com.tw/news-content.php?id=84",
-      "title": "桃園高鐵正核心，青埔「昆旺青茵悦」| 昆旺建設 | 晨陽共好機構",
-      "existing_improvement_task": false,
-      "current": {
-        "clicks": 1.0,
-        "impressions": 139.0,
-        "ctr": 0.00719,
-        "position": 8.71
-      },
-      "previous": {
-        "clicks": 0.0,
-        "impressions": 111.0,
-        "ctr": 0.0,
-        "position": 9.72
-      },
-      "status": "檢查搜尋結果呈現",
-      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
-      "needs_article_review": true,
-      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
-      "title_source": "official_h1"
-    },
-    {
-      "id": "discovery-news-content-133",
-      "path": "news-content.php?id=133",
-      "url": "https://chen-yang.com.tw/news-content.php?id=133",
-      "title": "市中心3400坪都更，台中「皇普莊園」| 皇普建設 | 晨陽共好機構",
-      "existing_improvement_task": false,
-      "current": {
-        "clicks": 1.0,
-        "impressions": 136.0,
-        "ctr": 0.00735,
-        "position": 9.18
-      },
-      "previous": {
-        "clicks": 0.0,
-        "impressions": 62.0,
-        "ctr": 0.0,
-        "position": 8.6
+        "impressions": 150.0,
+        "ctr": 0.01333,
+        "position": 9.03
       },
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
@@ -914,9 +794,9 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 0.0,
-        "impressions": 133.0,
+        "impressions": 140.0,
         "ctr": 0.0,
-        "position": 7.37
+        "position": 7.31
       },
       "previous": {
         "clicks": 0.0,
@@ -931,25 +811,97 @@
       "title_source": "official_h1"
     },
     {
-      "id": "discovery-news-content-525",
-      "path": "news-content.php?id=525",
-      "url": "https://chen-yang.com.tw/news-content.php?id=525",
-      "title": "新竹市東區「惠宇青和」奶油風質感現代宅邸｜新竹室內設計裝修｜晨陽設計",
+      "id": "discovery-news-content-133",
+      "path": "news-content.php?id=133",
+      "url": "https://chen-yang.com.tw/news-content.php?id=133",
+      "title": "市中心3400坪都更，台中「皇普莊園」| 皇普建設 | 晨陽共好機構",
       "existing_improvement_task": false,
       "current": {
-        "clicks": 4.0,
-        "impressions": 131.0,
-        "ctr": 0.03053,
-        "position": 8.09
+        "clicks": 1.0,
+        "impressions": 138.0,
+        "ctr": 0.00725,
+        "position": 9.11
       },
       "previous": {
-        "clicks": 9.0,
-        "impressions": 193.0,
-        "ctr": 0.04663,
-        "position": 9.28
+        "clicks": 0.0,
+        "impressions": 62.0,
+        "ctr": 0.0,
+        "position": 8.66
       },
-      "status": "檢查流量下滑原因",
-      "reason": "點擊比前 28 天明顯減少；需先區分曝光、排名、季節性及裝置因素，不能直接整篇重寫。",
+      "status": "檢查搜尋結果呈現",
+      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
+      "needs_article_review": true,
+      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
+      "title_source": "official_h1"
+    },
+    {
+      "id": "discovery-news-content-84",
+      "path": "news-content.php?id=84",
+      "url": "https://chen-yang.com.tw/news-content.php?id=84",
+      "title": "桃園高鐵正核心，青埔「昆旺青茵悦」| 昆旺建設 | 晨陽共好機構",
+      "existing_improvement_task": false,
+      "current": {
+        "clicks": 1.0,
+        "impressions": 138.0,
+        "ctr": 0.00725,
+        "position": 8.73
+      },
+      "previous": {
+        "clicks": 0.0,
+        "impressions": 110.0,
+        "ctr": 0.0,
+        "position": 9.45
+      },
+      "status": "檢查搜尋結果呈現",
+      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
+      "needs_article_review": true,
+      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
+      "title_source": "official_h1"
+    },
+    {
+      "id": "discovery-news-content-65",
+      "path": "news-content.php?id=65",
+      "url": "https://chen-yang.com.tw/news-content.php?id=65",
+      "title": "正A7捷運核心，龜山「竹城甲子園」| 竹城建設 | 海悅廣告 | 晨陽共好機構",
+      "existing_improvement_task": false,
+      "current": {
+        "clicks": 0.0,
+        "impressions": 137.0,
+        "ctr": 0.0,
+        "position": 7.5
+      },
+      "previous": {
+        "clicks": 1.0,
+        "impressions": 46.0,
+        "ctr": 0.02174,
+        "position": 7.28
+      },
+      "status": "檢查搜尋結果呈現",
+      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
+      "needs_article_review": true,
+      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
+      "title_source": "official_h1"
+    },
+    {
+      "id": "discovery-news-content-164",
+      "path": "news-content.php?id=164",
+      "url": "https://chen-yang.com.tw/news-content.php?id=164",
+      "title": "巴洛克新貴輕豪宅，台中西屯「 文心愛悅」｜興富發建設｜晨陽共好機構",
+      "existing_improvement_task": false,
+      "current": {
+        "clicks": 1.0,
+        "impressions": 136.0,
+        "ctr": 0.00735,
+        "position": 7.78
+      },
+      "previous": {
+        "clicks": 3.0,
+        "impressions": 132.0,
+        "ctr": 0.02273,
+        "position": 8.91
+      },
+      "status": "檢查搜尋結果呈現",
+      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
       "needs_article_review": true,
       "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
       "title_source": "official_h1"
@@ -962,15 +914,63 @@
       "existing_improvement_task": false,
       "current": {
         "clicks": 0.0,
-        "impressions": 131.0,
+        "impressions": 134.0,
         "ctr": 0.0,
-        "position": 7.92
+        "position": 8.02
       },
       "previous": {
         "clicks": 3.0,
-        "impressions": 132.0,
-        "ctr": 0.02273,
+        "impressions": 131.0,
+        "ctr": 0.0229,
         "position": 9.44
+      },
+      "status": "檢查搜尋結果呈現",
+      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
+      "needs_article_review": true,
+      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
+      "title_source": "official_h1"
+    },
+    {
+      "id": "discovery-news-content-342",
+      "path": "news-content.php?id=342",
+      "url": "https://chen-yang.com.tw/news-content.php?id=342",
+      "title": "三重重劃區，水岸景觀宅 「凱風快晴-久年快晴」 | 久年營造 | 晨陽共好機構",
+      "existing_improvement_task": false,
+      "current": {
+        "clicks": 1.0,
+        "impressions": 133.0,
+        "ctr": 0.00752,
+        "position": 8.74
+      },
+      "previous": {
+        "clicks": 3.0,
+        "impressions": 135.0,
+        "ctr": 0.02222,
+        "position": 10.44
+      },
+      "status": "檢查搜尋結果呈現",
+      "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
+      "needs_article_review": true,
+      "evidence_level": "GSC page 維度；未核對該 URL 的搜尋字詞或正文內容",
+      "title_source": "official_h1"
+    },
+    {
+      "id": "discovery-news-content-94",
+      "path": "news-content.php?id=94",
+      "url": "https://chen-yang.com.tw/news-content.php?id=94",
+      "title": "台中北屯質感宅「精銳IN未來」| 精銳建設 | 晨陽共好機構",
+      "existing_improvement_task": false,
+      "current": {
+        "clicks": 1.0,
+        "impressions": 133.0,
+        "ctr": 0.00752,
+        "position": 8.63
+      },
+      "previous": {
+        "clicks": 0.0,
+        "impressions": 66.0,
+        "ctr": 0.0,
+        "position": 10.64
       },
       "status": "檢查搜尋結果呈現",
       "reason": "本頁近 28 天已有曝光且 CTR 偏低，先檢查實際 SERP 標題、競爭結果與搜尋意圖；不是證明文章品質不佳。",
@@ -1008,46 +1008,48 @@
     "news-content.php?id=564": "台南市歸仁區「豪棋MOMA18」現代藝術美學宅邸｜台南室內設計裝修｜晨陽設計",
     "news-content.php?id=256": "楊梅「雅典大地」的獨棟別墅，規劃「三代同堂」舒適的侘寂美學宅 | 達和機構 | 香檳建設 | 晨陽共好機構",
     "news-content.php?id=485": "台南市新化區「北揚協奏曲2」 北歐風質感宅 | 台南設計裝修 | 晨陽設計",
-    "news-content.php?id=342": "三重重劃區，水岸景觀宅 「凱風快晴-久年快晴」 | 久年營造 | 晨陽共好機構",
     "news-content.php?id=234": "林口 A7 丹佛花都：萬坪樹海首排的純粹生活，高坪效 2 房現代美學提案",
+    "news-content.php?id=341": "置產桃園上南崁好房「佳昕昕境」，一起入住北歐森活療癒宅 | 佳昕建設 | 晨陽共好機構",
+    "news-content.php?id=525": "新竹市東區「惠宇青和」奶油風質感現代宅邸｜新竹室內設計裝修｜晨陽設計",
     "news-content.php?id=331": "林口A7重劃區「允將大聚」秒入住簡約的療癒空間｜林口室內設計裝修｜晨陽設計",
-    "news-content.php?id=253": "林口A7、A8捷運正核心「鴻廣繪青」菁英薈萃宅 | 鴻廣建設 | 晨陽共好機構",
     "news-content.php?id=141": "桃園A7站景觀宅邸，龜山「禾悅花園」| 禾聯建設 | 晨陽共好機構",
+    "news-content.php?id=253": "林口A7、A8捷運正核心「鴻廣繪青」菁英薈萃宅 | 鴻廣建設 | 晨陽共好機構",
     "news-content.php?id=182": "新北都會心臟地帶，土城區「金城舞」NO2 都心花園 | 精業建設、茂德機構 | 晨陽共好機構",
     "news-content.php?id=217": "天地極緻，林口「立軒天諾」 | 毓軒建設 | 晨陽共好機構",
-    "news-content.php?id=432": "桃園中路特區核心建案「昭揚大和」打造極簡現代高質感正三房 | 桃園室內設計裝修 | 晨陽設計",
     "news-content.php?id=451": "桃園中壢「厚陞晴」北歐風宅邸 | 桃園室內設計裝修 | 晨陽設計",
-    "news-content.php?id=87": "中路特區綠地豪邸，桃園「鴻苑」| 鴻築建設 | 晨陽共好機構",
+    "news-content.php?id=432": "桃園中路特區核心建案「昭揚大和」打造極簡現代高質感正三房 | 桃園室內設計裝修 | 晨陽設計",
     "news-content.php?id=365": "桃園龍潭石門重劃區「石門湯旅」一秒入住溫泉山水度假宅｜桃園室內設計裝修｜晨陽設計",
-    "news-content.php?id=491": "新北市新莊區「勝旺居」重劃區靜巷宅邸｜新北室內設計裝修｜晨陽設計",
+    "news-content.php?id=87": "中路特區綠地豪邸，桃園「鴻苑」| 鴻築建設 | 晨陽共好機構",
     "news-content.php?id=473": "台中市北屯區「浩瀚創立方」打造北歐風宅邸｜台中室內設計裝修｜晨陽設計",
     "news-content.php?id=411": "台中西屯區「潤隆VVS1」質感現代宅｜台中室內設計裝修｜晨陽設計",
-    "news-content.php?id=83": "中路特區豪邸，桃園「青和寬逸」| 青和建設 | 晨陽共好機構",
+    "news-content.php?id=491": "新北市新莊區「勝旺居」重劃區靜巷宅邸｜新北室內設計裝修｜晨陽設計",
+    "news-content.php?id=388": "林口地區新案「聿見美璟」一席靜墅，藏納光影與心境的慢生活 | 林口室內設計裝修 | 晨陽設計",
     "news-content.php?id=423": "新北泰山「碧瑤一品雋」 工業風質感宅｜新北室內設計裝修｜晨陽設計",
-    "news-content.php?id=246": "「新橫濱2-夢悅城」，四鐵共構南港15分鐘 | 潤隆建設 | 白天鵝機構 | 甲山林機構 | 晨陽共好機構",
     "news-content.php?id=397": "新北土城新建案「新潤花路」日系純住宅，靜心藏一席捷運宅｜新北室內設計裝修｜晨陽設計",
+    "news-content.php?id=83": "中路特區豪邸，桃園「青和寬逸」| 青和建設 | 晨陽共好機構",
+    "news-content.php?id=246": "「新橫濱2-夢悅城」，四鐵共構南港15分鐘 | 潤隆建設 | 白天鵝機構 | 甲山林機構 | 晨陽共好機構",
     "news-content.php?id=636": "板橋江子翠立川琚 2+1 房輕裝修：極簡現代與河景首排的溫潤對話",
     "news-content.php?id=55": "新北鳳鳴，親民宅邸「微笑海悅」| 海悅國際 | 晨陽共好機構",
     "news-content.php?id=104": "純正日系宅邸，三重「三松MPARK」| 三松開發建設 | 晨陽共好機構",
-    "news-content.php?id=581": "桃園蘆竹新建案「 安美大望 」 | 桃園室內設計裝修 | 晨陽設計",
+    "news-content.php?id=228": "龜山A7重劃區，「和發大境」台北國際村NO2 | 和發建設 | 晨陽共好機構",
     "news-content.php?id=118": "中正商圈地標建築，龍潭「華曜大謙」| 華曜建設 | 晨陽共好機構",
+    "news-content.php?id=581": "桃園蘆竹新建案「 安美大望 」 | 桃園室內設計裝修 | 晨陽設計",
     "news-content.php?id=558": "桃園市蘆竹區「松綠翫」都心景觀大樓宅邸｜桃園室內設計裝修｜晨陽設計",
     "news-content.php?id=439": "新北市土城區「有富富玉」現代風宅邸 | 新北室內設計裝修 | 晨陽設計",
-    "news-content.php?id=620": "新北土城重劃區「紅布朗花園」：29 坪高坪效現代風格 3D 空間設計提案 | 新北市內設計裝修 | 晨陽設計",
-    "news-content.php?id=228": "龜山A7重劃區，「和發大境」台北國際村NO2 | 和發建設 | 晨陽共好機構",
+    "news-content.php?id=549": "晨陽設計台中西屯富旺天際W ONE：現代極簡風格小豪宅空間設計",
     "news-content.php?id=528": "桃園市觀音區「益翔新天地」綠意宜居新地標｜桃園室內設計裝修｜晨陽設計",
     "news-content.php?id=408": "桃園小檜溪生活圈「昭揚天鋭」，打造北歐風簡約宅｜桃園室內設計裝修｜晨陽設計",
-    "news-content.php?id=549": "晨陽設計台中西屯富旺天際W ONE：現代極簡風格小豪宅空間設計",
-    "news-content.php?id=341": "置產桃園上南崁好房「佳昕昕境」，一起入住北歐森活療癒宅 | 佳昕建設 | 晨陽共好機構",
     "news-content.php?id=43": "藝文核心地標宅「麗晶花園廣場」｜福容開發｜海悅國際｜晨陽共好機構",
-    "news-content.php?id=164": "巴洛克新貴輕豪宅，台中西屯「 文心愛悅」｜興富發建設｜晨陽共好機構",
-    "news-content.php?id=343": "土城區新成屋「悅峰WE時代」打造黑灰白的現代質感居家 | 悅峰建設 | 晨陽共好機構",
     "news-content.php?id=63": "近享青埔與林口生活圈，桃園「新潤捷韻A10二期」| 新潤興業 | 海悅廣告 | 晨陽共好機構",
-    "news-content.php?id=65": "正A7捷運核心，龜山「竹城甲子園」| 竹城建設 | 海悅廣告 | 晨陽共好機構",
-    "news-content.php?id=84": "桃園高鐵正核心，青埔「昆旺青茵悦」| 昆旺建設 | 晨陽共好機構",
-    "news-content.php?id=133": "市中心3400坪都更，台中「皇普莊園」| 皇普建設 | 晨陽共好機構",
+    "news-content.php?id=620": "新北土城重劃區「紅布朗花園」：29 坪高坪效現代風格 3D 空間設計提案 | 新北市內設計裝修 | 晨陽設計",
+    "news-content.php?id=343": "土城區新成屋「悅峰WE時代」打造黑灰白的現代質感居家 | 悅峰建設 | 晨陽共好機構",
     "news-content.php?id=245": "A7林口重劃區「欣時代」，日本住友制震宅 | 欣巴巴集團 | 晨陽共好機構 | 林口室內設計公司",
-    "news-content.php?id=525": "新竹市東區「惠宇青和」奶油風質感現代宅邸｜新竹室內設計裝修｜晨陽設計",
-    "news-content.php?id=589": "台南市北區「欣府城-進士樓」質感現代藝文宅邸｜台南室內設計裝修｜晨陽設計"
+    "news-content.php?id=133": "市中心3400坪都更，台中「皇普莊園」| 皇普建設 | 晨陽共好機構",
+    "news-content.php?id=84": "桃園高鐵正核心，青埔「昆旺青茵悦」| 昆旺建設 | 晨陽共好機構",
+    "news-content.php?id=65": "正A7捷運核心，龜山「竹城甲子園」| 竹城建設 | 海悅廣告 | 晨陽共好機構",
+    "news-content.php?id=164": "巴洛克新貴輕豪宅，台中西屯「 文心愛悅」｜興富發建設｜晨陽共好機構",
+    "news-content.php?id=589": "台南市北區「欣府城-進士樓」質感現代藝文宅邸｜台南室內設計裝修｜晨陽設計",
+    "news-content.php?id=342": "三重重劃區，水岸景觀宅 「凱風快晴-久年快晴」 | 久年營造 | 晨陽共好機構",
+    "news-content.php?id=94": "台中北屯質感宅「精銳IN未來」| 精銳建設 | 晨陽共好機構"
   }
 }
