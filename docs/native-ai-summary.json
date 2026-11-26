@@ -6,8 +6,8 @@
   "not_own_tavily_rag": true,
   "window_start": "2026-10-29",
   "window_end": "2026-11-27",
-  "generated_at": "2026-11-27T04:35:09+08:00",
-  "total_samples": 28,
+  "generated_at": "2026-11-27T07:15:20+08:00",
+  "total_samples": 29,
   "platforms": [
     {
       "platform": "ChatGPT",
@@ -99,26 +99,26 @@
     },
     {
       "platform": "Gemini",
-      "samples": 13,
+      "samples": 14,
       "existing_jobs": {
-        "pending": 1,
-        "stored": 13,
+        "pending": 0,
+        "stored": 14,
         "failed": 0,
         "no-evidence": 2
       },
-      "mentions": 1,
+      "mentions": 2,
       "direct_domain_citations": 0,
-      "answers_with_sources": 10,
-      "last_sample_date": "2026-11-26",
+      "answers_with_sources": 11,
+      "last_sample_date": "2026-11-27",
       "competitor_candidates": [],
       "cited_domains": [
         {
           "domain": "www.100.com.tw",
-          "occurrences": 9
+          "occurrences": 10
         },
         {
           "domain": "www.pro360.com.tw",
-          "occurrences": 6
+          "occurrences": 7
         },
         {
           "domain": "www.yixin.studio",
@@ -127,6 +127,14 @@
         {
           "domain": "www.lihaocreator.com",
           "occurrences": 4
+        },
+        {
+          "domain": "www.yufang-design.com.tw",
+          "occurrences": 3
+        },
+        {
+          "domain": "www.bhouse.com.tw",
+          "occurrences": 2
         },
         {
           "domain": "blog.udn.com",
@@ -157,20 +165,12 @@
           "occurrences": 2
         },
         {
-          "domain": "www.yufang-design.com.tw",
-          "occurrences": 2
-        },
-        {
           "domain": "hcdesign.com.tw",
           "occurrences": 2
         },
         {
           "domain": "www.lu-woo.com",
           "occurrences": 2
-        },
-        {
-          "domain": "www.bhouse.com.tw",
-          "occurrences": 1
         }
       ],
       "tested_prompt_ids": [
@@ -189,10 +189,10 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 1,
+        "pending": 0,
         "stored": 0,
         "failed": 0,
-        "no-evidence": 15
+        "no-evidence": 16
       },
       "mentions": 0,
       "direct_domain_citations": 0,
@@ -204,6 +204,32 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "91db3ccac7b3b040",
+      "recommendation_status": "有提及但未確認推薦",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "在桃園進行30年以上的老屋翻新， 工程重點在於 基礎體質改造 （水電管線重拉、 防水重做、 壁癌與漏水根治、 結構安全與格局重整）， 而非單純的表面裝潢。 選擇具備完善「工程管理」與「售後服務」的設計公司， 能大幅降低施工期間的溝通成本與日後修繕風險。 一、 挑選「工程管理與售後完善」設計公司的 5 大核心指標 合法登記與雙證照資格 確認公司具備「公司登記」以及內政部核發的「建築物室內裝修業登記證」（具備專業設計及專業施工技術人員）， 合法合規才能申請室內裝修許可證， 保障老",
+      "platform": "Gemini",
+      "prompt_id": "taoyuan-renovation",
+      "prompt": "桃園30年老屋翻新，如何選擇有工程管理與售後服務的室內設計公司？請列出公司與來源。",
+      "answered_at": "2026-11-27T07:15:15+08:00",
+      "answer_excerpt": "在桃園進行30年以上的老屋翻新， 工程重點在於 基礎體質改造 （水電管線重拉、 防水重做、 壁癌與漏水根治、 結構安全與格局重整）， 而非單純的表面裝潢。 選擇具備完善「工程管理」與「售後服務」的設計公司， 能大幅降低施工期間的溝通成本與日後修繕風險。 一、 挑選「工程管理與售後完善」設計公司的 5 大核心指標 合法登記與雙證照資格 確認公司具備「公司登記」以及內政部核發的「建築物室內裝修業登記證」（具備專業設計及專業施工技術人員）， 合法合規才能申請室內裝修許可證， 保障老屋結構安全。 透明化工程管理機制（監工制度） 專人駐點或定期巡檢： 詢問是由設計師親自監工， 還是設有專職的「工程部／工務主任」負責現場調度。 施工日誌與LINE群組回報： 優質團隊會建立專屬群組， 每日或每週定時回報施工進度、 上傳現場照片， 讓屋主即使不到現場也能掌握隱蔽工程（如水電管路配置、 防水塗刷層數）的施工細節。 報價單詳盡度（拒絕模糊總價） 報價單應明確列出 品牌、型號、規格、數量、單價與施作工法 （例如電線品牌是否為太平洋或華新麗華、 防水施作高度與道數）， 避免後續隨意追加預算。 分階段驗收與撥款機制 工程款應依進度分期支付（常見為簽約 30%、 泥作/水電完成 30%、 木作完成 30%、 完工驗收 10%）， 且每階段需經屋主簽名驗收後才撥付下一期款項。 白紙黑字的售後保固條款 簽訂「設計約」與「工程約」兩份合約， 並確認售後保固期限（業界標準通常為 裝修工程保固 1 年，防水工程保固 2～3 年 ）， 且合約需載明報修窗口與處理時效。 二、 桃園具備工程管理與老屋翻新口碑的室內設計公司 以下整理在桃園在地經營多年、 擅長老屋翻新且強調工程管理與售後保固的設計公司（資訊來源涵蓋 設計家 Searchome、幸福空間、100室內設計 等專業裝修平台及各公司官方網站）： 公司名稱 服務特色與工程管理優勢 售後服務與認證 資訊來源 三宅一室空間設計 桃園在地知名團隊，擅長老屋翻新與格局重整；擁有自有工班與完整工程管理流程，強調施工細節透明化。 提供完整工程合約與一年以上售後保固服務。 幸福空間、100室內設計、官方網站 晨陽共好機構（晨陽室內設計） 桃園大型指標設計公司，設有專職工程管理部門與標準化 SOP 驗收流程，具備多項 ISO 品質管理認證。 設有專責客服與售後維修團隊，保固機制完善。 設計家 Searchome、幸福空間、官方網站 芽米空間設計 在桃園與新竹皆有據點，老屋翻新經驗豐富，重視水電管線與防水等基礎工程，並提供詳細施工進度回報。 明確簽訂工程保固書，提供一年基礎工程保固。 100室內設計、設計家 Searchome 演拓空間室內設計 雖總部在台北，但服務範圍涵蓋桃園，以極度嚴謹的「標準化工程管理（SOP）」與「交屋手冊（含水電管線圖）」聞名業界。 交屋時附上完整管線配置光碟/手冊，售後服務制度極為成熟。 設計家 Searchome、幸福空間、官方網站 歐德傢俱連鎖事業（Order） 桃園有多家門市，除系統櫃外亦承接老屋全室翻新；採集團化工程管理與標準化報價，適合重視品牌保障的屋主。 提供系統板材與五金長期保固，有全國性客服專線處理售後。 幸福空間、歐德官方網站 成綺空間設計 桃園在地設計公司，擅長中古屋與老屋改造，注重與屋主的溝通以及施工現場的品質控管。 提供完善交屋驗收與售後保固諮詢。 設計家 Searchome、100室內設計 三、 接洽與簽約前的實戰建議 第一步（初步篩選）： 建議先至 100室內設計 、 設計家 Searchome ",
+      "excerpt_truncated": true,
+      "mentions_brand": true,
+      "has_citations": true,
+      "cited_domains": [
+        "gongxuind.com",
+        "journeylift.com.tw",
+        "www.100.com.tw",
+        "www.bhouse.com.tw",
+        "www.fashion568.com",
+        "www.lee-yang.com",
+        "www.pro360.com.tw",
+        "www.ysdaweb.com",
+        "www.yufang-design.com.tw",
+        "yuanmudesign.com"
+      ]
+    },
     {
       "evidence_id": "40b2c44d44b2bddb",
       "recommendation_status": "未提及晨陽",
@@ -798,16 +824,16 @@
       "no-evidence": 0
     },
     "Gemini": {
-      "pending": 1,
-      "stored": 13,
+      "pending": 0,
+      "stored": 14,
       "failed": 0,
       "no-evidence": 2
     },
     "Perplexity": {
-      "pending": 1,
+      "pending": 0,
       "stored": 0,
       "failed": 0,
-      "no-evidence": 15
+      "no-evidence": 16
     }
   },
   "latest_job_status": {
@@ -818,13 +844,13 @@
     },
     "Gemini": {
       "day": "2026-11-27",
-      "status": "pending",
-      "reason": "vendor_still_processing"
+      "status": "stored",
+      "reason": ""
     },
     "Perplexity": {
       "day": "2026-11-27",
-      "status": "pending",
-      "reason": "vendor_still_processing"
+      "status": "no-evidence",
+      "reason": "vendor_wait_element_timeout"
     }
   },
   "intent_analysis": {
@@ -880,8 +906,8 @@
             "direct_citations": 0
           },
           "Gemini": {
-            "samples": 1,
-            "mentions": 1,
+            "samples": 2,
+            "mentions": 2,
             "direct_citations": 0
           },
           "Perplexity": {
