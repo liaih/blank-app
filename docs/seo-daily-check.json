@@ -2,28 +2,28 @@
   "schema_version": 1,
   "source": "Google Search Console private real SQLite (is_mock=0)",
   "site": "https://chen-yang.com.tw/",
-  "check_date": "2026-11-26",
-  "checked_at": "2026-11-26T03:58:40+08:00",
-  "gsc_expected_through": "2026-11-21",
-  "gsc_latest_day": "2026-11-22",
+  "check_date": "2026-11-27",
+  "checked_at": "2026-11-27T03:42:56+08:00",
+  "gsc_expected_through": "2026-11-22",
+  "gsc_latest_day": "2026-11-23",
   "status": "ok",
   "status_text": "已檢查真實 GSC 資料（非即時排名）",
   "periods": {
     "30": {
-      "from": "2026-10-24",
-      "to": "2026-11-22",
-      "clicks": 1095.0,
-      "impressions": 47409.0,
-      "ctr": 0.023097,
+      "from": "2026-10-25",
+      "to": "2026-11-23",
+      "clicks": 1093.0,
+      "impressions": 47730.0,
+      "ctr": 0.0229,
       "days_with_data": 30,
       "expected_days": 30
     },
     "90": {
-      "from": "2026-08-25",
-      "to": "2026-11-22",
-      "clicks": 4405.0,
-      "impressions": 166735.0,
-      "ctr": 0.026419,
+      "from": "2026-08-26",
+      "to": "2026-11-23",
+      "clicks": 4383.0,
+      "impressions": 166373.0,
+      "ctr": 0.026344,
       "days_with_data": 90,
       "expected_days": 90
     }
@@ -39,7 +39,7 @@
         "last_observed_day": null,
         "latest_daily_position": null
       },
-      "previous_30d_position": 28.43,
+      "previous_30d_position": 27.55,
       "position_improvement_30d": null
     },
     {
