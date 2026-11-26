@@ -4,24 +4,24 @@
   "not_first_party_analytics": true,
   "not_real_consumer_query_volume": true,
   "not_own_tavily_rag": true,
-  "window_start": "2026-10-28",
-  "window_end": "2026-11-26",
-  "generated_at": "2026-11-26T22:49:18+08:00",
-  "total_samples": 27,
+  "window_start": "2026-10-29",
+  "window_end": "2026-11-27",
+  "generated_at": "2026-11-27T04:35:09+08:00",
+  "total_samples": 28,
   "platforms": [
     {
       "platform": "ChatGPT",
-      "samples": 14,
+      "samples": 15,
       "existing_jobs": {
         "pending": 1,
-        "stored": 14,
+        "stored": 15,
         "failed": 0,
         "no-evidence": 0
       },
       "mentions": 1,
       "direct_domain_citations": 1,
-      "answers_with_sources": 13,
-      "last_sample_date": "2026-11-26",
+      "answers_with_sources": 14,
+      "last_sample_date": "2026-11-27",
       "competitor_candidates": [],
       "cited_domains": [
         {
@@ -49,6 +49,18 @@
           "occurrences": 3
         },
         {
+          "domain": "www.hunterdesign.com.tw",
+          "occurrences": 2
+        },
+        {
+          "domain": "grdesign.com.tw",
+          "occurrences": 2
+        },
+        {
+          "domain": "ycid.com.tw",
+          "occurrences": 2
+        },
+        {
           "domain": "cloudbm.nlma.gov.tw",
           "occurrences": 2
         },
@@ -71,18 +83,6 @@
         {
           "domain": "tanxin.space",
           "occurrences": 2
-        },
-        {
-          "domain": "www.dongsendesign.com",
-          "occurrences": 2
-        },
-        {
-          "domain": "buyhouse.tw",
-          "occurrences": 2
-        },
-        {
-          "domain": "www.pro360.com.tw",
-          "occurrences": 2
         }
       ],
       "tested_prompt_ids": [
@@ -101,7 +101,7 @@
       "platform": "Gemini",
       "samples": 13,
       "existing_jobs": {
-        "pending": 0,
+        "pending": 1,
         "stored": 13,
         "failed": 0,
         "no-evidence": 2
@@ -189,7 +189,7 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 0,
+        "pending": 1,
         "stored": 0,
         "failed": 0,
         "no-evidence": 15
@@ -204,6 +204,29 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "40b2c44d44b2bddb",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "ChatGPT",
+      "prompt_id": "taoyuan-renovation",
+      "prompt": "桃園30年老屋翻新，如何選擇有工程管理與售後服務的室內設計公司？請列出公司與來源。",
+      "answered_at": "2026-11-27T04:30:41+08:00",
+      "answer_excerpt": "桃園屋齡 30 年的老屋翻新，我會建議不要只挑「設計作品漂亮、報價便宜」的室內設計公司，而是優先選擇具備 老屋翻修經驗、完整工程管理、施工品質控管及正式售後保固制度 的公司。 30 年老屋通常需要特別注意水電管線、浴室防水、排水、壁癌、窗框滲水及電力負載。這類工程如果前期沒有做好勘查與工程管理，入住後很容易產生追加費用或漏水等問題。 以下整理桃園可優先評估的設計公司，以及實際篩選時應確認的項目。公司列入名單代表值得進一步詢價，不等於已經查證其售後服務品質。 一、桃園值得優先詢問的 6 家公司 我依照公開資料，把「老屋翻新經驗、工程管理、售後保固」作為主要篩選條件。 1. 亨特室內設計 保固制度資訊明確 桃園市桃園區正光二街261巷3號 公開服務流程包含工程管理、驗收及售後服務。 系統櫃保固6年，其他工程項目1年或依產品原廠保固。 公開工程管理費為總工程款8%。 屋齡20年以上翻新工程，公開參考價格每坪10萬元起。 官網： 服務流程、工程費與保固 [1] 我的評價： 很值得列入第一輪詢價，尤其適合重視施工管理和明確保固的屋主。 [1] 2. 墨崌室內裝修 工程整合經驗值得關注 地址：桃園市中壢區延平路500號10樓之2 電話：0930-761-332 公開介紹指出設計總監有25年室內設計與工程整合經驗。 專注老屋翻新、基礎工程規劃及施工整合。 官網有工程現場、基礎工程及老屋漏水相關內容。 官網： 墨崌室內裝修 [2] 我的評價： 適合優先詢問水電更新、漏水處理與基礎工程的規劃方式。保固年限需另外確認。 [2] 3. 格爾空間設計 專業證照資訊明確 桃園服務區域包含中壢、平鎮、桃園、八德、龜山等地。 公開資料列有建築物室內設計乙級及室內裝修工程管理乙級證照。 老屋翻新涵蓋管線、漏水處理、格局與動線重整。 官網表示提供完工保固。 官網： 格爾空間設計－桃園服務 [3] 我的評價： 適合將合法施工、工程管理及老屋基礎工程列為優先考量的屋主。建議進一步確認實際負責施工的專案經理與保固條款。 [3] 4. 燕居室內設計 公開強調售後保固 深耕桃園的室內設計團隊。 官網列出老屋翻修設計服務。 將完善售後服務及保固列為品牌堅持。 有住宅設計作品可供參考。 官網： 燕居室內設計 [4] 我的評價： 可以詢問其老屋翻修實際案例，以及完工後漏水、壁癌與水電問題的處理機制。保固範圍與年限需取得書面資料。 [4] 5. 堂朝建築室內設計 有公開售後服務承諾 地址：桃園市桃園區民權路6號12樓 電話：0918-080-633 公開介紹強調設計、工程管理、施工與售後服務整合。 提供每三天一組施工紀錄照片的說明。 公開宣稱一年保固及終生服務。 參考來源： 堂朝工程管理與服務介紹 [5] 我的評價： 施工紀錄和售後服務承諾值得進一步了解。不過公司成立於2025年，品牌經營年資較短，應特別查核實際承作團隊的經驗與過往案例。 [6, 5] 6. 統包先生 MR.TURNKEY 提供桃園地區服務。 住宅全室裝修、舊屋翻新。 公開介紹包含設計、工程發包、施工管理與售後服務整合。 強調設計與施工由同一團隊整合。 官網： 統包先生 MR.TURNKEY [7] 我的評價： 適合比較設計與統包一體化的管理模式。建議詢問桃園實際施工團隊、專案管理人員及保固年限。 [7] 二、公司地點參考 以下標示桃園可詢問的設計與裝修業者據點，方便安排現場諮詢。 重設檢視 展開地圖 地圖資料目前無法使用 🏠 亨特室內設計 ★ 4.6 · Interior designer 已關閉 🏠 墨崌室內裝修 ★ 5 · ",
+      "excerpt_truncated": true,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "buzzdaily.tw",
+        "grdesign.com.tw",
+        "money.udn.com",
+        "mrturnkey.com.tw",
+        "www.hunterdesign.com.tw",
+        "www.moju-interior.com.tw",
+        "ycid.com.tw"
+      ]
+    },
     {
       "evidence_id": "d91136c387aefbc9",
       "recommendation_status": "未提及晨陽",
@@ -770,18 +793,18 @@
   "existing_job_status": {
     "ChatGPT": {
       "pending": 1,
-      "stored": 14,
+      "stored": 15,
       "failed": 0,
       "no-evidence": 0
     },
     "Gemini": {
-      "pending": 0,
+      "pending": 1,
       "stored": 13,
       "failed": 0,
       "no-evidence": 2
     },
     "Perplexity": {
-      "pending": 0,
+      "pending": 1,
       "stored": 0,
       "failed": 0,
       "no-evidence": 15
@@ -789,19 +812,19 @@
   },
   "latest_job_status": {
     "ChatGPT": {
-      "day": "2026-11-26",
+      "day": "2026-11-27",
       "status": "stored",
       "reason": ""
     },
     "Gemini": {
-      "day": "2026-11-26",
-      "status": "stored",
-      "reason": ""
+      "day": "2026-11-27",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     },
     "Perplexity": {
-      "day": "2026-11-26",
-      "status": "no-evidence",
-      "reason": "vendor_record_error"
+      "day": "2026-11-27",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     }
   },
   "intent_analysis": {
@@ -852,7 +875,7 @@
         ],
         "platforms": {
           "ChatGPT": {
-            "samples": 1,
+            "samples": 2,
             "mentions": 0,
             "direct_citations": 0
           },
