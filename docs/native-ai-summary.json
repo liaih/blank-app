@@ -4,24 +4,24 @@
   "not_first_party_analytics": true,
   "not_real_consumer_query_volume": true,
   "not_own_tavily_rag": true,
-  "window_start": "2026-10-29",
-  "window_end": "2026-11-27",
-  "generated_at": "2026-11-27T23:32:04+08:00",
-  "total_samples": 29,
+  "window_start": "2026-10-30",
+  "window_end": "2026-11-28",
+  "generated_at": "2026-11-28T04:20:00+08:00",
+  "total_samples": 31,
   "platforms": [
     {
       "platform": "ChatGPT",
-      "samples": 15,
+      "samples": 16,
       "existing_jobs": {
         "pending": 1,
-        "stored": 15,
+        "stored": 16,
         "failed": 0,
         "no-evidence": 0
       },
       "mentions": 1,
       "direct_domain_citations": 1,
-      "answers_with_sources": 14,
-      "last_sample_date": "2026-11-27",
+      "answers_with_sources": 15,
+      "last_sample_date": "2026-11-28",
       "competitor_candidates": [],
       "cited_domains": [
         {
@@ -49,6 +49,18 @@
           "occurrences": 3
         },
         {
+          "domain": "www.risingsundesign.com.tw",
+          "occurrences": 2
+        },
+        {
+          "domain": "www.tangge2012.com.tw",
+          "occurrences": 2
+        },
+        {
+          "domain": "www.keidesign.com.tw",
+          "occurrences": 2
+        },
+        {
           "domain": "www.hunterdesign.com.tw",
           "occurrences": 2
         },
@@ -71,18 +83,6 @@
         {
           "domain": "law.moj.gov.tw",
           "occurrences": 2
-        },
-        {
-          "domain": "www.google.com",
-          "occurrences": 2
-        },
-        {
-          "domain": "www.yixin.studio",
-          "occurrences": 2
-        },
-        {
-          "domain": "tanxin.space",
-          "occurrences": 2
         }
       ],
       "tested_prompt_ids": [
@@ -99,22 +99,22 @@
     },
     {
       "platform": "Gemini",
-      "samples": 14,
+      "samples": 15,
       "existing_jobs": {
         "pending": 0,
-        "stored": 14,
+        "stored": 15,
         "failed": 0,
         "no-evidence": 2
       },
       "mentions": 2,
       "direct_domain_citations": 0,
-      "answers_with_sources": 11,
-      "last_sample_date": "2026-11-27",
+      "answers_with_sources": 12,
+      "last_sample_date": "2026-11-28",
       "competitor_candidates": [],
       "cited_domains": [
         {
           "domain": "www.100.com.tw",
-          "occurrences": 10
+          "occurrences": 12
         },
         {
           "domain": "www.pro360.com.tw",
@@ -129,11 +129,23 @@
           "occurrences": 4
         },
         {
+          "domain": "www.bhouse.com.tw",
+          "occurrences": 3
+        },
+        {
+          "domain": "decomyplace.com",
+          "occurrences": 3
+        },
+        {
           "domain": "www.yufang-design.com.tw",
           "occurrences": 3
         },
         {
-          "domain": "www.bhouse.com.tw",
+          "domain": "www.puloapp.com",
+          "occurrences": 2
+        },
+        {
+          "domain": "www.risingsundesign.com.tw",
           "occurrences": 2
         },
         {
@@ -153,23 +165,11 @@
           "occurrences": 2
         },
         {
-          "domain": "decomyplace.com",
-          "occurrences": 2
-        },
-        {
           "domain": "9wood.com.tw",
           "occurrences": 2
         },
         {
           "domain": "yourhome.tw",
-          "occurrences": 2
-        },
-        {
-          "domain": "hcdesign.com.tw",
-          "occurrences": 2
-        },
-        {
-          "domain": "www.lu-woo.com",
           "occurrences": 2
         }
       ],
@@ -189,7 +189,7 @@
       "platform": "Perplexity",
       "samples": 0,
       "existing_jobs": {
-        "pending": 0,
+        "pending": 1,
         "stored": 0,
         "failed": 0,
         "no-evidence": 16
@@ -204,6 +204,51 @@
     }
   ],
   "public_test_samples": [
+    {
+      "evidence_id": "92f98159de7d486e",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "Gemini",
+      "prompt_id": "taichung-condo",
+      "prompt": "台中25坪新成屋裝潢，推薦值得比較的室內設計公司與其擅長的風格。",
+      "answered_at": "2026-11-28T04:17:44+08:00",
+      "answer_excerpt": "台中25坪新成屋多為2房或3房標準格局， 裝潢核心在於 放大空間感 、 化解壓迫感（如梁柱與採光） 與 高效收納規劃 。 以下整理6家在台中口碑穩定、 且對中小坪數新成屋具備實戰經驗的室內設計公司進行比較： 台中25坪新成屋推薦設計公司比較 設計公司 擅長風格 設計特色與強項 適合屋主類型 捌程室內設計 現代簡約風、機能美學 重視生活動線、採光延伸與系統收納整合，擅長導入智能居家設備。 講求高實用性、收納需求大，或想結合智能家電的新婚/小家庭。 九日設計 日式北歐風、無印溫潤風 擅長利用玻璃隔間、低背家具與木質光影層次，消弭25坪格局的狹隘感。 偏好清爽療癒、注重居家光影氛圍與親子/寵物互動空間的屋主。 羿辰室內設計 Japandi（日式侘寂）、靜奢風 主打系統家具客製化與預售屋客變，能在有限預算內做出細膩的弧形與質感立面。 剛交屋需全室系統櫃配置，且喜歡當下流行微弧線條與低飽和色調者。 珥本設計 簡約人文風 注重生活尺度與空間安定感，設計不走過度浮誇路線，強調耐看與細膩工藝。 追求安靜、有質感且希望裝潢能長久耐看的家庭。 暘築設計 現代新古典、輕奢風 善用簡化線板、對稱比例與異材質搭配，在25坪空間中做出優雅精緻度而不顯厚重。 喜歡飯店精緻感、微奢華氛圍，但擔心小坪數做古典風會太壓迫的屋主。 長寬高空間設計 現代機能風、混搭風 邏輯清晰，擅長先解決收納與動線痛點，再依屋主喜好疊加材質與色彩變化。 格局有畸零角或梁柱問題，希望設計師先打好實用基礎再談美學者。 25坪新成屋挑設計公司的 3 個評估重點 預算與工程配置比例： 台中25坪新成屋（若不大幅更動衛浴與廚房管線）， 純系統櫃與基礎天花板燈光約落在 60萬～100萬元 ；若含局部格局微調（如改玻璃書房）、 木作造型與全室軟裝， 預算通常落在 120萬～200萬元 之間。 諮詢時可先確認該公司的最低接案預算門檻。 「木作」與「系統櫃」的搭配能力： 25坪空間極需垂直收納， 全用木作預算較高、 全用系統櫃容易顯得生硬。 優先選擇擅長「系統櫃為主體、 局部木作與鐵件/弧形收邊點綴」的公司， 能兼顧預算控制與視覺輕盈感。 新成屋驗屋與保固銜接： 確認設計公司是否提供交屋後的丈量覆核、施工期間的進度回報機制，以及完工後的工程保固年限（通常為1年）。 為了幫你進一步縮小範圍，你可以選擇以下方向繼續了解： 依預算與格局估算台中25坪裝潢費用分配 比較日式北歐風與Japandi風在25坪的裝潢差異 整理初次洽談台中設計公司的必問清單",
+      "excerpt_truncated": false,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "decomyplace.com",
+        "www.100.com.tw",
+        "www.8distance.com",
+        "www.bhouse.com.tw",
+        "www.gisinterior.com",
+        "www.puloapp.com",
+        "www.risingsundesign.com.tw",
+        "www.yichen-design.com.tw",
+        "yuninginteriordesign.com"
+      ]
+    },
+    {
+      "evidence_id": "db01e39dbf50cff1",
+      "recommendation_status": "未提及晨陽",
+      "explicit_recommendation_verified": false,
+      "evidence_excerpt": "",
+      "platform": "ChatGPT",
+      "prompt_id": "taichung-condo",
+      "prompt": "台中25坪新成屋裝潢，推薦值得比較的室內設計公司與其擅長的風格。",
+      "answered_at": "2026-11-28T04:17:00+08:00",
+      "answer_excerpt": "以台中 25坪新成屋 來說，我會建議不要只找網路上評價高的設計公司，而是優先比較「有沒有做過20～30坪新成屋」、「格局與收納能力」、「設計風格是否符合你的喜好」，以及「工程報價是否透明」。 我整理出幾家值得列入初選的台中室內設計公司，涵蓋日式北歐、奶油侘寂、現代簡約、質感混搭等不同路線。 一、值得比較的台中室內設計公司 以下依公開作品、服務資訊與25坪住宅的適配度整理，並非單純依網路評分排名。 1. 九日設計 優先推薦比較 擅長：日式北歐、木質簡約、自然溫潤風格。 特色：有台中25坪住宅案例，運用木質、玻璃隔間與開放式空間，兼顧生活動線。 適合：喜歡明亮、溫暖、簡約，又不希望家裡太過制式的人。 電話：04-2254-8010 地址：台中市南屯區益豐路四段199號 參考：25坪住宅案例、公開商家資料。 [1] 官方網站： 九日設計 [2] 2. 禾宇室內設計 擅長：奶茶侘寂、日式北歐、現代簡約。 特色：公開作品包含多件新成屋，風格涵蓋淺木色、奶茶色與低彩度設計。 適合：喜歡奶油色、溫柔色系、柔和燈光及木質家具的人。 電話：04-2372-6746 地址：台中市西區公館路203號 參考：官方住宅作品集。 [3] 官方網站： 禾宇室內設計 [3] 3. 唐閣室內設計 擅長：現代極簡、北歐、日系簡約、奶油風、侘寂風。 特色：重視機能動線與收納，提供設計、工程及客變相關服務。 適合：重視實用性，希望收納充足、生活機能完善的人。 電話：04-2202-0256 地址：台中市北區忠明路502-6號 參考：官方服務介紹。 [4] 官方網站： 唐閣室內設計 [5] 4. 朱英凱室內設計事務所 擅長：現代東方、自然人文、侘寂、北歐融合風格。 特色：設計師有藝術背景，強調光影、材質、留白與空間氣質。 適合：不想做一般制式裝潢，希望家裡有設計感與獨特性的屋主。 電話：04-2475-3398 地址：台中市南屯區南屯路二段420-2號 參考：官方設計理念及作品。 [6] 官方網站： 朱英凱設計 [7] 二、四家公司的風格與定位比較 設計公司 主要風格 我認為值得比較的原因 九日設計 日式北歐 有25坪住宅實例 禾宇 奶茶侘寂 新成屋作品多元 唐閣 現代簡約 重視收納與機能 朱英凱 現代東方 設計美感與藝術性 以下是四家公司的位置，方便安排實際諮詢： 重設檢視 展開地圖 地圖資料目前無法使用 三、25坪新成屋裝潢，預算怎麼抓？ 以下是初步規劃預算，實際仍須看材料、木作比例、櫃體數量及施工範圍。 裝潢項目 初估預算 設計費 5～10萬元 木作、天花板、油漆 20～40萬元 系統櫃、收納 20～35萬元 地板、燈具、水電 10～20萬元 廚房、衛浴局部調整 5～15萬元 家具、窗簾、軟裝 10～20萬元 25坪裝潢預算參考 70～120萬 偏重基礎裝潢、收納與部分軟裝的初步抓法，不含大幅度格局變更或高規格設備；若全室家具家電也要納入，建議另外編列。 新成屋有一個優勢：通常不需要像老屋一樣全面拆除，因此可以把預算花在收納、照明、材質與生活機能上。 四、我建議你特別注意的5件事 找設計公司報價時，建議要求每家提供： 平面配置圖 ：確認25坪如何安排客餐廳、臥室及收納。 3D模擬圖 ：確認風格、顏色與材質。 工程明細報價 ：木作、系統櫃、水電、油漆分開列價。 施工監工方式 ：確認是否有固定工班及專人監工。 保固與付款條件 ：確認追加減帳、工程延誤及驗收機制。 五、我想再幫你縮小到最值得比較的3家 因為同樣25坪，兩房與三房的設計策略差異很大，我想先了解你的需求。 1. 房屋格局 2",
+      "excerpt_truncated": true,
+      "mentions_brand": false,
+      "has_citations": true,
+      "cited_domains": [
+        "home-design.tw",
+        "www.keidesign.com.tw",
+        "www.risingsundesign.com.tw",
+        "www.tangge2012.com.tw"
+      ]
+    },
     {
       "evidence_id": "91db3ccac7b3b040",
       "recommendation_status": "有提及但未確認推薦",
@@ -819,18 +864,18 @@
   "existing_job_status": {
     "ChatGPT": {
       "pending": 1,
-      "stored": 15,
+      "stored": 16,
       "failed": 0,
       "no-evidence": 0
     },
     "Gemini": {
       "pending": 0,
-      "stored": 14,
+      "stored": 15,
       "failed": 0,
       "no-evidence": 2
     },
     "Perplexity": {
-      "pending": 0,
+      "pending": 1,
       "stored": 0,
       "failed": 0,
       "no-evidence": 16
@@ -838,19 +883,19 @@
   },
   "latest_job_status": {
     "ChatGPT": {
-      "day": "2026-11-27",
+      "day": "2026-11-28",
       "status": "stored",
       "reason": ""
     },
     "Gemini": {
-      "day": "2026-11-27",
+      "day": "2026-11-28",
       "status": "stored",
       "reason": ""
     },
     "Perplexity": {
-      "day": "2026-11-27",
-      "status": "no-evidence",
-      "reason": "vendor_wait_element_timeout"
+      "day": "2026-11-28",
+      "status": "pending",
+      "reason": "vendor_still_processing"
     }
   },
   "intent_analysis": {
@@ -990,12 +1035,12 @@
         ],
         "platforms": {
           "ChatGPT": {
-            "samples": 1,
+            "samples": 2,
             "mentions": 0,
             "direct_citations": 0
           },
           "Gemini": {
-            "samples": 1,
+            "samples": 2,
             "mentions": 0,
             "direct_citations": 0
           },
